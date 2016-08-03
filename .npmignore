@@ -1,0 +1,8 @@
+test/
+node_modules/
+karma.conf.js
+webpack.config.js
+.babelrc
+.eslintrc
+.idea*
+coverage/
