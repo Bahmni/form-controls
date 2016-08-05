@@ -3,4 +3,4 @@
 .idea*
 coverage*
 node_modules*
-lib*
+dist*
