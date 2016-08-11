@@ -5,13 +5,13 @@ import _ from 'lodash';
 
 export class ObsControl extends Component {
 
-  getFormControl(obs) {
-    switch (obs.type) {
+  getFormControl(control) {
+    switch (control.type) {
       case 'label':
-        return <Label key={obs.id} obs={obs} />;
+        return <Label key={control.id} value={control.value} />;
       case 'numeric':
       case 'text':
-        return <TextBox key={obs.id} obs={obs} />;
+        return <TextBox key={control.id} type={control.type} value={control.value} />;
       default:
         return null;
     }
@@ -21,7 +21,7 @@ export class ObsControl extends Component {
     return (
     <div>
         {
-          _.map(this.props.obs, (obs) => this.getFormControl(obs))
+          _.map(this.props.controls, (control) => this.getFormControl(control))
         }
       </div>
     );
@@ -29,5 +29,5 @@ export class ObsControl extends Component {
 }
 
 ObsControl.propTypes = {
-  obs: PropTypes.array.isRequired,
+  controls: PropTypes.array.isRequired,
 };

@@ -12,11 +12,12 @@ export class TextBox extends Component {
   }
 
   render() {
-    const textBoxType = this.getTextBoxType(this.props.obs.type);
-    return (<input defaultValue={this.props.obs.value} type={textBoxType} />);
+    const textBoxType = this.getTextBoxType(this.props.type);
+    return (<input defaultValue={this.props.value} type={textBoxType} />);
   }
 }
 
 TextBox.propTypes = {
-  obs: PropTypes.object.isRequired,
+  type: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };

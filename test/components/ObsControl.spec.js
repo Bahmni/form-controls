@@ -8,7 +8,7 @@ chai.use(chaiEnzyme());
 
 describe('ObsControl', () => {
   it('should render label and text box observation controls', () => {
-    const obs = [
+    const controls = [
       {
         id: 100,
         type: 'label',
@@ -28,7 +28,7 @@ describe('ObsControl', () => {
       },
     ];
 
-    const wrapper = mount(<ObsControl obs={obs} />);
+    const wrapper = mount(<ObsControl controls={controls} />);
 
     expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(2).descendants('TextBox');

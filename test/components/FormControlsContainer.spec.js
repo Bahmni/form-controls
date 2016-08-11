@@ -10,9 +10,9 @@ chai.use(chaiEnzyme());
 
 describe('FormControlsContainer', () => {
   const controls = [
-    <Label key="1" obs={{ value: 'labelText' }} />,
-    <TextBox key="2" obs={{ type: 'text' }} />,
-    <TextBox key="3" obs={{ type: 'numeric' }} />,
+    <Label key="1" value="labelText" />,
+    <TextBox key="2" type="text" />,
+    <TextBox key="3" type="numeric" />,
   ];
 
   it('should render form', () => {

@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
-export const Label = ({ obs }) => <span>{obs.value}</span>;
+export const Label = ({ value }) => <span>{value}</span>;
 
 Label.propTypes = {
-  obs: PropTypes.object.isRequired,
+  value: PropTypes.string.isRequired,
 };
