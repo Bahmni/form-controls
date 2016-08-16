@@ -9,7 +9,7 @@
     "pretest": "rimraf coverage/*",
     "test": "karma start",
     "test:watch": "karma start --autoWatch=true --singleRun=false",
-    "posttest": "eslint ./src & eslint ./test",
+    "posttest": "eslint ./src && eslint ./test",
     "ci": "npm run clean && npm run build"
   },
   "author": "bahmni@thoughtworks.com",
