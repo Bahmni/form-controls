@@ -9,6 +9,7 @@
   },
   "rules": {
     "react/sort-prop-types": 2,
-    "react/jsx-sort-props": 2
+    "react/jsx-sort-props": 2,
+    "max-len": [2, 100, 2, {"ignoreComments": true }]
   }
 }

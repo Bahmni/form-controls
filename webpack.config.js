@@ -48,7 +48,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      components: srcPath + '/components/'
+      components: srcPath + '/components/',
+      src: srcPath
     }
   }
 };
