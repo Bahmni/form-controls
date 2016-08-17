@@ -5,21 +5,46 @@ import _ from 'lodash';
 
 export class ObsControl extends Component {
 
+  constructor(props) {
+    super(props);
+    this.childControls = {};
+    this.getValue = this.getValue.bind(this);
+  }
+
+  getValue() {
+    return this.getChildValues();
+  }
+
+  getChildValues() {
+    return _.map(this.childControls, (control) => control.getValue());
+  }
+
   getFormControl(control) {
     switch (control.type) {
       case 'label':
-        return <Label key={control.id} value={control.value} />;
+        return <Label id={control.id} key={control.id} value={control.value} />;
       case 'numeric':
       case 'text':
-        return <TextBox key={control.id} type={control.type} value={control.value} />;
+        return (
+          <TextBox
+            id={control.id}
+            key={control.id}
+            ref={this.storeChildrenRefs.bind(this)}
+            type={control.type}
+            value={control.value}
+          />);
       default:
         return null;
     }
   }
 
+  storeChildrenRefs(ref) {
+    this.childControls[ref.props.id] = ref;
+  }
+
   render() {
     return (
-    <div>
+      <div>
         {
           _.map(this.props.controls, (control) => this.getFormControl(control))
         }
