@@ -19,5 +19,5 @@ function getControls(formDetails) {
 window.renderWithControls = function renderWithControls(formDetails, nodeId) {
   const controls = getControls(formDetails);
   const container = React.createElement(FormControlsContainer, { controls });
-  return ReactDOM.render(container, nodeId);
+  return ReactDOM.render(container, document.getElementById(nodeId));
 };

@@ -6,12 +6,13 @@ let srcPath = path.join(__dirname, './src');
 
 module.exports = {
   devtool: 'eval',
-  entry: [
-    './src/index.jsx'
-  ],
+  entry: {
+    helpers: ['./src/helpers/componentStore.js', './src/helpers/formRenderer.js'],
+    bundle: './src/index.jsx'
+  },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: '[name].js',
     libraryTarget: 'umd',
     library: 'FormControls'
   },
@@ -23,7 +24,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.jsx$/,
+        test: /\.(js|jsx)$/,
         loaders: ['babel'],
         include: path.join(__dirname, 'src')
       },
@@ -39,7 +40,7 @@ module.exports = {
     ],
     postLoaders: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /(test|node_modules)\//,
         loader: 'istanbul-instrumenter'
       }

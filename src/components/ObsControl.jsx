@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Label } from './Label.jsx';
 import { TextBox } from './TextBox.jsx';
 import _ from 'lodash';
+import 'src/helpers/componentStore';
 
 export class ObsControl extends Component {
 
@@ -9,6 +10,7 @@ export class ObsControl extends Component {
     super(props);
     this.childControls = {};
     this.getValue = this.getValue.bind(this);
+    this.storeChildrenRefs = this.storeChildrenRefs.bind(this);
   }
 
   getValue() {
@@ -29,7 +31,7 @@ export class ObsControl extends Component {
           <TextBox
             id={control.id}
             key={control.id}
-            ref={this.storeChildrenRefs.bind(this)}
+            ref={this.storeChildrenRefs}
             type={control.type}
             value={control.value}
           />);
@@ -56,3 +58,5 @@ export class ObsControl extends Component {
 ObsControl.propTypes = {
   controls: PropTypes.array.isRequired,
 };
+
+window.componentStore.registerComponent('obsControl', ObsControl);

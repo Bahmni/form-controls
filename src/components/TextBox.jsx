@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import 'src/helpers/componentStore';
 
 export class TextBox extends Component {
 
@@ -45,3 +46,5 @@ TextBox.propTypes = {
   type: PropTypes.string.isRequired,
   value: PropTypes.string,
 };
+
+window.componentStore.registerComponent('text', TextBox);

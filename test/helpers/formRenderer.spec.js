@@ -2,7 +2,7 @@
 import { TextBox } from 'components/TextBox.jsx';
 import { ObsControl } from 'components/ObsControl.jsx';
 import { FormControlsContainer } from 'components/FormControlsContainer.jsx';
-import 'src/helpers/FormRenderer.jsx';
+import 'src/helpers/formRenderer';
 import sinon from 'sinon';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -58,11 +58,13 @@ describe('FormRenderer', () => {
   beforeEach(() => {
     sinon.stub(React, 'createElement');
     sinon.stub(ReactDOM, 'render');
+    sinon.stub(document, 'getElementById');
   });
 
   afterEach(() => {
     React.createElement.restore();
     ReactDOM.render.restore();
+    document.getElementById.restore();
     componentStore.deRegisterComponent('textBox');
     componentStore.deRegisterComponent('obsControl');
   });
@@ -83,11 +85,12 @@ describe('FormRenderer', () => {
     React.createElement.withArgs(TextBox, sinon.match.object).returns('textBoxElement');
     React.createElement.withArgs(FormControlsContainer,
       sinon.match({ controls: ['textBoxElement'] })).returns('formControlsContainer');
+    document.getElementById.withArgs('someNodeId').returns('someOtherNodeId');
 
     renderWithControls(formDetails, 'someNodeId');
 
     sinon.assert.callCount(React.createElement, 2);
-    sinon.assert.calledWith(ReactDOM.render, 'formControlsContainer', 'someNodeId');
+    sinon.assert.calledWith(ReactDOM.render, 'formControlsContainer', 'someOtherNodeId');
   });
 
   it('should not call getControls for child components when formDetails is empty', () => {
