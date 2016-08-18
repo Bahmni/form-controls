@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { Label } from './Label';
-import { TextBox } from './TextBox';
+import { Label } from './Label.jsx';
+import { TextBox } from './TextBox.jsx';
 import _ from 'lodash';
 
 export class ObsControl extends Component {

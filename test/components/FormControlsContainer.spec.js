@@ -2,9 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { FormControlsContainer } from 'components/FormControlsContainer';
-import { Label } from 'components/Label';
-import { TextBox } from 'components/TextBox';
+import { FormControlsContainer } from 'components/FormControlsContainer.jsx';
+import { Label } from 'components/Label.jsx';
+import { TextBox } from 'components/TextBox.jsx';
 
 chai.use(chaiEnzyme());
 

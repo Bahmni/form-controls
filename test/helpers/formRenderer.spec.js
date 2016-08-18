@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import { TextBox } from 'components/TextBox';
-import { ObsControl } from 'components/ObsControl';
-import { FormControlsContainer } from 'components/FormControlsContainer';
-import 'src/helpers/FormRenderer';
+import { TextBox } from 'components/TextBox.jsx';
+import { ObsControl } from 'components/ObsControl.jsx';
+import { FormControlsContainer } from 'components/FormControlsContainer.jsx';
+import 'src/helpers/FormRenderer.jsx';
 import sinon from 'sinon';
 import React from 'react';
 import ReactDOM from 'react-dom';

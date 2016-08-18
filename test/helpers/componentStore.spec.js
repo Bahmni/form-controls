@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import { TextBox } from 'components/TextBox';
-import { Label } from 'components/Label';
-import 'src/helpers/componentStore';
+import { TextBox } from 'components/TextBox.jsx';
+import { Label } from 'components/Label.jsx';
+import '../../src/helpers/componentStore.jsx';
 
 describe('ComponentStore', () => {
   const registerComponent = (type, component) => componentStore.registerComponent(type, component); // eslint-disable-line no-undef

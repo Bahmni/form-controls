@@ -1,4 +1,4 @@
-import { FormControlsContainer } from 'components/FormControlsContainer';
+import { FormControlsContainer } from 'components/FormControlsContainer.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';

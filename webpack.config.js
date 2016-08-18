@@ -7,7 +7,7 @@ let srcPath = path.join(__dirname, './src');
 module.exports = {
   devtool: 'eval',
   entry: [
-    './src/index'
+    './src/index.jsx'
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -23,7 +23,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx$/,
         loaders: ['babel'],
         include: path.join(__dirname, 'src')
       },
