@@ -1,6 +1,6 @@
 {
-  "name": "form-controls",
-  "version": "0.0.1",
+  "name": "bahmni-form-controls",
+  "version": "0.1.0",
   "description": "Repository for form controls",
   "main": "./dist/bundle.js",
   "scripts": {
@@ -10,7 +10,8 @@
     "test": "karma start",
     "test:watch": "karma start --autoWatch=true --singleRun=false",
     "posttest": "eslint ./src && eslint ./test",
-    "ci": "npm run clean && npm run build"
+    "publish": "publish",
+    "ci": "npm run clean && npm run build && npm run publish"
   },
   "author": "bahmni@thoughtworks.com",
   "devDependencies": {
@@ -45,6 +46,7 @@
     "karma-webpack": "^1.7.0",
     "lodash": "^4.13.1",
     "mocha": "^2.5.3",
+    "publish": "^0.6.0",
     "react": "^15.2.1",
     "react-addons-test-utils": "^15.2.1",
     "react-dom": "^15.2.1",
