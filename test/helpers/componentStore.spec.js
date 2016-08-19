@@ -12,6 +12,12 @@ describe('ComponentStore', () => {
     componentStore.deRegisterComponent('obsControl');
   });
 
+  after(() => {
+    componentStore.deRegisterComponent('text');
+    componentStore.deRegisterComponent('label');
+    componentStore.deRegisterComponent('obsControl');
+  });
+
   describe('registerComponent', () => {
     it('should register a component', () => {
       componentStore.registerComponent('text', TextBox);

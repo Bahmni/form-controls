@@ -7,8 +7,20 @@ import { Label } from 'components/Label.jsx';
 chai.use(chaiEnzyme());
 
 describe('Label', () => {
+  before(() => {
+    window.componentStore.registerComponent('label', Label);
+  });
+
+  after(() => {
+    window.componentStore.deRegisterComponent('label');
+  });
+
   it('should render the value of label', () => {
-    const wrapper = shallow(<Label value="History Notes" />);
+    const metadata = {
+      value: 'History Notes',
+    };
+
+    const wrapper = shallow(<Label metadata={metadata} />);
     expect(wrapper.find('span').text()).to.eql('History Notes');
   });
 });

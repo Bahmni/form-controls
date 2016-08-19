@@ -8,7 +8,7 @@ function getControls(formDetails) {
     _.chain(formDetails.controls)
       .map((control) => {
         const component = componentStore.getRegisteredComponent(control.type); // eslint-disable-line no-undef
-        if (component) return React.createElement(component, { controls: control.controls });
+        if (component) return React.createElement(component, { metadata: control });
         return null;
       })
       .reject(_.isNull)

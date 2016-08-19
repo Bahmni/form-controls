@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Label } from './Label.jsx';
-import { TextBox } from './TextBox.jsx';
 import _ from 'lodash';
 import 'src/helpers/componentStore';
 
@@ -8,55 +6,37 @@ export class ObsControl extends Component {
 
   constructor(props) {
     super(props);
-    this.childControls = {};
+    this.childControl = undefined;
     this.getValue = this.getValue.bind(this);
-    this.storeChildrenRefs = this.storeChildrenRefs.bind(this);
+    this.storeChildRef = this.storeChildRef.bind(this);
   }
 
   getValue() {
-    return this.getChildValues();
+    return this.childControl.getValue();
   }
 
-  getChildValues() {
-    return _.map(this.childControls, (control) => control.getValue());
+  storeChildRef(ref) {
+    this.childControl = ref;
   }
 
-  getFormControl(control) {
-    switch (control.type) {
-      case 'label':
-        return <Label id={control.id} key={control.id} value={control.value} />;
-      case 'numeric':
-      case 'text':
-        return (
-          <TextBox
-            id={control.id}
-            key={control.id}
-            ref={this.storeChildrenRefs}
-            type={control.type}
-            value={control.value}
-          />);
-      default:
-        return null;
-    }
-  }
-
-  storeChildrenRefs(ref) {
-    this.childControls[ref.props.id] = ref;
+  displayObsControl() {
+    const metadata = this.props.metadata;
+    const displayType = _.get(metadata, 'displayType');
+    const component = window.componentStore.getRegisteredComponent(displayType);
+    if (component)
+      return React.createElement(component, { metadata, obs: this.props.obs, ref: this.storeChildRef });
   }
 
   render() {
     return (
-      <div>
-        {
-          _.map(this.props.controls, (control) => this.getFormControl(control))
-        }
-      </div>
+      <div>{this.displayObsControl()}</div>
     );
   }
 }
 
 ObsControl.propTypes = {
-  controls: PropTypes.array.isRequired,
+  metadata: PropTypes.object.isRequired,
+  obs: PropTypes.object,
 };
 
 window.componentStore.registerComponent('obsControl', ObsControl);

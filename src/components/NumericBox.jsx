@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 
-export class TextBox extends Component {
+export class NumericBox extends Component {
 
   constructor(props) {
     super(props);
@@ -28,15 +28,15 @@ export class TextBox extends Component {
       <input
         defaultValue={defaultValue}
         onChange={(e) => this.handleChange(e)}
-        type="text"
+        type="number"
       />
     );
   }
 }
 
-TextBox.propTypes = {
+NumericBox.propTypes = {
   metadata: PropTypes.object.isRequired,
   obs: PropTypes.object,
 };
 
-window.componentStore.registerComponent('text', TextBox);
+window.componentStore.registerComponent('numeric', NumericBox);

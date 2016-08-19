@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import 'src/helpers/componentStore';
 
-export const Label = ({ value }) => <span>{value}</span>;
+export const Label = ({ metadata }) => <span>{metadata.value}</span>;
 
 Label.propTypes = {
-  value: PropTypes.string.isRequired,
+  metadata: PropTypes.object.isRequired,
 };
 
 window.componentStore.registerComponent('label', Label);

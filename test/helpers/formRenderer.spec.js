@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 import { TextBox } from 'components/TextBox.jsx';
+import { NumericBox } from 'components/NumericBox.jsx';
 import { ObsControl } from 'components/ObsControl.jsx';
+import { Label } from 'components/Label.jsx';
 import { FormControlsContainer } from 'components/FormControlsContainer.jsx';
 import 'src/helpers/formRenderer';
 import sinon from 'sinon';
@@ -12,46 +14,25 @@ describe('FormRenderer', () => {
     name: 'Vitals',
     controls: [
       {
+        id: '100',
+        type: 'label',
+        value: 'Pulse',
+      },
+      {
         id: '200',
         type: 'obsControl',
-        controls: [
-          {
-            id: '100',
-            type: 'label',
-            value: 'Pulse',
-          },
-          {
-            id: '101',
-            type: 'text',
-            properties: {
-              mandatory: true,
-              concept: {
-                fullySpecifiedName: 'Pulse',
-              },
-            },
-          },
-        ],
+        displayType: 'text',
+        concept: {
+          fullySpecifiedName: 'Pulse',
+        },
       },
       {
-        id: '201',
+        id: '300',
         type: 'obsControl',
-        controls: [
-          {
-            id: '103',
-            type: 'numeric',
-            properties: {
-              mandatory: true,
-              concept: {
-                fullySpecifiedName: 'Temperature',
-              },
-            },
-          },
-        ],
-      },
-      {
-        id: '202',
-        type: 'textBox',
-        controls: [],
+        displayType: 'numeric',
+        concept: {
+          fullySpecifiedName: 'Temperature',
+        },
       },
     ],
   };
@@ -65,13 +46,17 @@ describe('FormRenderer', () => {
     React.createElement.restore();
     ReactDOM.render.restore();
     document.getElementById.restore();
-    componentStore.deRegisterComponent('textBox');
+    componentStore.deRegisterComponent('label');
+    componentStore.deRegisterComponent('text');
+    componentStore.deRegisterComponent('numeric');
     componentStore.deRegisterComponent('obsControl');
   });
 
   it('should renderWithControls', () => {
-    componentStore.registerComponent('textBox', TextBox);
+    componentStore.registerComponent('label', Label);
+    componentStore.registerComponent('text', TextBox);
     componentStore.registerComponent('obsControl', ObsControl);
+    componentStore.registerComponent('numeric', NumericBox);
 
     renderWithControls(formDetails, 'someNodeId');
 
@@ -80,16 +65,17 @@ describe('FormRenderer', () => {
   });
 
   it('should call createElement with appropriate arguments', () => {
-    componentStore.registerComponent('textBox', TextBox);
+    componentStore.registerComponent('obsControl', ObsControl);
 
-    React.createElement.withArgs(TextBox, sinon.match.object).returns('textBoxElement');
-    React.createElement.withArgs(FormControlsContainer,
-      sinon.match({ controls: ['textBoxElement'] })).returns('formControlsContainer');
+    React.createElement.withArgs(ObsControl, sinon.match.object).returns('someObsControl');
+    React.createElement.withArgs(FormControlsContainer, sinon
+      .match({ controls: ['someObsControl', 'someObsControl'] })).returns('formControlsContainer');
+
     document.getElementById.withArgs('someNodeId').returns('someOtherNodeId');
 
     renderWithControls(formDetails, 'someNodeId');
 
-    sinon.assert.callCount(React.createElement, 2);
+    sinon.assert.callCount(React.createElement, 3);
     sinon.assert.calledWith(ReactDOM.render, 'formControlsContainer', 'someOtherNodeId');
   });
 
