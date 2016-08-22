@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { FormControlsContainer } from 'components/FormControlsContainer.jsx';
+import { Container } from 'components/Container.jsx';
 import { Label } from 'components/Label.jsx';
 import { TextBox } from 'components/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
@@ -11,7 +11,7 @@ import { ObsControl } from 'components/ObsControl.jsx';
 
 chai.use(chaiEnzyme());
 
-describe('FormControlsContainer', () => {
+describe('Container', () => {
   before(() => {
     componentStore.registerComponent('label', Label);
     componentStore.registerComponent('text', TextBox);
@@ -57,14 +57,14 @@ describe('FormControlsContainer', () => {
 
   describe('render', () => {
     it('should render form', () => {
-      const wrapper = shallow(<FormControlsContainer metadata={metadata} obs={[]} />);
+      const wrapper = shallow(<Container metadata={metadata} obs={[]} />);
 
       expect(wrapper).to.have.exactly(1).descendants('Label');
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
     });
 
     it('should render form without controls when it is empty', () => {
-      const wrapper = shallow(<FormControlsContainer metadata={{ controls: [] }} obs={[]} />);
+      const wrapper = shallow(<Container metadata={{ controls: [] }} obs={[]} />);
 
       expect(wrapper).to.be.blank();
     });
@@ -72,7 +72,7 @@ describe('FormControlsContainer', () => {
     it('should render form with only the registered controls', () => {
       componentStore.deRegisterComponent('label');
 
-      const wrapper = shallow(<FormControlsContainer metadata={metadata} obs={[]} />);
+      const wrapper = shallow(<Container metadata={metadata} obs={[]} />);
 
       expect(wrapper).to.not.have.descendants('Label');
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');

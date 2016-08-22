@@ -1,6 +1,6 @@
 import React, {PropTypes, Component} from 'react';
 
-export class FormControlsContainer extends Component {
+export class Container extends Component {
   constructor(props) {
     super(props);
   }
@@ -22,7 +22,6 @@ export class FormControlsContainer extends Component {
   }
 }
 
-FormControlsContainer.propTypes = {
+Container.propTypes = {
   metadata: PropTypes.object.isRequired,
-  obs: PropTypes.array.isRequired,
 };

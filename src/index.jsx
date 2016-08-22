@@ -1,4 +1,4 @@
-export { FormControlsContainer } from 'components/FormControlsContainer.jsx';
+export { Container } from 'components/Container.jsx';
 export { ObsControl } from 'components/ObsControl.jsx';
 export { Label } from 'components/Label.jsx';
 export { TextBox } from 'components/TextBox.jsx';

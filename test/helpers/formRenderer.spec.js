@@ -1,4 +1,4 @@
-import { FormControlsContainer } from 'components/FormControlsContainer.jsx';
+import { Container } from 'components/Container.jsx';
 import 'src/helpers/formRenderer';
 import sinon from 'sinon';
 import React from 'react';
@@ -44,7 +44,7 @@ describe('FormRenderer', () => {
   });
 
   it('should create container component with the supplied form details', () => {
-    React.createElement.withArgs(FormControlsContainer, sinon
+    React.createElement.withArgs(Container, sinon
       .match({ metadata: formDetails })).returns('formControlsContainer');
 
     document.getElementById.withArgs('someNodeId').returns('someOtherNodeId');
