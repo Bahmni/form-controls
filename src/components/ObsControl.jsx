@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import _ from 'lodash';
+import get from 'lodash/get';
 import 'src/helpers/componentStore';
 
 export class ObsControl extends Component {
@@ -21,7 +21,7 @@ export class ObsControl extends Component {
 
   displayObsControl() {
     const metadata = this.props.metadata;
-    const displayType = _.get(metadata, 'displayType');
+    const displayType = get(metadata, 'displayType');
     const component = window.componentStore.getRegisteredComponent(displayType);
     if (component)
       return React.createElement(component, { metadata, obs: this.props.obs, ref: this.storeChildRef });

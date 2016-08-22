@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import get from 'lodash/get';
 
 window.componentStore = {
   componentList: {},
@@ -6,7 +6,7 @@ window.componentStore = {
     this.componentList[type] = component;
   },
   getRegisteredComponent(type) {
-    return _.get(this.componentList, type, undefined);
+    return get(this.componentList, type, undefined);
   },
   deRegisterComponent(type) {
     delete this.componentList[type];
