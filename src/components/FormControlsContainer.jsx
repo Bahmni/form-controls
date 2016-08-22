@@ -1,7 +1,28 @@
-import React, { PropTypes } from 'react';
+import React, {PropTypes, Component} from 'react';
 
-export const FormControlsContainer = ({ controls }) => <div>{controls}</div>;
+export class FormControlsContainer extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  getControls() {
+    return this.props.metadata.controls.map((control) => {
+      const component = componentStore.getRegisteredComponent(control.type);
+      if (component) {
+        return React.createElement(component, { key: control.id, metadata: control });
+      }
+    }).filter(element => element !== undefined);
+  }
+
+
+  render() {
+    return (
+      <div>{this.getControls()}</div>
+    );
+  }
+}
 
 FormControlsContainer.propTypes = {
-  controls: PropTypes.array.isRequired,
+  metadata: PropTypes.object.isRequired,
+  obs: PropTypes.array.isRequired,
 };

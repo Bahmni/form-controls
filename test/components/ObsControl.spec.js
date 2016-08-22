@@ -29,7 +29,6 @@ describe('ObsControl', () => {
 
     const wrapper = mount(<ObsControl metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('TextBox');
-    expect(wrapper).to.have.exactly(1).descendants; // eslint-disable-line
     expect(wrapper.find('input').at(0).props().type).to.be.eql('text');
   });
 
@@ -41,7 +40,6 @@ describe('ObsControl', () => {
 
     const wrapper = mount(<ObsControl metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('NumericBox');
-    expect(wrapper).to.have.exactly(1).descendants; // eslint-disable-line
     expect(wrapper.find('input').at(0).props().type).to.be.eql('number');
   });
 
