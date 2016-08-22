@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Container } from 'components/Container.jsx';
@@ -39,7 +39,7 @@ describe('Container', () => {
         type: 'obsControl',
         displayType: 'text',
         concept: {
-          uuid: '1234567890',
+          uuid: '70645842-be6a-4974-8d5f-45b52990e132',
           fullySpecifiedName: 'Pulse',
         },
       },
@@ -48,23 +48,43 @@ describe('Container', () => {
         type: 'obsControl',
         displayType: 'numeric',
         concept: {
-          uuid: '0987654321',
+          uuid: '216861e7-23d8-468f-9efb-672ce427a14b',
           fullySpecifiedName: 'Temperature',
         },
       },
     ],
   };
 
+  const observations = [
+    {
+      concept: {
+        uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+        name: 'Pulse',
+        dataType: 'Text',
+      },
+      label: 'Pulse',
+      value: '72',
+    },
+    {
+      concept: {
+        uuid: '216861e7-23d8-468f-9efb-672ce427a14b',
+        name: 'Temperature',
+        dataType: 'Numeric',
+      },
+      label: 'Temperature',
+      value: '98',
+    },
+  ];
   describe('render', () => {
     it('should render form', () => {
-      const wrapper = shallow(<Container metadata={metadata} obs={[]} />);
+      const wrapper = shallow(<Container metadata={metadata} observations={[]} />);
 
       expect(wrapper).to.have.exactly(1).descendants('Label');
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
     });
 
     it('should render form without controls when it is empty', () => {
-      const wrapper = shallow(<Container metadata={{ controls: [] }} obs={[]} />);
+      const wrapper = shallow(<Container metadata={{ controls: [] }} observations={[]} />);
 
       expect(wrapper).to.be.blank();
     });
@@ -72,12 +92,47 @@ describe('Container', () => {
     it('should render form with only the registered controls', () => {
       componentStore.deRegisterComponent('label');
 
-      const wrapper = shallow(<Container metadata={metadata} obs={[]} />);
+      const wrapper = shallow(<Container metadata={metadata} observations={[]} />);
 
       expect(wrapper).to.not.have.descendants('Label');
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
 
       componentStore.registerComponent('label', Label);
+    });
+  });
+
+  describe('getValue', () => {
+    it('should return the observations of its children which are data controls', () => {
+      const wrapper = mount(<Container metadata={metadata} observations={observations} />);
+      const instance = wrapper.instance();
+
+      const expectedObservations = [{ value: '72' }, { value: '98' }];
+      expect(instance.getValue()).to.deep.equal(expectedObservations);
+    });
+
+    it('should return empty when there are no observations', () => {
+      const wrapper = mount(<Container metadata={metadata} observations={[]} />);
+      const instance = wrapper.instance();
+
+      expect(instance.getValue()).to.deep.equal([]);
+    });
+
+    it('should return empty when the observations do not match any concept id in form', () => {
+      const obs = [
+        {
+          concept: {
+            uuid: 'differentUuid',
+            name: 'Pulse',
+            dataType: 'Text',
+          },
+          label: 'Pulse',
+          value: '72',
+        },
+      ];
+      const wrapper = mount(<Container metadata={metadata} observations={obs} />);
+      const instance = wrapper.instance();
+
+      expect(instance.getValue()).to.deep.equal([]);
     });
   });
 });

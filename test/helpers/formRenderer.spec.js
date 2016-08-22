@@ -49,7 +49,7 @@ describe('FormRenderer', () => {
 
     document.getElementById.withArgs('someNodeId').returns('someOtherNodeId');
 
-    renderWithControls(formDetails, 'someNodeId'); // eslint-disable-line no-undef
+    renderWithControls(formDetails, [], 'someNodeId'); // eslint-disable-line no-undef
 
     sinon.assert.callCount(React.createElement, 1);
     sinon.assert.calledWith(ReactDOM.render, 'formControlsContainer', 'someOtherNodeId');
