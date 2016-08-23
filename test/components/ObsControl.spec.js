@@ -44,12 +44,24 @@ describe('ObsControl', () => {
   });
 
   it('should return the obsControl value', () => {
+    const concept = {
+      uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+      name: 'Pulse',
+      dataType: 'Text',
+    };
+
     const metadata = {
       type: 'obsControl',
       displayType: 'text',
+      concept,
     };
 
     const obs = {
+      value: 'someInputValue',
+    };
+
+    const expectedObs = {
+      concept,
       value: 'someInputValue',
     };
 
@@ -57,6 +69,6 @@ describe('ObsControl', () => {
     const instance = obsControl.instance();
     const obsControlValue = instance.getValue();
 
-    expect(obsControlValue).to.deep.eql(obs);
+    expect(obsControlValue).to.deep.eql(expectedObs);
   });
 });

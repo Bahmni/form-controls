@@ -26,6 +26,18 @@ describe('Container', () => {
     componentStore.deRegisterComponent('obsControl');
   });
 
+  const textBoxConcept = {
+    uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+    name: 'Pulse',
+    dataType: 'Text',
+  };
+
+  const numericBoxConcept = {
+    uuid: '216861e7-23d8-468f-9efb-672ce427a14b',
+    name: 'Temperature',
+    dataType: 'Numeric',
+  };
+
   const metadata = {
     name: 'Vitals',
     controls: [
@@ -38,43 +50,31 @@ describe('Container', () => {
         id: '101',
         type: 'obsControl',
         displayType: 'text',
-        concept: {
-          uuid: '70645842-be6a-4974-8d5f-45b52990e132',
-          fullySpecifiedName: 'Pulse',
-        },
+        concept: textBoxConcept,
       },
       {
         id: '102',
         type: 'obsControl',
         displayType: 'numeric',
-        concept: {
-          uuid: '216861e7-23d8-468f-9efb-672ce427a14b',
-          fullySpecifiedName: 'Temperature',
-        },
+        concept: numericBoxConcept,
       },
     ],
   };
 
-  const observations = [
-    {
-      concept: {
-        uuid: '70645842-be6a-4974-8d5f-45b52990e132',
-        name: 'Pulse',
-        dataType: 'Text',
-      },
-      label: 'Pulse',
-      value: '72',
-    },
-    {
-      concept: {
-        uuid: '216861e7-23d8-468f-9efb-672ce427a14b',
-        name: 'Temperature',
-        dataType: 'Numeric',
-      },
-      label: 'Temperature',
-      value: '98',
-    },
-  ];
+  const observation1 = {
+    concept: textBoxConcept,
+    label: 'Pulse',
+    value: '72',
+  };
+
+  const observation2 = {
+    concept: numericBoxConcept,
+    label: 'Temperature',
+    value: '98',
+  };
+
+  const observations = [observation1, observation2];
+
   describe('render', () => {
     it('should render form', () => {
       const wrapper = shallow(<Container metadata={metadata} observations={[]} />);
@@ -106,7 +106,7 @@ describe('Container', () => {
       const wrapper = mount(<Container metadata={metadata} observations={observations} />);
       const instance = wrapper.instance();
 
-      const expectedObservations = [{ value: '72' }, { value: '98' }];
+      const expectedObservations = [observation1, observation2];
       expect(instance.getValue()).to.deep.equal(expectedObservations);
     });
 

@@ -1,19 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 
+class Mapper {
+  constructor(concept, obs){
+    this.concept = concept;
+    this.obs = obs;
+  }
+
+  mapTo(value) {
+    return Object.assign({}, { concept: this.concept }, this.obs, {value})
+  }
+}
+
 export class NumericBox extends Component {
 
   constructor(props) {
     super(props);
     this.value = _.get(props.obs, 'value');
     this.getValue = this.getValue.bind(this);
+    this.mapper = new Mapper(props.metadata.concept, props.obs);
   }
 
   getValue() {
     if (this.value) {
-      return {
-        value: this.value,
-      };
+      return this.mapper.mapTo(this.value);
     }
     return undefined;
   }
