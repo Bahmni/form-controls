@@ -45,6 +45,12 @@ export class Container extends Component {
 }
 
 Container.propTypes = {
-  metadata: PropTypes.object.isRequired,
+  metadata: PropTypes.shape({
+    controls: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        type: PropTypes.string.isRequired,
+      })).isRequired,
+    id: PropTypes.string.isRequired,
+  }),
   observations: PropTypes.array.isRequired,
 };

@@ -35,7 +35,11 @@ export class ObsControl extends Component {
 }
 
 ObsControl.propTypes = {
-  metadata: PropTypes.object.isRequired,
+  metadata: PropTypes.shape({
+    concept: PropTypes.object.isRequired,
+    displayType: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  }),
   obs: PropTypes.object,
 };
 

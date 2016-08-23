@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom';
 
 describe('FormRenderer', () => {
   const formDetails = {
+    id: '100',
     name: 'Vitals',
     controls: [
       {

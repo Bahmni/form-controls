@@ -21,10 +21,18 @@ describe('ObsControl', () => {
     window.componentStore.deRegisterComponent('numeric');
   });
 
+  const concept = {
+    uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+    name: 'Pulse',
+    dataType: 'Text',
+  };
+
   it('should render TextBox', () => {
     const metadata = {
+      id: '100',
       type: 'obsControl',
       displayType: 'text',
+      concept,
     };
 
     const wrapper = mount(<ObsControl metadata={metadata} />);
@@ -34,8 +42,10 @@ describe('ObsControl', () => {
 
   it('should render NumericBox', () => {
     const metadata = {
+      id: '100',
       type: 'obsControl',
       displayType: 'numeric',
+      concept,
     };
 
     const wrapper = mount(<ObsControl metadata={metadata} />);
@@ -44,13 +54,8 @@ describe('ObsControl', () => {
   });
 
   it('should return the obsControl value', () => {
-    const concept = {
-      uuid: '70645842-be6a-4974-8d5f-45b52990e132',
-      name: 'Pulse',
-      dataType: 'Text',
-    };
-
     const metadata = {
+      id: '100',
       type: 'obsControl',
       displayType: 'text',
       concept,

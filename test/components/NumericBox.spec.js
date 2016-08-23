@@ -22,6 +22,7 @@ describe('NumericBox', () => {
   };
 
   const metadata = {
+    id: '100',
     type: 'numeric',
     concept,
   };

@@ -39,6 +39,7 @@ describe('Container', () => {
   };
 
   const metadata = {
+    id: '100',
     name: 'Vitals',
     controls: [
       {
@@ -84,7 +85,8 @@ describe('Container', () => {
     });
 
     it('should render form without controls when it is empty', () => {
-      const wrapper = shallow(<Container metadata={{ controls: [] }} observations={[]} />);
+      const meta = { id: '100', controls: [] };
+      const wrapper = shallow(<Container metadata={meta} observations={[]} />);
 
       expect(wrapper).to.be.blank();
     });

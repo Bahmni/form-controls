@@ -22,6 +22,7 @@ describe('TextBox', () => {
   };
 
   const metadata = {
+    id: '100',
     type: 'text',
     concept,
   };

@@ -44,7 +44,10 @@ export class TextBox extends Component {
 }
 
 TextBox.propTypes = {
-  metadata: PropTypes.object.isRequired,
+  metadata: PropTypes.shape({
+    concept: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired,
+  }),
   obs: PropTypes.object,
 };
 
