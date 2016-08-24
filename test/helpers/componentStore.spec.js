@@ -39,6 +39,15 @@ describe('ComponentStore', () => {
       expect(registeredComponent).to.eql(TextBox);
     });
 
+    it('should return the registered component irrespective of case of type', () => {
+      componentStore.registerComponent('TexT', TextBox);
+      expect(componentStore.componentList).to.deep.eql({ text: TextBox });
+
+      const registeredComponent = componentStore.getRegisteredComponent('tEXt');
+      expect(registeredComponent).to.eql(TextBox);
+    });
+
+
     it('should return undefined when no matching component found', () => {
       const registeredComponent = componentStore.getRegisteredComponent('something');
       expect(registeredComponent).to.eql(undefined);
@@ -46,10 +55,10 @@ describe('ComponentStore', () => {
   });
 
   describe('deRegisterComponent', () => {
-    it('should deRegisterComponent component', () => {
-      componentStore.registerComponent('text', TextBox);
+    it('should deRegisterComponent component irrespective of case', () => {
+      componentStore.registerComponent('tEXt', TextBox);
       expect(componentStore.componentList).to.deep.eql({ text: TextBox });
-      componentStore.deRegisterComponent('text');
+      componentStore.deRegisterComponent('TexT');
       componentStore.deRegisterComponent('someRandomThing');
       expect(componentStore.componentList).to.deep.eql({});
     });
