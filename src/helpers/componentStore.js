@@ -1,12 +1,10 @@
-import get from 'lodash/get';
-
 window.componentStore = {
   componentList: {},
   registerComponent(type, component) {
     this.componentList[type.toLowerCase()] = component;
   },
   getRegisteredComponent(type) {
-    return get(this.componentList, type.toLowerCase(), undefined);
+    return this.componentList[type.toLowerCase()];
   },
   deRegisterComponent(type) {
     delete this.componentList[type.toLowerCase()];

@@ -14,7 +14,7 @@ class Mapper {
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
-    this.value = _.get(props.obs, 'value');
+    this.value = props.obs && props.obs.value;
     const formNameSpace = {
       formUuid: this.props.formUuid,
       controlId: this.props.metadata.id,
@@ -38,7 +38,7 @@ export class NumericBox extends Component {
   }
 
   render() {
-    const defaultValue = _.get(this.props.obs, 'value');
+    const defaultValue = this.props.obs && this.props.obs.value;
     return (
       <input
         defaultValue={defaultValue}

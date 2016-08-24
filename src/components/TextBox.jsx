@@ -21,7 +21,7 @@ export class TextBox extends Component {
     const concept = props.metadata.concept;
     const obs = Object.assign({}, { concept }, props.obs, { formNameSpace });
     this.mapper = new Mapper(obs);
-    this.value = _.get(props.obs, 'value');
+    this.value = props.obs && props.obs.value;
     this.getValue = this.getValue.bind(this);
   }
 
@@ -37,7 +37,7 @@ export class TextBox extends Component {
   }
 
   render() {
-    const defaultValue = _.get(this.props.obs, 'value');
+    const defaultValue = this.props.obs && this.props.obs.value;
     return (
       <input
         defaultValue={defaultValue}
