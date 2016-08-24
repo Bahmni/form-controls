@@ -31,14 +31,21 @@ describe('NumericBox', () => {
     value: '007',
   };
 
+  const formUuid = 'f1';
+
+  const formNameSpace = {
+    formUuid,
+    controlId: '100',
+  };
+
   it('should render NumericBox', () => {
-    const wrapper = shallow(<NumericBox metadata={metadata} />);
+    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} />);
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input').props().defaultValue).to.be.eql(undefined);
   });
 
   it('should render NumericBox with default value', () => {
-    const wrapper = shallow(<NumericBox metadata={metadata} obs={obs} />);
+    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input').props().defaultValue).to.be.eql('007');
   });
@@ -47,8 +54,9 @@ describe('NumericBox', () => {
     const expectedObs = {
       concept,
       value: '007',
+      formNameSpace,
     };
-    const wrapper = shallow(<NumericBox metadata={metadata} obs={obs} />);
+    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(expectedObs);
   });
@@ -57,15 +65,16 @@ describe('NumericBox', () => {
     const expectedObs = {
       concept,
       value: '999',
+      formNameSpace,
     };
-    const wrapper = shallow(<NumericBox metadata={metadata} obs={obs} />);
+    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = wrapper.instance();
     wrapper.find('input').simulate('change', { target: { value: '999' } });
     expect(instance.getValue()).to.eql(expectedObs);
   });
 
   it('should return value only if there was initial value or if the value was changed', () => {
-    const wrapper = shallow(<NumericBox metadata={metadata} />);
+    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
   });

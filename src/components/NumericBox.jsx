@@ -2,23 +2,28 @@ import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 
 class Mapper {
-  constructor(concept, obs){
-    this.concept = concept;
+  constructor(obs){
     this.obs = obs;
   }
 
   mapTo(value) {
-    return Object.assign({}, { concept: this.concept }, this.obs, {value})
+    return Object.assign({}, this.obs, {value})
   }
 }
 
 export class NumericBox extends Component {
-
   constructor(props) {
     super(props);
     this.value = _.get(props.obs, 'value');
+    const formNameSpace = {
+      formUuid: this.props.formUuid,
+      controlId: this.props.metadata.id,
+    };
+    const concept = props.metadata.concept;
+    const obs = Object.assign({}, {concept}, props.obs, { formNameSpace });
+    this.mapper = new Mapper(obs);
+
     this.getValue = this.getValue.bind(this);
-    this.mapper = new Mapper(props.metadata.concept, props.obs);
   }
 
   getValue() {
@@ -45,6 +50,7 @@ export class NumericBox extends Component {
 }
 
 NumericBox.propTypes = {
+  formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,

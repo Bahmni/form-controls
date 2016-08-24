@@ -24,7 +24,12 @@ export class ObsControl extends Component {
     const displayType = get(metadata, 'displayType');
     const component = window.componentStore.getRegisteredComponent(displayType);
     if (component)
-      return React.createElement(component, { metadata, obs: this.props.obs, ref: this.storeChildRef });
+      return React.createElement(component, {
+        formUuid: this.props.formUuid,
+        metadata,
+        obs: this.props.obs,
+        ref: this.storeChildRef,
+      });
   }
 
   render() {
@@ -35,6 +40,7 @@ export class ObsControl extends Component {
 }
 
 ObsControl.propTypes = {
+  formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string.isRequired,

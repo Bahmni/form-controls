@@ -27,6 +27,13 @@ describe('ObsControl', () => {
     dataType: 'Text',
   };
 
+  const formUuid = 'someFormUuid';
+
+  const formNameSpace = {
+    formUuid,
+    controlId: '100',
+  };
+
   it('should render TextBox', () => {
     const metadata = {
       id: '100',
@@ -35,7 +42,7 @@ describe('ObsControl', () => {
       concept,
     };
 
-    const wrapper = mount(<ObsControl metadata={metadata} />);
+    const wrapper = mount(<ObsControl formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('TextBox');
     expect(wrapper.find('input').at(0).props().type).to.be.eql('text');
   });
@@ -48,7 +55,7 @@ describe('ObsControl', () => {
       concept,
     };
 
-    const wrapper = mount(<ObsControl metadata={metadata} />);
+    const wrapper = mount(<ObsControl formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('NumericBox');
     expect(wrapper.find('input').at(0).props().type).to.be.eql('number');
   });
@@ -68,9 +75,10 @@ describe('ObsControl', () => {
     const expectedObs = {
       concept,
       value: 'someInputValue',
+      formNameSpace,
     };
 
-    const obsControl = mount(<ObsControl metadata={metadata} obs={obs} />);
+    const obsControl = mount(<ObsControl formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = obsControl.instance();
     const obsControlValue = instance.getValue();
 

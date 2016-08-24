@@ -40,6 +40,7 @@ describe('Container', () => {
 
   const metadata = {
     id: '100',
+    uuid: 'fm1',
     name: 'Vitals',
     controls: [
       {
@@ -85,7 +86,7 @@ describe('Container', () => {
     });
 
     it('should render form without controls when it is empty', () => {
-      const meta = { id: '100', controls: [] };
+      const meta = { id: '100', controls: [], uuid: 'uuid' };
       const wrapper = shallow(<Container metadata={meta} observations={[]} />);
 
       expect(wrapper).to.be.blank();
@@ -108,7 +109,27 @@ describe('Container', () => {
       const wrapper = mount(<Container metadata={metadata} observations={observations} />);
       const instance = wrapper.instance();
 
-      const expectedObservations = [observation1, observation2];
+      const expectedObservation1 = {
+        concept: textBoxConcept,
+        label: 'Pulse',
+        value: '72',
+        formNameSpace: {
+          controlId: '101',
+          formUuid: 'fm1',
+        },
+      };
+
+      const expectedObservation2 = {
+        concept: numericBoxConcept,
+        label: 'Temperature',
+        value: '98',
+        formNameSpace: {
+          controlId: '102',
+          formUuid: 'fm1',
+        },
+      };
+
+      const expectedObservations = [expectedObservation1, expectedObservation2];
       expect(instance.getValue()).to.deep.equal(expectedObservations);
     });
 

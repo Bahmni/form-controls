@@ -32,7 +32,13 @@ export class Container extends Component {
       const component = componentStore.getRegisteredComponent(control.type);
       if (component) {
         const obs = this.getObsForControl(control);
-        return React.createElement(component, { key: control.id, metadata: control, obs, ref: this.storeChildRef });
+        return React.createElement(component, {
+          formUuid: this.props.metadata.uuid,
+          key: control.id,
+          metadata: control,
+          obs,
+          ref: this.storeChildRef
+        });
       }
     }).filter(element => element !== undefined);
   }
@@ -51,6 +57,7 @@ Container.propTypes = {
         type: PropTypes.string.isRequired,
       })).isRequired,
     id: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
   }),
   observations: PropTypes.array.isRequired,
 };
