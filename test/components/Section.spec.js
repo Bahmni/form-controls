@@ -3,22 +3,20 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { Container } from 'components/Container.jsx';
+import { Section } from 'components/Section.jsx';
 import { Label } from 'components/Label.jsx';
 import { TextBox } from 'components/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { ObsControl } from 'components/ObsControl.jsx';
-import { Section } from 'components/Section.jsx';
 
 chai.use(chaiEnzyme());
 
-describe('Container', () => {
+describe('Section', () => {
   before(() => {
     componentStore.registerComponent('label', Label);
     componentStore.registerComponent('text', TextBox);
     componentStore.registerComponent('numeric', NumericBox);
     componentStore.registerComponent('obsControl', ObsControl);
-    componentStore.registerComponent('section', Section);
   });
 
   after(() => {
@@ -26,7 +24,6 @@ describe('Container', () => {
     componentStore.deRegisterComponent('text');
     componentStore.deRegisterComponent('numeric');
     componentStore.deRegisterComponent('obsControl');
-    componentStore.deRegisterComponent('section');
   });
 
   const textBoxConcept = {
@@ -43,8 +40,7 @@ describe('Container', () => {
 
   const metadata = {
     id: '100',
-    uuid: 'fm1',
-    name: 'Vitals',
+    value: 'SectionTitle',
     controls: [
       {
         id: '100',
@@ -66,13 +62,15 @@ describe('Container', () => {
     ],
   };
 
+  const formUuid = 'F1';
+
   const observation1 = {
     concept: textBoxConcept,
     label: 'Pulse',
     value: '72',
     formNameSpace: {
       controlId: '101',
-      formUuid: 'fm1',
+      formUuid,
     },
   };
 
@@ -82,31 +80,53 @@ describe('Container', () => {
     value: '98',
     formNameSpace: {
       controlId: '102',
-      formUuid: 'fm1',
+      formUuid,
     },
   };
+
+  const properties = { visualOnly: true };
 
   const observations = [observation1, observation2];
 
   describe('render', () => {
-    it('should render form', () => {
-      const wrapper = shallow(<Container metadata={metadata} observations={[]} />);
+    it('should render section', () => {
+      const wrapper = shallow(
+        <Section
+          formUuid={formUuid}
+          metadata={metadata}
+          obs={observations}
+          properties={properties}
+        />);
 
+      expect(wrapper.find('legend').text()).to.eql('SectionTitle');
       expect(wrapper).to.have.exactly(1).descendants('Label');
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
     });
 
-    it('should render form without controls when it is empty', () => {
-      const meta = { id: '100', controls: [], uuid: 'uuid' };
-      const wrapper = shallow(<Container metadata={meta} observations={[]} />);
+    it('should render section without controls when it is empty', () => {
+      const meta = { id: '100', controls: [], value: 'Title' };
+      const wrapper = shallow(
+        <Section
+          formUuid={formUuid}
+          metadata={meta}
+          obs={[]}
+          properties={properties}
+        />);
 
-      expect(wrapper).to.be.blank();
+      expect(wrapper.find('legend').text()).to.eql('Title');
+      expect(wrapper.find('.section-controls')).to.be.blank();
     });
 
-    it('should render form with only the registered controls', () => {
+    it('should render section with only the registered controls', () => {
       componentStore.deRegisterComponent('label');
 
-      const wrapper = shallow(<Container metadata={metadata} observations={[]} />);
+      const wrapper = shallow(
+        <Section
+          formUuid={formUuid}
+          metadata={metadata}
+          obs={[]}
+          properties={properties}
+        />);
 
       expect(wrapper).to.not.have.descendants('Label');
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
@@ -117,14 +137,26 @@ describe('Container', () => {
 
   describe('getValue', () => {
     it('should return the observations of its children which are data controls', () => {
-      const wrapper = mount(<Container metadata={metadata} observations={observations} />);
+      const wrapper = mount(
+        <Section
+          formUuid={formUuid}
+          metadata={metadata}
+          obs={observations}
+          properties={properties}
+        />);
       const instance = wrapper.instance();
 
       expect(instance.getValue()).to.deep.equal([observation1, observation2]);
     });
 
     it('should return empty when there are no observations', () => {
-      const wrapper = mount(<Container metadata={metadata} observations={[]} />);
+      const wrapper = mount(
+        <Section
+          formUuid={formUuid}
+          metadata={metadata}
+          obs={[]}
+          properties={properties}
+        />);
       const instance = wrapper.instance();
 
       expect(instance.getValue()).to.deep.equal([]);
@@ -146,84 +178,16 @@ describe('Container', () => {
           },
         },
       ];
-      const wrapper = mount(<Container metadata={metadata} observations={obs} />);
+      const wrapper = mount(
+        <Section
+          formUuid={formUuid}
+          metadata={metadata}
+          obs={obs}
+          properties={properties}
+        />);
       const instance = wrapper.instance();
 
       expect(instance.getValue()).to.deep.equal([]);
-    });
-  });
-
-  describe('with section', () => {
-    const metadataWithSection = {
-      id: '100',
-      uuid: 'fm1',
-      name: 'Vitals',
-      controls: [
-        {
-          id: '300',
-          type: 'section',
-          value: 'someSectionLegend',
-          properties: {
-            visualOnly: true,
-          },
-          controls: [
-            {
-              id: '100',
-              type: 'label',
-              value: 'Pulse',
-            },
-            {
-              id: '101',
-              type: 'obsControl',
-              displayType: 'text',
-              concept: textBoxConcept,
-            },
-            {
-              id: '102',
-              type: 'obsControl',
-              displayType: 'numeric',
-              concept: numericBoxConcept,
-            },
-          ],
-        },
-        {
-          id: '301',
-          type: 'obsControl',
-          displayType: 'numeric',
-          concept: numericBoxConcept,
-        },
-      ],
-    };
-
-    it('should render form with section and pass all observations to section', () => {
-      const wrapper = shallow(
-        <Container
-          metadata={metadataWithSection}
-          observations={observations}
-        />);
-
-      expect(wrapper).to.have.exactly(1).descendants('Section');
-      expect(wrapper.find('Section')).to.have.prop('obs').deep.equal(observations);
-      expect(wrapper).to.have.exactly(1).descendants('ObsControl');
-    });
-
-    it('should return observations of all children', () => {
-      const observation3 = {
-        concept: numericBoxConcept,
-        label: 'Temperature',
-        value: '98',
-        formNameSpace: {
-          controlId: '301',
-          formUuid: 'fm1',
-        },
-      };
-
-      const obs = [observation1, observation2, observation3];
-      const wrapper = mount(<Container metadata={metadataWithSection} observations={obs} />);
-
-      const instance = wrapper.instance();
-
-      expect(instance.getValue()).to.deep.equal([observation1, observation2, observation3]);
     });
   });
 });

@@ -1,4 +1,5 @@
 import React, {PropTypes, Component} from 'react';
+import { getControls } from 'src/helpers/controlsParser';
 
 export class Container extends Component {
   constructor(props) {
@@ -18,32 +19,14 @@ export class Container extends Component {
         observations.push(this.childControls[key].getValue());
       }
     }
-    return observations.filter(obs => obs !== undefined);
-  }
-
-  getObsForControl(control) {
-    return this.props.observations.find((obs) => obs.formNameSpace.controlId === control.id);
-  }
-
-  getControls() {
-    return this.props.metadata.controls.map((control) => {
-      const component = componentStore.getRegisteredComponent(control.type);
-      if (component) {
-        const obs = this.getObsForControl(control);
-        return React.createElement(component, {
-          formUuid: this.props.metadata.uuid,
-          key: control.id,
-          metadata: control,
-          obs,
-          ref: this.storeChildRef
-        });
-      }
-    }).filter(element => element !== undefined);
+    return [].concat.apply([], observations).filter(obs => obs !== undefined);
   }
 
   render() {
+    const { observations, metadata: { controls, uuid: formUuid } } = this.props;
+    const childProps = { formUuid, ref: this.storeChildRef };
     return (
-      <div>{this.getControls()}</div>
+      <div>{getControls(controls, observations, childProps)}</div>
     );
   }
 }
