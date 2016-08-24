@@ -22,9 +22,7 @@ export class Container extends Component {
   }
 
   getObsForControl(control) {
-    if(control.concept) {
-      return this.props.observations.find((obs) => obs.concept.uuid === control.concept.uuid)
-    }
+    return this.props.observations.find((obs) => obs.formNameSpace.controlId === control.id);
   }
 
   getControls() {

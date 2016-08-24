@@ -67,12 +67,20 @@ describe('Container', () => {
     concept: textBoxConcept,
     label: 'Pulse',
     value: '72',
+    formNameSpace: {
+      controlId: '101',
+      formUuid: 'fm1',
+    },
   };
 
   const observation2 = {
     concept: numericBoxConcept,
     label: 'Temperature',
     value: '98',
+    formNameSpace: {
+      controlId: '102',
+      formUuid: 'fm1',
+    },
   };
 
   const observations = [observation1, observation2];
@@ -109,28 +117,7 @@ describe('Container', () => {
       const wrapper = mount(<Container metadata={metadata} observations={observations} />);
       const instance = wrapper.instance();
 
-      const expectedObservation1 = {
-        concept: textBoxConcept,
-        label: 'Pulse',
-        value: '72',
-        formNameSpace: {
-          controlId: '101',
-          formUuid: 'fm1',
-        },
-      };
-
-      const expectedObservation2 = {
-        concept: numericBoxConcept,
-        label: 'Temperature',
-        value: '98',
-        formNameSpace: {
-          controlId: '102',
-          formUuid: 'fm1',
-        },
-      };
-
-      const expectedObservations = [expectedObservation1, expectedObservation2];
-      expect(instance.getValue()).to.deep.equal(expectedObservations);
+      expect(instance.getValue()).to.deep.equal([observation1, observation2]);
     });
 
     it('should return empty when there are no observations', () => {
@@ -140,7 +127,7 @@ describe('Container', () => {
       expect(instance.getValue()).to.deep.equal([]);
     });
 
-    it('should return empty when the observations do not match any concept id in form', () => {
+    it('should return empty when the observations do not match any control id in form', () => {
       const obs = [
         {
           concept: {
@@ -150,6 +137,10 @@ describe('Container', () => {
           },
           label: 'Pulse',
           value: '72',
+          formNameSpace: {
+            controlId: '999999',
+            formUuid: 'fm1',
+          },
         },
       ];
       const wrapper = mount(<Container metadata={metadata} observations={obs} />);
