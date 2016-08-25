@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
+import { createFormNamespace } from 'src/helpers/formNamespace';
 
 class Mapper {
   constructor(obs){
@@ -15,12 +16,9 @@ export class NumericBox extends Component {
   constructor(props) {
     super(props);
     this.value = props.obs && props.obs.value;
-    const formNameSpace = {
-      formUuid: this.props.formUuid,
-      controlId: this.props.metadata.id,
-    };
+    const formNamespace = createFormNamespace(props.formUuid, props.metadata.id);
     const concept = props.metadata.concept;
-    const obs = Object.assign({}, {concept}, props.obs, { formNameSpace });
+    const obs = Object.assign({}, {concept}, props.obs, { formNamespace });
     this.mapper = new Mapper(obs);
 
     this.getValue = this.getValue.bind(this);

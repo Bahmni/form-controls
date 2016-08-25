@@ -68,20 +68,14 @@ describe('Section', () => {
     concept: textBoxConcept,
     label: 'Pulse',
     value: '72',
-    formNameSpace: {
-      controlId: '101',
-      formUuid,
-    },
+    formNamespace: `${formUuid}/101`,
   };
 
   const observation2 = {
     concept: numericBoxConcept,
     label: 'Temperature',
     value: '98',
-    formNameSpace: {
-      controlId: '102',
-      formUuid,
-    },
+    formNamespace: `${formUuid}/102`,
   };
 
   const properties = { visualOnly: true };
@@ -172,10 +166,7 @@ describe('Section', () => {
           },
           label: 'Pulse',
           value: '72',
-          formNameSpace: {
-            controlId: '999999',
-            formUuid: 'fm1',
-          },
+          formNamespace: 'fm1/999999',
         },
       ];
       const wrapper = mount(

@@ -70,20 +70,14 @@ describe('Container', () => {
     concept: textBoxConcept,
     label: 'Pulse',
     value: '72',
-    formNameSpace: {
-      controlId: '101',
-      formUuid: 'fm1',
-    },
+    formNamespace: 'fm1/101',
   };
 
   const observation2 = {
     concept: numericBoxConcept,
     label: 'Temperature',
     value: '98',
-    formNameSpace: {
-      controlId: '102',
-      formUuid: 'fm1',
-    },
+    formNamespace: 'fm1/102',
   };
 
   const observations = [observation1, observation2];
@@ -140,10 +134,7 @@ describe('Container', () => {
           },
           label: 'Pulse',
           value: '72',
-          formNameSpace: {
-            controlId: '999999',
-            formUuid: 'fm1',
-          },
+          formNamespace: 'fm1/999999',
         },
       ];
       const wrapper = mount(<Container metadata={metadata} observations={obs} />);
@@ -212,10 +203,7 @@ describe('Container', () => {
         concept: numericBoxConcept,
         label: 'Temperature',
         value: '98',
-        formNameSpace: {
-          controlId: '301',
-          formUuid: 'fm1',
-        },
+        formNamespace: 'fm1/301',
       };
 
       const obs = [observation1, observation2, observation3];

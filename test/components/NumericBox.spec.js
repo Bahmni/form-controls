@@ -33,10 +33,7 @@ describe('NumericBox', () => {
 
   const formUuid = 'f1';
 
-  const formNameSpace = {
-    formUuid,
-    controlId: '100',
-  };
+  const formNamespace = `${formUuid}/100`;
 
   it('should render NumericBox', () => {
     const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} />);
@@ -54,7 +51,7 @@ describe('NumericBox', () => {
     const expectedObs = {
       concept,
       value: '007',
-      formNameSpace,
+      formNamespace,
     };
     const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = wrapper.instance();
@@ -65,7 +62,7 @@ describe('NumericBox', () => {
     const expectedObs = {
       concept,
       value: '999',
-      formNameSpace,
+      formNamespace,
     };
     const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = wrapper.instance();

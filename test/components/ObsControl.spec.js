@@ -29,10 +29,7 @@ describe('ObsControl', () => {
 
   const formUuid = 'someFormUuid';
 
-  const formNameSpace = {
-    formUuid,
-    controlId: '100',
-  };
+  const formNamespace = `${formUuid}/100`;
 
   it('should render TextBox', () => {
     const metadata = {
@@ -75,7 +72,7 @@ describe('ObsControl', () => {
     const expectedObs = {
       concept,
       value: 'someInputValue',
-      formNameSpace,
+      formNamespace,
     };
 
     const obsControl = mount(<ObsControl formUuid={formUuid} metadata={metadata} obs={obs} />);

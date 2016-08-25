@@ -33,10 +33,7 @@ describe('TextBox', () => {
 
   const formUuid = 'someFormUuid';
 
-  const formNameSpace = {
-    formUuid,
-    controlId: '100',
-  };
+  const formNamespace = `${formUuid}/100`;
 
   it('should render TextBox', () => {
     const wrapper = shallow(<TextBox formUuid={formUuid} metadata={metadata} />);
@@ -54,7 +51,7 @@ describe('TextBox', () => {
     const expectedObs = {
       concept,
       value: 'someValue',
-      formNameSpace,
+      formNamespace,
     };
 
     const wrapper = shallow(<TextBox formUuid={formUuid} metadata={metadata} obs={obs} />);
@@ -67,7 +64,7 @@ describe('TextBox', () => {
     const expectedObs = {
       concept,
       value: 'My new value',
-      formNameSpace,
+      formNamespace,
     };
 
     const wrapper = shallow(<TextBox formUuid={formUuid} metadata={metadata} obs={obs} />);
