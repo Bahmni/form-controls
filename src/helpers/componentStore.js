@@ -9,4 +9,7 @@ window.componentStore = {
   deRegisterComponent(type) {
     delete this.componentList[type.toLowerCase()];
   },
+  getAllRegisteredComponents() {
+    return this.componentList;
+  },
 };

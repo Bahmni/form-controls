@@ -9,13 +9,11 @@ describe('ComponentStore', () => {
   beforeEach(() => {
     componentStore.deRegisterComponent('text');
     componentStore.deRegisterComponent('label');
-    componentStore.deRegisterComponent('obsControl');
   });
 
   after(() => {
     componentStore.deRegisterComponent('text');
     componentStore.deRegisterComponent('label');
-    componentStore.deRegisterComponent('obsControl');
   });
 
   describe('registerComponent', () => {
@@ -61,6 +59,15 @@ describe('ComponentStore', () => {
       componentStore.deRegisterComponent('TexT');
       componentStore.deRegisterComponent('someRandomThing');
       expect(componentStore.componentList).to.deep.eql({});
+    });
+  });
+
+  describe('getAllRegisteredComponents', () => {
+    it('should return all the registered components', () => {
+      const expectedComponents = { text: TextBox, label: Label };
+      componentStore.registerComponent('text', TextBox);
+      componentStore.registerComponent('label', Label);
+      expect(componentStore.getAllRegisteredComponents()).to.deep.eql(expectedComponents);
     });
   });
 });
