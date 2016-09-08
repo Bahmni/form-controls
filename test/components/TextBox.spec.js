@@ -29,6 +29,7 @@ describe('TextBox', () => {
 
   const obs = {
     value: 'someValue',
+    observationDateTime: '2016-09-08T10:10:38.000+0530',
   };
 
   const formUuid = 'someFormUuid';
@@ -51,6 +52,7 @@ describe('TextBox', () => {
     const expectedObs = {
       concept,
       value: 'someValue',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
     };
 
@@ -64,6 +66,7 @@ describe('TextBox', () => {
     const expectedObs = {
       concept,
       value: 'My new value',
+      observationDateTime: null,
       formNamespace,
     };
 

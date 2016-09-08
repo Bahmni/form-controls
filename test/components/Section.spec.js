@@ -69,6 +69,7 @@ describe('Section', () => {
     label: 'Pulse',
     value: '72',
     formNamespace: `${formUuid}/101`,
+    observationDateTime: '2016-09-08T10:10:38.000+0530',
   };
 
   const observation2 = {
@@ -76,6 +77,7 @@ describe('Section', () => {
     label: 'Temperature',
     value: '98',
     formNamespace: `${formUuid}/102`,
+    observationDateTime: '2016-09-08T10:10:38.000+0530',
   };
 
   const properties = { visualOnly: true };

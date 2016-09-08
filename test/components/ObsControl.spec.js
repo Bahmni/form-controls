@@ -67,11 +67,13 @@ describe('ObsControl', () => {
 
     const obs = {
       value: 'someInputValue',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
     };
 
     const expectedObs = {
       concept,
       value: 'someInputValue',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
     };
 

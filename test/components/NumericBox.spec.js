@@ -29,6 +29,7 @@ describe('NumericBox', () => {
 
   const obs = {
     value: '007',
+    observationDateTime: '2016-09-08T10:10:38.000+0530',
   };
 
   const formUuid = 'f1';
@@ -51,6 +52,7 @@ describe('NumericBox', () => {
     const expectedObs = {
       concept,
       value: '007',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
     };
     const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
@@ -62,6 +64,7 @@ describe('NumericBox', () => {
     const expectedObs = {
       concept,
       value: '999',
+      observationDateTime: null,
       formNamespace,
     };
     const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);

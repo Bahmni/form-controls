@@ -7,8 +7,8 @@ class Mapper {
     this.obs = obs;
   }
 
-  mapTo(value) {
-    return Object.assign({}, this.obs, {value})
+  mapTo(obs) {
+    return Object.assign({}, this.obs, obs)
   }
 }
 
@@ -20,18 +20,24 @@ export class TextBox extends Component {
     const obs = Object.assign({}, { concept }, props.obs, { formNamespace });
     this.mapper = new Mapper(obs);
     this.value = props.obs && props.obs.value;
+    this.observationDateTime = props.obs && props.obs.observationDateTime;
     this.getValue = this.getValue.bind(this);
   }
 
   getValue() {
     if (this.value) {
-      return this.mapper.mapTo(this.value);
+      let obs = {
+        value: this.value,
+        observationDateTime: this.observationDateTime
+      };
+      return this.mapper.mapTo(obs);
     }
     return undefined;
   }
 
   handleChange(e) {
     this.value = e.target.value;
+    this.observationDateTime = null;
   }
 
   render() {
