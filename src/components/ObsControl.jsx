@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 
 export class ObsControl extends Component {
@@ -19,15 +19,17 @@ export class ObsControl extends Component {
   }
 
   displayObsControl() {
-    const {metadata, metadata: {displayType}} = this.props;
+    const { metadata, metadata: { displayType } } = this.props;
     const componentDescriptor = window.componentStore.getRegisteredComponent(displayType);
-    if (componentDescriptor)
+    if (componentDescriptor) {
       return React.createElement(componentDescriptor.control, {
         formUuid: this.props.formUuid,
         metadata,
         obs: this.props.obs,
         ref: this.storeChildRef,
       });
+    }
+    return null;
   }
 
   render() {
@@ -72,11 +74,11 @@ const descriptor = {
         attributes: [
           {
             name: 'uuid',
-            dataType: 'text'
+            dataType: 'text',
           },
           {
             name: 'name',
-            dataType: 'text'
+            dataType: 'text',
           },
         ],
       },

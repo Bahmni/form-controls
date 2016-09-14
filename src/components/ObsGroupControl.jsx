@@ -4,14 +4,14 @@ import { getControls } from 'src/helpers/controlsParser';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 
 class Mapper {
-  constructor(obs){
+  constructor(obs) {
     this.obs = obs;
     this.obs.groupMembers = [];
   }
 
   mapTo(groupMembers) {
     this.obs.groupMembers = groupMembers.filter(obs => obs !== undefined);
-    return (this.obs.groupMembers.length > 0 )? this.obs : undefined ;
+    return (this.obs.groupMembers.length > 0) ? this.obs : undefined;
   }
 }
 
@@ -29,9 +29,9 @@ export class ObsGroupControl extends Component {
   }
 
   getValue() {
-    var groupMembers = [];
-    for(const key in this.childControls) {
-      if(this.childControls.hasOwnProperty(key)) {
+    const groupMembers = [];
+    for (const key in this.childControls) {
+      if (this.childControls.hasOwnProperty(key)) {
         groupMembers.push(this.childControls[key].getValue());
       }
     }
@@ -39,7 +39,7 @@ export class ObsGroupControl extends Component {
   }
 
   storeChildRef(ref) {
-    if(ref) this.childControls[ref.props.metadata.id] = ref;
+    if (ref) this.childControls[ref.props.metadata.id] = ref;
   }
 
   render() {
@@ -49,7 +49,9 @@ export class ObsGroupControl extends Component {
     return (
       <fieldset>
         <legend>{value}</legend>
-        <div className="obsGroup-controls">{getControls(controls, obsGroupMembers, childProps)}</div>
+        <div className="obsGroup-controls">
+          {getControls(controls, obsGroupMembers, childProps)}
+        </div>
       </fieldset>
     );
   }

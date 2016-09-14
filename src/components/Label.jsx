@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 
-export class Label extends Component{
+export class Label extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,52 +17,54 @@ export class Label extends Component{
     this.storeComponentRef = this.storeComponentRef.bind(this);
   }
 
-  onDoubleClick() {
-    if(this.isDesignMode){
-      return () => {
-        this.setState({ isEditable: true });
-      }
-    }
-    return undefined;
-  }
-
-  onBlur() {
-    if(this.isDesignMode) {
-      return () => {
-        this.setState({
-          isEditable: false,
-          value: (this.input && this.input.value) ? this.input.value : this.state.value,
-        });
-      }
-    }
-  }
-
-  onEnterKey() {
-    if(this.isDesignMode) {
-      return (e) => {
-        if(e.keyCode === 13) {
-          this.setState({
-            isEditable: false,
-            value: (this.input && this.input.value) ? this.input.value : this.state.value,
-          });
-        }
-      }
-    }
-  }
-
   componentDidUpdate() {
-    if(this.input) {
+    if (this.input) {
       this.input.focus();
       this.input.select();
     }
   }
 
+  onDoubleClick() {
+    if (this.isDesignMode) {
+      return () => {
+        this.setState({ isEditable: true });
+      };
+    }
+    return undefined;
+  }
+
+  onBlur() {
+    if (this.isDesignMode) {
+      return () => {
+        this.setState({
+          isEditable: false,
+          value: (this.input && this.input.value) ? this.input.value : this.state.value,
+        });
+      };
+    }
+    return undefined;
+  }
+
+  onEnterKey() {
+    if (this.isDesignMode) {
+      return (e) => {
+        if (e.keyCode === 13) {
+          this.setState({
+            isEditable: false,
+            value: (this.input && this.input.value) ? this.input.value : this.state.value,
+          });
+        }
+      };
+    }
+    return undefined;
+  }
+
   storeComponentRef(ref) {
-    if (ref != null) this.input = ref;
+    if (ref !== null) this.input = ref;
   }
 
   render() {
-    if(this.state.isEditable){
+    if (this.state.isEditable) {
       return (
       <input
         defaultValue={ this.state.value }
@@ -73,9 +75,9 @@ export class Label extends Component{
       />
       );
     }
-    return(<span onDoubleClick={ this.onDoubleClick() }>{ this.state.value }</span>);
+    return (<span onDoubleClick={ this.onDoubleClick() }>{ this.state.value }</span>);
   }
-};
+}
 
 Label.propTypes = {
   metadata: PropTypes.shape({
@@ -111,17 +113,17 @@ const descriptor = {
         attributes: [
           {
             name: 'mandatory',
-            dataType: 'boolean'
+            dataType: 'boolean',
           },
           {
             name: 'isDesignMode',
             dataType: 'boolean',
             defaultValue: false,
-          }
+          },
         ],
-      }
+      },
     ],
-  }
+  },
 };
 
 window.componentStore.registerComponent('label', descriptor);

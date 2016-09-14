@@ -1,4 +1,4 @@
-import React, {PropTypes, Component} from 'react';
+import React, { PropTypes, Component } from 'react';
 import { getControls } from 'src/helpers/controlsParser';
 import { getObsForContainer } from 'src/helpers/controlsHelper';
 
@@ -9,13 +9,13 @@ export class Container extends Component {
     this.storeChildRef = this.storeChildRef.bind(this);
   }
 
-  storeChildRef(ref) {
-    if(ref) this.childControls[ref.props.metadata.id] = ref;
-  }
-
   getValue() {
     const observations = getObsForContainer(this.childControls);
     return [].concat.apply([], observations).filter(obs => obs !== undefined);
+  }
+
+  storeChildRef(ref) {
+    if (ref) this.childControls[ref.props.metadata.id] = ref;
   }
 
   render() {

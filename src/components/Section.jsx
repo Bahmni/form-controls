@@ -17,7 +17,7 @@ export class Section extends Component {
   }
 
   storeChildRef(ref) {
-    if(ref) this.childControls[ref.props.metadata.id] = ref;
+    if (ref) this.childControls[ref.props.metadata.id] = ref;
   }
 
   render() {

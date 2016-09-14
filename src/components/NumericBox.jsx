@@ -3,12 +3,12 @@ import 'src/helpers/componentStore';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 
 class Mapper {
-  constructor(obs){
+  constructor(obs) {
     this.obs = obs;
   }
 
   mapTo(obs) {
-    return Object.assign({}, this.obs, obs)
+    return Object.assign({}, this.obs, obs);
   }
 }
 
@@ -18,7 +18,7 @@ export class NumericBox extends Component {
     this.value = props.obs && props.obs.value;
     const formNamespace = createFormNamespace(props.formUuid, props.metadata.id);
     const concept = props.metadata.concept;
-    const obs = Object.assign({}, {concept}, props.obs, { formNamespace });
+    const obs = Object.assign({}, { concept }, props.obs, { formNamespace });
     this.mapper = new Mapper(obs);
     this.observationDateTime = props.obs && props.obs.observationDateTime;
     this.getValue = this.getValue.bind(this);
@@ -26,9 +26,9 @@ export class NumericBox extends Component {
 
   getValue() {
     if (this.value) {
-      let obs = {
+      const obs = {
         value: this.value,
-        observationDateTime: this.observationDateTime
+        observationDateTime: this.observationDateTime,
       };
       return this.mapper.mapTo(obs);
     }

@@ -3,12 +3,12 @@ import 'src/helpers/componentStore';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 
 class Mapper {
-  constructor(obs){
+  constructor(obs) {
     this.obs = obs;
   }
 
   mapTo(obs) {
-    return Object.assign({}, this.obs, obs)
+    return Object.assign({}, this.obs, obs);
   }
 }
 
@@ -26,9 +26,9 @@ export class TextBox extends Component {
 
   getValue() {
     if (this.value) {
-      let obs = {
+      const obs = {
         value: this.value,
-        observationDateTime: this.observationDateTime
+        observationDateTime: this.observationDateTime,
       };
       return this.mapper.mapTo(obs);
     }
@@ -70,7 +70,7 @@ const describe = {
   control: TextBox,
   metadata: {
     attributes: [],
-  }
+  },
 };
 
 window.componentStore.registerComponent('text', describe);

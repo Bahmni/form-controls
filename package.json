@@ -9,7 +9,8 @@
     "pretest": "rimraf coverage/*",
     "test": "karma start",
     "test:watch": "karma start --autoWatch=true --singleRun=false",
-    "posttest": "eslint ./src && eslint ./test",
+    "posttest": "eslint --ext .js --ext .jsx ./src && eslint --ext .js --ext .jsx ./test",
+    "eslintFix": "eslint --ext .js --ext .jsx ./src --fix && eslint --ext .js --ext .jsx ./test --fix",
     "publish": "publish",
     "ci": "npm run clean && npm run build && npm run publish"
   },
