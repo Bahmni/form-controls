@@ -55,10 +55,22 @@ export class TextBox extends Component {
 TextBox.propTypes = {
   formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
+    type: PropTypes.string,
     concept: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
   }),
   obs: PropTypes.object,
 };
 
-window.componentStore.registerComponent('text', TextBox);
+const describe = {
+  designProperties: {
+    displayName: 'Text Box',
+    isTopLevelComponent: false,
+  },
+  control: TextBox,
+  metadata: {
+    attributes: [],
+  }
+};
+
+window.componentStore.registerComponent('text', describe);

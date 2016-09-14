@@ -15,10 +15,15 @@ function createReactComponent(component, props) {
 
 export function getControls(controls, observations, props) {
   return controls.map((control) => {
-    const component = window.componentStore.getRegisteredComponent(control.type);
-    if (component) {
+    const componentDescriptor = window.componentStore.getRegisteredComponent(control.type);
+    if (componentDescriptor && componentDescriptor.control) {
       const obs = getObsForControl(control, observations);
-      return createReactComponent(component, { key: control.id, metadata: control, obs, ...props });
+      return createReactComponent(componentDescriptor.control, {
+        key: control.id,
+        metadata: control,
+        obs,
+        ...props,
+      });
     }
     return undefined;
   }).filter(element => element !== undefined);

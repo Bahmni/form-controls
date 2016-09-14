@@ -10,9 +10,9 @@ chai.use(chaiEnzyme());
 
 describe('ObsControl', () => {
   before(() => {
-    window.componentStore.registerComponent('obsControl', ObsControl);
-    window.componentStore.registerComponent('text', TextBox);
-    window.componentStore.registerComponent('numeric', NumericBox);
+    window.componentStore.registerComponent('obsControl', { control: ObsControl });
+    window.componentStore.registerComponent('text', { control: TextBox });
+    window.componentStore.registerComponent('numeric', { control: NumericBox });
   });
 
   after(() => {

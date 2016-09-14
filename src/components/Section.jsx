@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import { getControls } from 'src/helpers/controlsParser';
+import { getObsForContainer } from 'src/helpers/controlsHelper';
 
 export class Section extends Component {
 
@@ -12,13 +13,7 @@ export class Section extends Component {
   }
 
   getValue() {
-    const observations = [];
-    for(const key in this.childControls) {
-      if(this.childControls.hasOwnProperty(key)) {
-        observations.push(this.childControls[key].getValue());
-      }
-    }
-    return observations.filter(obs => obs !== undefined);
+    return getObsForContainer(this.childControls).filter(obs => obs !== undefined);
   }
 
   storeChildRef(ref) {
@@ -49,5 +44,3 @@ Section.propTypes = {
   }),
   obs: PropTypes.array,
 };
-
-window.componentStore.registerComponent('section', Section);

@@ -61,4 +61,13 @@ NumericBox.propTypes = {
   obs: PropTypes.object,
 };
 
-window.componentStore.registerComponent('numeric', NumericBox);
+const describe = {
+  displayName: 'Numeric Box',
+  isTopLevelComponent: false,
+  control: NumericBox,
+  metadata: {
+    attributes: [],
+  },
+};
+
+window.componentStore.registerComponent('numeric', describe);

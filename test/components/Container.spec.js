@@ -14,11 +14,11 @@ chai.use(chaiEnzyme());
 
 describe('Container', () => {
   before(() => {
-    componentStore.registerComponent('label', Label);
-    componentStore.registerComponent('text', TextBox);
-    componentStore.registerComponent('numeric', NumericBox);
-    componentStore.registerComponent('obsControl', ObsControl);
-    componentStore.registerComponent('section', Section);
+    componentStore.registerComponent('label', { control: Label });
+    componentStore.registerComponent('text', { control: TextBox });
+    componentStore.registerComponent('numeric', { control: NumericBox });
+    componentStore.registerComponent('obsControl', { control: ObsControl });
+    componentStore.registerComponent('section', { control: Section });
   });
 
   after(() => {
@@ -102,12 +102,12 @@ describe('Container', () => {
     it('should render form with only the registered controls', () => {
       componentStore.deRegisterComponent('label');
 
-      const wrapper = shallow(<Container metadata={metadata} observations={[]} />);
+      const wrapper = mount(<Container metadata={metadata} observations={[]} />);
 
       expect(wrapper).to.not.have.descendants('Label');
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
 
-      componentStore.registerComponent('label', Label);
+      componentStore.registerComponent('label', { control: Label });
     });
   });
 

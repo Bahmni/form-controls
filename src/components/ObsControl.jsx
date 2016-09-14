@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import 'src/helpers/componentStore';
 
 export class ObsControl extends Component {
@@ -19,10 +19,10 @@ export class ObsControl extends Component {
   }
 
   displayObsControl() {
-    const { metadata, metadata: { displayType } } = this.props;
-    const component = window.componentStore.getRegisteredComponent(displayType);
-    if (component)
-      return React.createElement(component, {
+    const {metadata, metadata: {displayType}} = this.props;
+    const componentDescriptor = window.componentStore.getRegisteredComponent(displayType);
+    if (componentDescriptor)
+      return React.createElement(componentDescriptor.control, {
         formUuid: this.props.formUuid,
         metadata,
         obs: this.props.obs,
@@ -43,8 +43,45 @@ ObsControl.propTypes = {
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
   }),
   obs: PropTypes.object,
 };
 
-window.componentStore.registerComponent('obsControl', ObsControl);
+const descriptor = {
+  control: ObsControl,
+  designProperties: {
+    displayName: 'Obs',
+    isTopLevelComponent: true,
+  },
+  metadata: {
+    attributes: [
+      {
+        name: 'type',
+        dataType: 'text',
+        defaultValue: 'obsControl',
+      },
+      {
+        name: 'displayType',
+        dataType: 'text',
+        defaultValue: 'text',
+      },
+      {
+        name: 'concept',
+        dataType: 'complex',
+        attributes: [
+          {
+            name: 'uuid',
+            dataType: 'text'
+          },
+          {
+            name: 'name',
+            dataType: 'text'
+          },
+        ],
+      },
+    ],
+  },
+};
+
+window.componentStore.registerComponent('obsControl', descriptor);

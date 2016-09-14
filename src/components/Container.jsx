@@ -1,5 +1,6 @@
 import React, {PropTypes, Component} from 'react';
 import { getControls } from 'src/helpers/controlsParser';
+import { getObsForContainer } from 'src/helpers/controlsHelper';
 
 export class Container extends Component {
   constructor(props) {
@@ -13,12 +14,7 @@ export class Container extends Component {
   }
 
   getValue() {
-    const observations = [];
-    for(const key in this.childControls) {
-      if(this.childControls.hasOwnProperty(key)) {
-        observations.push(this.childControls[key].getValue());
-      }
-    }
+    const observations = getObsForContainer(this.childControls);
     return [].concat.apply([], observations).filter(obs => obs !== undefined);
   }
 
