@@ -59,6 +59,13 @@ export class Label extends Component {
     return undefined;
   }
 
+  getJsonDefinition() {
+    return {
+      type: 'label',
+      value: this.state.value,
+    };
+  }
+
   storeComponentRef(ref) {
     if (ref !== null) this.input = ref;
   }
@@ -91,6 +98,7 @@ Label.propTypes = {
 
 const descriptor = {
   control: Label,
+  designerControl: Label,
   designProperties: {
     displayName: 'Label',
     isTopLevelComponent: true,
