@@ -15,10 +15,10 @@ function createReactComponent(component, props) {
 
 export function getControls(controls, observations, props) {
   return controls.map((control) => {
-    const componentDescriptor = window.componentStore.getRegisteredComponent(control.type);
-    if (componentDescriptor && componentDescriptor.control) {
+    const registeredControl = window.componentStore.getRegisteredComponent(control.type);
+    if (registeredControl) {
       const obs = getObsForControl(control, observations);
-      return createReactComponent(componentDescriptor.control, {
+      return createReactComponent(registeredControl, {
         key: control.id,
         metadata: control,
         obs,

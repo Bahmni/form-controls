@@ -14,11 +14,11 @@ chai.use(chaiEnzyme());
 
 describe('Container', () => {
   before(() => {
-    componentStore.registerComponent('label', { control: Label });
-    componentStore.registerComponent('text', { control: TextBox });
-    componentStore.registerComponent('numeric', { control: NumericBox });
-    componentStore.registerComponent('obsControl', { control: ObsControl });
-    componentStore.registerComponent('section', { control: Section });
+    componentStore.registerComponent('label', Label);
+    componentStore.registerComponent('text', TextBox);
+    componentStore.registerComponent('numeric', NumericBox);
+    componentStore.registerComponent('obsControl', ObsControl);
+    componentStore.registerComponent('section', Section);
   });
 
   after(() => {
@@ -107,7 +107,7 @@ describe('Container', () => {
       expect(wrapper).to.not.have.descendants('Label');
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
 
-      componentStore.registerComponent('label', { control: Label });
+      componentStore.registerComponent('label', Label);
     });
   });
 

@@ -66,3 +66,5 @@ ObsGroupControl.propTypes = {
   }),
   obs: PropTypes.object,
 };
+
+window.componentStore.registerComponent('obsGroupControl', ObsGroupControl);

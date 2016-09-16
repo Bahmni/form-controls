@@ -44,3 +44,5 @@ Section.propTypes = {
   }),
   obs: PropTypes.array,
 };
+
+window.componentStore.registerComponent('section', Section);

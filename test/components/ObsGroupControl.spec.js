@@ -13,10 +13,10 @@ chai.use(chaiEnzyme());
 
 describe('ObsGroupControl', () => {
   before(() => {
-    componentStore.registerComponent('label', { control: Label });
-    componentStore.registerComponent('text', { control: TextBox });
-    componentStore.registerComponent('numeric', { control: NumericBox });
-    componentStore.registerComponent('obsControl', { control: ObsControl });
+    componentStore.registerComponent('label', Label);
+    componentStore.registerComponent('text', TextBox);
+    componentStore.registerComponent('numeric', NumericBox);
+    componentStore.registerComponent('obsControl', ObsControl);
   });
 
   after(() => {
