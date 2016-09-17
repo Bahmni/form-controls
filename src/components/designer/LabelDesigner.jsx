@@ -79,6 +79,7 @@ LabelDesigner.propTypes = {
 const descriptor = {
   control: LabelDesigner,
   designProperties: {
+    isTopLevelComponent: true,
     displayName: 'Label',
   },
   metadata: {
