@@ -65,4 +65,17 @@ describe('AutoComplete', () => {
     expect(wrapper.find('Select').props().options).to.be.eql(options);
     expect(wrapper.find('Select').props().value).to.be.eql(options[0]);
   });
+
+  it('should return some value on selecting the value from the AutoComplete', () => {
+    const wrapper = mount(
+      <AutoComplete
+        asynchronous={false}
+        options={options}
+      />);
+
+    const onChange = wrapper.find('Select').props().onChange;
+    onChange(options[0]);
+    const instance = wrapper.instance();
+    expect(instance.getValue()).to.eql([options[0]]);
+  });
 });

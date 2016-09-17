@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import Select from 'react-select';
 import { httpInterceptor } from 'src/helpers/httpInterceptor';
 import 'src/helpers/componentStore';
@@ -6,68 +6,80 @@ import 'src/helpers/componentStore';
 export class AutoComplete extends Component {
   constructor(props) {
     super(props);
-    this.value = (props.value ? (props.multi ? props.value : props.value[0]) : null);
+    let value;
+    if (props.value) {
+      value = props.multi ? props.value : props.value[0];
+    } else {
+      value = null;
+    }
+    this.state = { value };
     this.optionsUrl = props.optionsUrl;
     this.getValue = this.getValue.bind(this);
     this.getOptions = this.getOptions.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   getOptions(input) {
     const { optionsUrl } = this.props;
     return httpInterceptor.get(optionsUrl + input)
       .then((data) => {
-        return { options: data.results };
+        const options = data.results;
+        return { options };
       });
   }
 
   getValue() {
-    this.value = this.value ? (this.props.multi ? this.value : [this.value]) : [];
-    return this.value;
+    let value;
+    if (this.state.value) {
+      value = this.props.multi ? this.state.value : [this.state.value];
+    } else {
+      value = [];
+    }
+    return value;
   }
 
   handleChange(value) {
-    this.value = value;
+    this.setState({ value });
   }
 
   render() {
-    let { value, labelKey, valueKey, asynchronous, options, multi, minimumInput } = this.props;
-    value = value ? (multi ? value : value[0]) : null;
-    let props = {
+    const { labelKey, valueKey, asynchronous, options, multi, minimumInput } = this.props;
+    const props = {
       backspaceRemoves: false,
       labelKey,
       minimumInput,
+      multi,
       onChange: this.handleChange,
-      value,
+      value: this.state.value,
       valueKey,
 
     };
 
     if (asynchronous) {
-      return <div><Select.Async {...props} loadOptions={this.getOptions}/></div>;
-    } else {
-      return <div><Select {...props} options={options} />;</div>
+      return <div><Select.Async {...props} loadOptions={this.getOptions} /></div>;
     }
+    return <div><Select {...props} options={options} /></div>;
   }
 }
 
 AutoComplete.propTypes = {
   asynchronous: PropTypes.bool,
   labelKey: PropTypes.string,
+  minimumInput: PropTypes.number,
+  multi: PropTypes.bool,
   options: PropTypes.array,
   optionsUrl: PropTypes.string,
   value: PropTypes.array,
   valueKey: PropTypes.string,
-  multi: PropTypes.bool,
-  minimumInput: PropTypes.number,
 };
 
 AutoComplete.defaultProps = {
   asynchronous: true,
   labelKey: 'display',
   minimumInput: 3,
+  multi: false,
   optionsUrl: '/openmrs/ws/rest/v1/concept?v=full&q=',
   valueKey: 'uuid',
-  multi: false
 };
 
 window.componentStore.registerComponent('autoComplete', AutoComplete);
