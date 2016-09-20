@@ -62,15 +62,4 @@ TextBox.propTypes = {
   obs: PropTypes.object,
 };
 
-const describe = {
-  designProperties: {
-    displayName: 'Text Box',
-    isTopLevelComponent: false,
-  },
-  control: TextBox,
-  metadata: {
-    attributes: [],
-  },
-};
-
-window.componentStore.registerComponent('text', describe);
+window.componentStore.registerComponent('text', TextBox);
