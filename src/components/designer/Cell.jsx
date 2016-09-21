@@ -27,16 +27,21 @@ export class CellDesigner extends DropTarget {
   }
 
   postDropProcess(type) {
+    const control = window.componentStore.getDesignerComponent(type).control;
+    const element = React.createElement(control, {metadata: {value: 'LBL', type: 'label'}})
+    let component;
     if (!this.occupied) {
-      const control = window.componentStore.getDesignerComponent(type).control;
-      const component = React.createElement(control, {metadata:{value: 'LBL', type: 'label'}})
+      component = [element];
       this.occupied = true;
-      this.setState({ component });
+    } else {
+      component = this.state.component;
+      component.push(element);
     }
+
+    this.setState({ component });
   }
 
   render() {
-    console.log('cell', this.state.component);
     return (
       <div
         className={`cell${this.cellPosition}` }
@@ -44,7 +49,7 @@ export class CellDesigner extends DropTarget {
         onDrop={ this.onDrop }
         pos={ this.cellPosition }
         style={style}
-      >{this.state.component}</div>
+      >{ this.state.component }</div>
     );
   }
 }

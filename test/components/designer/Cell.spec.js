@@ -9,7 +9,7 @@ chai.use(chaiEnzyme());
 
 describe('Cell', () => {
   let eventData;
-  let fakeComponent = '<span>TestComponent</span>';
+  let fakeComponent = () => (<span>TestComponent</span>);
   before(() => {
     eventData = {
       preventDefault: () => {},
@@ -65,13 +65,14 @@ describe('Cell', () => {
     const cell = cellDesigner.find('.cell0');
 
     cell.props().onDrop(eventData);
-    expect(cellDesigner.text()).to.eql(fakeComponent);
+
+    expect(cellDesigner.text()).to.eql('TestComponent');
   });
 
-  it('Should not allow dropping if occupied', () => {
-
+  it('Should render multiple components that get dropped on it', () => {
+    let otherComponent = () => (<span>otherComponent</span>);
     window.componentStore.registerDesignerComponent('otherType', {
-      control: "otherComponent",
+      control: otherComponent,
     });
     const otherData = {
       preventDefault: () => {},
@@ -81,11 +82,14 @@ describe('Cell', () => {
     };
     const cellDesigner = mount(<CellDesigner />);
     const cell = cellDesigner.find('.cell0');
+    expect(cellDesigner.text()).to.eql('cell0');
 
     cell.props().onDrop(eventData);
-    expect(cellDesigner.text()).to.eql(fakeComponent);
+    expect(cellDesigner.text()).to.eql('TestComponent');
+
     cell.props().onDrop(otherData);
-    expect(cellDesigner.text()).to.eql(fakeComponent);
+    expect(cellDesigner.text()).to.eql('TestComponent' + 'otherComponent');
+
     window.componentStore.deRegisterDesignerComponent('otherType');
-  })
+  });
 });

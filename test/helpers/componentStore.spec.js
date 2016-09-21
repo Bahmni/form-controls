@@ -27,37 +27,43 @@ describe('ComponentStore', () => {
     });
 
     it('should override a component if type is same', () => {
-      componentStore.registerComponent('text', TextBox);
-      expect(componentStore.componentList).to.deep.eql({ text: TextBox });
-      componentStore.registerComponent('text', Label);
-      expect(componentStore.componentList).to.deep.eql({ text: Label });
+
+      const type = 'text';
+      componentStore.registerComponent(type, TextBox);
+      expect(componentStore.getRegisteredComponent(type)).to.deep.eql(TextBox);
+      componentStore.registerComponent(type, Label);
+      expect(componentStore.getRegisteredComponent(type)).to.deep.eql(Label);
     });
   });
 
   describe('registerDesignerComponent', () => {
     it('should register a designer component', () => {
-      componentStore.registerDesignerComponent('teXt', TextBox);
-      expect(componentStore.designerComponentList).to.deep.eql({ text: TextBox });
+      const type = 'teXt';
+      componentStore.registerDesignerComponent(type, TextBox);
+      expect(componentStore.getDesignerComponent(type)).to.deep.eql(TextBox);
     });
 
     it('should override a designer component if type is same', () => {
-      componentStore.registerDesignerComponent('text', TextBox);
-      expect(componentStore.designerComponentList).to.deep.eql({ text: TextBox });
-      componentStore.registerDesignerComponent('text', Label);
-      expect(componentStore.designerComponentList).to.deep.eql({ text: Label });
+      const type = 'text';
+      componentStore.registerDesignerComponent(type, TextBox);
+      expect(componentStore.getDesignerComponent(type)).to.deep.eql(TextBox);
+      componentStore.registerDesignerComponent(type, Label);
+      expect(componentStore.getDesignerComponent(type)).to.deep.eql(Label);
     });
   });
 
   describe('getRegisteredComponent', () => {
     it('should return the registered component', () => {
-      componentStore.registerComponent('text', TextBox);
-      const registeredComponent = componentStore.getRegisteredComponent('text');
+      const type = 'text';
+      componentStore.registerComponent(type, TextBox);
+      const registeredComponent = componentStore.getRegisteredComponent(type);
       expect(registeredComponent).to.eql(TextBox);
     });
 
     it('should return the registered component irrespective of case of type', () => {
-      componentStore.registerComponent('TexT', TextBox);
-      expect(componentStore.componentList).to.deep.eql({ text: TextBox });
+      const type = 'TexT';
+      componentStore.registerComponent(type, TextBox);
+      expect(componentStore.getRegisteredComponent(type)).to.deep.eql(TextBox);
 
       const registeredComponent = componentStore.getRegisteredComponent('tEXt');
       expect(registeredComponent).to.eql(TextBox);
@@ -77,8 +83,9 @@ describe('ComponentStore', () => {
     });
 
     it('should return the registered designer component irrespective of case of type', () => {
-      componentStore.registerDesignerComponent('TexT', TextBox);
-      expect(componentStore.designerComponentList).to.deep.eql({ text: TextBox });
+      const type = 'TexT';
+      componentStore.registerDesignerComponent(type, TextBox);
+      expect(componentStore.getDesignerComponent(type)).to.deep.eql(TextBox);
 
       const registeredDesignerComponent = componentStore.getDesignerComponent('tEXt');
       expect(registeredDesignerComponent).to.eql(TextBox);
@@ -93,20 +100,22 @@ describe('ComponentStore', () => {
   describe('deRegisterComponent', () => {
     it('should deRegisterComponent component irrespective of case', () => {
       componentStore.registerComponent('tEXt', TextBox);
-      expect(componentStore.componentList).to.deep.eql({ text: TextBox });
+      expect(componentStore.getRegisteredComponent('tEXt')).to.deep.eql(TextBox);
       componentStore.deRegisterComponent('TexT');
       componentStore.deRegisterComponent('someRandomThing');
-      expect(componentStore.componentList).to.deep.eql({});
+      expect(componentStore.getRegisteredComponent('TexT')).to.eql(undefined);
+      expect(componentStore.getRegisteredComponent('someRandomThing')).to.deep.eql(undefined);
     });
   });
 
   describe('deRegisterDesignerComponent', () => {
     it('should deRegisterComponent designer component irrespective of case', () => {
       componentStore.registerDesignerComponent('tEXt', TextBox);
-      expect(componentStore.designerComponentList).to.deep.eql({ text: TextBox });
+      expect(componentStore.getDesignerComponent('tEXt')).to.deep.eql(TextBox);
       componentStore.deRegisterDesignerComponent('TexT');
       componentStore.deRegisterDesignerComponent('someRandomThing');
-      expect(componentStore.designerComponentList).to.deep.eql({});
+      expect(componentStore.getRegisteredComponent('TexT')).to.eql(undefined);
+      expect(componentStore.getRegisteredComponent('someRandomThing')).to.eql(undefined);
     });
   });
 
