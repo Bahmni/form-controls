@@ -1,0 +1,33 @@
+import React, { Component, PropTypes } from 'react';
+import 'src/helpers/componentStore';
+
+export class TextBoxDesigner extends Component {
+  getJsonDefinition() {
+    return this.props.metadata;
+  }
+
+  render() {
+    return (<input type="text" />);
+  }
+}
+
+TextBoxDesigner.propTypes = {
+  metadata: PropTypes.shape({
+    concept: PropTypes.object.isRequired,
+    displayType: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    type: PropTypes.string,
+  }),
+};
+
+const descriptor = {
+  control: TextBoxDesigner,
+  designProperties: {
+    isTopLevelComponent: false,
+  },
+  metadata: {
+    attributes: [],
+  },
+};
+
+window.componentStore.registerDesignerComponent('text', descriptor);
