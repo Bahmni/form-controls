@@ -1,6 +1,6 @@
 {
   "name": "bahmni-form-controls",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Repository for form controls",
   "main": "./dist/bundle.js",
   "scripts": {
