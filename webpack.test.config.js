@@ -10,28 +10,10 @@ module.exports = {
     helpers: ['./src/helpers/componentStore.js', './src/helpers/formRenderer.js'],
     bundle: './src/index.jsx'
   },
-  output: {
-    path: path.join(__dirname, 'dist'),
-    filename: '[name].js',
-    libraryTarget: 'umd',
-    library: 'FormControls'
-  },
   externals: {
     'react/lib/ExecutionEnvironment': true,
     'react/lib/ReactContext': true,
-    'react/addons': true,
-    react: {
-      root: 'React',
-      commonjs2: 'react',
-      commonjs: 'react',
-      amd: 'react'
-    },
-    'react-dom': {
-      root: 'ReactDOM',
-      commonjs2: 'react-dom',
-      commonjs: 'react-dom',
-      amd: 'react-dom'
-    }
+    'react/addons': true
   },
   module: {
     loaders: [
@@ -41,10 +23,23 @@ module.exports = {
         include: path.join(__dirname, 'src')
       },
       {
+        test: /\.js$/,
+        loaders: ['babel-loader'],
+        include: path.join(__dirname, 'test')
+      },
+      {
         test: /\.json$/,
         loader: 'json'
       }
     ],
+    postLoaders: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /(test|node_modules)\//,
+        loader: 'istanbul-instrumenter'
+      }
+    ]
+
   },
   resolve: {
     alias: {
