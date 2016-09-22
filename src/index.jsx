@@ -6,3 +6,4 @@ export { TextBox } from 'components/TextBox.jsx';
 export { NumericBox } from 'components/NumericBox.jsx';
 export { Section } from 'components/Section.jsx';
 export { ObsGroupControl } from 'components/ObsGroupControl.jsx';
+export { AutoComplete } from 'components/AutoComplete.jsx';

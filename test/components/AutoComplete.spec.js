@@ -3,6 +3,7 @@ import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { AutoComplete } from '../../src/components/AutoComplete.jsx';
+import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
@@ -27,55 +28,72 @@ describe('AutoComplete', () => {
     { value: 'three', label: 'Three' },
   ];
 
-  it('should render asynchronous AutoComplete', () => {
-    const wrapper = mount(<AutoComplete />);
-    expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
-    expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
-    expect(wrapper.find('Select').props().minimumInput).to.be.eql(3);
+  context('when component is asynchronous', () => {
+    it('should render asynchronous AutoComplete', () => {
+      const wrapper = mount(<AutoComplete />);
+      expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
+      expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
+      expect(wrapper.find('Select').props().minimumInput).to.be.eql(3);
+    });
+
+    it('should render asynchronous AutoComplete with default value', () => {
+      const wrapper = mount(<AutoComplete value={concept} />);
+      expect(wrapper.find('Select').props().value).to.be.eql(concept[0]);
+    });
+
+    it('should return the default value of the AutoComplete if there is no change', () => {
+      const wrapper = mount(<AutoComplete value={concept} />);
+      expect(wrapper.find('Select').props().value).to.be.eql(concept[0]);
+
+      const instance = wrapper.instance();
+      expect(instance.getValue()).to.eql(concept);
+    });
   });
 
-  it('should render asynchronous AutoComplete with default value', () => {
-    const wrapper = mount(<AutoComplete value={concept} />);
-    expect(wrapper.find('Select').props().value).to.be.eql(concept[0]);
-  });
+  context('when component is not asynchronous', () => {
+    it('should render AutoComplete', () => {
+      const wrapper = mount(<AutoComplete asynchronous={false} options={options} />);
+      expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
+      expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
+      expect(wrapper.find('Select').props().minimumInput).to.be.eql(3);
+      expect(wrapper.find('Select').props().options).to.be.eql(options);
+    });
 
-  it('should return the default value of the AutoComplete if there is no change', () => {
-    const wrapper = mount(<AutoComplete value={concept} />);
-    expect(wrapper.find('Select').props().value).to.be.eql(concept[0]);
+    it('should render AutoComplete with default value', () => {
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          options={options}
+          value={[options[0]]}
+        />);
+      expect(wrapper.find('Select').props().options).to.be.eql(options);
+      expect(wrapper.find('Select').props().value).to.be.eql(options[0]);
+    });
 
-    const instance = wrapper.instance();
-    expect(instance.getValue()).to.eql(concept);
-  });
+    it('should return the selected value from the AutoComplete', () => {
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          options={options}
+        />);
 
-  it('should render AutoComplete', () => {
-    const wrapper = mount(<AutoComplete asynchronous={false} options={options} />);
-    expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
-    expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
-    expect(wrapper.find('Select').props().minimumInput).to.be.eql(3);
-    expect(wrapper.find('Select').props().options).to.be.eql(options);
-  });
+      const onChange = wrapper.find('Select').props().onChange;
+      onChange(options[0]);
+      const instance = wrapper.instance();
+      expect(instance.getValue()).to.eql([options[0]]);
+    });
 
-  it('should render AutoComplete with default value', () => {
-    const wrapper = mount(
-      <AutoComplete
-        asynchronous={false}
-        options={options}
-        value={[options[0]]}
-      />);
-    expect(wrapper.find('Select').props().options).to.be.eql(options);
-    expect(wrapper.find('Select').props().value).to.be.eql(options[0]);
-  });
-
-  it('should return some value on selecting the value from the AutoComplete', () => {
-    const wrapper = mount(
-      <AutoComplete
-        asynchronous={false}
-        options={options}
-      />);
-
-    const onChange = wrapper.find('Select').props().onChange;
-    onChange(options[0]);
-    const instance = wrapper.instance();
-    expect(instance.getValue()).to.eql([options[0]]);
+    it('should call onSelect method of props on change', () => {
+      const onSelectSpy = sinon.spy();
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          onSelect={onSelectSpy}
+          options={options}
+        />);
+      const onChange = wrapper.find('Select').props().onChange;
+      onChange(options[0]);
+      sinon.assert.calledOnce(onSelectSpy.withArgs(options[0]));
+    });
   });
 });

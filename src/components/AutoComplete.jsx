@@ -40,6 +40,9 @@ export class AutoComplete extends Component {
 
   handleChange(value) {
     this.setState({ value });
+    if (this.props.onSelect) {
+      this.props.onSelect(value);
+    }
   }
 
   render() {
@@ -67,6 +70,7 @@ AutoComplete.propTypes = {
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
   multi: PropTypes.bool,
+  onSelect: PropTypes.func,
   options: PropTypes.array,
   optionsUrl: PropTypes.string,
   value: PropTypes.array,
