@@ -9,16 +9,15 @@ export class GridDesigner extends Component {
   createCells() {
     const { columns: cols } = this.props;
     const cells = [];
-    for(let i = 0; i < cols ; ++i) {
-      cells.push(<CellDesigner key={i} location={ { row:0, column:i } }/>)
+    for (let i = 0; i < cols; ++i) {
+      cells.push(<CellDesigner key={i} location={ { row: 0, column: i } } />);
     }
     return cells;
   }
 
   render() {
-    const { columns } = this.props;
-    return(
-      <div className='grid' >
+    return (
+      <div className="grid" >
         { this.createCells() }
       </div>
     );

@@ -10,16 +10,25 @@ export class DropTarget extends Component {
 
   onDragOver(e) {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy'; // eslint-disable-line no-param-reassign
   }
 
   onDrop(e) {
     e.preventDefault();
-    const data = e.dataTransfer.getData('data');
-    this.postDropProcess(data);
+    const context = JSON.parse(e.dataTransfer.getData('data'));
+    this.processDrop(context);
   }
 
-  postDropProcess(data) {
-    return data;
+  notifyMove(e, context) {
+    if (e.dataTransfer && e.dataTransfer.dropEffect !== 'none') {
+      this.processMove(context);
+    }
+  }
+
+  processMove(context) {
+    return context;
+  }
+
+  processDrop(context) {
+    return context;
   }
 }

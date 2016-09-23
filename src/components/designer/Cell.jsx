@@ -13,32 +13,42 @@ const style = {
 };
 
 const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
-const cellDefaultControl = (cellName) => () => (<span>{cellName}</span>);
+const cellDefaultControl = (cellName) => () => (<span>{ cellName }</span>);
 
 export class CellDesigner extends DropTarget {
   constructor(props) {
     super(props);
     const { row, column } = props.location;
-    this.occupied = false;
     this.cellPosition = cellPosition(row, column);
     this.state = {
-      component: React.createElement(cellDefaultControl(`cell${this.cellPosition}`)),
+      defaultComponent: React.createElement(cellDefaultControl(`cell${this.cellPosition}`)),
+      controlContexts: [],
     };
   }
 
-  postDropProcess(type) {
-    const control = window.componentStore.getDesignerComponent(type).control;
-    const element = React.createElement(control, {metadata: {value: 'LBL', type: 'label'}})
-    let component;
-    if (!this.occupied) {
-      component = [element];
-      this.occupied = true;
-    } else {
-      component = this.state.component;
-      component.push(element);
+  processMove(context) {
+    if (context.data && context.data.id) {
+      const controlContexts = this.state.controlContexts.filter(
+        (controlContext) => controlContext.data.id !== context.data.id
+      );
+      this.setState({ controlContexts });
     }
+  }
 
-    this.setState({ component });
+  processDrop(context) {
+    const controlContexts = this.state.controlContexts;
+    controlContexts.push(context);
+    this.setState({ controlContexts });
+  }
+
+  getComponents() {
+    if (this.state.controlContexts.length > 0) {
+      return this.state.controlContexts.map((context, idx) => {
+        const control = window.componentStore.getDesignerComponent(context.type).control;
+        return React.createElement(control, { key: idx, metadata: context.data, parentRef: this });
+      });
+    }
+    return this.state.defaultComponent;
   }
 
   render() {
@@ -47,9 +57,8 @@ export class CellDesigner extends DropTarget {
         className={`cell${this.cellPosition}` }
         onDragOver={ this.onDragOver }
         onDrop={ this.onDrop }
-        pos={ this.cellPosition }
         style={style}
-      >{ this.state.component }</div>
+      >{ this.getComponents() }</div>
     );
   }
 }

@@ -1,9 +1,11 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
+import Draggable from 'components/Draggable.jsx';
 import 'src/helpers/componentStore';
 
-export class LabelDesigner extends Component {
+export class LabelDesigner extends Draggable {
   constructor(props) {
     super(props);
+    this.props = props;
     this.state = {
       defaultValue: props.metadata.value,
       value: props.metadata.value,
@@ -12,6 +14,7 @@ export class LabelDesigner extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.onEnterKey = this.onEnterKey.bind(this);
     this.storeComponentRef = this.storeComponentRef.bind(this);
+    this.processDragStart = this.processDragStart.bind(this);
   }
 
   componentDidUpdate() {
@@ -65,7 +68,18 @@ export class LabelDesigner extends Component {
         />
       );
     }
-    return (<span onDoubleClick={ this.onDoubleClick }>{ this.state.value }</span>);
+    const context = {
+      type: this.props.metadata.type,
+      data: Object.assign({}, this.props.metadata, { value: this.state.value }),
+    };
+
+    return (
+      <span
+        draggable="true"
+        onDoubleClick={ this.onDoubleClick }
+        onDragEnd={ this.onDragEnd(context) }
+        onDragStart={ this.onDragStart(context) }
+      >{ this.state.value }</span>);
   }
 }
 

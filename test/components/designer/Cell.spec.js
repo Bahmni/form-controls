@@ -9,12 +9,13 @@ chai.use(chaiEnzyme());
 
 describe('Cell', () => {
   let eventData;
-  let fakeComponent = () => (<span>TestComponent</span>);
+  const testContext = { type: 'someType', data: { id: 123 } };
+  const fakeComponent = () => (<span>TestComponent</span>);
   before(() => {
     eventData = {
       preventDefault: () => {},
       dataTransfer: {
-        getData: () => 'someType',
+        getData: () => JSON.stringify(testContext),
       },
     };
     window.componentStore.registerDesignerComponent('someType', {
@@ -23,16 +24,7 @@ describe('Cell', () => {
   });
 
   after(() => {
-    window.componentStore.deRegisterDesignerComponent('someType')
-  });
-
-
-
-  it('should render with the default position', () => {
-    const cellDesigner = shallow(<CellDesigner />);
-    const cell = cellDesigner.find('.cell0');
-
-    expect(cell.props().pos).to.eql(0);
+    window.componentStore.deRegisterDesignerComponent('someType');
   });
 
   it('should be a drop target', () => {
@@ -47,17 +39,17 @@ describe('Cell', () => {
     eventData.preventDefault.restore();
   });
 
-  it('Should call appropriate postDropProcess when a component is dropped', () => {
+  it('Should call appropriate processDrop when a component is dropped', () => {
     const cellDesigner = shallow(<CellDesigner />);
     const cell = cellDesigner.find('.cell0');
 
     const cellDesignerInstance = cellDesigner.instance();
 
-    sinon.spy(cellDesignerInstance, 'postDropProcess');
+    sinon.spy(cellDesignerInstance, 'processDrop');
     cell.props().onDrop(eventData);
-    sinon.assert.calledOnce(cellDesignerInstance.postDropProcess);
-    sinon.assert.calledWith(cellDesignerInstance.postDropProcess, 'someType');
-    cellDesignerInstance.postDropProcess.restore();
+    sinon.assert.calledOnce(cellDesignerInstance.processDrop);
+    sinon.assert.calledWith(cellDesignerInstance.processDrop, testContext);
+    cellDesignerInstance.processDrop.restore();
   });
 
   it('should render the dropped component', () => {
@@ -70,14 +62,15 @@ describe('Cell', () => {
   });
 
   it('Should render multiple components that get dropped on it', () => {
-    let otherComponent = () => (<span>otherComponent</span>);
+    const otherComponent = () => (<span>otherComponent</span>);
+    const otherContext = { type: 'otherType' };
     window.componentStore.registerDesignerComponent('otherType', {
       control: otherComponent,
     });
     const otherData = {
       preventDefault: () => {},
       dataTransfer: {
-        getData: () => 'otherType',
+        getData: () => JSON.stringify(otherContext),
       },
     };
     const cellDesigner = mount(<CellDesigner />);
@@ -91,5 +84,39 @@ describe('Cell', () => {
     expect(cellDesigner.text()).to.eql('TestComponent' + 'otherComponent');
 
     window.componentStore.deRegisterDesignerComponent('otherType');
+  });
+
+  it('should remove the dropped component when moved to different cell', () => {
+    const cellDesigner = mount(<CellDesigner />);
+    const cell = cellDesigner.find('.cell0');
+
+    cell.props().onDrop(eventData);
+
+    cellDesigner.instance().processMove(testContext);
+
+    expect(cellDesigner.text()).to.eql('cell0');
+  });
+
+  it('should remove only the dragged out component', () => {
+    const otherComponent = () => (<span>otherComponent</span>);
+    const otherContext = { type: 'someType', data: { id: 345 } };
+    window.componentStore.registerDesignerComponent('someType', {
+      control: otherComponent,
+    });
+    const otherData = {
+      preventDefault: () => {},
+      dataTransfer: {
+        getData: () => JSON.stringify(otherContext),
+      },
+    };
+    const cellDesigner = mount(<CellDesigner />);
+    const cell = cellDesigner.find('.cell0');
+
+    cell.props().onDrop(eventData);
+    cell.props().onDrop(otherData);
+
+    cellDesigner.instance().processMove(testContext);
+
+    expect(cellDesigner.text()).to.eql('otherComponent');
   });
 });

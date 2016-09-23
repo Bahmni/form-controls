@@ -27,7 +27,6 @@ describe('ComponentStore', () => {
     });
 
     it('should override a component if type is same', () => {
-
       const type = 'text';
       componentStore.registerComponent(type, TextBox);
       expect(componentStore.getRegisteredComponent(type)).to.deep.eql(TextBox);

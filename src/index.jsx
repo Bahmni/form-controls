@@ -7,7 +7,8 @@ export { Section } from 'components/Section.jsx';
 export { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 export { AutoComplete } from 'components/AutoComplete.jsx';
 
-//-----------designer components------------------
+//  -----------designer components------------------
+
 export { LabelDesigner } from 'components/designer/Label.jsx';
 export { ObsControlDesigner } from 'components/designer/ObsControlDesigner.jsx';
 export { TextBoxDesigner } from 'components/designer/TextBoxDesigner.jsx';
