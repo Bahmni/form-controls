@@ -19,6 +19,7 @@ describe('TextBoxDesigner', () => {
       displayType: 'text',
       type: 'obsControl',
       id: 'someId',
+      properties: {},
     };
     wrapper = shallow(<TextBoxDesigner metadata={metadata} />);
   });

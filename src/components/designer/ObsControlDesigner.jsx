@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { LabelDesigner } from 'components/designer/LabelDesigner.jsx';
 import 'src/helpers/componentStore';
 
 export class ObsControlDesigner extends Component {
@@ -6,35 +7,44 @@ export class ObsControlDesigner extends Component {
   constructor() {
     super();
     this.childControl = undefined;
+    this.labelControl = undefined;
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.storeLabelRef = this.storeLabelRef.bind(this);
   }
 
   getJsonDefinition() {
-    return this.childControl.getJsonDefinition();
+    const childJsonDefinition = this.childControl.getJsonDefinition();
+    const labelJsonDefinition = this.labelControl.getJsonDefinition();
+    const childDefinitionClone = Object.assign({}, childJsonDefinition);
+    childDefinitionClone.properties.label = labelJsonDefinition;
+    return childDefinitionClone;
   }
 
   storeChildRef(ref) {
     this.childControl = ref;
   }
 
-  displayObsControl() {
-    const { metadata, metadata: { displayType } } = this.props;
-    const registeredComponent = window.componentStore.getDesignerComponent(displayType);
-    if (registeredComponent) {
-      return React.createElement(registeredComponent.control, {
-        metadata,
-        ref: this.storeChildRef,
-      });
-    }
-    return null;
+  storeLabelRef(ref) {
+    this.labelControl = ref;
+  }
+
+  displayObsControl(designerComponent) {
+    const { metadata } = this.props;
+    return React.createElement(designerComponent.control, {
+      metadata,
+      ref: this.storeChildRef,
+    });
   }
 
   render() {
-    const { concept, id } = this.props.metadata;
-    if (concept) {
+    const { concept, displayType, id } = this.props.metadata;
+    const designerComponent = displayType && window.componentStore.getDesignerComponent(displayType); // eslint-disable-line max-len
+    if (concept && designerComponent) {
+      const labelMetadata = { type: 'label', value: concept.name };
       return (
         <div id={id} onClick={ () => this.props.onSelect(id) }>
-          {this.displayObsControl()}
+          <LabelDesigner metadata={labelMetadata} ref={this.storeLabelRef} />
+          {this.displayObsControl(designerComponent)}
         </div>
       );
     }
@@ -47,6 +57,7 @@ ObsControlDesigner.propTypes = {
     concept: PropTypes.object,
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
+    properties: PropTypes.object.isRequired,
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
@@ -64,6 +75,11 @@ const descriptor = {
         name: 'type',
         dataType: 'text',
         defaultValue: 'obsControl',
+      },
+      {
+        name: 'properties',
+        dataType: 'complex',
+        attributes: [],
       },
     ],
   },

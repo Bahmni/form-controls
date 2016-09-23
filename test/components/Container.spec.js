@@ -41,6 +41,13 @@ describe('Container', () => {
     dataType: 'Numeric',
   };
 
+  const properties = {
+    label: {
+      value: 'someValue',
+      type: 'label',
+    },
+  };
+
   const metadata = {
     id: '100',
     uuid: 'fm1',
@@ -56,12 +63,14 @@ describe('Container', () => {
         type: 'obsControl',
         displayType: 'text',
         concept: textBoxConcept,
+        properties,
       },
       {
         id: '102',
         type: 'obsControl',
         displayType: 'numeric',
         concept: numericBoxConcept,
+        properties,
       },
     ],
   };
@@ -100,14 +109,14 @@ describe('Container', () => {
     });
 
     it('should render form with only the registered controls', () => {
-      componentStore.deRegisterComponent('label');
+      componentStore.deRegisterComponent('numeric');
 
       const wrapper = mount(<Container metadata={metadata} observations={[]} />);
 
-      expect(wrapper).to.not.have.descendants('Label');
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
+      expect(wrapper).to.have.exactly(2).descendants('Label');
 
-      componentStore.registerComponent('label', Label);
+      componentStore.registerComponent('numeric', NumericBox);
     });
   });
 
@@ -170,12 +179,14 @@ describe('Container', () => {
               type: 'obsControl',
               displayType: 'text',
               concept: textBoxConcept,
+              properties,
             },
             {
               id: '102',
               type: 'obsControl',
               displayType: 'numeric',
               concept: numericBoxConcept,
+              properties,
             },
           ],
         },
@@ -184,6 +195,7 @@ describe('Container', () => {
           type: 'obsControl',
           displayType: 'numeric',
           concept: numericBoxConcept,
+          properties,
         },
       ],
     };

@@ -7,10 +7,11 @@ import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
-const concept = { name: 'Pulse', uuid: 'someUuid' };
+const concept = { name: 'dummyPulse', uuid: 'dummyUuid' };
+const properties = {};
 class DummyControl extends Component {
   getJsonDefinition() {
-    return concept;
+    return { concept, properties };
   }
 
   render() {
@@ -26,7 +27,7 @@ describe('ObsControlDesigner', () => {
   context('when concept is not present', () => {
     beforeEach(() => {
       onSelectSpy = sinon.spy();
-      metadata = { id: '123', type: 'obsControl' };
+      metadata = { id: '123', type: 'obsControl', properties };
       wrapper = shallow(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
     });
 
@@ -49,20 +50,27 @@ describe('ObsControlDesigner', () => {
         type: 'obsControl',
         concept,
         displayType: 'text',
+        properties,
       };
 
       const textBoxDescriptor = { control: DummyControl };
       componentStore.registerDesignerComponent('text', textBoxDescriptor); // eslint-disable-line no-undef
       onSelectSpy = sinon.spy();
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
     });
 
     after(() => {
       componentStore.deRegisterDesignerComponent('text'); // eslint-disable-line no-undef
     });
 
-    it('should render obsControl of appropriate displayType', () => {
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+    it('should render label and obsControl of appropriate displayType', () => {
+      expect(wrapper).to.have.descendants('LabelDesigner');
       expect(wrapper).to.have.descendants('input');
+    });
+
+    it('should pass appropriate props to Label', () => {
+      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse' };
+      expect(wrapper.find('LabelDesigner').props().metadata).to.deep.eql(expectedLabelMetadata);
     });
 
     it('should not render obsControl if there is no registered designer component', () => {
@@ -72,7 +80,6 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should call onSelect function passed as prop', () => {
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
       expect(wrapper.find('div')).to.have.prop('onClick');
       wrapper.find('input').simulate('click');
       sinon.assert.calledOnce(onSelectSpy);
@@ -80,10 +87,10 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should return json definition', () => {
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
-
+      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse' };
       const instance = wrapper.instance();
-      expect(instance.getJsonDefinition()).to.eql(concept);
+      const expectedJson = { concept, properties: { label: expectedLabelMetadata } };
+      expect(instance.getJsonDefinition()).to.eql(expectedJson);
     });
   });
 });

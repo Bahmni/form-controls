@@ -16,6 +16,7 @@ TextBoxDesigner.propTypes = {
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
+    properties: PropTypes.object.isRequired,
     type: PropTypes.string,
   }),
 };

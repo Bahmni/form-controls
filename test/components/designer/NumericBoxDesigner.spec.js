@@ -19,6 +19,7 @@ describe('NumericBoxDesigner', () => {
       displayType: 'numeric',
       type: 'obsControl',
       id: 'someId',
+      properties: {},
     };
     wrapper = shallow(<NumericBoxDesigner metadata={metadata} />);
   });

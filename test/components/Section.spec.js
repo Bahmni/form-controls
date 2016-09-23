@@ -26,6 +26,13 @@ describe('Section', () => {
     componentStore.deRegisterComponent('obsControl');
   });
 
+  const obsControlProperties = {
+    label: {
+      value: 'someLabelName',
+      type: 'label',
+    },
+  };
+
   const textBoxConcept = {
     uuid: '70645842-be6a-4974-8d5f-45b52990e132',
     name: 'Pulse',
@@ -52,12 +59,14 @@ describe('Section', () => {
         type: 'obsControl',
         displayType: 'text',
         concept: textBoxConcept,
+        properties: obsControlProperties,
       },
       {
         id: '102',
         type: 'obsControl',
         displayType: 'numeric',
         concept: numericBoxConcept,
+        properties: obsControlProperties,
       },
     ],
   };
@@ -80,7 +89,7 @@ describe('Section', () => {
     observationDateTime: '2016-09-08T10:10:38.000+0530',
   };
 
-  const properties = { visualOnly: true };
+  const sectionProperties = { visualOnly: true };
 
   const observations = [observation1, observation2];
 
@@ -91,7 +100,7 @@ describe('Section', () => {
           formUuid={formUuid}
           metadata={metadata}
           obs={observations}
-          properties={properties}
+          properties={sectionProperties}
         />);
 
       expect(wrapper.find('legend').text()).to.eql('SectionTitle');
@@ -106,7 +115,7 @@ describe('Section', () => {
           formUuid={formUuid}
           metadata={meta}
           obs={[]}
-          properties={properties}
+          properties={sectionProperties}
         />);
 
       expect(wrapper.find('legend').text()).to.eql('Title');
@@ -121,7 +130,7 @@ describe('Section', () => {
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}
-          properties={properties}
+          properties={sectionProperties}
         />);
 
       expect(wrapper).to.not.have.descendants('Label');
@@ -138,7 +147,7 @@ describe('Section', () => {
           formUuid={formUuid}
           metadata={metadata}
           obs={observations}
-          properties={properties}
+          properties={sectionProperties}
         />);
       const instance = wrapper.instance();
 
@@ -151,7 +160,7 @@ describe('Section', () => {
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}
-          properties={properties}
+          properties={sectionProperties}
         />);
       const instance = wrapper.instance();
 
@@ -176,7 +185,7 @@ describe('Section', () => {
           formUuid={formUuid}
           metadata={metadata}
           obs={obs}
-          properties={properties}
+          properties={sectionProperties}
         />);
       const instance = wrapper.instance();
 

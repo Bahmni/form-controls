@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { ObsControl } from 'components/ObsControl.jsx';
@@ -27,19 +27,28 @@ describe('ObsControl', () => {
     dataType: 'Text',
   };
 
+  const properties = {
+    label: {
+      value: 'someLabelName',
+      type: 'label',
+    },
+  };
+
   const formUuid = 'someFormUuid';
 
   const formNamespace = `${formUuid}/100`;
 
-  it('should render TextBox', () => {
+  it('should render TextBox with Label', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
       displayType: 'text',
       concept,
+      properties,
     };
 
     const wrapper = mount(<ObsControl formUuid={formUuid} metadata={metadata} />);
+    expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('TextBox');
     expect(wrapper.find('input').at(0).props().type).to.be.eql('text');
   });
@@ -50,11 +59,26 @@ describe('ObsControl', () => {
       type: 'obsControl',
       displayType: 'numeric',
       concept,
+      properties,
     };
 
     const wrapper = mount(<ObsControl formUuid={formUuid} metadata={metadata} />);
+    expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('NumericBox');
     expect(wrapper.find('input').at(0).props().type).to.be.eql('number');
+  });
+
+  it('should return null when registered component not found', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      displayType: 'someRandomComponentType',
+      concept,
+      properties,
+    };
+
+    const wrapper = shallow(<ObsControl formUuid={formUuid} metadata={metadata} />);
+    expect(wrapper).to.be.blank();
   });
 
   it('should return the obsControl value', () => {
@@ -63,6 +87,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       displayType: 'text',
       concept,
+      properties,
     };
 
     const obs = {

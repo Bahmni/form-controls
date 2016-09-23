@@ -26,6 +26,13 @@ describe('ObsGroupControl', () => {
     componentStore.deRegisterComponent('obsControl');
   });
 
+  const obsControlProperties = {
+    label: {
+      value: 'someLabelName',
+      type: 'label',
+    },
+  };
+
   const textBoxConcept = {
     uuid: '70645842-be6a-4974-8d5f-45b52990e132',
     name: 'Pulse',
@@ -58,6 +65,7 @@ describe('ObsGroupControl', () => {
         type: 'obsControl',
         displayType: 'numeric',
         concept: numericBoxConcept,
+        properties: obsControlProperties,
       },
     ],
   };
