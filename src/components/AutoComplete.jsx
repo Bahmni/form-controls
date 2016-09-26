@@ -2,21 +2,28 @@ import React, { Component, PropTypes } from 'react';
 import Select from 'react-select';
 import { httpInterceptor } from 'src/helpers/httpInterceptor';
 import 'src/helpers/componentStore';
+import get from 'lodash/get';
 
 export class AutoComplete extends Component {
   constructor(props) {
     super(props);
-    let value;
-    if (props.value) {
-      value = props.multi ? props.value : props.value[0];
-    } else {
-      value = null;
-    }
-    this.state = { value };
     this.optionsUrl = props.optionsUrl;
+    this.getValueFromProps = this.getValueFromProps.bind(this);
     this.getValue = this.getValue.bind(this);
     this.getOptions = this.getOptions.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.state = { value: this.getValueFromProps(props) };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ value: this.getValueFromProps(nextProps) });
+  }
+
+  getValueFromProps(props) {
+    if (props.multi) {
+      return get(props, 'value');
+    }
+    return get(props, 'value[0]');
   }
 
   getOptions(input) {
@@ -29,13 +36,10 @@ export class AutoComplete extends Component {
   }
 
   getValue() {
-    let value;
     if (this.state.value) {
-      value = this.props.multi ? this.state.value : [this.state.value];
-    } else {
-      value = [];
+      return this.props.multi ? this.state.value : [this.state.value];
     }
-    return value;
+    return [];
   }
 
   handleChange(value) {

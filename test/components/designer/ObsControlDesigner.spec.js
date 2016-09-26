@@ -39,7 +39,7 @@ describe('ObsControlDesigner', () => {
       expect(wrapper.find('div')).to.have.prop('onClick');
       wrapper.find('div').simulate('click');
       sinon.assert.calledOnce(onSelectSpy);
-      sinon.assert.calledWith(onSelectSpy, '123');
+      sinon.assert.calledWith(onSelectSpy, sinon.match.any, '123');
     });
   });
 
@@ -83,7 +83,7 @@ describe('ObsControlDesigner', () => {
       expect(wrapper.find('div')).to.have.prop('onClick');
       wrapper.find('input').simulate('click');
       sinon.assert.calledOnce(onSelectSpy);
-      sinon.assert.calledWith(onSelectSpy, '123');
+      sinon.assert.calledWith(onSelectSpy, sinon.match.any, '123');
     });
 
     it('should return json definition', () => {

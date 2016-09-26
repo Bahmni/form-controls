@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { AutoComplete } from '../../src/components/AutoComplete.jsx';
@@ -94,6 +94,18 @@ describe('AutoComplete', () => {
       const onChange = wrapper.find('Select').props().onChange;
       onChange(options[0]);
       sinon.assert.calledOnce(onSelectSpy.withArgs(options[0]));
+    });
+
+    it('should change value on change of props', () => {
+      const wrapper = shallow(
+        <AutoComplete
+          asynchronous={false}
+          options={options}
+          value={[options[0]]}
+        />);
+      wrapper.setProps({ value: [options[1]] });
+      const instance = wrapper.instance();
+      expect(instance.getValue()).to.eql([options[1]]);
     });
   });
 });

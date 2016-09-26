@@ -42,13 +42,13 @@ export class ObsControlDesigner extends Component {
     if (concept && designerComponent) {
       const labelMetadata = { type: 'label', value: concept.name };
       return (
-        <div id={id} onClick={ () => this.props.onSelect(id) }>
+        <div onClick={ (event) => this.props.onSelect(event, id) }>
           <LabelDesigner metadata={labelMetadata} ref={this.storeLabelRef} />
           {this.displayObsControl(designerComponent)}
         </div>
       );
     }
-    return <div id={id} onClick={ () => this.props.onSelect(id) } >Select Obs Source</div>;
+    return <div onClick={ (event) => this.props.onSelect(event, id) }>Select Obs Source</div>;
   }
 }
 
