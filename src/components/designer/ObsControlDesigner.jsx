@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { LabelDesigner } from 'components/designer/LabelDesigner.jsx';
+import { LabelDesigner } from 'components/designer/Label.jsx';
 import 'src/helpers/componentStore';
 
 export class ObsControlDesigner extends Component {
