@@ -34,6 +34,7 @@ describe('AutoComplete', () => {
       expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
       expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
       expect(wrapper.find('Select').props().minimumInput).to.be.eql(3);
+      expect(wrapper.find('Select').props().disabled).to.be.eql(false);
     });
 
     it('should render asynchronous AutoComplete with default value', () => {
@@ -106,6 +107,17 @@ describe('AutoComplete', () => {
       wrapper.setProps({ value: [options[1]] });
       const instance = wrapper.instance();
       expect(instance.getValue()).to.eql([options[1]]);
+    });
+
+    it('should pass disabled value from props to the Select Component', () => {
+      const wrapper = shallow(
+        <AutoComplete
+          asynchronous={false}
+          disabled
+          options={options}
+          value={[options[0]]}
+        />);
+      expect(wrapper.find('Select').props().disabled).to.be.eql(true);
     });
   });
 });

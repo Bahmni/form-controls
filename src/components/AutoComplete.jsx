@@ -50,9 +50,10 @@ export class AutoComplete extends Component {
   }
 
   render() {
-    const { labelKey, valueKey, asynchronous, options, multi, minimumInput } = this.props;
+    const { disabled, labelKey, valueKey, asynchronous, options, multi, minimumInput } = this.props;
     const props = {
       backspaceRemoves: false,
+      disabled,
       labelKey,
       minimumInput,
       multi,
@@ -71,6 +72,7 @@ export class AutoComplete extends Component {
 
 AutoComplete.propTypes = {
   asynchronous: PropTypes.bool,
+  disabled: PropTypes.bool,
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
   multi: PropTypes.bool,
@@ -83,6 +85,7 @@ AutoComplete.propTypes = {
 
 AutoComplete.defaultProps = {
   asynchronous: true,
+  disabled: false,
   labelKey: 'display',
   minimumInput: 3,
   multi: false,
