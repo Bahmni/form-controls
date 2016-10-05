@@ -4,12 +4,14 @@ import 'src/helpers/componentStore';
 
 export class ObsControlDesigner extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.childControl = undefined;
     this.labelControl = undefined;
+    this.metadata = props.metadata;
     this.storeChildRef = this.storeChildRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
+    this.updateLabelMetdata = this.updateLabelMetdata.bind(this);
   }
 
   getJsonDefinition() {
@@ -34,14 +36,22 @@ export class ObsControlDesigner extends Component {
     });
   }
 
+  updateLabelMetdata(newMetadata) {
+    this.metadata.label = newMetadata;
+    this.props.onUpdateMetadata(this.metadata);
+  }
+
   render() {
     const { concept, id } = this.props.metadata;
     const designerComponent = concept && window.componentStore.getDesignerComponent(concept.datatype); // eslint-disable-line max-len
     if (concept && designerComponent) {
-      const labelMetadata = { id: `label-${id}`, type: 'label', value: concept.name };
       return (
         <div onClick={ (event) => this.props.onSelect(event, id) }>
-          <LabelDesigner metadata={labelMetadata} ref={this.storeLabelRef} />
+          <LabelDesigner
+            metadata={ this.props.metadata.label }
+            ref={ this.storeLabelRef }
+            onUpdateMetadata={ this.updateLabelMetdata }
+          />
           {this.displayObsControl(designerComponent)}
         </div>
       );
@@ -57,8 +67,30 @@ ObsControlDesigner.propTypes = {
     id: PropTypes.string.isRequired,
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
+    label: PropTypes.object,
   }),
   onSelect: PropTypes.func.isRequired,
+};
+
+ObsControlDesigner.defaultProps = {
+  label: {
+    type: 'label',
+    value: 'Label',
+  },
+}
+
+ObsControlDesigner.injectConceptToMetadata = function(metadata, concept) {
+  const filteredConcepts = {
+    name: concept.name.name,
+    uuid: concept.uuid,
+  };
+  const label = {
+    type: 'label',
+    value: concept.name.name,
+  };
+  const displayType = concept.datatype.name;
+
+  return Object.assign({}, metadata, { concept: filteredConcepts }, { label }, { displayType });
 };
 
 const descriptor = {
@@ -73,6 +105,22 @@ const descriptor = {
         name: 'type',
         dataType: 'text',
         defaultValue: 'obsControl',
+      },
+      {
+        name: 'label',
+        dataType: 'complex',
+        attributes: [
+          {
+            name: 'type',
+            dataType: 'text',
+            defaultValue: 'label',
+          },
+          {
+            name: 'value',
+            dataType: 'text',
+            defaultValue: 'Label',
+          },
+        ],
       },
       {
         name: 'properties',

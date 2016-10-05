@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-export default class Draggable extends Component {
+export class Draggable extends Component {
   constructor(data) {
     super(data);
     this.data = data;

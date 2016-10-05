@@ -44,8 +44,7 @@ export class CellDesigner extends DropTarget {
   getComponents() {
     if (this.state.controlContexts.length > 0) {
       return this.state.controlContexts.map((context, idx) => {
-        const control = window.componentStore.getDesignerComponent(context.type).control;
-        return React.createElement(control, { key: idx, metadata: context.data, parentRef: this });
+        return React.cloneElement(this.props.children, { context , parentRef: this });
       });
     }
     return this.state.defaultComponent;
@@ -54,7 +53,7 @@ export class CellDesigner extends DropTarget {
   render() {
     return (
       <div
-        className={`cell${this.cellPosition}` }
+        className={ `cell${this.cellPosition}` }
         onDragOver={ this.onDragOver }
         onDrop={ this.onDrop }
         style={style}

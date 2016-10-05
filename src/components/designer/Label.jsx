@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Draggable from 'components/Draggable.jsx';
+import { Draggable } from 'components/Draggable.jsx';
 import 'src/helpers/componentStore';
 
 export class LabelDesigner extends Draggable {
@@ -46,10 +46,17 @@ export class LabelDesigner extends Draggable {
     };
   }
 
+  updateMetadata(value) {
+    const newMetadata = Object.assign({}, this.props.metadata, { value });
+    this.props.onUpdateMetadata(newMetadata);
+  }
+
   updateValue() {
+    const value = (this.input && this.input.value) ? this.input.value : this.state.value
+    this.updateMetadata(value);
     this.setState({
       isEditable: false,
-      value: (this.input && this.input.value) ? this.input.value : this.state.value,
+      value: value,
     });
   }
 
@@ -84,12 +91,17 @@ export class LabelDesigner extends Draggable {
   }
 }
 
+LabelDesigner.injectConcept = function(metadata, concept) {
+  return metadata;
+}
+
 LabelDesigner.propTypes = {
   metadata: PropTypes.shape({
     id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
   }),
+  onUpdateMetadata: PropTypes.func.isRequired,
 };
 
 const descriptor = {

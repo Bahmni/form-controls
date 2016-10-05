@@ -10,7 +10,10 @@ export class GridDesigner extends Component {
     const { columns: cols } = this.props;
     const cells = [];
     for (let i = 0; i < cols; ++i) {
-      cells.push(<CellDesigner key={i} location={ { row: 0, column: i } } />);
+      cells.push(
+        <CellDesigner key={i} location={ { row: 0, column: i } } >
+          { this.props.children }
+        </CellDesigner>);
     }
     return cells;
   }
