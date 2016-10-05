@@ -1,38 +1,54 @@
 import React, { Component, PropTypes } from 'react';
-import { CellDesigner } from 'components/designer/Cell.jsx';
+import { RowDesigner } from 'components/designer/Row.jsx';
 import Constants from 'src/constants';
 
-export const rowWidth = Constants.Grid.defaultRowWidth;
+export const totalRows = Constants.Grid.defaultRows;
 
 export class GridDesigner extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      rowPosition : props.rowPosition
+    };
+    this.changeHandler = this.changeHandler.bind(this);
+  }
 
-  createCells() {
-    const { columns: cols } = this.props;
-    const cells = [];
-    for (let i = 0; i < cols; ++i) {
-      cells.push(
-        <CellDesigner key={i} location={ { row: 0, column: i } } >
-          { this.props.children }
-        </CellDesigner>);
+  createRows() {
+    const { rowPosition: rowSize } = this.state;
+    const rows = [];
+    for (let i = 0; i <= rowSize; ++i) {
+      rows.push(
+          <RowDesigner key={i} rowPosition={i} onChange={this.changeHandler}>  
+            { this.props.children } 
+          </RowDesigner >);
     }
-    return cells;
+    console.log("all",rows);
+    return rows;
+  }
+  
+  changeHandler(value) {
+    if((this.state.rowPosition == 0) || (value == this.state.rowPosition)) {
+      console.log("updated")
+      this.setState({rowPosition : this.state.rowPosition+1})
+    }
   }
 
   render() {
     return (
       <div className="grid" >
-        { this.createCells() }
+        { this.createRows() }
       </div>
     );
   }
 }
 
 GridDesigner.propTypes = {
-  columns: PropTypes.number,
+  rowPosition: PropTypes.number,
 };
 
 GridDesigner.defaultProps = {
-  columns: rowWidth,
+  rowPosition: totalRows,
 };
 
 
@@ -44,9 +60,9 @@ const descriptor = {
   metadata: {
     attributes: [
       {
-        name: 'columns',
+        name: 'rowPosition',
         dataType: 'number',
-        defaultValue: rowWidth.toString(),
+        defaultValue: totalRows.toString(),
       },
     ],
   },

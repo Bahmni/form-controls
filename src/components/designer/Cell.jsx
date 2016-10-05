@@ -38,6 +38,7 @@ export class CellDesigner extends DropTarget {
   processDrop(context) {
     const controlContexts = this.state.controlContexts;
     controlContexts.push(context);
+    this.changeHandler(this.cellPosition);
     this.setState({ controlContexts });
   }
 
@@ -50,12 +51,17 @@ export class CellDesigner extends DropTarget {
     return this.state.defaultComponent;
   }
 
+  changeHandler(cellLocation) {
+    this.props.onChange(cellLocation);
+  }
+
   render() {
     return (
       <div
         className={ `cell${this.cellPosition}` }
         onDragOver={ this.onDragOver }
         onDrop={ this.onDrop }
+        onChange={ this.changeHandler }
         style={style}
       >{ this.getComponents() }</div>
     );
