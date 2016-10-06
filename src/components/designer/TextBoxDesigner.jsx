@@ -14,7 +14,7 @@ export class TextBoxDesigner extends Component {
 TextBoxDesigner.propTypes = {
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
-    displayType: PropTypes.string.isRequired,
+    displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     properties: PropTypes.object.isRequired,
     type: PropTypes.string,

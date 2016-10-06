@@ -30,8 +30,8 @@ export class ObsControl extends Component {
   }
 
   render() {
-    const { displayType, label } = this.props.metadata;
-    const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
+    const { concept, label } = this.props.metadata;
+    const registeredComponent = window.componentStore.getRegisteredComponent(concept.datatype);
     if (registeredComponent) {
       return (
         <div>
@@ -48,7 +48,7 @@ ObsControl.propTypes = {
   formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
-    displayType: PropTypes.string.isRequired,
+    displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     label: PropTypes.shape({
       id: PropTypes.string.isRequired,

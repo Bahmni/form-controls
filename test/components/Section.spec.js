@@ -35,13 +35,13 @@ describe('Section', () => {
   const textBoxConcept = {
     uuid: '70645842-be6a-4974-8d5f-45b52990e132',
     name: 'Pulse',
-    dataType: 'Text',
+    datatype: 'Text',
   };
 
   const numericBoxConcept = {
     uuid: '216861e7-23d8-468f-9efb-672ce427a14b',
     name: 'Temperature',
-    dataType: 'Numeric',
+    datatype: 'Numeric',
   };
 
   const metadata = {
@@ -56,14 +56,12 @@ describe('Section', () => {
       {
         id: '101',
         type: 'obsControl',
-        displayType: 'text',
         concept: textBoxConcept,
         label,
       },
       {
         id: '102',
         type: 'obsControl',
-        displayType: 'numeric',
         concept: numericBoxConcept,
         label,
       },

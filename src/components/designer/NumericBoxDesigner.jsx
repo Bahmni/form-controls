@@ -14,7 +14,7 @@ export class NumericBoxDesigner extends Component {
 NumericBoxDesigner.propTypes = {
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
-    displayType: PropTypes.string.isRequired,
+    displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     properties: PropTypes.object.isRequired,
     type: PropTypes.string,

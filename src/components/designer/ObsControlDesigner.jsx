@@ -35,8 +35,8 @@ export class ObsControlDesigner extends Component {
   }
 
   render() {
-    const { concept, displayType, id } = this.props.metadata;
-    const designerComponent = displayType && window.componentStore.getDesignerComponent(displayType); // eslint-disable-line max-len
+    const { concept, id } = this.props.metadata;
+    const designerComponent = concept && window.componentStore.getDesignerComponent(concept.datatype); // eslint-disable-line max-len
     if (concept && designerComponent) {
       const labelMetadata = { id: `label-${id}`, type: 'label', value: concept.name };
       return (

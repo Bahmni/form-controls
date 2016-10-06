@@ -21,11 +21,13 @@ describe('ObsControl', () => {
     window.componentStore.deRegisterComponent('numeric');
   });
 
-  const concept = {
-    uuid: '70645842-be6a-4974-8d5f-45b52990e132',
-    name: 'Pulse',
-    dataType: 'Text',
-  };
+  function getConcept(datatype) {
+    return {
+      uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+      name: 'Pulse',
+      datatype,
+    };
+  }
 
   const label = {
     id: 'someId',
@@ -41,8 +43,7 @@ describe('ObsControl', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
-      displayType: 'text',
-      concept,
+      concept: getConcept('Text'),
       label,
     };
 
@@ -56,8 +57,7 @@ describe('ObsControl', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
-      displayType: 'numeric',
-      concept,
+      concept: getConcept('Numeric'),
       label,
     };
 
@@ -71,8 +71,7 @@ describe('ObsControl', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
-      displayType: 'someRandomComponentType',
-      concept,
+      concept: getConcept('someRandomComponentType'),
       label,
     };
 
@@ -84,8 +83,7 @@ describe('ObsControl', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
-      displayType: 'text',
-      concept,
+      concept: getConcept('text'),
       label,
     };
 
@@ -95,7 +93,7 @@ describe('ObsControl', () => {
     };
 
     const expectedObs = {
-      concept,
+      concept: getConcept('text'),
       value: 'someInputValue',
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,

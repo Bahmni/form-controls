@@ -7,7 +7,7 @@ import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
-const concept = { name: 'dummyPulse', uuid: 'dummyUuid' };
+const concept = { name: 'dummyPulse', datatype: 'text', uuid: 'dummyUuid' };
 const properties = {};
 class DummyControl extends Component {
   getJsonDefinition() {
@@ -49,7 +49,6 @@ describe('ObsControlDesigner', () => {
         id: '123',
         type: 'obsControl',
         concept,
-        displayType: 'text',
         properties,
       };
 
@@ -74,8 +73,11 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should not render obsControl if there is no registered designer component', () => {
-      metadata.displayType = 'somethingRandom';
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      const conceptClone = Object.assign({}, concept);
+      conceptClone.datatype = 'somethingRandom';
+      const metadataClone = Object.assign({}, metadata);
+      metadataClone.concept = conceptClone;
+      wrapper = mount(<ObsControlDesigner metadata={metadataClone} onSelect={onSelectSpy} />);
       expect(wrapper).to.be.blank();
     });
 

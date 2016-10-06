@@ -35,19 +35,19 @@ describe('ObsGroupControl', () => {
   const textBoxConcept = {
     uuid: '70645842-be6a-4974-8d5f-45b52990e132',
     name: 'Pulse',
-    dataType: 'Text',
+    datatype: 'Text',
   };
 
   const numericBoxConcept = {
     uuid: '216861e7-23d8-468f-9efb-672ce427a14b',
     name: 'Temperature',
-    dataType: 'Numeric',
+    datatype: 'Numeric',
   };
 
   const conceptSet = {
     uuid: 'c36af094-3f10-11e4-adec-0800271c1b75',
     name: 'Pulse Data',
-    dataType: 'N/A',
+    datatype: 'N/A',
   };
 
   const metadata = {
@@ -62,7 +62,6 @@ describe('ObsGroupControl', () => {
       {
         id: '101',
         type: 'obsControl',
-        displayType: 'numeric',
         concept: numericBoxConcept,
         label,
       },
