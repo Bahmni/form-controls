@@ -42,7 +42,7 @@ Section.propTypes = {
       visualOnly: PropTypes.bool.isRequired,
     }),
   }),
-  obs: PropTypes.array,
+  obs: PropTypes.array.isRequired,
 };
 
 window.componentStore.registerComponent('section', Section);

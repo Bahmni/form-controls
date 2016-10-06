@@ -11,7 +11,7 @@ describe('LabelDesigner', () => {
   let metadata;
 
   beforeEach(() => {
-    metadata = { value: 'History Notes', type: 'label' };
+    metadata = { id: 'someId', type: 'label', value: 'History Notes' };
     wrapper = mount(<LabelDesigner metadata={metadata} />);
   });
 
@@ -47,6 +47,7 @@ describe('LabelDesigner', () => {
   it('should return appropriate JSON definition', () => {
     const instance = wrapper.instance();
     const expectedJson = {
+      id: 'someId',
       type: 'label',
       value: 'History Notes',
     };

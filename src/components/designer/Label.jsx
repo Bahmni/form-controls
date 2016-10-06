@@ -40,6 +40,7 @@ export class LabelDesigner extends Draggable {
 
   getJsonDefinition() {
     return {
+      id: this.props.metadata.id,
       type: 'label',
       value: this.state.value,
     };
@@ -85,6 +86,7 @@ export class LabelDesigner extends Draggable {
 
 LabelDesigner.propTypes = {
   metadata: PropTypes.shape({
+    id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
   }),

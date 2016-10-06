@@ -27,11 +27,10 @@ describe('ObsControl', () => {
     dataType: 'Text',
   };
 
-  const properties = {
-    label: {
-      value: 'someLabelName',
-      type: 'label',
-    },
+  const label = {
+    id: 'someId',
+    value: 'someLabelName',
+    type: 'label',
   };
 
   const formUuid = 'someFormUuid';
@@ -44,7 +43,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       displayType: 'text',
       concept,
-      properties,
+      label,
     };
 
     const wrapper = mount(<ObsControl formUuid={formUuid} metadata={metadata} />);
@@ -59,7 +58,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       displayType: 'numeric',
       concept,
-      properties,
+      label,
     };
 
     const wrapper = mount(<ObsControl formUuid={formUuid} metadata={metadata} />);
@@ -74,7 +73,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       displayType: 'someRandomComponentType',
       concept,
-      properties,
+      label,
     };
 
     const wrapper = shallow(<ObsControl formUuid={formUuid} metadata={metadata} />);
@@ -87,7 +86,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       displayType: 'text',
       concept,
-      properties,
+      label,
     };
 
     const obs = {

@@ -41,11 +41,10 @@ describe('Container', () => {
     dataType: 'Numeric',
   };
 
-  const properties = {
-    label: {
-      value: 'someValue',
-      type: 'label',
-    },
+  const label = {
+    id: 'someId',
+    value: 'someValue',
+    type: 'label',
   };
 
   const metadata = {
@@ -63,14 +62,14 @@ describe('Container', () => {
         type: 'obsControl',
         displayType: 'text',
         concept: textBoxConcept,
-        properties,
+        label,
       },
       {
         id: '102',
         type: 'obsControl',
         displayType: 'numeric',
         concept: numericBoxConcept,
-        properties,
+        label,
       },
     ],
   };
@@ -179,14 +178,14 @@ describe('Container', () => {
               type: 'obsControl',
               displayType: 'text',
               concept: textBoxConcept,
-              properties,
+              label,
             },
             {
               id: '102',
               type: 'obsControl',
               displayType: 'numeric',
               concept: numericBoxConcept,
-              properties,
+              label,
             },
           ],
         },
@@ -195,7 +194,7 @@ describe('Container', () => {
           type: 'obsControl',
           displayType: 'numeric',
           concept: numericBoxConcept,
-          properties,
+          label,
         },
       ],
     };

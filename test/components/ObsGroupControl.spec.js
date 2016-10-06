@@ -26,11 +26,10 @@ describe('ObsGroupControl', () => {
     componentStore.deRegisterComponent('obsControl');
   });
 
-  const obsControlProperties = {
-    label: {
-      value: 'someLabelName',
-      type: 'label',
-    },
+  const label = {
+    id: 'someId',
+    value: 'someLabelName',
+    type: 'label',
   };
 
   const textBoxConcept = {
@@ -65,7 +64,7 @@ describe('ObsGroupControl', () => {
         type: 'obsControl',
         displayType: 'numeric',
         concept: numericBoxConcept,
-        properties: obsControlProperties,
+        label,
       },
     ],
   };

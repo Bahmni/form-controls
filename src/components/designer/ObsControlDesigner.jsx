@@ -15,9 +15,7 @@ export class ObsControlDesigner extends Component {
   getJsonDefinition() {
     const childJsonDefinition = this.childControl.getJsonDefinition();
     const labelJsonDefinition = this.labelControl.getJsonDefinition();
-    const childDefinitionClone = Object.assign({}, childJsonDefinition);
-    childDefinitionClone.properties.label = labelJsonDefinition;
-    return childDefinitionClone;
+    return Object.assign({}, childJsonDefinition, { label: labelJsonDefinition });
   }
 
   storeChildRef(ref) {
@@ -40,7 +38,7 @@ export class ObsControlDesigner extends Component {
     const { concept, displayType, id } = this.props.metadata;
     const designerComponent = displayType && window.componentStore.getDesignerComponent(displayType); // eslint-disable-line max-len
     if (concept && designerComponent) {
-      const labelMetadata = { type: 'label', value: concept.name };
+      const labelMetadata = { id: `label-${id}`, type: 'label', value: concept.name };
       return (
         <div onClick={ (event) => this.props.onSelect(event, id) }>
           <LabelDesigner metadata={labelMetadata} ref={this.storeLabelRef} />
@@ -57,7 +55,7 @@ ObsControlDesigner.propTypes = {
     concept: PropTypes.object,
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
-    properties: PropTypes.object.isRequired,
+    properties: PropTypes.object,
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,

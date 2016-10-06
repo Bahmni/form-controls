@@ -26,11 +26,10 @@ describe('Section', () => {
     componentStore.deRegisterComponent('obsControl');
   });
 
-  const obsControlProperties = {
-    label: {
-      value: 'someLabelName',
-      type: 'label',
-    },
+  const label = {
+    id: 'someId',
+    value: 'someLabelName',
+    type: 'label',
   };
 
   const textBoxConcept = {
@@ -59,14 +58,14 @@ describe('Section', () => {
         type: 'obsControl',
         displayType: 'text',
         concept: textBoxConcept,
-        properties: obsControlProperties,
+        label,
       },
       {
         id: '102',
         type: 'obsControl',
         displayType: 'numeric',
         concept: numericBoxConcept,
-        properties: obsControlProperties,
+        label,
       },
     ],
   };
