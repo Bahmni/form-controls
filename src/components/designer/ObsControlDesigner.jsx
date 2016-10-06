@@ -70,6 +70,7 @@ ObsControlDesigner.propTypes = {
     label: PropTypes.object,
   }),
   onSelect: PropTypes.func.isRequired,
+  onUpdateMetadata: PropTypes.func.isRequired,
 };
 
 ObsControlDesigner.defaultProps = {

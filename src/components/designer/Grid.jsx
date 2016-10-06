@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { RowDesigner } from 'components/designer/Row.jsx';
 import Constants from 'src/constants';
+import map from 'lodash/map';
 
 export const totalRows = Constants.Grid.defaultRows;
 
@@ -12,26 +13,37 @@ export class GridDesigner extends Component {
       rowPosition : props.rowPosition
     };
     this.changeHandler = this.changeHandler.bind(this);
+    this.rowReference = this.rowReference.bind(this);
+    this.rowRef = {};
   }
 
+  rowReference(ref) {
+    if(ref){
+      console.log("key", ref.props.rowPosition);
+      this.rowRef[ref.props.rowPosition] = ref;
+    }
+  }
   createRows() {
     const { rowPosition: rowSize } = this.state;
     const rows = [];
     for (let i = 0; i <= rowSize; ++i) {
       rows.push(
-          <RowDesigner key={i} rowPosition={i} onChange={this.changeHandler}>  
+          <RowDesigner key={i} ref={this.rowReference} rowPosition={i} onChange={this.changeHandler}>
             { this.props.children } 
           </RowDesigner >);
     }
-    console.log("all",rows);
     return rows;
   }
   
   changeHandler(value) {
     if((this.state.rowPosition == 0) || (value == this.state.rowPosition)) {
-      console.log("updated")
       this.setState({rowPosition : this.state.rowPosition+1})
     }
+  }
+
+  getControls(){
+    var controls = map(this.rowRef, (ref) => ref.getRowDefinition()) || [];
+    return [].concat(...controls);
   }
 
   render() {

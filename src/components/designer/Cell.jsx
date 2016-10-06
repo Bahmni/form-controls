@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { DropTarget } from 'src/components/DropTarget.jsx';
 import Constants from 'src/constants';
+import map from 'lodash/map';
 
 
 const style = {
@@ -24,6 +25,9 @@ export class CellDesigner extends DropTarget {
       defaultComponent: React.createElement(cellDefaultControl(`cell${this.cellPosition}`)),
       controlContexts: [],
     };
+    this.getCellDefinition = this.getCellDefinition.bind(this);
+    this.changeHandler = this.changeHandler.bind(this);
+    this.updateMetadata = this.updateMetadata.bind(this);
   }
 
   processMove(context) {
@@ -42,10 +46,20 @@ export class CellDesigner extends DropTarget {
     this.setState({ controlContexts });
   }
 
+  updateMetadata(newMetadata) {
+    var updatedControlContexts = map(this.state.controlContexts, (context) => {
+      if (context.data.id === newMetadata.id) {
+        return Object.assign({}, context, {data: newMetadata});
+      }
+      return context;
+    });
+    this.setState( { controlContexts: updatedControlContexts });
+  }
+
   getComponents() {
     if (this.state.controlContexts.length > 0) {
       return this.state.controlContexts.map((context, idx) => {
-        return React.cloneElement(this.props.children, { context , parentRef: this });
+        return React.cloneElement(this.props.children, { context , parentRef: this, onUpdateMetadata: this.updateMetadata });
       });
     }
     return this.state.defaultComponent;
@@ -53,6 +67,10 @@ export class CellDesigner extends DropTarget {
 
   changeHandler(cellLocation) {
     this.props.onChange(cellLocation);
+  }
+
+  getCellDefinition() {
+    return map(this.state.controlContexts, (controlContext) => controlContext.data) || [];
   }
 
   render() {
