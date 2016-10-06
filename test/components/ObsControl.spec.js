@@ -72,6 +72,7 @@ describe('ObsControl', () => {
       id: '100',
       type: 'obsControl',
       concept: getConcept('someRandomComponentType'),
+      displayType: 'someRandomComponentType',
       label,
     };
 
@@ -84,6 +85,7 @@ describe('ObsControl', () => {
       id: '100',
       type: 'obsControl',
       concept: getConcept('text'),
+      displayType: 'text',
       label,
     };
 
