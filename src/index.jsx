@@ -6,6 +6,8 @@ export { NumericBox } from 'components/NumericBox.jsx';
 export { Section } from 'components/Section.jsx';
 export { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 export { AutoComplete } from 'components/AutoComplete.jsx';
+export { BooleanControl } from 'components/BooleanControl.jsx';
+export { RadioButton } from 'components/RadioButton.jsx';
 
 //  -----------designer components------------------
 
