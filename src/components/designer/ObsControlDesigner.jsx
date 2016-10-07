@@ -73,28 +73,7 @@ ObsControlDesigner.propTypes = {
   onUpdateMetadata: PropTypes.func.isRequired,
 };
 
-ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
-  const filteredConcepts = {
-    name: concept.name.name,
-    uuid: concept.uuid,
-  };
-  const label = {
-    type: 'label',
-    value: concept.name.name,
-  };
-  const displayType = concept.datatype.name;
-
-  return Object.assign({}, metadata, { concept: filteredConcepts }, { label }, { displayType });
-};
-
-ObsControlDesigner.defaultProps = {
-  label: {
-    type: 'label',
-    value: 'Label',
-  },
-}
-
-ObsControlDesigner.injectConceptToMetadata = function(metadata, concept) {
+ObsControlDesigner.injectConceptToMetadata = function (metadata, concept) {
   const filteredConcepts = {
     name: concept.name.name,
     uuid: concept.uuid,
