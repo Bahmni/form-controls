@@ -3,12 +3,14 @@
 let path = require('path');
 let webpack = require('webpack');
 let srcPath = path.join(__dirname, './src');
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
+let CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'eval',
   entry: {
     helpers: ['./src/helpers/componentStore.js', './src/helpers/formRenderer.js'],
-    bundle: './src/index.jsx'
+    bundle: ['./src/index.jsx', './styles/styles.scss']
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -16,6 +18,17 @@ module.exports = {
     libraryTarget: 'umd',
     library: 'FormControls'
   },
+  plugins: [
+    new ExtractTextPlugin('styles.css', { allChunks: true }),
+    new CopyWebpackPlugin(
+      [
+        {
+          from: path.join(__dirname, './styles/fonts'), to: path.join(__dirname, './dist/fonts'),
+        },
+      ],
+      {copyUnmodified: true}
+    ),
+  ],
   externals: {
     'react/lib/ExecutionEnvironment': true,
     'react/lib/ReactContext': true,
@@ -43,6 +56,18 @@ module.exports = {
       {
         test: /\.json$/,
         loader: 'json'
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('css!sass')
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "url-loader?limit=10000&mimetype=application/font-woff"
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: "file-loader"
       }
     ],
   },

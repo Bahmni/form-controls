@@ -75,12 +75,15 @@ export class LabelDesigner extends Draggable {
     };
 
     return (
-      <span
+      <label
         draggable="true"
         onDoubleClick={ this.onDoubleClick }
         onDragEnd={ this.onDragEnd(context) }
         onDragStart={ this.onDragStart(context) }
-      >{ this.state.value }</span>);
+      >
+        { this.state.value }
+      </label>
+    );
   }
 }
 
