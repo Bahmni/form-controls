@@ -3,47 +3,51 @@ import { RowDesigner } from 'components/designer/Row.jsx';
 import Constants from 'src/constants';
 import map from 'lodash/map';
 
-export const totalRows = Constants.Grid.defaultRows;
+export const totalRows = Constants.Grid.defaultRowCount;
 
 export class GridDesigner extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
-      rowPosition : props.rowPosition
+      rowCount: props.rowCount,
     };
     this.changeHandler = this.changeHandler.bind(this);
     this.rowReference = this.rowReference.bind(this);
     this.rowRef = {};
   }
 
-  rowReference(ref) {
-    if(ref){
-      console.log("key", ref.props.rowPosition);
-      this.rowRef[ref.props.rowPosition] = ref;
-    }
+  getControls() {
+    const controls = map(this.rowRef, (ref) => ref.getRowDefinition()) || [];
+    return [].concat(...controls);
   }
-  createRows() {
-    const { rowPosition: rowSize } = this.state;
-    const rows = [];
-    for (let i = 0; i <= rowSize; ++i) {
-      rows.push(
-          <RowDesigner key={i} ref={this.rowReference} rowPosition={i} onChange={this.changeHandler}>
-            { this.props.children } 
-          </RowDesigner >);
-    }
-    return rows;
-  }
-  
+
   changeHandler(value) {
-    if((this.state.rowPosition == 0) || (value == this.state.rowPosition)) {
-      this.setState({rowPosition : this.state.rowPosition+1})
+    if ((this.state.rowCount === 0) || (value === this.state.rowCount)) {
+      this.setState({ rowCount: this.state.rowCount + 1 });
     }
   }
 
-  getControls(){
-    var controls = map(this.rowRef, (ref) => ref.getRowDefinition()) || [];
-    return [].concat(...controls);
+  createRows() {
+    const { rowCount } = this.state;
+    const rows = [];
+    for (let i = 0; i <= rowCount; ++i) {
+      rows.push(
+        <RowDesigner
+          key={i}
+          onChange={this.changeHandler}
+          ref={this.rowReference}
+          rowPosition={i}
+        >
+          { this.props.children }
+        </RowDesigner >);
+    }
+    return rows;
+  }
+
+  rowReference(ref) {
+    if (ref) {
+      this.rowRef[ref.props.rowPosition] = ref;
+    }
   }
 
   render() {
@@ -56,11 +60,11 @@ export class GridDesigner extends Component {
 }
 
 GridDesigner.propTypes = {
-  rowPosition: PropTypes.number,
+  rowCount: PropTypes.number,
 };
 
 GridDesigner.defaultProps = {
-  rowPosition: totalRows,
+  rowCount: totalRows,
 };
 
 
@@ -72,7 +76,7 @@ const descriptor = {
   metadata: {
     attributes: [
       {
-        name: 'rowPosition',
+        name: 'rowCount',
         dataType: 'number',
         defaultValue: totalRows.toString(),
       },

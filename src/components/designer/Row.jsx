@@ -11,40 +11,46 @@ export class RowDesigner extends Component {
     super(props);
     this.changeHandler = this.changeHandler.bind(this);
     this.cellReference = this.cellReference.bind(this);
-    this.cellRef = {}
+    this.cellRef = {};
   }
 
-  cellReference(ref) {
-    if(ref){
-      this.cellRef[ref.props.location.column] = ref;
-    }
-  }
-  
-  createCells() {
-    const { columns: cols } = this.props;
-    const cells = [];
-    for (let i = 0; i < cols; ++i) {
-      cells.push(<CellDesigner key={i} ref={this.cellReference} location={ { row: this.props.rowPosition, column: i } } onChange={this.changeHandler}>
-        { this.props.children }
-        </CellDesigner>);
-    }
-    return cells;
+  getRowDefinition() {
+    const cells = map(this.cellRef, (ref) => ref.getCellDefinition()) || [];
+    return [].concat(...cells);
   }
 
   changeHandler(cellPosition) {
-    if((cellPosition == ((this.props.rowPosition * this.props.columns) + (this.props.columns-1)))){
+    if ((cellPosition === ((this.props.rowPosition * this.props.columns)
+      + (this.props.columns - 1)))) {
       this.props.onChange(this.props.rowPosition);
     }
   }
 
-  getRowDefinition() {
-    var cells = map(this.cellRef, (ref) => ref.getCellDefinition()) || [];
-      return [].concat(...cells);
+  createCells() {
+    const { columns: cols } = this.props;
+    const cells = [];
+    for (let i = 0; i < cols; ++i) {
+      cells.push(<CellDesigner
+        key={i}
+        location={ { column: i, row: this.props.rowPosition } }
+        onChange={this.changeHandler}
+        ref={this.cellReference}
+      >
+        { this.props.children }
+      </CellDesigner>);
+    }
+    return cells;
+  }
+
+  cellReference(ref) {
+    if (ref) {
+      this.cellRef[ref.props.location.column] = ref;
+    }
   }
 
   render() {
     return (
-        <div className={`row${this.props.rowPosition}`} onChange={this.changeHandler}>
+        <div className={`row${this.props.rowPosition}`} onChange={ this.changeHandler }>
           { this.createCells() }
         </div>
     );
@@ -53,12 +59,13 @@ export class RowDesigner extends Component {
 
 RowDesigner.propTypes = {
   columns: PropTypes.number,
+  onChange: PropTypes.func.isRequired,
   rowPosition: PropTypes.number,
 };
 
 RowDesigner.defaultProps = {
   columns: rowWidth,
-  rowPosition: 0
+  rowPosition: 0,
 };
 
 

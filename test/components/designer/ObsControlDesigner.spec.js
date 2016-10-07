@@ -44,11 +44,17 @@ describe('ObsControlDesigner', () => {
   });
 
   context('when concept is present', () => {
+    const label = {
+      type: 'label',
+      value: 'TestLabel',
+    };
     beforeEach(() => {
       metadata = {
         id: '123',
         type: 'obsControl',
         concept,
+        displayType: 'text',
+        label,
         properties,
       };
 

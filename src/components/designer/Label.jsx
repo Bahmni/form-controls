@@ -52,11 +52,11 @@ export class LabelDesigner extends Draggable {
   }
 
   updateValue() {
-    const value = (this.input && this.input.value) ? this.input.value : this.state.value
+    const value = (this.input && this.input.value) ? this.input.value : this.state.value;
     this.updateMetadata(value);
     this.setState({
       isEditable: false,
-      value: value,
+      value,
     });
   }
 
@@ -91,9 +91,7 @@ export class LabelDesigner extends Draggable {
   }
 }
 
-LabelDesigner.injectConcept = function(metadata, concept) {
-  return metadata;
-}
+LabelDesigner.injectConcept = metadata => metadata;
 
 LabelDesigner.propTypes = {
   metadata: PropTypes.shape({

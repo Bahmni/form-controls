@@ -49,8 +49,8 @@ export class ObsControlDesigner extends Component {
         <div onClick={ (event) => this.props.onSelect(event, id) }>
           <LabelDesigner
             metadata={ this.props.metadata.label }
-            ref={ this.storeLabelRef }
             onUpdateMetadata={ this.updateLabelMetdata }
+            ref={ this.storeLabelRef }
           />
           {this.displayObsControl(designerComponent)}
         </div>
@@ -65,22 +65,15 @@ ObsControlDesigner.propTypes = {
     concept: PropTypes.object,
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
+    label: PropTypes.object.isRequired,
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
-    label: PropTypes.object,
   }),
   onSelect: PropTypes.func.isRequired,
   onUpdateMetadata: PropTypes.func.isRequired,
 };
 
-ObsControlDesigner.defaultProps = {
-  label: {
-    type: 'label',
-    value: 'Label',
-  },
-}
-
-ObsControlDesigner.injectConceptToMetadata = function(metadata, concept) {
+ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
   const filteredConcepts = {
     name: concept.name.name,
     uuid: concept.uuid,

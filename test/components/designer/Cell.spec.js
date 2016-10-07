@@ -21,14 +21,16 @@ describe('Cell', () => {
     window.componentStore.registerDesignerComponent('someType', {
       control: fakeComponent,
     });
+    sinon.stub(React, 'cloneElement', e => e);
   });
 
   after(() => {
     window.componentStore.deRegisterDesignerComponent('someType');
+    React.cloneElement.restore();
   });
 
   it('should be a drop target', () => {
-    const cellDesigner = shallow(<CellDesigner />);
+    const cellDesigner = shallow(<CellDesigner onChange={() => {}} />);
 
     const cell = cellDesigner.find('.cell0');
     expect(cell).to.have.prop('onDrop');
@@ -40,7 +42,7 @@ describe('Cell', () => {
   });
 
   it('Should call appropriate processDrop when a component is dropped', () => {
-    const cellDesigner = shallow(<CellDesigner />);
+    const cellDesigner = shallow(<CellDesigner onChange={() => {}} />);
     const cell = cellDesigner.find('.cell0');
 
     const cellDesignerInstance = cellDesigner.instance();
@@ -53,7 +55,7 @@ describe('Cell', () => {
   });
 
   it('should render the dropped component', () => {
-    const cellDesigner = mount(<CellDesigner />);
+    const cellDesigner = mount(<CellDesigner onChange={() => {}} >TestComponent</CellDesigner>);
     const cell = cellDesigner.find('.cell0');
 
     cell.props().onDrop(eventData);
@@ -61,7 +63,7 @@ describe('Cell', () => {
     expect(cellDesigner.text()).to.eql('TestComponent');
   });
 
-  it('Should render multiple components that get dropped on it', () => {
+  it('Should render multiple copies of child component when components get dropped on it', () => {
     const otherComponent = () => (<span>otherComponent</span>);
     const otherContext = { type: 'otherType' };
     window.componentStore.registerDesignerComponent('otherType', {
@@ -73,7 +75,7 @@ describe('Cell', () => {
         getData: () => JSON.stringify(otherContext),
       },
     };
-    const cellDesigner = mount(<CellDesigner />);
+    const cellDesigner = mount(<CellDesigner onChange={() => {}} >TestComponent</CellDesigner>);
     const cell = cellDesigner.find('.cell0');
     expect(cellDesigner.text()).to.eql('cell0');
 
@@ -81,13 +83,13 @@ describe('Cell', () => {
     expect(cellDesigner.text()).to.eql('TestComponent');
 
     cell.props().onDrop(otherData);
-    expect(cellDesigner.text()).to.eql('TestComponent' + 'otherComponent');
+    expect(cellDesigner.text()).to.eql('TestComponent' + 'TestComponent');
 
     window.componentStore.deRegisterDesignerComponent('otherType');
   });
 
   it('should remove the dropped component when moved to different cell', () => {
-    const cellDesigner = mount(<CellDesigner />);
+    const cellDesigner = mount(<CellDesigner onChange={() => {}} />);
     const cell = cellDesigner.find('.cell0');
 
     cell.props().onDrop(eventData);
@@ -109,7 +111,7 @@ describe('Cell', () => {
         getData: () => JSON.stringify(otherContext),
       },
     };
-    const cellDesigner = mount(<CellDesigner />);
+    const cellDesigner = mount(<CellDesigner onChange={() => {}} >Wrapper</CellDesigner>);
     const cell = cellDesigner.find('.cell0');
 
     cell.props().onDrop(eventData);
@@ -117,6 +119,6 @@ describe('Cell', () => {
 
     cellDesigner.instance().processMove(testContext);
 
-    expect(cellDesigner.text()).to.eql('otherComponent');
+    expect(cellDesigner.text()).to.eql('Wrapper');
   });
 });

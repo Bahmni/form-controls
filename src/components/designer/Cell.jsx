@@ -47,20 +47,25 @@ export class CellDesigner extends DropTarget {
   }
 
   updateMetadata(newMetadata) {
-    var updatedControlContexts = map(this.state.controlContexts, (context) => {
+    const updatedControlContexts = map(this.state.controlContexts, (context) => {
       if (context.data.id === newMetadata.id) {
-        return Object.assign({}, context, {data: newMetadata});
+        return Object.assign({}, context, { data: newMetadata });
       }
       return context;
     });
-    this.setState( { controlContexts: updatedControlContexts });
+    this.setState({ controlContexts: updatedControlContexts });
   }
 
   getComponents() {
     if (this.state.controlContexts.length > 0) {
-      return this.state.controlContexts.map((context, idx) => {
-        return React.cloneElement(this.props.children, { context , parentRef: this, onUpdateMetadata: this.updateMetadata });
-      });
+      return this.state.controlContexts.map(
+        context => React.cloneElement(this.props.children,
+          {
+            context, parentRef: this,
+            onUpdateMetadata: this.updateMetadata,
+          }
+        )
+      );
     }
     return this.state.defaultComponent;
   }
@@ -77,10 +82,10 @@ export class CellDesigner extends DropTarget {
     return (
       <div
         className={ `cell${this.cellPosition}` }
+        onChange={ this.changeHandler }
         onDragOver={ this.onDragOver }
         onDrop={ this.onDrop }
-        onChange={ this.changeHandler }
-        style={style}
+        style={ style }
       >{ this.getComponents() }</div>
     );
   }

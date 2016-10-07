@@ -12,7 +12,7 @@ describe('LabelDesigner', () => {
 
   beforeEach(() => {
     metadata = { id: 'someId', type: 'label', value: 'History Notes' };
-    wrapper = mount(<LabelDesigner metadata={metadata} />);
+    wrapper = mount(<LabelDesigner metadata={metadata} onUpdateMetadata={() => {}} />);
   });
 
   it('should render the non editable value', () => {
