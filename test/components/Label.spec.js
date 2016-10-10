@@ -11,6 +11,6 @@ describe('Label', () => {
     const metadata = { value: 'History Notes', type: 'label' };
 
     const wrapper = shallow(<Label metadata={metadata} />);
-    expect(wrapper.find('label').text()).to.eql('History Notes');
+    expect(wrapper.find('span').text()).to.eql('History Notes');
   });
 });

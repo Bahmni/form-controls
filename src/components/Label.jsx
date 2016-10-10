@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import 'src/helpers/componentStore';
 
-export const Label = ({ metadata }) => <label>{metadata.value}</label>;
+export const Label = ({ metadata }) => <span>{metadata.value}</span>;
 
 Label.propTypes = {
   metadata: PropTypes.shape({
