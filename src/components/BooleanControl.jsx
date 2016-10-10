@@ -43,11 +43,12 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { id, displayType = 'radio' } = this.props.metadata;
+    const { id, displayType = 'radio', options } = this.props.metadata;
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
       return React.createElement(registeredComponent, {
         id,
+        options,
         value: this.value,
         ref: this.storeChildRef,
       });
@@ -62,6 +63,7 @@ BooleanControl.propTypes = {
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
+    options: PropTypes.array.isRequired,
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
   }),

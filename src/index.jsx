@@ -17,3 +17,5 @@ export { TextBoxDesigner } from 'components/designer/TextBoxDesigner.jsx';
 export { NumericBoxDesigner } from 'components/designer/NumericBoxDesigner.jsx';
 export { GridDesigner } from 'components/designer/Grid.jsx';
 export { CellDesigner } from 'components/designer/Cell.jsx';
+export { RadioButtonDesigner } from 'components/designer/RadioButton.jsx';
+export { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';

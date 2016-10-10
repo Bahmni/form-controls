@@ -39,6 +39,10 @@ describe('BooleanControl', () => {
         name: 'Pulse',
         datatype: 'Boolean',
       },
+      options: [
+        { name: 'Yes', value: true },
+        { name: 'No', value: false },
+      ],
     };
   });
 
@@ -50,6 +54,7 @@ describe('BooleanControl', () => {
     const wrapper = shallow(<BooleanControl formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
     expect(wrapper.find('DummyRadioControl').props().id).to.eql('100');
+    expect(wrapper.find('DummyRadioControl').props().options).to.deep.eql(metadata.options);
   });
 
   it('should return null when registered component not found', () => {

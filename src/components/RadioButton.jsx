@@ -19,16 +19,16 @@ export class RadioButton extends Component {
 
   displayRadioButtons() {
     return map(this.props.options, (option, index) =>
-     <div key={index} onClick={() => this.changeValue(option.value)}>
-       <input
-         checked={this.state.value === option.value}
-         key={index}
-         name={this.props.id}
-         type="radio"
-         value={option.value}
-       />
-       {option.name}
-     </div>
+      <div className="options-list" key={index} onClick={() => this.changeValue(option.value)}>
+        <input
+          checked={this.state.value === option.value}
+          key={index}
+          name={this.props.id}
+          type="radio"
+          value={option.value}
+        />
+        {option.name}
+      </div>
     );
   }
 
@@ -39,15 +39,8 @@ export class RadioButton extends Component {
 
 RadioButton.propTypes = {
   id: PropTypes.string.isRequired,
-  options: PropTypes.array,
+  options: PropTypes.array.isRequired,
   value: PropTypes.any,
-};
-
-RadioButton.defaultProps = {
-  options: [
-    { name: 'Yes', value: true },
-    { name: 'No', value: false },
-  ],
 };
 
 window.componentStore.registerComponent('radio', RadioButton);
