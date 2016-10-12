@@ -1,6 +1,6 @@
 {
   "name": "bahmni-form-controls",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "dependencies": {
     "abab": {
       "version": "1.0.3",
@@ -1324,18 +1324,6 @@
       "version": "0.2.3",
       "from": "eslint-import-resolver-node@>=0.2.0 <0.3.0",
       "resolved": "https://registry.npmjs.org/eslint-import-resolver-node/-/eslint-import-resolver-node-0.2.3.tgz"
-    },
-    "espree": {
-      "version": "3.3.0",
-      "from": "espree@>=3.1.6 <4.0.0",
-      "resolved": "https://registry.npmjs.org/espree/-/espree-3.3.0.tgz",
-      "dependencies": {
-        "acorn": {
-          "version": "4.0.3",
-          "from": "acorn@>=4.0.1 <5.0.0",
-          "resolved": "https://registry.npmjs.org/acorn/-/acorn-4.0.3.tgz"
-        }
-      }
     },
     "esprima": {
       "version": "2.7.3",
