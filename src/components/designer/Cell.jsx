@@ -41,7 +41,11 @@ export class CellDesigner extends DropTarget {
 
   processDrop(context) {
     const controlContexts = this.state.controlContexts;
-    controlContexts.push(context);
+    const location = this.props.location;
+    const updatedContext = Object.assign({}, context);
+    const properties = Object.assign({}, updatedContext.data.properties, { location });
+    updatedContext.data.properties = properties;
+    controlContexts.push(updatedContext);
     this.changeHandler(this.cellPosition);
     this.setState({ controlContexts });
   }

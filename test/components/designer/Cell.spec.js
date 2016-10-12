@@ -9,7 +9,18 @@ chai.use(chaiEnzyme());
 
 describe('Cell', () => {
   let eventData;
-  const testContext = { type: 'someType', data: { id: 123 } };
+  const testContext = {
+    type: 'someType',
+    data: {
+      id: 123,
+      properties: {
+        location: {
+          row: 0,
+          column: 0,
+        },
+      },
+    },
+  };
   const fakeComponent = () => (<span>TestComponent</span>);
   before(() => {
     eventData = {
@@ -65,7 +76,17 @@ describe('Cell', () => {
 
   it('Should render multiple copies of child component when components get dropped on it', () => {
     const otherComponent = () => (<span>otherComponent</span>);
-    const otherContext = { type: 'otherType' };
+    const otherContext = { type: 'otherType',
+      data: {
+        id: 123,
+        properties: {
+          location: {
+            row: 0,
+            column: 0,
+          },
+        },
+      },
+    };
     window.componentStore.registerDesignerComponent('otherType', {
       control: otherComponent,
     });
@@ -101,7 +122,17 @@ describe('Cell', () => {
 
   it('should remove only the dragged out component', () => {
     const otherComponent = () => (<span>otherComponent</span>);
-    const otherContext = { type: 'someType', data: { id: 345 } };
+    const otherContext = { type: 'someType',
+      data: {
+        id: 345,
+        properties: {
+          location: {
+            row: 0,
+            column: 0,
+          },
+        },
+      },
+    };
     window.componentStore.registerDesignerComponent('someType', {
       control: otherComponent,
     });
@@ -120,5 +151,19 @@ describe('Cell', () => {
     cellDesigner.instance().processMove(testContext);
 
     expect(cellDesigner.text()).to.eql('Wrapper');
+  });
+
+  it('should update the components location to that of cells when dropped', () => {
+    const cellDesigner = mount(
+        <CellDesigner location={ { column: 10, row: 1 } } onChange={() => {}}>
+          TestComponent
+        </CellDesigner>
+    );
+    const cell = cellDesigner.find('.cell22');
+
+    cell.props().onDrop(eventData);
+    const cellDefinition = cellDesigner.instance().getCellDefinition();
+    expect(cellDesigner.text()).to.eql('TestComponent');
+    expect(cellDefinition[0].properties.location).to.deep.eql({ row: 1, column: 10 });
   });
 });

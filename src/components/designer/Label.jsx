@@ -97,6 +97,12 @@ LabelDesigner.propTypes = {
     id: PropTypes.string,
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
+    properties: PropTypes.shape({
+      location: PropTypes.shape({
+        row: PropTypes.number,
+        column: PropTypes.number,
+      }),
+    }),
   }),
   onUpdateMetadata: PropTypes.func.isRequired,
 };
@@ -118,6 +124,28 @@ const descriptor = {
         name: 'value',
         dataType: 'text',
         defaultValue: 'Label',
+      },
+      {
+        name: 'properties',
+        dataType: 'complex',
+        attributes: [
+          {
+            name: 'location',
+            dataType: 'complex',
+            attributes: [
+              {
+                name: 'row',
+                dataType: 'number',
+                defaultValue: 0,
+              },
+              {
+                name: 'column',
+                dataType: 'number',
+                defaultValue: 0,
+              },
+            ],
+          },
+        ],
       },
     ],
   },

@@ -66,7 +66,12 @@ ObsControlDesigner.propTypes = {
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     label: PropTypes.object.isRequired,
-    properties: PropTypes.object,
+    properties: PropTypes.shape({
+      location: PropTypes.shape({
+        row: PropTypes.number,
+        column: PropTypes.number,
+      }),
+    }),
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
@@ -120,7 +125,24 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [],
+        attributes: [
+          {
+            name: 'location',
+            dataType: 'complex',
+            attributes: [
+              {
+                name: 'row',
+                dataType: 'number',
+                defaultValue: 0,
+              },
+              {
+                name: 'column',
+                dataType: 'number',
+                defaultValue: 0,
+              },
+            ],
+          },
+        ],
       },
     ],
   },
