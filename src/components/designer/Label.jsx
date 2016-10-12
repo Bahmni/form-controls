@@ -95,7 +95,7 @@ LabelDesigner.injectConcept = metadata => metadata;
 
 LabelDesigner.propTypes = {
   metadata: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
   }),

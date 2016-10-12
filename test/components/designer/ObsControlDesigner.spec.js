@@ -53,7 +53,6 @@ describe('ObsControlDesigner', () => {
         id: '123',
         type: 'obsControl',
         concept,
-        displayType: 'text',
         label,
         properties,
       };

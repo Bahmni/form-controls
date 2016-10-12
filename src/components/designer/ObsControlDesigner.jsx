@@ -77,6 +77,7 @@ ObsControlDesigner.injectConceptToMetadata = function (metadata, concept) {
   const filteredConcepts = {
     name: concept.name.name,
     uuid: concept.uuid,
+    datatype: concept.datatype.name,
   };
   const label = {
     type: 'label',
