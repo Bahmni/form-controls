@@ -47,7 +47,6 @@ describe('LabelDesigner', () => {
   it('should return appropriate JSON definition', () => {
     const instance = wrapper.instance();
     const expectedJson = {
-      id: 'someId',
       type: 'label',
       value: 'History Notes',
     };

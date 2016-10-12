@@ -40,7 +40,6 @@ export class LabelDesigner extends Draggable {
 
   getJsonDefinition() {
     return {
-      id: this.props.metadata.id,
       type: 'label',
       value: this.state.value,
     };

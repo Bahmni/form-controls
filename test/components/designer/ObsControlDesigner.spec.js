@@ -46,7 +46,7 @@ describe('ObsControlDesigner', () => {
   context('when concept is present', () => {
     const label = {
       type: 'label',
-      value: 'TestLabel',
+      value: concept.name,
     };
     beforeEach(() => {
       metadata = {
@@ -73,7 +73,7 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should pass appropriate props to Label', () => {
-      const expectedLabelMetadata = { id: 'label-123', type: 'label', value: 'dummyPulse' };
+      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse' };
       expect(wrapper.find('LabelDesigner').props().metadata).to.deep.eql(expectedLabelMetadata);
     });
 
@@ -94,7 +94,7 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should return json definition', () => {
-      const expectedLabelMetadata = { id: 'label-123', type: 'label', value: 'dummyPulse' };
+      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse' };
       const instance = wrapper.instance();
       const expectedJson = { concept, label: expectedLabelMetadata, properties: {} };
       expect(instance.getJsonDefinition()).to.eql(expectedJson);
