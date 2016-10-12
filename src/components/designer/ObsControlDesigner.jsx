@@ -78,7 +78,7 @@ ObsControlDesigner.propTypes = {
   onUpdateMetadata: PropTypes.func.isRequired,
 };
 
-ObsControlDesigner.injectConceptToMetadata = function (metadata, concept) {
+ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
   const filteredConcepts = {
     name: concept.name.name,
     uuid: concept.uuid,
