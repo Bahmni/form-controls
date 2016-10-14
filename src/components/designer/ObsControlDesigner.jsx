@@ -65,7 +65,7 @@ ObsControlDesigner.propTypes = {
     concept: PropTypes.object,
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
-    label: PropTypes.object.isRequired,
+    label: PropTypes.object,
     properties: PropTypes.shape({
       location: PropTypes.shape({
         row: PropTypes.number,
@@ -88,9 +88,8 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
     type: 'label',
     value: concept.name.name,
   };
-  const displayType = concept.datatype.name;
 
-  return Object.assign({}, metadata, { concept: filteredConcepts }, { label }, { displayType });
+  return Object.assign({}, metadata, { concept: filteredConcepts }, { label });
 };
 
 const descriptor = {

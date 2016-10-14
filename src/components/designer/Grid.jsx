@@ -1,16 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { RowDesigner } from 'components/designer/Row.jsx';
-import Constants from 'src/constants';
 import map from 'lodash/map';
-
-export const totalRows = Constants.Grid.defaultRowCount;
+import maxBy from 'lodash/maxBy';
+import groupBy from 'lodash/groupBy';
+import get from 'lodash/get';
 
 export class GridDesigner extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      rowCount: props.rowCount,
-    };
+    this.rowData = groupBy(props.controls, 'properties.location.row');
+    this.state = { rowCount: this._getRowCount() };
     this.changeHandler = this.changeHandler.bind(this);
     this.rowReference = this.rowReference.bind(this);
     this.rowRef = {};
@@ -19,6 +18,12 @@ export class GridDesigner extends Component {
   getControls() {
     const controls = map(this.rowRef, (ref) => ref.getRowDefinition()) || [];
     return [].concat(...controls);
+  }
+
+  _getRowCount() {
+    const maxRow = maxBy(this.props.controls, (control) => control.properties.location.row);
+    if (maxRow) return maxRow.properties.location.row;
+    return 0;
   }
 
   changeHandler(value) {
@@ -36,6 +41,7 @@ export class GridDesigner extends Component {
           key={i}
           onChange={this.changeHandler}
           ref={this.rowReference}
+          rowData={ get(this.rowData, i, []) }
           rowPosition={i}
         >
           { this.props.children }
@@ -60,13 +66,8 @@ export class GridDesigner extends Component {
 }
 
 GridDesigner.propTypes = {
-  rowCount: PropTypes.number,
+  controls: PropTypes.array.isRequired,
 };
-
-GridDesigner.defaultProps = {
-  rowCount: totalRows,
-};
-
 
 const descriptor = {
   control: GridDesigner,
@@ -78,7 +79,6 @@ const descriptor = {
       {
         name: 'rowCount',
         dataType: 'number',
-        defaultValue: totalRows.toString(),
       },
     ],
   },

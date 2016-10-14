@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { CellDesigner } from 'components/designer/Cell.jsx';
 import Constants from 'src/constants';
 import map from 'lodash/map';
+import groupBy from 'lodash/groupBy';
+import get from 'lodash/get';
 
 export const rowWidth = Constants.Grid.defaultRowWidth;
 
@@ -12,6 +14,7 @@ export class RowDesigner extends Component {
     this.changeHandler = this.changeHandler.bind(this);
     this.cellReference = this.cellReference.bind(this);
     this.cellRef = {};
+    this.cellData = groupBy(props.rowData, 'properties.location.column');
   }
 
   getRowDefinition() {
@@ -27,17 +30,20 @@ export class RowDesigner extends Component {
   }
 
   createCells() {
-    const { columns: cols } = this.props;
+    const { columns } = this.props;
     const cells = [];
-    for (let i = 0; i < cols; ++i) {
-      cells.push(<CellDesigner
-        key={i}
-        location={ { column: i, row: this.props.rowPosition } }
-        onChange={this.changeHandler}
-        ref={this.cellReference}
-      >
-        { this.props.children }
-      </CellDesigner>);
+    for (let i = 0; i < columns; ++i) {
+      cells.push(
+        <CellDesigner
+          cellData={get(this.cellData, i, [])}
+          key={i}
+          location={{ column: i, row: this.props.rowPosition }}
+          onChange={this.changeHandler}
+          ref={this.cellReference}
+        >
+          { this.props.children }
+        </CellDesigner>
+      );
     }
     return cells;
   }
@@ -60,6 +66,7 @@ export class RowDesigner extends Component {
 RowDesigner.propTypes = {
   columns: PropTypes.number,
   onChange: PropTypes.func.isRequired,
+  rowData: PropTypes.array.isRequired,
   rowPosition: PropTypes.number,
 };
 

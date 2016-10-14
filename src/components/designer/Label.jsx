@@ -1,8 +1,7 @@
-import React, { PropTypes } from 'react';
-import { Draggable } from 'components/Draggable.jsx';
+import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 
-export class LabelDesigner extends Draggable {
+export class LabelDesigner extends Component {
   constructor(props) {
     super(props);
     this.props = props;
@@ -14,7 +13,6 @@ export class LabelDesigner extends Draggable {
     this.onBlur = this.onBlur.bind(this);
     this.onEnterKey = this.onEnterKey.bind(this);
     this.storeComponentRef = this.storeComponentRef.bind(this);
-    this.processDragStart = this.processDragStart.bind(this);
   }
 
   componentDidUpdate() {
@@ -75,22 +73,11 @@ export class LabelDesigner extends Draggable {
         />
       );
     }
-    const context = {
-      type: this.props.metadata.type,
-      data: Object.assign({}, this.props.metadata, { value: this.state.value }),
-    };
-
-    return (
-      <span
-        draggable="true"
-        onDoubleClick={ this.onDoubleClick }
-        onDragEnd={ this.onDragEnd(context) }
-        onDragStart={ this.onDragStart(context) }
-      >{ this.state.value }</span>);
+    return (<span onDoubleClick={ this.onDoubleClick }>{ this.state.value }</span>);
   }
 }
 
-LabelDesigner.injectConcept = metadata => metadata;
+LabelDesigner.injectConceptToMetadata = metadata => metadata;
 
 LabelDesigner.propTypes = {
   metadata: PropTypes.shape({
@@ -136,12 +123,10 @@ const descriptor = {
               {
                 name: 'row',
                 dataType: 'number',
-                defaultValue: 0,
               },
               {
                 name: 'column',
                 dataType: 'number',
-                defaultValue: 0,
               },
             ],
           },

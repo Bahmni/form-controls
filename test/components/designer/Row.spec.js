@@ -10,7 +10,7 @@ chai.use(chaiEnzyme());
 
 describe('Row', () => {
   it('should render the default number of cells', () => {
-    const rowDesigner = shallow(<RowDesigner onChange={() => {}} />);
+    const rowDesigner = shallow(<RowDesigner onChange={() => {}} rowData={[]} />);
 
     const row = rowDesigner.find('.row0');
 
@@ -18,7 +18,13 @@ describe('Row', () => {
   });
 
   it('should render specified number of cells', () => {
-    const rowDesigner = shallow(<RowDesigner columns={2} onChange={() => {}} rowPosition={1} />);
+    const rowDesigner = shallow(
+      <RowDesigner
+        columns={2}
+        onChange={() => {}}
+        rowData={[]}
+        rowPosition={1}
+      />);
 
     const row = rowDesigner.find('.row1');
 
