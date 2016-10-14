@@ -24,10 +24,34 @@ describe('ObsControlDesigner', () => {
   let metadata;
   let onSelectSpy;
 
+  it('should inject concept to metadata', () => {
+    metadata = { id: 'someId', type: 'obsControl' };
+    const someConcept = {
+      name: {
+        name: 'someName',
+      },
+      datatype: {
+        name: 'someDatatype',
+      },
+      uuid: 'someUuid',
+    };
+    const expectedMetadata = {
+      id: 'someId',
+      type: 'obsControl',
+      concept: { name: 'someName', datatype: 'someDatatype', uuid: 'someUuid' },
+      label: {
+        type: 'label',
+        value: someConcept.name.name,
+      },
+    };
+    const metadataWithConcept = ObsControlDesigner.injectConceptToMetadata(metadata, someConcept);
+    expect(metadataWithConcept).to.deep.eql(expectedMetadata);
+  });
+
   context('when concept is not present', () => {
     beforeEach(() => {
       onSelectSpy = sinon.spy();
-      metadata = { id: '123', type: 'obsControl', properties };
+      metadata = { id: '123', label: {}, type: 'obsControl', properties };
       wrapper = shallow(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
     });
 
@@ -47,6 +71,7 @@ describe('ObsControlDesigner', () => {
     const label = {
       type: 'label',
       value: concept.name,
+      properties: {},
     };
     beforeEach(() => {
       metadata = {
@@ -73,7 +98,7 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should pass appropriate props to Label', () => {
-      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse' };
+      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse', properties: {} };
       expect(wrapper.find('LabelDesigner').props().metadata).to.deep.eql(expectedLabelMetadata);
     });
 
@@ -94,7 +119,7 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should return json definition', () => {
-      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse' };
+      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse', properties: {} };
       const instance = wrapper.instance();
       const expectedJson = { concept, label: expectedLabelMetadata, properties: {} };
       expect(instance.getJsonDefinition()).to.eql(expectedJson);

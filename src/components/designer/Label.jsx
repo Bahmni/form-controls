@@ -40,17 +40,12 @@ export class LabelDesigner extends Component {
     return {
       type: 'label',
       value: this.state.value,
+      properties: this.props.metadata.properties,
     };
-  }
-
-  updateMetadata(value) {
-    const newMetadata = Object.assign({}, this.props.metadata, { value });
-    this.props.onUpdateMetadata(newMetadata);
   }
 
   updateValue() {
     const value = (this.input && this.input.value) ? this.input.value : this.state.value;
-    this.updateMetadata(value);
     this.setState({
       isEditable: false,
       value,
@@ -91,7 +86,6 @@ LabelDesigner.propTypes = {
       }),
     }),
   }),
-  onUpdateMetadata: PropTypes.func.isRequired,
 };
 
 const descriptor = {

@@ -11,7 +11,6 @@ export class ObsControlDesigner extends Component {
     this.metadata = props.metadata;
     this.storeChildRef = this.storeChildRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
-    this.updateLabelMetdata = this.updateLabelMetdata.bind(this);
   }
 
   getJsonDefinition() {
@@ -36,11 +35,6 @@ export class ObsControlDesigner extends Component {
     });
   }
 
-  updateLabelMetdata(newMetadata) {
-    this.metadata.label = newMetadata;
-    this.props.onUpdateMetadata(this.metadata);
-  }
-
   render() {
     const { concept, id } = this.props.metadata;
     const designerComponent = concept && window.componentStore.getDesignerComponent(concept.datatype); // eslint-disable-line max-len
@@ -49,7 +43,6 @@ export class ObsControlDesigner extends Component {
         <div onClick={ (event) => this.props.onSelect(event, id) }>
           <LabelDesigner
             metadata={ this.props.metadata.label }
-            onUpdateMetadata={ this.updateLabelMetdata }
             ref={ this.storeLabelRef }
           />
           {this.displayObsControl(designerComponent)}
@@ -75,7 +68,6 @@ ObsControlDesigner.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
-  onUpdateMetadata: PropTypes.func.isRequired,
 };
 
 ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {

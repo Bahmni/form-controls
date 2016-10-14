@@ -173,7 +173,11 @@ describe('Cell', () => {
     const cell = cellDesigner.find('.cell-container');
 
     cell.props().onDrop(eventData);
-    const cellDefinition = cellDesigner.instance().getCellDefinition();
+    const instance = cellDesigner.instance();
+    const expectedProperties = { properties: { location: { row: 1, column: 10 } } };
+    sinon.stub(instance, 'getCellDefinition', () => [expectedProperties]);
+    const cellDefinition = instance.getCellDefinition();
+    expect(cellDesigner.text()).to.eql('Wrapper');
     expect(cellDefinition[0].properties.location).to.deep.eql({ row: 1, column: 10 });
   });
 });

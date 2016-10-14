@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { DropTarget } from 'src/components/DropTarget.jsx';
 import Constants from 'src/constants';
-import map from 'lodash/map';
+import each from 'lodash/each';
 import isEmpty from 'lodash/isEmpty';
 
 const style = {
@@ -26,7 +26,8 @@ export class CellDesigner extends DropTarget {
     this.cellPosition = cellPosition(row, column);
     this.getCellDefinition = this.getCellDefinition.bind(this);
     this.changeHandler = this.changeHandler.bind(this);
-    this.updateMetadata = this.updateMetadata.bind(this);
+    this.childControls = {};
+    this.storeChildRef = this.storeChildRef.bind(this);
   }
 
   processMove(metadata) {
@@ -44,13 +45,8 @@ export class CellDesigner extends DropTarget {
     this.setState({ data: dataClone });
   }
 
-  updateMetadata(newMetadata) {
-    const updatedData = map(this.state.data, (data) => {
-      if (data.id === newMetadata.id) return newMetadata;
-      return data;
-    }
-  );
-    this.setState({ data: updatedData });
+  storeChildRef(ref) {
+    if (ref) this.childControls[ref.props.metadata.id] = ref;
   }
 
   getComponents() {
@@ -60,7 +56,7 @@ export class CellDesigner extends DropTarget {
     }
     return data.map(metadata =>
       React.cloneElement(this.props.children,
-        { metadata, parentRef: this, onUpdateMetadata: this.updateMetadata }
+        { metadata, parentRef: this, ref: this.storeChildRef }
       )
     );
   }
@@ -70,7 +66,11 @@ export class CellDesigner extends DropTarget {
   }
 
   getCellDefinition() {
-    return this.state.data;
+    const cellDefinition = [];
+    each(this.childControls, (childControl) => {
+      cellDefinition.push(childControl.getWrappedInstance().getJsonDefinition());
+    });
+    return cellDefinition;
   }
 
   render() {

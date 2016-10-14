@@ -11,8 +11,8 @@ describe('LabelDesigner', () => {
   let metadata;
 
   beforeEach(() => {
-    metadata = { id: 'someId', type: 'label', value: 'History Notes' };
-    wrapper = mount(<LabelDesigner metadata={metadata} onUpdateMetadata={() => {}} />);
+    metadata = { id: 'someId', type: 'label', value: 'History Notes', properties: {} };
+    wrapper = mount(<LabelDesigner metadata={metadata} />);
   });
 
   it('should render the non editable value', () => {
@@ -49,6 +49,7 @@ describe('LabelDesigner', () => {
     const expectedJson = {
       type: 'label',
       value: 'History Notes',
+      properties: {},
     };
     expect(instance.getJsonDefinition()).to.deep.eql(expectedJson);
   });
