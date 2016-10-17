@@ -68,7 +68,9 @@ export class CellDesigner extends DropTarget {
   getCellDefinition() {
     const cellDefinition = [];
     each(this.childControls, (childControl) => {
-      cellDefinition.push(childControl.getWrappedInstance().getJsonDefinition());
+      if (childControl.getWrappedInstance()) {
+        cellDefinition.push(childControl.getWrappedInstance().getJsonDefinition());
+      }
     });
     return cellDefinition;
   }
