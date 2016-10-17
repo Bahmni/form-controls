@@ -10,6 +10,7 @@ chai.use(chaiEnzyme());
 describe('Cell', () => {
   let eventData;
   const metadata = { id: 123 };
+  const TestComponent = () => <div>TestComponent</div>;
 
   before(() => {
     eventData = {
@@ -71,9 +72,9 @@ describe('Cell', () => {
         cellData={[]}
         location={location}
         onChange={() => {}}
-      >
-        TestComponent
-      </CellDesigner>);
+        wrapper={ TestComponent }
+      />
+    );
 
     const cell = cellDesigner.find('.cell-container');
 
@@ -102,9 +103,9 @@ describe('Cell', () => {
         cellData={[]}
         location={location}
         onChange={() => {}}
-      >
-        TestComponent
-      </CellDesigner>);
+        wrapper={ TestComponent }
+      />
+    );
 
     const cell = cellDesigner.find('.cell-container');
     expect(cellDesigner.text()).to.eql('');
@@ -120,6 +121,7 @@ describe('Cell', () => {
         cellData={[]}
         location={location}
         onChange={() => {}}
+        wrapper={ TestComponent }
       />
     );
     const cell = cellDesigner.find('.cell-container');
@@ -148,16 +150,15 @@ describe('Cell', () => {
         cellData={[]}
         location={location}
         onChange={() => {}}
-      >
-        Wrapper
-      </CellDesigner>);
-
+        wrapper={ TestComponent }
+      />
+    );
     const cell = cellDesigner.find('.cell-container');
 
     cell.props().onDrop(eventData);
     cell.props().onDrop(otherData);
     cellDesigner.instance().processMove(metadata);
-    expect(cellDesigner.text()).to.eql('Wrapper');
+    expect(cellDesigner.text()).to.eql('TestComponent');
   });
 
   it('should update the components location to that of cells when dropped', () => {
@@ -166,10 +167,9 @@ describe('Cell', () => {
         cellData={[]}
         location={{ column: 10, row: 1 }}
         onChange={() => {}}
-      >
-        Wrapper
-      </CellDesigner>);
-
+        wrapper={ TestComponent }
+      />
+    );
     const cell = cellDesigner.find('.cell-container');
 
     cell.props().onDrop(eventData);
@@ -177,7 +177,7 @@ describe('Cell', () => {
     const expectedProperties = { properties: { location: { row: 1, column: 10 } } };
     sinon.stub(instance, 'getCellDefinition', () => [expectedProperties]);
     const cellDefinition = instance.getCellDefinition();
-    expect(cellDesigner.text()).to.eql('Wrapper');
+    expect(cellDesigner.text()).to.eql('TestComponent');
     expect(cellDefinition[0].properties.location).to.deep.eql({ row: 1, column: 10 });
   });
 });
