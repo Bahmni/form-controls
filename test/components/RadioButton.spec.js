@@ -21,7 +21,7 @@ describe('RadioButton Component', () => {
 
     expect(wrapper.find('.options-list').at(1).text()).to.eql('No');
     expect(wrapper.find('input').at(1).props().checked).to.eql(false);
-    expect(wrapper.find('input').at(1).props().checked).to.eql(false);
+    expect(wrapper.find('input').at(1).props().value).to.eql(false);
   });
 
   it('should render the radio button with selected value', () => {

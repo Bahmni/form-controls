@@ -8,6 +8,7 @@ export { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 export { AutoComplete } from 'components/AutoComplete.jsx';
 export { BooleanControl } from 'components/BooleanControl.jsx';
 export { RadioButton } from 'components/RadioButton.jsx';
+export { Button } from 'components/Button.jsx';
 
 //  -----------designer components------------------
 

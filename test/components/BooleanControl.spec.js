@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { BooleanControl } from 'components/BooleanControl.jsx';
+import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
@@ -23,11 +24,11 @@ DummyRadioControl.propTypes = {
 describe('BooleanControl', () => {
   let metadata;
   before(() => {
-    window.componentStore.registerComponent('radio', DummyRadioControl);
+    window.componentStore.registerComponent('button', DummyRadioControl);
   });
 
   after(() => {
-    window.componentStore.deRegisterComponent('radio');
+    window.componentStore.deRegisterComponent('button');
   });
 
   beforeEach(() => {
@@ -50,11 +51,26 @@ describe('BooleanControl', () => {
 
   const formNamespace = `${formUuid}/100`;
 
-  it('should render Dummy Control', () => {
+  it('should render Dummy Control of displayType button by default', () => {
     const wrapper = shallow(<BooleanControl formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
     expect(wrapper.find('DummyRadioControl').props().id).to.eql('someFormUuid-100');
     expect(wrapper.find('DummyRadioControl').props().options).to.deep.eql(metadata.options);
+  });
+
+  it('should render Dummy Control of specified displayType', () => {
+    window.componentStore.registerComponent('radio', DummyRadioControl);
+    const spy = sinon.spy(window.componentStore, 'getRegisteredComponent');
+
+    metadata.displayType = 'radio';
+    const wrapper = shallow(<BooleanControl formUuid={formUuid} metadata={metadata} />);
+
+    sinon.assert.calledWith(spy, 'radio');
+    expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
+    expect(wrapper.find('DummyRadioControl').props().id).to.eql('someFormUuid-100');
+    expect(wrapper.find('DummyRadioControl').props().options).to.deep.eql(metadata.options);
+
+    window.componentStore.deRegisterComponent('radio');
   });
 
   it('should return null when registered component not found', () => {
