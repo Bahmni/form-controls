@@ -21,8 +21,9 @@ export class BooleanControlDesigner extends Component {
       { name: 'Yes', value: true },
       { name: 'No', value: false },
     ];
-    const { metadata, metadata: { displayType = 'radio' } } = this.props;
-    const metadataWithOptions = Object.assign({}, { options: defaultOptions }, metadata);
+    const { metadata, metadata: { displayType = 'button' } } = this.props;
+    const metadataWithOptions =
+      Object.assign({}, { options: defaultOptions, displayType }, metadata);
     const registeredComponent = window.componentStore.getDesignerComponent(displayType);
     if (registeredComponent) {
       return React.createElement(registeredComponent.control, {

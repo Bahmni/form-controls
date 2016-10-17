@@ -43,7 +43,7 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { id, displayType = 'button', options } = this.props.metadata;
+    const { id, displayType, options } = this.props.metadata;
     const childControllId = `${this.props.formUuid}-${id}`;
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {

@@ -19,6 +19,7 @@ export { NumericBoxDesigner } from 'components/designer/NumericBoxDesigner.jsx';
 export { GridDesigner } from 'components/designer/Grid.jsx';
 export { CellDesigner } from 'components/designer/Cell.jsx';
 export { RadioButtonDesigner } from 'components/designer/RadioButton.jsx';
+export { ButtonDesigner } from 'components/designer/Button.jsx';
 export { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';
 export { Draggable } from 'components/Draggable.jsx';
 export { RowDesigner } from 'components/designer/Row.jsx';

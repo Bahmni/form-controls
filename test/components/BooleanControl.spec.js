@@ -40,6 +40,7 @@ describe('BooleanControl', () => {
         name: 'Pulse',
         datatype: 'Boolean',
       },
+      displayType: 'button',
       options: [
         { name: 'Yes', value: true },
         { name: 'No', value: false },

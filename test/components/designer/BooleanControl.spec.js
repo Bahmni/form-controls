@@ -24,11 +24,11 @@ DummyRadioControl.propTypes = {
 describe('Boolean Control Designer', () => {
   let metadata;
   before(() => {
-    window.componentStore.registerDesignerComponent('radio', { control: DummyRadioControl });
+    window.componentStore.registerDesignerComponent('button', { control: DummyRadioControl });
   });
 
   after(() => {
-    window.componentStore.deRegisterDesignerComponent('radio');
+    window.componentStore.deRegisterDesignerComponent('button');
   });
 
   const options = [
@@ -50,7 +50,8 @@ describe('Boolean Control Designer', () => {
 
   it('should render Dummy Control with default options', () => {
     const wrapper = shallow(<BooleanControlDesigner metadata={metadata} />);
-    const expectedMetadata = Object.assign({}, { options }, metadata);
+    const expectedMetadata = Object.assign({}, { options, displayType: 'button' }, metadata);
+
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
     expect(wrapper.find('DummyRadioControl').props().metadata).to.deep.eql(expectedMetadata);
   });
@@ -72,7 +73,9 @@ describe('Boolean Control Designer', () => {
       { name: 'Ha', value: 'Yes' },
       { name: 'Na', value: 'No' },
     ];
+
     const wrapper = shallow(<BooleanControlDesigner metadata={metadata} />);
-    expect(wrapper.find('DummyRadioControl').props().metadata).to.deep.eql(metadata);
+    const expectedMetadata = Object.assign({}, { options, displayType: 'button' }, metadata);
+    expect(wrapper.find('DummyRadioControl').props().metadata).to.deep.eql(expectedMetadata);
   });
 });
