@@ -35,15 +35,13 @@ export class RowDesigner extends Component {
     for (let i = 0; i < columns; ++i) {
       cells.push(
         <CellDesigner
-          cellData={get(this.cellData, i, [])}
+          cellData={ get(this.cellData, i, []) }
           key={i}
           location={{ column: i, row: this.props.rowPosition }}
-          onChange={this.changeHandler}
-          ref={this.cellReference}
-        >
-          { this.props.children }
-        </CellDesigner>
-      );
+          onChange={ this.changeHandler }
+          ref={ this.cellReference }
+          wrapper={ this.props.wrapper }
+        />);
     }
     return cells;
   }
@@ -67,12 +65,12 @@ RowDesigner.propTypes = {
   columns: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   rowData: PropTypes.array.isRequired,
-  rowPosition: PropTypes.number,
+  rowPosition: PropTypes.number.isRequired,
+  wrapper: PropTypes.func.isRequired,
 };
 
 RowDesigner.defaultProps = {
   columns: rowWidth,
-  rowPosition: 0,
 };
 
 

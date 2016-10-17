@@ -54,9 +54,9 @@ export class CellDesigner extends DropTarget {
     if (isEmpty(data)) {
       return defaultCellControl;
     }
-    return data.map(metadata =>
-      React.cloneElement(this.props.children,
-        { metadata, parentRef: this, ref: this.storeChildRef }
+    return data.map((metadata, key) =>
+      React.createElement(this.props.wrapper,
+        { key, metadata, parentRef: this, ref: this.storeChildRef }
       )
     );
   }
@@ -97,6 +97,7 @@ CellDesigner.propTypes = {
     row: PropTypes.number,
   }).isRequired,
   onChange: PropTypes.func.isRequired,
+  wrapper: PropTypes.func.isRequired,
 };
 
 const descriptor = {

@@ -43,9 +43,8 @@ export class GridDesigner extends Component {
           ref={this.rowReference}
           rowData={ get(this.rowData, i, []) }
           rowPosition={i}
-        >
-          { this.props.children }
-        </RowDesigner >);
+          wrapper={ this.props.wrapper }
+        />);
     }
     return rows;
   }
@@ -67,6 +66,7 @@ export class GridDesigner extends Component {
 
 GridDesigner.propTypes = {
   controls: PropTypes.array.isRequired,
+  wrapper: PropTypes.func.isRequired,
 };
 
 const descriptor = {
