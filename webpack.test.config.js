@@ -32,11 +32,11 @@ module.exports = {
         loader: 'json'
       }
     ],
-    postLoaders: [
+    preLoaders: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /(test|node_modules)\//,
-        loader: 'istanbul-instrumenter'
+        include: path.join(__dirname, 'src'),
+        loader: 'isparta'
       }
     ]
 
