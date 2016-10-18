@@ -13,6 +13,7 @@ export class LabelDesigner extends Component {
     this.onBlur = this.onBlur.bind(this);
     this.onEnterKey = this.onEnterKey.bind(this);
     this.storeComponentRef = this.storeComponentRef.bind(this);
+    this.getJsonDefinition = this.getJsonDefinition.bind(this);
   }
 
   componentDidUpdate() {

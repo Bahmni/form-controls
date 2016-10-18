@@ -35,6 +35,7 @@ describe('Cell', () => {
         cellData={[]}
         location={location}
         onChange={() => {}}
+        wrapper={ TestComponent }
       />
     );
 
@@ -53,6 +54,7 @@ describe('Cell', () => {
         cellData={[]}
         location={location}
         onChange={() => {}}
+        wrapper={ TestComponent }
       />
     );
 
@@ -179,5 +181,25 @@ describe('Cell', () => {
     const cellDefinition = instance.getCellDefinition();
     expect(cellDesigner.text()).to.eql('TestComponent');
     expect(cellDefinition[0].properties.location).to.deep.eql({ row: 1, column: 10 });
+  });
+
+  it('should raise onChange event when a new control gets dropped', () => {
+    const onChange = { onChange: () => {} };
+    const mockOnChange = sinon.mock(onChange);
+    mockOnChange.expects('onChange').once();
+
+    const cellDesigner = shallow(
+      <CellDesigner
+        cellData={[]}
+        location={location}
+        onChange={onChange.onChange}
+        wrapper={ TestComponent }
+      />
+    );
+
+    const cell = cellDesigner.find('.cell-container');
+    cell.props().onDrop(eventData);
+
+    mockOnChange.verify();
   });
 });

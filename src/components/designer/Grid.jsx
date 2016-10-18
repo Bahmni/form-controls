@@ -4,6 +4,7 @@ import map from 'lodash/map';
 import maxBy from 'lodash/maxBy';
 import groupBy from 'lodash/groupBy';
 import get from 'lodash/get';
+import constants from 'src/constants';
 
 export class GridDesigner extends Component {
   constructor(props) {
@@ -22,12 +23,12 @@ export class GridDesigner extends Component {
 
   _getRowCount() {
     const maxRow = maxBy(this.props.controls, (control) => control.properties.location.row);
-    if (maxRow) return maxRow.properties.location.row;
-    return 0;
+    if (maxRow) return Math.max(maxRow.properties.location.row + 1, this.props.minRows);
+    return this.props.minRows;
   }
 
   changeHandler(value) {
-    if ((this.state.rowCount === 0) || (value === this.state.rowCount)) {
+    if (value === this.state.rowCount - 1) {
       this.setState({ rowCount: this.state.rowCount + 1 });
     }
   }
@@ -35,7 +36,7 @@ export class GridDesigner extends Component {
   createRows() {
     const { rowCount } = this.state;
     const rows = [];
-    for (let i = 0; i <= rowCount; ++i) {
+    for (let i = 0; i < rowCount; ++i) {
       rows.push(
         <RowDesigner
           key={i}
@@ -66,7 +67,12 @@ export class GridDesigner extends Component {
 
 GridDesigner.propTypes = {
   controls: PropTypes.array.isRequired,
+  minRows: PropTypes.number,
   wrapper: PropTypes.func.isRequired,
+};
+
+GridDesigner.defaultProps = {
+  minRows: constants.Grid.minRows,
 };
 
 const descriptor = {

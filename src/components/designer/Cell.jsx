@@ -52,7 +52,9 @@ export class CellDesigner extends DropTarget {
   }
 
   changeHandler(cellLocation) {
-    this.props.onChange(cellLocation);
+    if (this.props.onChange) {
+      this.props.onChange(cellLocation);
+    }
   }
 
   getCellDefinition() {
@@ -69,7 +71,6 @@ export class CellDesigner extends DropTarget {
     return (
       <div
         className="cell-container"
-        onChange={ this.changeHandler }
         onDragOver={ this.onDragOver }
         onDrop={ this.onDrop }
       >

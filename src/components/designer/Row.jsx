@@ -22,9 +22,8 @@ export class RowDesigner extends Component {
     return [].concat(...cells);
   }
 
-  changeHandler(cellPosition) {
-    if ((cellPosition === ((this.props.rowPosition * this.props.columns)
-      + (this.props.columns - 1)))) {
+  changeHandler() {
+    if (this.props.onChange) {
       this.props.onChange(this.props.rowPosition);
     }
   }
