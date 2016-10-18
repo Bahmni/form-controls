@@ -33,7 +33,15 @@ module.exports = function (config) {
         {type: 'html'},
         {type: 'text'},
         {type: 'text-summary'}
-      ]
+      ],
+      check: {
+        global: {
+          statements: 98,
+          branches: 95,
+          functions: 98,
+          lines: 96,
+        },
+      },
     }
   });
 };
