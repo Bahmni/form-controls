@@ -1,0 +1,14 @@
+.grid{
+    @include clearfix();
+    display: block;
+    width:100%;
+
+}
+.row{
+    display: flex;
+    flex-flow: row wrap;
+    min-height: 40px;
+}
+.cell-container{
+    flex-grow: 1;
+}

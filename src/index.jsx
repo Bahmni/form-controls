@@ -23,3 +23,5 @@ export { ButtonDesigner } from 'components/designer/Button.jsx';
 export { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';
 export { Draggable } from 'components/Draggable.jsx';
 export { RowDesigner } from 'components/designer/Row.jsx';
+
+import '../styles/styles.scss';

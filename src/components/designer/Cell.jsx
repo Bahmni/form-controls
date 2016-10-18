@@ -4,16 +4,6 @@ import Constants from 'src/constants';
 import each from 'lodash/each';
 import isEmpty from 'lodash/isEmpty';
 
-const style = {
-  display: 'inline-block',
-  minWidth: '60px',
-  minHeight: '40px',
-  height: 'auto',
-  width: 'auto',
-  border: '1px solid',
-  padding: '2px 2px 2px 2px',
-  background: 'white',
-};
 
 const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
 const defaultCellControl = React.createElement(() => <div className="cell" ></div>);
@@ -82,7 +72,6 @@ export class CellDesigner extends DropTarget {
         onChange={ this.changeHandler }
         onDragOver={ this.onDragOver }
         onDrop={ this.onDrop }
-        style={ style }
       >
         { this.getComponents() }
       </div>
