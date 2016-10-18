@@ -6,10 +6,21 @@ export class DropTarget extends Component {
     this.data = data;
     this.onDragOver = this.onDragOver.bind(this);
     this.onDrop = this.onDrop.bind(this);
+    this.onDragEnter = this.onDragEnter.bind(this);
+    this.onDragLeave = this.onDragLeave.bind(this);
+  }
+
+  onDragEnter(e) {
+    this.processDragEnter(e);
+  }
+
+  onDragLeave(e) {
+    this.processDragLeave(e);
   }
 
   onDragOver(e) {
     e.preventDefault();
+    this.processDragOver(e);
   }
 
   onDrop(e) {
@@ -26,6 +37,18 @@ export class DropTarget extends Component {
 
   processMove(context) {
     return context;
+  }
+
+  processDragEnter(e) {
+    return e;
+  }
+
+  processDragLeave(e) {
+    return e;
+  }
+
+  processDragOver(e) {
+    return e;
   }
 
   processDrop(context) {

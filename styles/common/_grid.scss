@@ -4,15 +4,17 @@
   width: 100%;
 
 }
-
-.row {
-  display: flex;
-  flex-flow: row wrap;
-  min-height: 40px;
+.row{
+    display: flex;
+    flex-flow: row wrap;
+    min-height: 40px;
+    border: 1px dotted;
 }
-
-.cell-container {
-  flex-grow: 1;
+.gridCell{
+    flex-grow: 1;
+    &.active{
+        border: 1px dotted;
+    }
 }
 
 .form-control-buttons {

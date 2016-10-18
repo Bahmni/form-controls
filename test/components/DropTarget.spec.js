@@ -65,4 +65,27 @@ describe('DropTarget', () => {
     sinon.assert.notCalled(dropTarget.processMove);
     dropTarget.processMove.restore();
   });
+
+  it('should handle dragenter event with processDragEnter', () => {
+    const dropTarget = new DropTarget();
+    sinon.spy(dropTarget, 'processDragEnter');
+
+
+    dropTarget.onDragEnter(eventData);
+    sinon.assert.calledOnce(dropTarget.processDragEnter);
+    sinon.assert.calledWith(dropTarget.processDragEnter, eventData);
+    dropTarget.processDragEnter.restore();
+  });
+
+
+  it('should handle dragleave event with processDragLeave', () => {
+    const dropTarget = new DropTarget();
+    sinon.spy(dropTarget, 'processDragLeave');
+
+    dropTarget.onDragLeave(eventData);
+
+    sinon.assert.calledOnce(dropTarget.processDragLeave);
+    sinon.assert.calledWith(dropTarget.processDragLeave, eventData);
+    dropTarget.processDragLeave.restore();
+  });
 });

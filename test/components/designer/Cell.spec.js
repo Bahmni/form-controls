@@ -39,7 +39,7 @@ describe('Cell', () => {
       />
     );
 
-    const cell = cellDesigner.find('.cell-container');
+    const cell = cellDesigner.find('.gridCell');
     expect(cell).to.have.prop('onDrop');
 
     sinon.spy(eventData, 'preventDefault');
@@ -58,7 +58,7 @@ describe('Cell', () => {
       />
     );
 
-    const cell = cellDesigner.find('.cell-container');
+    const cell = cellDesigner.find('.gridCell');
     const cellDesignerInstance = cellDesigner.instance();
 
     sinon.spy(cellDesignerInstance, 'processDrop');
@@ -78,7 +78,7 @@ describe('Cell', () => {
       />
     );
 
-    const cell = cellDesigner.find('.cell-container');
+    const cell = cellDesigner.find('.gridCell');
 
     cell.props().onDrop(eventData);
     expect(cellDesigner.text()).to.eql('TestComponent');
@@ -109,7 +109,7 @@ describe('Cell', () => {
       />
     );
 
-    const cell = cellDesigner.find('.cell-container');
+    const cell = cellDesigner.find('.gridCell');
     expect(cellDesigner.text()).to.eql('');
     cell.props().onDrop(eventData);
     expect(cellDesigner.text()).to.eql('TestComponent');
@@ -126,7 +126,7 @@ describe('Cell', () => {
         wrapper={ TestComponent }
       />
     );
-    const cell = cellDesigner.find('.cell-container');
+    const cell = cellDesigner.find('.gridCell');
     cell.props().onDrop(eventData);
     cellDesigner.instance().processMove(metadata);
     expect(cellDesigner.text()).to.eql('');
@@ -155,7 +155,7 @@ describe('Cell', () => {
         wrapper={ TestComponent }
       />
     );
-    const cell = cellDesigner.find('.cell-container');
+    const cell = cellDesigner.find('.gridCell');
 
     cell.props().onDrop(eventData);
     cell.props().onDrop(otherData);
@@ -172,7 +172,7 @@ describe('Cell', () => {
         wrapper={ TestComponent }
       />
     );
-    const cell = cellDesigner.find('.cell-container');
+    const cell = cellDesigner.find('.gridCell');
 
     cell.props().onDrop(eventData);
     const instance = cellDesigner.instance();
@@ -197,7 +197,7 @@ describe('Cell', () => {
       />
     );
 
-    const cell = cellDesigner.find('.cell-container');
+    const cell = cellDesigner.find('.gridCell');
     cell.props().onDrop(eventData);
 
     mockOnChange.verify();

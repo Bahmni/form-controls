@@ -3,6 +3,7 @@ import { DropTarget } from 'src/components/DropTarget.jsx';
 import Constants from 'src/constants';
 import each from 'lodash/each';
 import isEmpty from 'lodash/isEmpty';
+import classNames from 'classnames';
 
 
 const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
@@ -18,11 +19,26 @@ export class CellDesigner extends DropTarget {
     this.changeHandler = this.changeHandler.bind(this);
     this.childControls = {};
     this.storeChildRef = this.storeChildRef.bind(this);
+    this._setActiveClass(false);
+  }
+
+  _setActiveClass(active = false) {
+    this.className = classNames('gridCell', { active });
   }
 
   processMove(metadata) {
     const filteredData = this.state.data.filter((data) => data.id !== metadata.id);
     this.setState({ data: filteredData });
+  }
+
+  processDragEnter() {
+    this._setActiveClass(true);
+    this.forceUpdate();
+  }
+
+  processDragLeave() {
+    this._setActiveClass(false);
+    this.forceUpdate();
   }
 
   processDrop(metadata) {
@@ -32,6 +48,7 @@ export class CellDesigner extends DropTarget {
     metadataClone.properties = Object.assign({}, metadata.properties, location);
     dataClone.push(metadataClone);
     this.changeHandler(this.cellPosition);
+    this.className = classNames('gridCell', { active: false });
     this.setState({ data: dataClone });
   }
 
@@ -70,7 +87,9 @@ export class CellDesigner extends DropTarget {
   render() {
     return (
       <div
-        className="cell-container"
+        className={ this.className }
+        onDragEnter={ this.onDragEnter }
+        onDragLeave={ this.onDragLeave }
         onDragOver={ this.onDragOver }
         onDrop={ this.onDrop }
       >
