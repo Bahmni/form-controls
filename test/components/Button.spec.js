@@ -15,17 +15,17 @@ describe('Button Component', () => {
     const wrapper = shallow(<Button id="someId" options={options} />);
     expect(wrapper).to.have.exactly(2).descendants('button');
 
-    expect(wrapper.find('.options-list').at(0).text()).to.eql('Yes');
-    expect(wrapper.find('.options-list').at(1).text()).to.eql('No');
+    expect(wrapper.find('button').at(0).text()).to.eql('Yes');
+    expect(wrapper.find('button').at(1).text()).to.eql('No');
 
-    expect(wrapper.find('button').at(0)).to.have.className('');
-    expect(wrapper.find('button').at(1)).to.have.className('');
+    expect(wrapper.find('button').at(0)).to.have.className('fl');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
   });
 
   it('should render button with selected value', () => {
     const wrapper = shallow(<Button id="someId" options={options} value />);
-    expect(wrapper.find('button').at(0)).to.have.className('active');
-    expect(wrapper.find('button').at(1)).to.have.className('');
+    expect(wrapper.find('button').at(0)).to.have.className('fl active');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
   });
 
   it('should change the value on click', () => {
@@ -34,8 +34,8 @@ describe('Button Component', () => {
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(false);
 
-    expect(wrapper.find('button').at(0)).to.have.className('');
-    expect(wrapper.find('button').at(1)).to.have.className('active');
+    expect(wrapper.find('button').at(0)).to.have.className('fl');
+    expect(wrapper.find('button').at(1)).to.have.className('fl active');
   });
 
   it('should return the value as undefined if not selected', () => {

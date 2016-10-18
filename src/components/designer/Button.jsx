@@ -9,14 +9,12 @@ export class ButtonDesigner extends Component {
 
   displayButtons() {
     return map(this.props.metadata.options, (option, index) =>
-      <div className="option-list" key={index}>
-        <button key={index}>{option.name}</button>
-      </div>
+      <button key={index}>{option.name}</button>
     );
   }
 
   render() {
-    return <div>{this.displayButtons()}</div>;
+    return <div className="form-control-buttons">{this.displayButtons()}</div>;
   }
 }
 

@@ -1,14 +1,37 @@
-.grid{
-    @include clearfix();
-    display: block;
-    width:100%;
+.grid {
+  @include clearfix();
+  display: block;
+  width: 100%;
 
 }
-.row{
-    display: flex;
-    flex-flow: row wrap;
-    min-height: 40px;
+
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  min-height: 40px;
 }
-.cell-container{
-    flex-grow: 1;
+
+.cell-container {
+  flex-grow: 1;
+}
+
+.form-control-buttons {
+  button {
+    margin: 0 2px 2px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    height: 32px;
+    width: 100px;
+    i.fa-ok {
+      display: none;
+    }
+    &.active {
+      i.fa-ok {
+        display: block;
+        float: left;
+      }
+    }
+  }
 }

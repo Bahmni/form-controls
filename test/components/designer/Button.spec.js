@@ -34,8 +34,8 @@ describe('Button Designer', () => {
   it('should render designer button', () => {
     expect(wrapper).to.have.exactly(2).descendants('button');
 
-    expect(wrapper.find('.option-list').at(0).text()).to.eql('Yes');
-    expect(wrapper.find('.option-list').at(1).text()).to.eql('No');
+    expect(wrapper.find('button').at(0).text()).to.eql('Yes');
+    expect(wrapper.find('button').at(1).text()).to.eql('No');
   });
 
   it('should return json definition', () => {

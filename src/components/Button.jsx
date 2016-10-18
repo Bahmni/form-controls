@@ -20,20 +20,18 @@ export class Button extends Component {
 
   displayButtons() {
     return map(this.props.options, (option, index) =>
-      <div className="options-list" key={index} >
-        <button
-          className={classNames({ active: this.state.value === option.value })}
-          key={index}
-          onClick={() => this.changeValue(option.value)}
-        >
-          {option.name}
-        </button>
-      </div>
+      <button
+        className={classNames('fl', { active: this.state.value === option.value })}
+        key={index}
+        onClick={() => this.changeValue(option.value)}
+      >
+        <i className="fa fa-ok"></i>{option.name}
+      </button>
     );
   }
 
   render() {
-    return <div>{this.displayButtons()}</div>;
+    return <div className="form-control-buttons">{this.displayButtons()}</div>;
   }
 }
 
