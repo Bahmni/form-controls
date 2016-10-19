@@ -72,12 +72,12 @@ export class LabelDesigner extends Component {
       );
     }
     return (
-      <span
+      <label
         onClick={ (event) => this.props.onSelect(event, metadata) }
         onDoubleClick={ this.onDoubleClick }
       >
         { this.state.value }
-      </span>);
+      </label>);
   }
 }
 

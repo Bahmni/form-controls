@@ -64,9 +64,9 @@ export class AutoComplete extends Component {
     };
 
     if (asynchronous) {
-      return <div><Select.Async {...props} loadOptions={this.getOptions} /></div>;
+      return <div className="obs-control-select-wrapper"><Select.Async {...props} loadOptions={this.getOptions} /></div>;
     }
-    return <div><Select {...props} options={options} /></div>;
+    return <div className="obs-control-select-wrapper"><Select {...props} options={options} /></div>;
   }
 }
 

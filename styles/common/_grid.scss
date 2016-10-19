@@ -1,23 +1,5 @@
-.grid {
-  @include clearfix();
-  display: block;
-  width: 100%;
-
-}
-.row{
-    display: flex;
-    flex-flow: row wrap;
-    min-height: 40px;
-    border: 1px dotted;
-}
-.gridCell{
-    flex-grow: 1;
-    &.active{
-        border: 1px dotted;
-    }
-}
-
 .form-control-buttons {
+  display: inline-block;
   button {
     margin: 0 2px 2px 0;
     white-space: nowrap;
@@ -25,7 +7,8 @@
     text-overflow: ellipsis;
     text-align: center;
     height: 32px;
-    width: 100px;
+    width: 78px;
+    text-align: center;
     i.fa-ok {
       display: none;
     }

@@ -53,7 +53,7 @@ export class RowDesigner extends Component {
 
   render() {
     return (
-        <div className={`row row${this.props.rowPosition}`} onChange={ this.changeHandler }>
+        <div className={`canvas-row row${this.props.rowPosition}`} onChange={ this.changeHandler }>
           { this.createCells() }
         </div>
     );
