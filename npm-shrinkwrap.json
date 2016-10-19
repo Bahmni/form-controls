@@ -1,6 +1,6 @@
 {
   "name": "bahmni-form-controls",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "dependencies": {
     "abab": {
       "version": "1.0.3",
@@ -1429,7 +1429,7 @@
     },
     "escodegen": {
       "version": "1.8.1",
-      "from": "escodegen@>=1.6.1 <2.0.0",
+      "from": "escodegen@>=1.8.0 <1.9.0",
       "resolved": "https://registry.npmjs.org/escodegen/-/escodegen-1.8.1.tgz",
       "dependencies": {
         "estraverse": {
@@ -2938,7 +2938,7 @@
     },
     "istanbul": {
       "version": "0.4.5",
-      "from": "istanbul@>=0.4.0 <0.5.0",
+      "from": "istanbul@>=0.0.0 <1.0.0",
       "resolved": "https://registry.npmjs.org/istanbul/-/istanbul-0.4.5.tgz",
       "dependencies": {
         "supports-color": {
@@ -4975,8 +4975,7 @@
           "dependencies": {
             "supports-color": {
               "version": "2.0.0",
-              "from": "supports-color@^2.0.0",
-              "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-2.0.0.tgz"
+              "from": "supports-color@>=2.0.0 <3.0.0"
             }
           }
         },
@@ -6162,7 +6161,7 @@
     },
     "which": {
       "version": "1.2.11",
-      "from": "which@>=1.0.9 <2.0.0",
+      "from": "which@>=1.1.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/which/-/which-1.2.11.tgz"
     },
     "which-module": {
