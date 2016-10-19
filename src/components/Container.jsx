@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from 'react';
-import { getControls } from 'src/helpers/controlsParser';
-import { getObsForContainer } from 'src/helpers/controlsHelper';
+import Row from 'src/components/Row.jsx';
+import { groupControlsByLocation, sortGroupedControls } from 'src/helpers/controlsParser';
+import { getObsFromChildControls } from 'src/helpers/controlsHelper';
+import map from 'lodash/map';
 
 export class Container extends Component {
   constructor(props) {
@@ -10,19 +12,33 @@ export class Container extends Component {
   }
 
   getValue() {
-    const observations = getObsForContainer(this.childControls);
+    const observations = getObsFromChildControls(this.childControls);
     return [].concat.apply([], observations).filter(obs => obs !== undefined);
   }
 
+  getControlsByRow() {
+    const { observations, metadata: { controls, uuid: formUuid } } = this.props;
+    const groupedRowControls = groupControlsByLocation(controls, 'row');
+    const sortedRowControls = sortGroupedControls(groupedRowControls);
+    return map(sortedRowControls, (rowControls, index) =>
+      <Row
+        controls={rowControls}
+        formUuid={formUuid}
+        id={index}
+        key={index}
+        observations={observations}
+        ref={this.storeChildRef}
+      />
+    );
+  }
+
   storeChildRef(ref) {
-    if (ref) this.childControls[ref.props.metadata.id] = ref;
+    if (ref) this.childControls[ref.props.id] = ref;
   }
 
   render() {
-    const { observations, metadata: { controls, uuid: formUuid } } = this.props;
-    const childProps = { formUuid, ref: this.storeChildRef };
     return (
-      <div>{getControls(controls, observations, childProps)}</div>
+      <div>{this.getControlsByRow()}</div>
     );
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import { getControls } from 'src/helpers/controlsParser';
-import { getObsForContainer } from 'src/helpers/controlsHelper';
+import { getObsFromChildControls } from 'src/helpers/controlsHelper';
 
 export class Section extends Component {
 
@@ -13,7 +13,7 @@ export class Section extends Component {
   }
 
   getValue() {
-    return getObsForContainer(this.childControls).filter(obs => obs !== undefined);
+    return getObsFromChildControls(this.childControls).filter(obs => obs !== undefined);
   }
 
   storeChildRef(ref) {
