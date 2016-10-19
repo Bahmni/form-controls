@@ -52,7 +52,13 @@ const descriptor = {
     isTopLevelComponent: false,
   },
   metadata: {
-    attributes: [],
+    attributes: [
+      {
+        name: 'properties',
+        dataType: 'complex',
+        attributes: [],
+      },
+    ],
   },
 };
 

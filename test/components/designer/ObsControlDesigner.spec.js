@@ -60,10 +60,11 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should call onSelect function passed as prop', () => {
+      const expectedMetadata = { id: '123', label: {}, properties: {}, type: 'obsControl' };
       expect(wrapper.find('div')).to.have.prop('onClick');
       wrapper.find('div').simulate('click');
       sinon.assert.calledOnce(onSelectSpy);
-      sinon.assert.calledWith(onSelectSpy, sinon.match.any, '123');
+      sinon.assert.calledWith(onSelectSpy, sinon.match.any, expectedMetadata);
     });
   });
 
@@ -115,7 +116,7 @@ describe('ObsControlDesigner', () => {
       expect(wrapper.find('div')).to.have.prop('onClick');
       wrapper.find('input').simulate('click');
       sinon.assert.calledOnce(onSelectSpy);
-      sinon.assert.calledWith(onSelectSpy, sinon.match.any, '123');
+      sinon.assert.calledWith(onSelectSpy, sinon.match.any, metadata);
     });
 
     it('should return json definition', () => {

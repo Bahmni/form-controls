@@ -6,8 +6,6 @@ export class ObsControlDesigner extends Component {
 
   constructor(props) {
     super(props);
-    this.childControl = undefined;
-    this.labelControl = undefined;
     this.metadata = props.metadata;
     this.storeChildRef = this.storeChildRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
@@ -36,20 +34,21 @@ export class ObsControlDesigner extends Component {
   }
 
   render() {
-    const { concept, id } = this.props.metadata;
+    const { metadata, metadata: { concept } } = this.props;
     const designerComponent = concept && window.componentStore.getDesignerComponent(concept.datatype); // eslint-disable-line max-len
     if (concept && designerComponent) {
       return (
-        <div onClick={ (event) => this.props.onSelect(event, id) }>
+        <div onClick={ (event) => this.props.onSelect(event, metadata) }>
           <LabelDesigner
             metadata={ this.props.metadata.label }
+            onClick={ (event) => this.props.onSelect(event, metadata) }
             ref={ this.storeLabelRef }
           />
           {this.displayObsControl(designerComponent)}
         </div>
       );
     }
-    return <div onClick={ (event) => this.props.onSelect(event, id) }>Select Obs Source</div>;
+    return <div onClick={ (event) => this.props.onSelect(event, metadata) }>Select Obs Source</div>;
   }
 }
 
@@ -118,20 +117,9 @@ const descriptor = {
         dataType: 'complex',
         attributes: [
           {
-            name: 'location',
-            dataType: 'complex',
-            attributes: [
-              {
-                name: 'row',
-                dataType: 'number',
-                defaultValue: 0,
-              },
-              {
-                name: 'column',
-                dataType: 'number',
-                defaultValue: 0,
-              },
-            ],
+            name: 'mandatory',
+            dataType: 'boolean',
+            defaultValue: false,
           },
         ],
       },

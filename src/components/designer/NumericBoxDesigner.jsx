@@ -27,7 +27,19 @@ const descriptor = {
     isTopLevelComponent: false,
   },
   metadata: {
-    attributes: [],
+    attributes: [
+      {
+        name: 'properties',
+        dataType: 'complex',
+        attributes: [
+          {
+            name: 'allowDecimals',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
+        ],
+      },
+    ],
   },
 };
 

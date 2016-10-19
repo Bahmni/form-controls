@@ -58,18 +58,26 @@ export class LabelDesigner extends Component {
   }
 
   render() {
+    const { metadata } = this.props;
     if (this.state.isEditable) {
       return (
         <input
           defaultValue={ this.state.value }
           onBlur={this.onBlur}
+          onClick={ (event) => this.props.onSelect(event, metadata) }
           onKeyUp={this.onEnterKey}
           ref={ this.storeComponentRef }
           type="text"
         />
       );
     }
-    return (<span onDoubleClick={ this.onDoubleClick }>{ this.state.value }</span>);
+    return (
+      <span
+        onClick={ (event) => this.props.onSelect(event, metadata) }
+        onDoubleClick={ this.onDoubleClick }
+      >
+        { this.state.value }
+      </span>);
   }
 }
 
@@ -87,6 +95,7 @@ LabelDesigner.propTypes = {
       }),
     }),
   }),
+  onSelect: PropTypes.func.isRequired,
 };
 
 const descriptor = {
@@ -110,22 +119,7 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [
-          {
-            name: 'location',
-            dataType: 'complex',
-            attributes: [
-              {
-                name: 'row',
-                dataType: 'number',
-              },
-              {
-                name: 'column',
-                dataType: 'number',
-              },
-            ],
-          },
-        ],
+        attributes: [],
       },
     ],
   },
