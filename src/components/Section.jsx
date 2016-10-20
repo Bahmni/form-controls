@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import { getControls } from 'src/helpers/controlsParser';
+import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { getObsFromChildControls } from 'src/helpers/controlsHelper';
 
 export class Section extends Component {
@@ -13,20 +13,24 @@ export class Section extends Component {
   }
 
   getValue() {
-    return getObsFromChildControls(this.childControls).filter(obs => obs !== undefined);
+    const observations = getObsFromChildControls(this.childControls);
+    return [].concat.apply([], observations).filter(obs => obs !== undefined);
   }
 
   storeChildRef(ref) {
-    if (ref) this.childControls[ref.props.metadata.id] = ref;
+    if (ref) this.childControls[ref.props.id] = ref;
   }
 
   render() {
     const { formUuid, metadata: { controls, value }, obs } = this.props;
     const childProps = { formUuid, ref: this.storeChildRef };
+    const groupedRowControls = getGroupedControls(controls, 'row');
     return (
       <fieldset>
         <legend>{value}</legend>
-        <div className="section-controls">{getControls(controls, obs, childProps)}</div>
+        <div className="section-controls">
+          {displayRowControls(groupedRowControls, obs, childProps)}
+        </div>
       </fieldset>
     );
   }

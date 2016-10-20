@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { Component, PropTypes } from 'react';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
@@ -7,25 +6,25 @@ import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 
 chai.use(chaiEnzyme());
 
+function getLocationProperties(row, column) {
+  return { location: { row, column } };
+}
+
+class DummyControl extends Component {
+  getValue() {
+    return this.props.formUuid;
+  }
+
+  render() {
+    return (<div>{ this.props.formUuid }</div>);
+  }
+}
+
+DummyControl.propTypes = {
+  formUuid: PropTypes.string,
+};
+
 describe('ObsGroupControl', () => {
-  function getLocationProperties(row, column) {
-    return { location: { row, column } };
-  }
-
-  class DummyControl extends Component {
-    getValue() {
-      return this.props.formUuid;
-    }
-
-    render() {
-      return (<div>{ this.props.formUuid }</div>);
-    }
-  }
-
-  DummyControl.propTypes = {
-    formUuid: PropTypes.string,
-  };
-
   before(() => {
     window.componentStore.registerComponent('randomType', DummyControl);
   });
@@ -102,7 +101,7 @@ describe('ObsGroupControl', () => {
 
 
     it('should render obsGroup control with only the registered controls', () => {
-      componentStore.deRegisterComponent('randomType');
+      window.componentStore.deRegisterComponent('randomType');
       const wrapper = mount(
         <ObsGroupControl
           formUuid={formUuid}
@@ -111,7 +110,7 @@ describe('ObsGroupControl', () => {
         />);
 
       expect(wrapper).to.not.have.descendants('DummyControl');
-      componentStore.registerComponent('randomType', DummyControl);
+      window.componentStore.registerComponent('randomType', DummyControl);
     });
   });
 
@@ -145,4 +144,3 @@ describe('ObsGroupControl', () => {
     });
   });
 });
-/* eslint-enable no-undef */

@@ -160,7 +160,7 @@ describe('Container', () => {
     });
   });
 
-  describe.skip('with section', () => {
+  describe('with section', () => {
     const metadataWithSection = {
       id: '100',
       uuid: 'fm1',
@@ -172,12 +172,14 @@ describe('Container', () => {
           value: 'someSectionLegend',
           properties: {
             visualOnly: true,
+            location: getLocationProperties(0, 0).location,
           },
           controls: [
             {
               id: '100',
               type: 'label',
               value: 'Pulse',
+              properties: getLocationProperties(0, 0),
             },
             {
               id: '101',
@@ -185,6 +187,7 @@ describe('Container', () => {
               displayType: 'text',
               concept: textBoxConcept,
               label,
+              properties: getLocationProperties(1, 0),
             },
             {
               id: '102',
@@ -192,6 +195,7 @@ describe('Container', () => {
               displayType: 'numeric',
               concept: numericBoxConcept,
               label,
+              properties: getLocationProperties(2, 0),
             },
           ],
         },
@@ -201,12 +205,13 @@ describe('Container', () => {
           displayType: 'numeric',
           concept: numericBoxConcept,
           label,
+          properties: getLocationProperties(1, 0),
         },
       ],
     };
 
     it('should render form with section and pass all observations to section', () => {
-      const wrapper = shallow(
+      const wrapper = mount(
         <Container
           metadata={metadataWithSection}
           observations={observations}
@@ -214,7 +219,7 @@ describe('Container', () => {
 
       expect(wrapper).to.have.exactly(1).descendants('Section');
       expect(wrapper.find('Section')).to.have.prop('obs').deep.equal(observations);
-      expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+      expect(wrapper).to.have.exactly(3).descendants('ObsControl');
     });
 
     it('should return observations of all children', () => {

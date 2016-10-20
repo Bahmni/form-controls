@@ -1,188 +1,154 @@
-/* eslint-disable no-undef */
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Section } from 'components/Section.jsx';
-import { Label } from 'components/Label.jsx';
-import { TextBox } from 'components/TextBox.jsx';
-import { NumericBox } from 'components/NumericBox.jsx';
-import { ObsControl } from 'components/ObsControl.jsx';
 
 chai.use(chaiEnzyme());
 
+function getLocationProperties(row, column) {
+  return { location: { row, column } };
+}
+
+class DummyControl extends Component {
+  getValue() {
+    return this.props.formUuid;
+  }
+
+  render() {
+    return (<div>{ this.props.formUuid }</div>);
+  }
+}
+
+DummyControl.propTypes = {
+  formUuid: PropTypes.string,
+};
+
 describe('Section', () => {
   before(() => {
-    componentStore.registerComponent('label', Label);
-    componentStore.registerComponent('text', TextBox);
-    componentStore.registerComponent('numeric', NumericBox);
-    componentStore.registerComponent('obsControl', ObsControl);
+    window.componentStore.registerComponent('randomType', DummyControl);
   });
 
   after(() => {
-    componentStore.deRegisterComponent('label');
-    componentStore.deRegisterComponent('text');
-    componentStore.deRegisterComponent('numeric');
-    componentStore.deRegisterComponent('obsControl');
+    window.componentStore.deRegisterComponent('randomType');
   });
 
-  const label = {
-    id: 'someId',
-    value: 'someLabelName',
-    type: 'label',
-  };
-
-  const textBoxConcept = {
-    uuid: '70645842-be6a-4974-8d5f-45b52990e132',
-    name: 'Pulse',
-    datatype: 'Text',
-  };
-
-  const numericBoxConcept = {
-    uuid: '216861e7-23d8-468f-9efb-672ce427a14b',
-    name: 'Temperature',
-    datatype: 'Numeric',
-  };
+  const formUuid = 'someUuid';
 
   const metadata = {
-    id: '100',
-    value: 'SectionTitle',
+    id: '1',
+    type: 'section',
+    value: 'Section Title',
+    properties: {
+      location: getLocationProperties(0, 0).location,
+      visualOnly: true,
+    },
     controls: [
       {
         id: '100',
-        type: 'label',
+        type: 'randomType',
         value: 'Pulse',
+        properties: getLocationProperties(0, 1),
       },
       {
         id: '101',
-        type: 'obsControl',
-        concept: textBoxConcept,
-        label,
+        type: 'randomType',
+        properties: getLocationProperties(0, 2),
       },
       {
         id: '102',
-        type: 'obsControl',
-        concept: numericBoxConcept,
-        label,
+        type: 'randomType',
+        properties: getLocationProperties(1, 0),
       },
     ],
   };
 
-  const formUuid = 'F1';
-
-  const observation1 = {
-    concept: textBoxConcept,
-    label: 'Pulse',
-    value: '72',
-    formNamespace: `${formUuid}/101`,
-    observationDateTime: '2016-09-08T10:10:38.000+0530',
-  };
-
-  const observation2 = {
-    concept: numericBoxConcept,
-    label: 'Temperature',
-    value: '98',
-    formNamespace: `${formUuid}/102`,
-    observationDateTime: '2016-09-08T10:10:38.000+0530',
-  };
-
-  const sectionProperties = { visualOnly: true };
-
-  const observations = [observation1, observation2];
-
   describe('render', () => {
     it('should render section', () => {
-      const wrapper = shallow(
-        <Section
-          formUuid={formUuid}
-          metadata={metadata}
-          obs={observations}
-          properties={sectionProperties}
-        />);
-
-      expect(wrapper.find('legend').text()).to.eql('SectionTitle');
-      expect(wrapper).to.have.exactly(1).descendants('Label');
-      expect(wrapper).to.have.exactly(2).descendants('ObsControl');
-    });
-
-    it('should render section without controls when it is empty', () => {
-      const meta = { id: '100', controls: [], value: 'Title' };
-      const wrapper = shallow(
-        <Section
-          formUuid={formUuid}
-          metadata={meta}
-          obs={[]}
-          properties={sectionProperties}
-        />);
-
-      expect(wrapper.find('legend').text()).to.eql('Title');
-      expect(wrapper.find('.section-controls')).to.be.blank();
-    });
-
-    it('should render section with only the registered controls', () => {
-      componentStore.deRegisterComponent('label');
-
-      const wrapper = shallow(
-        <Section
-          formUuid={formUuid}
-          metadata={metadata}
-          obs={[]}
-          properties={sectionProperties}
-        />);
-
-      expect(wrapper).to.not.have.descendants('Label');
-      expect(wrapper).to.have.exactly(2).descendants('ObsControl');
-
-      componentStore.registerComponent('label', Label);
-    });
-  });
-
-  describe('getValue', () => {
-    it('should return the observations of its children which are data controls', () => {
-      const wrapper = mount(
-        <Section
-          formUuid={formUuid}
-          metadata={metadata}
-          obs={observations}
-          properties={sectionProperties}
-        />);
-      const instance = wrapper.instance();
-
-      expect(instance.getValue()).to.deep.equal([observation1, observation2]);
-    });
-
-    it('should return empty when there are no observations', () => {
       const wrapper = mount(
         <Section
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}
-          properties={sectionProperties}
         />);
-      const instance = wrapper.instance();
 
-      expect(instance.getValue()).to.deep.equal([]);
+      expect(wrapper.find('legend').text()).to.eql('Section Title');
+      expect(wrapper).to.have.exactly(2).descendants('Row');
+      expect(wrapper).to.have.exactly(3).descendants('DummyControl');
+      expect(wrapper.find('Row').at(0).props().observations).to.eql([]);
     });
 
-    it('should return empty when the observations do not match any control id in form', () => {
-      const obs = [
+    it('should render section control with observations', () => {
+      const observations = [
         {
-          concept: {
-            uuid: 'differentUuid',
-            name: 'Pulse',
-            dataType: 'Text',
-          },
-          label: 'Pulse',
-          value: '72',
-          formNamespace: 'fm1/999999',
+          formNamespace: `${formUuid}/101`,
+          value: 'someValue',
+        },
+        {
+          formNamespace: `${formUuid}/102`,
+          value: 'someValue',
         },
       ];
       const wrapper = mount(
         <Section
           formUuid={formUuid}
           metadata={metadata}
-          obs={obs}
-          properties={sectionProperties}
+          obs={observations}
+        />);
+
+      expect(wrapper.find('Row').at(0).props().observations).to.deep.eql(observations);
+      expect(wrapper.find('legend').text()).to.eql('Section Title');
+    });
+
+    it('should render section without controls when it is empty', () => {
+      const metadataClone = Object.assign({}, metadata);
+      metadataClone.controls = [];
+      const wrapper = shallow(
+        <Section
+          formUuid={formUuid}
+          metadata={metadataClone}
+          obs={[]}
+        />);
+
+      expect(wrapper.find('legend').text()).to.eql('Section Title');
+      expect(wrapper.find('.section-controls')).to.be.blank();
+    });
+
+    it('should render section with only the registered controls', () => {
+      window.componentStore.deRegisterComponent('randomType');
+      const wrapper = shallow(
+        <Section
+          formUuid={formUuid}
+          metadata={metadata}
+          obs={[]}
+        />);
+
+      expect(wrapper).to.not.have.descendants('DummyControl');
+      window.componentStore.registerComponent('randomType', DummyControl);
+    });
+  });
+
+  describe('getValue', () => {
+    it('should return the observations from child Controls', () => {
+      const wrapper = mount(
+        <Section
+          formUuid={formUuid}
+          metadata={metadata}
+          obs={[]}
+        />);
+      const instance = wrapper.instance();
+
+      expect(instance.getValue()).to.deep.equal([formUuid, formUuid, formUuid]);
+    });
+
+    it('should return empty when there are no observations', () => {
+      const metadataClone = Object.assign({}, metadata);
+      metadataClone.controls = [];
+      const wrapper = mount(
+        <Section
+          formUuid={formUuid}
+          metadata={metadataClone}
+          obs={[]}
         />);
       const instance = wrapper.instance();
 
@@ -190,4 +156,3 @@ describe('Section', () => {
     });
   });
 });
-/* eslint-enable no-undef */
