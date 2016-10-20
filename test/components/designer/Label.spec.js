@@ -19,44 +19,44 @@ describe('LabelDesigner', () => {
   });
 
   it('should render the non editable value', () => {
-    expect(wrapper.find('span').text()).to.eql('History Notes');
+    expect(wrapper.find('label').text()).to.eql('History Notes');
   });
 
   it('should call onSelect function when clicked', () => {
-    wrapper.find('span').simulate('click');
+    wrapper.find('label').simulate('click');
     sinon.assert.calledOnce(onSelectSpy);
     sinon.assert.calledWith(onSelectSpy, sinon.match.any, metadata);
   });
 
   it('should allow editing of value on double click', () => {
-    expect(wrapper).to.have.descendants('span');
+    expect(wrapper).to.have.descendants('label');
 
-    wrapper.find('span').props().onDoubleClick();
+    wrapper.find('label').props().onDoubleClick();
     expect(wrapper).to.have.descendants('input');
   });
 
   it('should call onSelect in edit mode', () => {
-    wrapper.find('span').props().onDoubleClick();
+    wrapper.find('label').props().onDoubleClick();
     wrapper.find('input').simulate('click');
     sinon.assert.calledOnce(onSelectSpy);
     sinon.assert.calledWith(onSelectSpy, sinon.match.any, metadata);
   });
 
   it('should display value in non editable mode after pressing enter', () => {
-    wrapper.find('span').props().onDoubleClick();
+    wrapper.find('label').props().onDoubleClick();
     expect(wrapper).to.have.descendants('input');
 
     wrapper.find('input').props().onKeyUp({ keyCode: 13 });
-    expect(wrapper).to.have.descendants('span');
+    expect(wrapper).to.have.descendants('label');
     expect(wrapper).to.not.have.descendants('input');
   });
 
   it('should display value in non editable mode on blur', () => {
-    wrapper.find('span').props().onDoubleClick();
+    wrapper.find('label').props().onDoubleClick();
     expect(wrapper).to.have.descendants('input');
 
     wrapper.find('input').props().onBlur();
-    expect(wrapper).to.have.descendants('span');
+    expect(wrapper).to.have.descendants('label');
     expect(wrapper).to.not.have.descendants('input');
   });
 

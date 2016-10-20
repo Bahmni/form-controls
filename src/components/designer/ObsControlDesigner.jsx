@@ -41,7 +41,7 @@ export class ObsControlDesigner extends Component {
         <div onClick={ (event) => this.props.onSelect(event, metadata) }>
           <LabelDesigner
             metadata={ this.props.metadata.label }
-            onClick={ (event) => this.props.onSelect(event, metadata) }
+            onSelect={ (event) => this.props.onSelect(event, metadata) }
             ref={ this.storeLabelRef }
           />
           {this.displayObsControl(designerComponent)}
