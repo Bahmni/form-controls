@@ -1,6 +1,8 @@
 import React from 'react';
 import { getFormNamespaceDetails } from 'src/helpers/formNamespace';
+import Row from 'src/components/Row.jsx';
 import groupBy from 'lodash/groupBy';
+import map from 'lodash/map';
 
 function getObsForControl(control, observations) {
   if (control.properties && control.properties.visualOnly) return observations;
@@ -42,4 +44,21 @@ export function sortGroupedControls(controls) {
       sortedControls.push(controls[key]);
     });
   return sortedControls;
+}
+
+export function getGroupedControls(controls, property) {
+  const groupedControls = groupControlsByLocation(controls, property);
+  return sortGroupedControls(groupedControls);
+}
+
+export function displayRowControls(controls, observations, childProps) {
+  return map(controls, (rowControls, index) =>
+    <Row
+      controls={rowControls}
+      id={index}
+      key={index}
+      observations={observations}
+      {...childProps}
+    />
+  );
 }

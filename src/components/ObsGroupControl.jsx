@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import { getControls } from 'src/helpers/controlsParser';
+import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { createFormNamespace } from 'src/helpers/formNamespace';
+import { getObsFromChildControls } from 'src/helpers/controlsHelper';
 
 class Mapper {
   constructor(obs) {
@@ -29,28 +30,25 @@ export class ObsGroupControl extends Component {
   }
 
   getValue() {
-    const groupMembers = [];
-    for (const key in this.childControls) {
-      if (this.childControls.hasOwnProperty(key)) {
-        groupMembers.push(this.childControls[key].getValue());
-      }
-    }
+    const observations = getObsFromChildControls(this.childControls);
+    const groupMembers = [].concat.apply([], observations).filter(obs => obs !== undefined);
     return this.mapper.mapTo(groupMembers);
   }
 
   storeChildRef(ref) {
-    if (ref) this.childControls[ref.props.metadata.id] = ref;
+    if (ref) this.childControls[ref.props.id] = ref;
   }
 
   render() {
-    const { formUuid, metadata: { controls, value }, obs } = this.props;
+    const { formUuid, metadata: { controls, concept }, obs } = this.props;
     const childProps = { formUuid, ref: this.storeChildRef };
     const obsGroupMembers = (obs && obs.groupMembers) ? obs.groupMembers : [];
+    const groupedRowControls = getGroupedControls(controls, 'row');
     return (
       <fieldset>
-        <legend>{value}</legend>
+        <legend>{concept.name}</legend>
         <div className="obsGroup-controls">
-          {getControls(controls, obsGroupMembers, childProps)}
+          {displayRowControls(groupedRowControls, obsGroupMembers, childProps)}
         </div>
       </fieldset>
     );
@@ -63,6 +61,7 @@ ObsGroupControl.propTypes = {
     controls: PropTypes.array.isRequired,
     id: PropTypes.string.isRequired,
     concept: PropTypes.object.isRequired,
+    properties: PropTypes.object,
   }),
   obs: PropTypes.object,
 };

@@ -10,7 +10,7 @@ function getLocationProperties(row, column) {
   return { location: { row, column } };
 }
 
-class DummmyControl extends Component {
+class DummyControl extends Component {
   getValue() {
     return this.props.formUuid;
   }
@@ -20,7 +20,7 @@ class DummmyControl extends Component {
   }
 }
 
-DummmyControl.propTypes = {
+DummyControl.propTypes = {
   formUuid: PropTypes.string,
 };
 
@@ -47,7 +47,7 @@ describe('Row', () => {
   const formUuid = 'someUuid';
 
   before(() => {
-    window.componentStore.registerComponent('randomType', DummmyControl);
+    window.componentStore.registerComponent('randomType', DummyControl);
   });
 
   after(() => {
@@ -60,7 +60,7 @@ describe('Row', () => {
         <Row controls={controls} formUuid={formUuid} id={0} observations={[]} />
       );
 
-      expect(wrapper).to.have.exactly(3).descendants('DummmyControl');
+      expect(wrapper).to.have.exactly(3).descendants('DummyControl');
       expect(wrapper.find('.column-1').text()).to.eql(formUuid);
     });
 

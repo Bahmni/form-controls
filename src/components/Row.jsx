@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import * as controlsParser from 'src/helpers/controlsParser';
+import { getControls, getGroupedControls } from 'src/helpers/controlsParser';
 import map from 'lodash/map';
 import { getObsFromChildControls } from 'src/helpers/controlsHelper';
 
@@ -18,9 +18,11 @@ export default class Row extends Component {
   getControlsByColumn(sortedColumnControls, observations, childProps) {
     return map(sortedColumnControls, (control, index) => {
       const columnName = `column-${control[0].properties.location.column}`;
-      return (<div className={columnName} key={index}>
-        {controlsParser.getControls(control, observations, childProps)}
-      </div>);
+      return (
+        <div className={columnName} key={index}>
+          {getControls(control, observations, childProps)}
+        </div>
+      );
     });
   }
 
@@ -31,11 +33,10 @@ export default class Row extends Component {
   render() {
     const { controls, formUuid, observations } = this.props;
     const childProps = { formUuid, ref: this.storeChildRef };
-    const groupedColumnControls = controlsParser.groupControlsByLocation(controls, 'column');
-    const sortedColumnControls = controlsParser.sortGroupedControls(groupedColumnControls);
+    const groupedColumnControls = getGroupedControls(controls, 'column');
     return (
       <div className="row">
-        {this.getControlsByColumn(sortedColumnControls, observations, childProps)}
+        {this.getControlsByColumn(groupedColumnControls, observations, childProps)}
       </div>
     );
   }
