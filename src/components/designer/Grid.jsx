@@ -23,7 +23,7 @@ export class GridDesigner extends Component {
 
   _getRowCount() {
     const maxRow = maxBy(this.props.controls, (control) => control.properties.location.row);
-    if (maxRow) return Math.max(maxRow.properties.location.row + 1, this.props.minRows);
+    if (maxRow) return Math.max(maxRow.properties.location.row + 2, this.props.minRows);
     return this.props.minRows;
   }
 

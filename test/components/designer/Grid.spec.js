@@ -81,17 +81,18 @@ describe('GridDesigner', () => {
     expect(dataRow.prop('rowData')).to.deep.eql(formResourceControls);
   });
 
-  it('should create as many rows as needed to fit all the controls', () => {
+  it('should create an extra row to saved number of rows', () => {
     const formControls = formResourceControls.slice(0);
     formControls[2].properties.location.row = 4;
 
     const grid = shallow(<GridDesigner controls={ formControls } wrapper={ wrapper } />);
     const children = grid.find('.grid').children();
 
-    expect(children).to.have.length(5);
+    expect(children).to.have.length(6);
     expect(children.at(0).prop('rowData')).to.deep.eql([formControls[0], formControls[1]]);
     expect(children.at(1).prop('rowData')).to.deep.eql([]);
     expect(children.at(4).prop('rowData')).to.deep.eql([formControls[2]]);
+    expect(children.at(5).prop('rowData')).to.deep.eql([]);
   });
 
   it('should pass appropriate props to children', () => {
