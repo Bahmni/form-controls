@@ -59,9 +59,8 @@ describe('Row', () => {
       const wrapper = mount(
         <Row controls={controls} formUuid={formUuid} id={0} observations={[]} />
       );
-
-      expect(wrapper).to.have.exactly(3).descendants('DummyControl');
-      expect(wrapper.find('.column-1').text()).to.eql(formUuid);
+      expect(wrapper).to.have.exactly(3).descendants('DummmyControl');
+      expect(wrapper.find('.form-builder-column-1').text()).to.eql(formUuid);
     });
 
     it('should not render rows when controls is empty', () => {

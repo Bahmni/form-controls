@@ -1,6 +1,6 @@
 const Constants = {
   Grid: {
-    defaultRowWidth: 12,
+    defaultRowWidth: 3,
     minRows: 4,
   },
 };

@@ -17,10 +17,10 @@ export default class Row extends Component {
 
   getControlsByColumn(sortedColumnControls, observations, childProps) {
     return map(sortedColumnControls, (control, index) => {
-      const columnName = `column-${control[0].properties.location.column}`;
+      const columnName = `form-builder-column form-builder-column-${control[0].properties.location.column}`;
       return (
         <div className={columnName} key={index}>
-          {getControls(control, observations, childProps)}
+          {controlsParser.getControls(control, observations, childProps)}
         </div>
       );
     });
@@ -35,8 +35,8 @@ export default class Row extends Component {
     const childProps = { formUuid, ref: this.storeChildRef };
     const groupedColumnControls = getGroupedControls(controls, 'column');
     return (
-      <div className="row">
-        {this.getControlsByColumn(groupedColumnControls, observations, childProps)}
+      <div className="form-builder-row">
+        {this.getControlsByColumn(sortedColumnControls, observations, childProps)}
       </div>
     );
   }
