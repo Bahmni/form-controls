@@ -143,4 +143,26 @@ describe('ObsGroupControl', () => {
       expect(instance.getValue()).to.deep.equal(undefined);
     });
   });
+
+  describe('getErrors', () => {
+    it('should return all children errors', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          formUuid={formUuid}
+          metadata={metadata}
+          obs={{}}
+        />);
+      const instance = wrapper.instance();
+
+      const error1 = { errorType: 'error1' };
+      const error2 = { errorType: 'error2' };
+      const error3 = { errorType: 'error3' };
+      instance.childControls = {
+        ref1: { getErrors: () => [error1, error2] },
+        ref2: { getErrors: () => [error3, error1, error2] },
+      };
+
+      expect(instance.getErrors()).to.deep.equal([error1, error2, error3, error1, error2]);
+    });
+  });
 });

@@ -3,6 +3,8 @@ import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { NumericBox } from 'components/NumericBox.jsx';
+import { Validator } from 'src/helpers/Validator';
+import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
@@ -21,10 +23,18 @@ describe('NumericBox', () => {
     dataType: 'Text',
   };
 
+  const properties = {
+    location: {
+      row: 0,
+      column: 0,
+    },
+    mandatory: true,
+  };
   const metadata = {
     id: '100',
     type: 'numeric',
     concept,
+    properties,
   };
 
   const obs = {
@@ -77,5 +87,15 @@ describe('NumericBox', () => {
     const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
+  });
+
+  it('getErrors should return errors if present', () => {
+    const stub = sinon.stub(Validator, 'getErrors');
+    stub.withArgs(properties, '999').returns([{ errorType: 'something' }]);
+
+    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} />);
+    const instance = wrapper.instance();
+    wrapper.find('input').simulate('change', { target: { value: '999' } });
+    expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
 });

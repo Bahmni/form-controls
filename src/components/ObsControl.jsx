@@ -15,6 +15,10 @@ export class ObsControl extends Component {
     return this.childControl.getValue();
   }
 
+  getErrors() {
+    return this.childControl.getErrors();
+  }
+
   storeChildRef(ref) {
     this.childControl = ref;
   }

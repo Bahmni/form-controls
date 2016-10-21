@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { BooleanControl } from 'components/BooleanControl.jsx';
+import { Validator } from 'src/helpers/Validator';
 import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
@@ -31,6 +32,14 @@ describe('BooleanControl', () => {
     window.componentStore.deRegisterComponent('button');
   });
 
+  const properties = {
+    location: {
+      row: 0,
+      column: 0,
+    },
+    mandatory: true,
+  };
+
   beforeEach(() => {
     metadata = {
       id: '100',
@@ -40,6 +49,7 @@ describe('BooleanControl', () => {
         name: 'Pulse',
         datatype: 'Boolean',
       },
+      properties,
       displayType: 'button',
       options: [
         { name: 'Yes', value: true },
@@ -125,5 +135,18 @@ describe('BooleanControl', () => {
     const wrapper = mount(<BooleanControl formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.deep.eql(undefined);
+  });
+
+  it('getErrors should return errors if present', () => {
+    const obs = {
+      value: false,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+    };
+    const stub = sinon.stub(Validator, 'getErrors');
+    stub.withArgs(properties, false).returns([{ errorType: 'something' }]);
+
+    const wrapper = mount(<BooleanControl formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const instance = wrapper.instance();
+    expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
 });

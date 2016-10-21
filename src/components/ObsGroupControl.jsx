@@ -3,6 +3,7 @@ import 'src/helpers/componentStore';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 import { getObsFromChildControls } from 'src/helpers/controlsHelper';
+import flatMap from 'lodash/flatMap';
 
 class Mapper {
   constructor(obs) {
@@ -33,6 +34,10 @@ export class ObsGroupControl extends Component {
     const observations = getObsFromChildControls(this.childControls);
     const groupMembers = [].concat.apply([], observations).filter(obs => obs !== undefined);
     return this.mapper.mapTo(groupMembers);
+  }
+
+  getErrors() {
+    return flatMap(this.childControls, (control) => control.getErrors());
   }
 
   storeChildRef(ref) {

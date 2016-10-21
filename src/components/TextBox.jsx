@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import { createFormNamespace } from 'src/helpers/formNamespace';
+import { Validator } from 'src/helpers/Validator';
 
 class Mapper {
   constructor(obs) {
@@ -35,6 +36,11 @@ export class TextBox extends Component {
     return undefined;
   }
 
+  getErrors() {
+    const { properties } = this.props.metadata;
+    return Validator.getErrors(properties, this.value);
+  }
+
   handleChange(e) {
     this.value = e.target.value;
     this.observationDateTime = null;
@@ -55,9 +61,10 @@ export class TextBox extends Component {
 TextBox.propTypes = {
   formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
-    type: PropTypes.string,
     concept: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
+    properties: PropTypes.object.isRequired,
+    type: PropTypes.string,
   }),
   obs: PropTypes.object,
 };

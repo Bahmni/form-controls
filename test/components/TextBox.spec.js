@@ -3,6 +3,8 @@ import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { TextBox } from '../../src/components/TextBox.jsx';
+import { Validator } from 'src/helpers/Validator';
+import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
@@ -21,10 +23,19 @@ describe('TextBox', () => {
     dataType: 'Text',
   };
 
+  const properties = {
+    location: {
+      row: 0,
+      column: 0,
+    },
+    mandatory: true,
+  };
+
   const metadata = {
     id: '100',
     type: 'text',
     concept,
+    properties,
   };
 
   const obs = {
@@ -81,5 +92,15 @@ describe('TextBox', () => {
     const wrapper = shallow(<TextBox formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
+  });
+
+  it('getErrors should return errors if present', () => {
+    const stub = sinon.stub(Validator, 'getErrors');
+    stub.withArgs(properties, 'My new value').returns([{ errorType: 'something' }]);
+
+    const wrapper = shallow(<TextBox formUuid={formUuid} metadata={metadata} />);
+    const instance = wrapper.instance();
+    wrapper.find('input').simulate('change', { target: { value: 'My new value' } });
+    expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
 });

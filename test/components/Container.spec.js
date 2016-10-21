@@ -76,6 +76,13 @@ describe('Container', () => {
         label,
         properties: getLocationProperties(2, 0),
       },
+      {
+        id: '103',
+        type: 'obsControl',
+        concept: numericBoxConcept,
+        label,
+        properties: { location: { row: 2, column: 1 }, mandatory: true },
+      },
     ],
   };
 
@@ -102,8 +109,8 @@ describe('Container', () => {
       const wrapper = mount(<Container metadata={metadata} observations={[]} />);
 
       expect(wrapper).to.have.exactly(3).descendants('Row');
-      expect(wrapper).to.have.exactly(3).descendants('Label');
-      expect(wrapper).to.have.exactly(2).descendants('ObsControl');
+      expect(wrapper).to.have.exactly(4).descendants('Label');
+      expect(wrapper).to.have.exactly(3).descendants('ObsControl');
     });
 
     it('should render form without controls when it is empty', () => {
@@ -118,7 +125,8 @@ describe('Container', () => {
 
       const wrapper = mount(<Container metadata={metadata} observations={[]} />);
 
-      expect(wrapper).to.have.exactly(2).descendants('ObsControl');
+      expect(wrapper).to.have.exactly(3).descendants('ObsControl');
+      expect(wrapper).to.have.exactly(1).descendants('TextBox');
       expect(wrapper).to.have.exactly(2).descendants('Label');
 
       componentStore.registerComponent('numeric', NumericBox);

@@ -105,4 +105,20 @@ describe('ObsControl', () => {
 
     expect(obsControlValue).to.deep.eql(expectedObs);
   });
+
+  it('should return the child control errors', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('text'),
+      label,
+    };
+
+    const obsControl = shallow(<ObsControl formUuid={formUuid} metadata={metadata} />);
+    const instance = obsControl.instance();
+    instance.childControl = { getErrors: () => [{ errorType: 'something' }] };
+
+    const obsControlValue = instance.getErrors();
+    expect(obsControlValue).to.deep.eql([{ errorType: 'something' }]);
+  });
 });

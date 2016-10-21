@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import { createFormNamespace } from 'src/helpers/formNamespace';
+import { Validator } from 'src/helpers/Validator';
 
 class Mapper {
   constructor(obs) {
@@ -21,7 +22,6 @@ export class BooleanControl extends Component {
     const obs = Object.assign({}, { concept }, props.obs, { formNamespace });
     this.mapper = new Mapper(obs);
     this.observationDateTime = props.obs && props.obs.observationDateTime;
-    this.childControl = undefined;
     this.getValue = this.getValue.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
   }
@@ -36,6 +36,11 @@ export class BooleanControl extends Component {
       return this.mapper.mapTo(obs);
     }
     return undefined;
+  }
+
+  getErrors() {
+    const { properties } = this.props.metadata;
+    return Validator.getErrors(properties, this.childControl.getValue());
   }
 
   storeChildRef(ref) {

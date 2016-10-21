@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { getObsFromChildControls } from 'src/helpers/controlsHelper';
+import flatMap from 'lodash/flatMap';
 
 export class Section extends Component {
 
@@ -15,6 +16,10 @@ export class Section extends Component {
   getValue() {
     const observations = getObsFromChildControls(this.childControls);
     return [].concat.apply([], observations).filter(obs => obs !== undefined);
+  }
+
+  getErrors() {
+    return flatMap(this.childControls, (control) => control.getErrors());
   }
 
   storeChildRef(ref) {
