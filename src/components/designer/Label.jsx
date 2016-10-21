@@ -38,11 +38,8 @@ export class LabelDesigner extends Component {
   }
 
   getJsonDefinition() {
-    return {
-      type: 'label',
-      value: this.state.value,
-      properties: this.props.metadata.properties,
-    };
+    const value = this.state.value;
+    return Object.assign({}, this.props.metadata, { value });
   }
 
   updateValue() {
@@ -58,13 +55,11 @@ export class LabelDesigner extends Component {
   }
 
   render() {
-    const { metadata } = this.props;
     if (this.state.isEditable) {
       return (
         <input
           defaultValue={ this.state.value }
           onBlur={this.onBlur}
-          onClick={ (event) => this.props.onSelect(event, metadata) }
           onKeyUp={this.onEnterKey}
           ref={ this.storeComponentRef }
           type="text"
@@ -73,7 +68,6 @@ export class LabelDesigner extends Component {
     }
     return (
       <label
-        onClick={ (event) => this.props.onSelect(event, metadata) }
         onDoubleClick={ this.onDoubleClick }
       >
         { this.state.value }
@@ -95,7 +89,6 @@ LabelDesigner.propTypes = {
       }),
     }),
   }),
-  onSelect: PropTypes.func.isRequired,
 };
 
 const descriptor = {

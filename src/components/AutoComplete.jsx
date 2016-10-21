@@ -50,8 +50,10 @@ export class AutoComplete extends Component {
   }
 
   render() {
-    const { disabled, labelKey, valueKey, asynchronous, options, multi, minimumInput } = this.props;
+    const { autofocus, disabled, labelKey, valueKey,
+                  asynchronous, options, multi, minimumInput } = this.props;
     const props = {
+      autofocus,
       backspaceRemoves: false,
       disabled,
       labelKey,
@@ -60,7 +62,6 @@ export class AutoComplete extends Component {
       onChange: this.handleChange,
       value: this.state.value,
       valueKey,
-
     };
 
     if (asynchronous) {
@@ -80,6 +81,7 @@ export class AutoComplete extends Component {
 
 AutoComplete.propTypes = {
   asynchronous: PropTypes.bool,
+  autofocus: PropTypes.bool,
   disabled: PropTypes.bool,
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
@@ -93,6 +95,7 @@ AutoComplete.propTypes = {
 
 AutoComplete.defaultProps = {
   asynchronous: true,
+  autofocus: true,
   disabled: false,
   labelKey: 'display',
   minimumInput: 3,
