@@ -59,7 +59,8 @@ describe('Row', () => {
       const wrapper = mount(
         <Row controls={controls} formUuid={formUuid} id={0} observations={[]} />
       );
-      expect(wrapper).to.have.exactly(3).descendants('DummmyControl');
+
+      expect(wrapper).to.have.exactly(3).descendants('DummyControl');
       expect(wrapper.find('.form-builder-column-1').text()).to.eql(formUuid);
     });
 
