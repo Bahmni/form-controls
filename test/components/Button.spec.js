@@ -43,4 +43,14 @@ describe('Button Component', () => {
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
   });
+
+  it('should change the value to undefined if double clicked', () => {
+    const wrapper = shallow(<Button id="someId" options={options} value />);
+    wrapper.find('button').at(1).simulate('click');
+    const instance = wrapper.instance();
+    expect(instance.getValue()).to.eql(false);
+
+    wrapper.find('button').at(1).simulate('click');
+    expect(instance.getValue()).to.eql(undefined);
+  });
 });

@@ -14,7 +14,8 @@ export class Button extends Component {
     return this.state.value;
   }
 
-  changeValue(value) {
+  changeValue(valueSelected) {
+    const value = this.state.value === valueSelected ? undefined : valueSelected;
     this.setState({ value });
   }
 
