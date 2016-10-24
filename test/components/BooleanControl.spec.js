@@ -149,4 +149,26 @@ describe('BooleanControl', () => {
     const instance = wrapper.instance();
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
+
+  it('should return voided obs when obs are passed and child value is undefined', () => {
+    const obs = {
+      value: false,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+    };
+    const expectedObs = {
+      concept: {
+        uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+        name: 'Pulse',
+        datatype: 'Boolean',
+      },
+      value: false,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      formNamespace,
+      voided: true,
+    };
+    const wrapper = mount(<BooleanControl formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const instance = wrapper.instance();
+    sinon.stub(instance.childControl, 'getValue', () => undefined);
+    expect(instance.getValue()).to.deep.eql(expectedObs);
+  });
 });

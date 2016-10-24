@@ -3,6 +3,7 @@ import 'src/helpers/componentStore';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
+import isEmpty from 'lodash/isEmpty';
 
 class Mapper {
   constructor(obs) {
@@ -11,8 +12,10 @@ class Mapper {
   }
 
   mapTo(groupMembers) {
-    this.obs.groupMembers = groupMembers.filter(obs => obs !== undefined);
-    return (this.obs.groupMembers.length > 0) ? this.obs : undefined;
+    const filteredMembers = groupMembers.filter(obs => obs !== undefined);
+    if (isEmpty(filteredMembers)) { return undefined; }
+    const voided = filteredMembers.every((obs) => obs.voided);
+    return Object.assign({}, this.obs, { groupMembers: filteredMembers }, { voided });
   }
 }
 

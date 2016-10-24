@@ -32,6 +32,9 @@ export class NumericBox extends Component {
         observationDateTime: this.observationDateTime,
       };
       return this.mapper.mapTo(obs);
+    } else if (this.props.obs) {
+      const voidedObs = Object.assign({}, this.props.obs, { voided: true });
+      return this.mapper.mapTo(voidedObs);
     }
     return undefined;
   }

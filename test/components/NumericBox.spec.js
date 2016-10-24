@@ -98,4 +98,20 @@ describe('NumericBox', () => {
     wrapper.find('input').simulate('change', { target: { value: '999' } });
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
+
+  it('should return the voided obs if value is set to undefined', () => {
+    const expectedObs = {
+      concept,
+      value: '007',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      formNamespace,
+      voided: true,
+    };
+
+    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const instance = wrapper.instance();
+    wrapper.find('input').simulate('change', { target: { value: '' } });
+
+    expect(instance.getValue()).to.eql(expectedObs);
+  });
 });

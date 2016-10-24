@@ -3,6 +3,8 @@ import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
+import sinon from 'sinon';
+import each from 'lodash/each';
 
 chai.use(chaiEnzyme());
 
@@ -12,7 +14,7 @@ function getLocationProperties(row, column) {
 
 class DummyControl extends Component {
   getValue() {
-    return this.props.formUuid;
+    return { uuid: this.props.formUuid };
   }
 
   render() {
@@ -49,7 +51,6 @@ describe('ObsGroupControl', () => {
       {
         id: '100',
         type: 'randomType',
-        value: 'Pulse',
         properties: getLocationProperties(0, 1),
       },
       {
@@ -123,11 +124,20 @@ describe('ObsGroupControl', () => {
           obs={{}}
         />);
       const instance = wrapper.instance();
+      const uuid = { uuid: 'someUuid' };
+
+      const expectedObs = {
+        concept: {
+          uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+          name: 'Pulse Data', datatype: 'N/A',
+        },
+        formNamespace: 'someUuid/1',
+        groupMembers: [uuid, uuid, uuid],
+        voided: false,
+      };
 
       const observations = instance.getValue();
-      expect(observations.concept.name).to.eql(obsGroupConcept.name);
-      expect(observations.groupMembers.length).to.eql(3);
-      expect(observations.groupMembers).to.deep.eql([formUuid, formUuid, formUuid]);
+      expect(observations).to.deep.eql(expectedObs);
     });
 
     it('should return undefined when there are no observations', () => {
@@ -141,6 +151,35 @@ describe('ObsGroupControl', () => {
         />);
       const instance = wrapper.instance();
       expect(instance.getValue()).to.deep.equal(undefined);
+    });
+
+    it('should return voided obs if all the child obs are voided', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          formUuid={formUuid}
+          metadata={metadata}
+          obs={{}}
+        />);
+      const instance = wrapper.instance();
+      const childObs = { uuid: 'someUuid', voided: true };
+
+      const expectedObs = {
+        concept: {
+          uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+          name: 'Pulse Data', datatype: 'N/A',
+        },
+        formNamespace: 'someUuid/1',
+        groupMembers: [childObs, childObs, childObs],
+        voided: true,
+      };
+
+      each(instance.childControls, (controls) => {
+        each(controls.childControls, (control) => {
+          sinon.stub(control, 'getValue', () => ({ uuid: childObs.uuid, voided: true }));
+        });
+      });
+      const observations = instance.getValue();
+      expect(observations).to.deep.eql(expectedObs);
     });
   });
 
