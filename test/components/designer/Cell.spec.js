@@ -9,7 +9,7 @@ chai.use(chaiEnzyme());
 
 describe('Cell', () => {
   let eventData;
-  const metadata = { id: 123 };
+  const metadata = { id: '123', properties: { } };
   const TestComponent = () => <div>TestComponent</div>;
 
   before(() => {
@@ -90,7 +90,7 @@ describe('Cell', () => {
       properties: {
         location: {
           row: 0,
-          column: 0,
+          column: 1,
         },
       },
     };
@@ -110,26 +110,45 @@ describe('Cell', () => {
     );
 
     const cell = cellDesigner.find('.gridCell');
-    expect(cellDesigner.text()).to.eql('');
+    expect(cell).to.not.have.descendants('TestComponent');
     cell.props().onDrop(eventData);
-    expect(cellDesigner.text()).to.eql('TestComponent');
+    expect(cell).to.have.exactly(1).descendants('TestComponent');
     cell.props().onDrop(otherEvent);
-    expect(cellDesigner.text()).to.eql('TestComponent' + 'TestComponent');
+    expect(cell).to.have.exactly(2).descendants('TestComponent');
   });
 
   it('should remove the dropped component when moved to different cell', () => {
-    const cellDesigner = mount(
+    const cell1 = mount(
       <CellDesigner
-        cellData={[]}
-        location={location}
+        cellData={[metadata]}
+        location={ { row: 0, location: 0 } }
         onChange={() => {}}
         wrapper={ TestComponent }
       />
     );
-    const cell = cellDesigner.find('.gridCell');
-    cell.props().onDrop(eventData);
-    cellDesigner.instance().processMove(metadata);
-    expect(cellDesigner.text()).to.eql('');
+    const cell2 = mount(
+      <CellDesigner
+        cellData={[]}
+        location={{ row: 0, location: 1 }}
+        onChange={() => {}}
+        wrapper={ TestComponent }
+      />
+    );
+
+    const metadataClone = Object.assign({}, metadata, {
+      id: '1234',
+      properties: {
+        location: { row: 0, column: 1 },
+      },
+    });
+    const eventDataClone = Object.assign({}, eventData, {
+      dataTransfer: { getData: () => JSON.stringify(metadataClone) },
+    });
+
+    cell1.find('.gridCell').props().onDrop(eventDataClone);
+    cell2.instance().processMove(metadataClone);
+    expect(cell1.find('.gridCell')).to.have.exactly(2).descendants('TestComponent');
+    expect(cell2.find('.gridCell')).to.not.have.descendants('TestComponent');
   });
 
   it('should remove only the dragged out component', () => {
@@ -201,5 +220,28 @@ describe('Cell', () => {
     cell.props().onDrop(eventData);
 
     mockOnChange.verify();
+  });
+
+  it('should not remove the dropped component when moved to the same cell', () => {
+    const cellDesigner = mount(
+      <CellDesigner
+        cellData={[]}
+        location={location}
+        onChange={() => {}}
+        wrapper={ TestComponent }
+      />
+    );
+    const metadataClone = Object.assign({}, metadata, {
+      properties: {
+        location: { row: 0, column: 1 },
+      },
+    });
+    const eventDataClone = Object.assign({}, eventData, {
+      dataTransfer: { getData: () => JSON.stringify(metadataClone) },
+    });
+    const cell = cellDesigner.find('.gridCell');
+    cell.props().onDrop(eventDataClone);
+    cellDesigner.instance().processMove(metadataClone);
+    expect(cellDesigner.text()).to.eql('TestComponent');
   });
 });

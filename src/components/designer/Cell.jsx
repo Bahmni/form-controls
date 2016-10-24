@@ -4,7 +4,7 @@ import Constants from 'src/constants';
 import each from 'lodash/each';
 import isEmpty from 'lodash/isEmpty';
 import classNames from 'classnames';
-
+import isEqual from 'lodash/isEqual';
 
 const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
 const defaultCellControl = React.createElement(() => <div className="cell" ></div>);
@@ -27,8 +27,10 @@ export class CellDesigner extends DropTarget {
   }
 
   processMove(metadata) {
-    const filteredData = this.state.data.filter((data) => data.id !== metadata.id);
-    this.setState({ data: filteredData });
+    if (!isEqual(this.props.location, CellDesigner.dropLoc)) {
+      const filteredData = this.state.data.filter((data) => data.id !== metadata.id);
+      this.setState({ data: filteredData });
+    }
   }
 
   processDragEnter() {
@@ -42,6 +44,12 @@ export class CellDesigner extends DropTarget {
   }
 
   processDrop(metadata) {
+    const oldLocation = metadata.properties.location;
+    const currentLocation = this.props.location;
+    CellDesigner.dropLoc = Object.assign({}, this.props.location);
+    if (oldLocation && isEqual(oldLocation, currentLocation)) {
+      return;
+    }
     const dataClone = this.state.data.slice();
     const metadataClone = Object.assign({}, metadata);
     const location = { location: this.props.location };
@@ -98,6 +106,11 @@ export class CellDesigner extends DropTarget {
     );
   }
 }
+
+CellDesigner.dropLoc = {
+  row: 0,
+  column: 0,
+};
 
 CellDesigner.propTypes = {
   cellData: PropTypes.array.isRequired,
