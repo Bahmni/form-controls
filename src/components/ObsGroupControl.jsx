@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { createFormNamespace } from 'src/helpers/formNamespace';
-import { getObsFromChildControls } from 'src/helpers/controlsHelper';
-import flatMap from 'lodash/flatMap';
+import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 
 class Mapper {
   constructor(obs) {
@@ -37,7 +36,7 @@ export class ObsGroupControl extends Component {
   }
 
   getErrors() {
-    return flatMap(this.childControls, (control) => control.getErrors());
+    return getErrorsFromChildControls(this.childControls);
   }
 
   storeChildRef(ref) {

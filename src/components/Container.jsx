@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
-import { getObsFromChildControls } from 'src/helpers/controlsHelper';
+import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 
 export class Container extends Component {
   constructor(props) {
@@ -12,6 +12,10 @@ export class Container extends Component {
   getValue() {
     const observations = getObsFromChildControls(this.childControls);
     return [].concat.apply([], observations).filter(obs => obs !== undefined);
+  }
+
+  getErrors() {
+    return getErrorsFromChildControls(this.childControls);
   }
 
   storeChildRef(ref) {

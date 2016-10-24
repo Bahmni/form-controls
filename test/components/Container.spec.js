@@ -57,7 +57,7 @@ describe('Container', () => {
     name: 'Vitals',
     controls: [
       {
-        id: '100',
+        id: '200',
         type: 'label',
         value: 'Pulse',
         properties: getLocationProperties(0, 0),
@@ -74,7 +74,7 @@ describe('Container', () => {
         type: 'obsControl',
         concept: numericBoxConcept,
         label,
-        properties: getLocationProperties(2, 0),
+        properties: { location: { row: 2, column: 0 }, mandatory: true },
       },
       {
         id: '103',
@@ -165,6 +165,15 @@ describe('Container', () => {
       const instance = wrapper.instance();
 
       expect(instance.getValue()).to.deep.equal([]);
+    });
+  });
+
+  describe('getError', () => {
+    it('should return the errors of its children which are data controls', () => {
+      const wrapper = mount(<Container metadata={metadata} observations={observations} />);
+      const instance = wrapper.instance();
+
+      expect(instance.getErrors()).to.deep.equal([{ errorType: 'mandatory' }]);
     });
   });
 

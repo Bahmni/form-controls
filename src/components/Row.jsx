@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { getControls, getGroupedControls } from 'src/helpers/controlsParser';
 import map from 'lodash/map';
-import { getObsFromChildControls } from 'src/helpers/controlsHelper';
+import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 
 export default class Row extends Component {
   constructor(props) {
@@ -13,6 +13,10 @@ export default class Row extends Component {
   getValue() {
     const observations = getObsFromChildControls(this.childControls);
     return [].concat.apply([], observations).filter(obs => obs !== undefined);
+  }
+
+  getErrors() {
+    return getErrorsFromChildControls(this.childControls);
   }
 
   getControlsByColumn(sortedColumnControls, observations, childProps) {
