@@ -66,6 +66,11 @@ describe('ObsControlDesigner', () => {
       sinon.assert.calledOnce(onSelectSpy);
       sinon.assert.calledWith(onSelectSpy, sinon.match.any, expectedMetadata);
     });
+
+    it('should return undefined for getJsonDefinition call', () => {
+      const json = wrapper.instance().getJsonDefinition();
+      expect(json).to.eql(undefined);
+    });
   });
 
   context('when concept is present', () => {

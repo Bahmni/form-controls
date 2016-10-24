@@ -12,6 +12,9 @@ export class ObsControlDesigner extends Component {
   }
 
   getJsonDefinition() {
+    if (!this.childControl) {
+      return undefined;
+    }
     const childJsonDefinition = this.childControl.getJsonDefinition();
     const labelJsonDefinition = this.labelControl.getJsonDefinition();
     return Object.assign({}, childJsonDefinition, { label: labelJsonDefinition });
@@ -36,7 +39,7 @@ export class ObsControlDesigner extends Component {
   render() {
     const { metadata, metadata: { concept } } = this.props;
     const designerComponent = concept && window.componentStore.getDesignerComponent(concept.datatype); // eslint-disable-line max-len
-    if (concept && designerComponent) {
+    if (designerComponent) {
       return (
         <div onClick={ (event) => this.props.onSelect(event, metadata) }>
           <LabelDesigner
