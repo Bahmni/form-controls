@@ -39,13 +39,15 @@ describe('ObsControl', () => {
 
   const formNamespace = `${formUuid}/100`;
 
+  const properties = { location: { row: 0, column: 1 } };
+
   it('should render TextBox with Label', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
       concept: getConcept('Text'),
       label,
-      properties: {},
+      properties,
     };
 
     const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
@@ -60,7 +62,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('Numeric'),
       label,
-      properties: {},
+      properties,
     };
 
     const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
@@ -106,7 +108,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('someRandomComponentType'),
       label,
-      properties: {},
+      properties,
     };
 
     const wrapper = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
@@ -119,7 +121,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('text'),
       label,
-      properties: {},
+      properties,
     };
 
     const obs = {
@@ -149,7 +151,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('text'),
       label,
-      properties: {},
+      properties,
     };
 
     const obsControl = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
