@@ -52,7 +52,7 @@ export class ObsGroupControl extends Component {
     const obsGroupMembers = (obs && obs.groupMembers) ? obs.groupMembers : [];
     const groupedRowControls = getGroupedControls(controls, 'row');
     return (
-      <fieldset>
+      <fieldset className="form-builder-fieldset">
         <legend>{concept.name}</legend>
         <div className="obsGroup-controls">
           {displayRowControls(groupedRowControls, obsGroupMembers, childProps)}

@@ -30,7 +30,7 @@ export class Section extends Component {
     const childProps = { formUuid, ref: this.storeChildRef };
     const groupedRowControls = getGroupedControls(controls, 'row');
     return (
-      <fieldset>
+      <fieldset className="form-builder-fieldset">
         <legend>{value}</legend>
         <div className="section-controls">
           {displayRowControls(groupedRowControls, obs, childProps)}
