@@ -143,7 +143,7 @@ describe('BooleanControl', () => {
       observationDateTime: '2016-09-08T10:10:38.000+0530',
     };
     const stub = sinon.stub(Validator, 'getErrors');
-    stub.withArgs(properties, false).returns([{ errorType: 'something' }]);
+    stub.withArgs({ id: '100', properties, value: false }).returns([{ errorType: 'something' }]);
 
     const wrapper = mount(<BooleanControl formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = wrapper.instance();

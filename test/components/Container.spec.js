@@ -173,7 +173,7 @@ describe('Container', () => {
       const wrapper = mount(<Container metadata={metadata} observations={observations} />);
       const instance = wrapper.instance();
 
-      expect(instance.getErrors()).to.deep.equal([{ errorType: 'mandatory' }]);
+      expect(instance.getErrors()).to.deep.equal([{ controlId: '103', errorType: 'mandatory' }]);
     });
   });
 

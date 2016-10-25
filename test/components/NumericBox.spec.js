@@ -91,7 +91,8 @@ describe('NumericBox', () => {
 
   it('getErrors should return errors if present', () => {
     const stub = sinon.stub(Validator, 'getErrors');
-    stub.withArgs(properties, '999').returns([{ errorType: 'something' }]);
+    const controlDetails = { id: '100', properties, value: '999' };
+    stub.withArgs(sinon.match(controlDetails)).returns([{ errorType: 'something' }]);
 
     const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();

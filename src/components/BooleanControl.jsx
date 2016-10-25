@@ -42,8 +42,10 @@ export class BooleanControl extends Component {
   }
 
   getErrors() {
-    const { properties } = this.props.metadata;
-    return Validator.getErrors(properties, this.childControl.getValue());
+    const value = this.childControl.getValue();
+    const { id, properties } = this.props.metadata;
+    const controlDetails = { id, properties, value };
+    return Validator.getErrors(controlDetails);
   }
 
   storeChildRef(ref) {

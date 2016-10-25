@@ -96,7 +96,8 @@ describe('TextBox', () => {
 
   it('getErrors should return errors if present', () => {
     const stub = sinon.stub(Validator, 'getErrors');
-    stub.withArgs(properties, 'My new value').returns([{ errorType: 'something' }]);
+    const controlDetails = { id: '100', properties, value: 'My new value' };
+    stub.withArgs(controlDetails).returns([{ errorType: 'something' }]);
 
     const wrapper = shallow(<TextBox formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();

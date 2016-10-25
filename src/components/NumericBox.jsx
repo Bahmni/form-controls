@@ -40,8 +40,9 @@ export class NumericBox extends Component {
   }
 
   getErrors() {
-    const { properties } = this.props.metadata;
-    return Validator.getErrors(properties, this.value);
+    const { id, properties } = this.props.metadata;
+    const controlDetails = { id, properties, value: this.value };
+    return Validator.getErrors(controlDetails);
   }
 
   handleChange(e) {

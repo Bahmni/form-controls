@@ -8,15 +8,16 @@ export class Validator {
     return false;
   }
 
-  static mandatory(propertyValue, obsValue) {
+  static mandatory(controlId, propertyValue, obsValue) {
     if (!propertyValue || this.nonEmpty(obsValue)) return undefined;
-    return { errorType: constants.validations.mandatory };
+    return { controlId, errorType: constants.validations.mandatory };
   }
 
-  static getErrors(properties, obsValue) {
+  static getErrors(controlDetails) {
+    const { id: controlId, properties, value } = controlDetails;
     const errors = map(properties, (propertyValue, propertyName) => {
       const validator = get(this.propertyValidators, propertyName);
-      if (validator) return validator(propertyValue, obsValue);
+      if (validator) return validator(controlId, propertyValue, value);
       return undefined;
     });
 
@@ -25,5 +26,6 @@ export class Validator {
 }
 
 Validator.propertyValidators = {
-  [constants.validations.mandatory]: (propVal, obsVal) => Validator.mandatory(propVal, obsVal),
+  [constants.validations.mandatory]:
+    (controlId, propVal, obsVal) => Validator.mandatory(controlId, propVal, obsVal),
 };
