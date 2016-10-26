@@ -12,7 +12,7 @@ describe('Button Component', () => {
     { name: 'No', value: false },
   ];
   it('should render button component', () => {
-    const wrapper = shallow(<Button id="someId" options={options} />);
+    const wrapper = shallow(<Button hasErrors={false} id="someId" options={options} />);
     expect(wrapper).to.have.exactly(2).descendants('button');
 
     expect(wrapper.find('button').at(0).text()).to.eql('Yes');
@@ -20,16 +20,25 @@ describe('Button Component', () => {
 
     expect(wrapper.find('button').at(0)).to.have.className('fl');
     expect(wrapper.find('button').at(1)).to.have.className('fl');
+
+    expect(wrapper).to.have.className('form-control-buttons');
   });
 
   it('should render button with selected value', () => {
-    const wrapper = shallow(<Button id="someId" options={options} value />);
+    const wrapper = shallow(<Button hasErrors={false} id="someId" options={options} value />);
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
     expect(wrapper.find('button').at(1)).to.have.className('fl');
   });
 
+  it('should render error class when control has error', () => {
+    const wrapper = shallow(<Button hasErrors={true} id="someId" options={options} value />);
+    expect(wrapper.find('button').at(0)).to.have.className('fl active');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
+    expect(wrapper).to.have.className('form-control-buttons form-builder-error');
+  });
+
   it('should change the value on click', () => {
-    const wrapper = shallow(<Button id="someId" options={options} value />);
+    const wrapper = shallow(<Button hasErrors={false} id="someId" options={options} value />);
     wrapper.find('button').at(1).simulate('click');
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(false);
@@ -39,13 +48,13 @@ describe('Button Component', () => {
   });
 
   it('should return the value as undefined if not selected', () => {
-    const wrapper = shallow(<Button id="someId" options={options} />);
+    const wrapper = shallow(<Button hasErrors={false} id="someId" options={options} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
   });
 
   it('should change the value to undefined if double clicked', () => {
-    const wrapper = shallow(<Button id="someId" options={options} value />);
+    const wrapper = shallow(<Button hasErrors={false} id="someId" options={options} value />);
     wrapper.find('button').at(1).simulate('click');
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(false);

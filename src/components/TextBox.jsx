@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 import { Validator } from 'src/helpers/Validator';
+import { hasError } from 'src/helpers/controlsHelper';
+import classNames from 'classnames';
 
 class Mapper {
   constructor(obs) {
@@ -50,10 +52,16 @@ export class TextBox extends Component {
     this.observationDateTime = null;
   }
 
+  getClassName() {
+    const { errors, metadata: { id } } = this.props;
+    return classNames({ 'form-builder-error': hasError(errors, id) });
+  }
+
   render() {
     const defaultValue = this.props.obs && this.props.obs.value;
     return (
       <input
+        className={this.getClassName()}
         defaultValue={defaultValue}
         onChange={(e) => this.handleChange(e)}
         type="text"
@@ -63,6 +71,7 @@ export class TextBox extends Component {
 }
 
 TextBox.propTypes = {
+  errors: PropTypes.array.isRequired,
   formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,

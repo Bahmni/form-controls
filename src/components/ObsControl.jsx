@@ -24,9 +24,10 @@ export class ObsControl extends Component {
   }
 
   displayObsControl(registeredComponent) {
-    const { metadata } = this.props;
+    const { errors, formUuid, metadata } = this.props;
     return React.createElement(registeredComponent, {
-      formUuid: this.props.formUuid,
+      errors,
+      formUuid,
       metadata,
       obs: this.props.obs,
       ref: this.storeChildRef,
@@ -49,6 +50,7 @@ export class ObsControl extends Component {
 }
 
 ObsControl.propTypes = {
+  errors: PropTypes.array.isRequired,
   formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,

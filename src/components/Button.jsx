@@ -32,11 +32,14 @@ export class Button extends Component {
   }
 
   render() {
-    return <div className="form-control-buttons">{this.displayButtons()}</div>;
+    const className =
+      classNames('form-control-buttons', { 'form-builder-error': this.props.hasErrors });
+    return <div className={className}>{this.displayButtons()}</div>;
   }
 }
 
 Button.propTypes = {
+  hasErrors: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   value: PropTypes.any,

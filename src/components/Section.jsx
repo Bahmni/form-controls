@@ -26,8 +26,8 @@ export class Section extends Component {
   }
 
   render() {
-    const { formUuid, metadata: { controls, value }, obs } = this.props;
-    const childProps = { formUuid, ref: this.storeChildRef };
+    const { errors, formUuid, metadata: { controls, value }, obs } = this.props;
+    const childProps = { errors, formUuid, ref: this.storeChildRef };
     const groupedRowControls = getGroupedControls(controls, 'row');
     return (
       <fieldset className="form-builder-fieldset">
@@ -41,6 +41,7 @@ export class Section extends Component {
 }
 
 Section.propTypes = {
+  errors: PropTypes.array.isRequired,
   formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     controls: PropTypes.array.isRequired,

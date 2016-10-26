@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 import { Validator } from 'src/helpers/Validator';
+import { hasError } from 'src/helpers/controlsHelper';
 
 class Mapper {
   constructor(obs) {
@@ -58,6 +59,7 @@ export class BooleanControl extends Component {
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
       return React.createElement(registeredComponent, {
+        hasErrors: hasError(this.props.errors, id),
         id: childControlId,
         options,
         value: this.value,
@@ -69,6 +71,7 @@ export class BooleanControl extends Component {
 }
 
 BooleanControl.propTypes = {
+  errors: PropTypes.array.isRequired,
   formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,

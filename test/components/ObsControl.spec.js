@@ -45,9 +45,10 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('Text'),
       label,
+      properties: {},
     };
 
-    const wrapper = mount(<ObsControl formUuid={formUuid} metadata={metadata} />);
+    const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('TextBox');
     expect(wrapper.find('input').at(0).props().type).to.be.eql('text');
@@ -59,12 +60,41 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('Numeric'),
       label,
+      properties: {},
     };
 
-    const wrapper = mount(<ObsControl formUuid={formUuid} metadata={metadata} />);
+    const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('NumericBox');
     expect(wrapper.find('input').at(0).props().type).to.be.eql('number');
+  });
+
+  it('should render child control with error when present', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Numeric'),
+      label,
+      properties: {},
+    };
+
+    const errors = [{ controlId: '100', errorType: 'mandatory' }];
+    const wrapper = mount(<ObsControl errors={errors} formUuid={formUuid} metadata={metadata} />);
+    expect(wrapper.find('input').at(0)).to.have.className('form-builder-error');
+  });
+
+  it('should not render child control with error when there are no errors for control', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Numeric'),
+      label,
+      properties: {},
+    };
+
+    const errors = [{ controlId: 'somethingElse', errorType: 'mandatory' }];
+    const wrapper = mount(<ObsControl errors={errors} formUuid={formUuid} metadata={metadata} />);
+    expect(wrapper.find('input').at(0)).to.not.have.className('form-builder-error');
   });
 
   it('should return null when registered component not found', () => {
@@ -73,9 +103,10 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('someRandomComponentType'),
       label,
+      properties: {},
     };
 
-    const wrapper = shallow(<ObsControl formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.be.blank();
   });
 
@@ -85,6 +116,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('text'),
       label,
+      properties: {},
     };
 
     const obs = {
@@ -99,7 +131,7 @@ describe('ObsControl', () => {
       formNamespace,
     };
 
-    const obsControl = mount(<ObsControl formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const obsControl = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = obsControl.instance();
     const obsControlValue = instance.getValue();
 
@@ -112,9 +144,10 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('text'),
       label,
+      properties: {},
     };
 
-    const obsControl = shallow(<ObsControl formUuid={formUuid} metadata={metadata} />);
+    const obsControl = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
     const instance = obsControl.instance();
     instance.childControl = { getErrors: () => [{ errorType: 'something' }] };
 

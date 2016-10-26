@@ -1,4 +1,5 @@
 import flatMap from 'lodash/flatMap';
+import some from 'lodash/some';
 
 export function getObsFromChildControls(childControls) {
   const childControlsIds = Object.getOwnPropertyNames(childControls);
@@ -17,4 +18,8 @@ export function getErrorsFromChildControls(childControls) {
     }
     return undefined;
   }).filter(error => error !== undefined);
+}
+
+export function hasError(errors, controlId) {
+  return some(errors, error => error.controlId === controlId);
 }

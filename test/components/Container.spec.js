@@ -125,6 +125,7 @@ describe('Container', () => {
       expect(wrapper).to.have.exactly(1).descendants('TextBox');
       expect(wrapper).to.have.exactly(2).descendants('Label');
 
+      expect(wrapper.find('ObsControl').at(0).props().errors).to.eql([]);
       componentStore.registerComponent('numeric', NumericBox);
     });
   });

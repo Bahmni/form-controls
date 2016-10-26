@@ -56,17 +56,19 @@ describe('Row', () => {
 
   describe('render', () => {
     it('should render rows', () => {
+      const error = [{ errorType: 'someErrorType' }];
       const wrapper = mount(
-        <Row controls={controls} formUuid={formUuid} id={0} observations={[]} />
+        <Row controls={controls} errors={error} formUuid={formUuid} id={0} observations={[]} />
       );
 
       expect(wrapper).to.have.exactly(3).descendants('DummyControl');
       expect(wrapper.find('.form-builder-column-1').text()).to.eql(formUuid);
+      expect(wrapper.find('DummyControl').at(0).props().errors).to.eql(error);
     });
 
     it('should not render rows when controls is empty', () => {
       const wrapper = shallow(
-        <Row controls={[]} formUuid={formUuid} id={0} observations={[]} />
+        <Row controls={[]} errors={[]} formUuid={formUuid} id={0} observations={[]} />
       );
 
       expect(wrapper).to.be.blank();
@@ -76,7 +78,7 @@ describe('Row', () => {
   describe('getValue', () => {
     it('should return the observations of its child controls', () => {
       const wrapper = mount(
-        <Row controls={controls} formUuid={formUuid} id={0} observations={[]} />
+        <Row controls={controls} errors={[]} formUuid={formUuid} id={0} observations={[]} />
       );
       const instance = wrapper.instance();
 
@@ -85,7 +87,7 @@ describe('Row', () => {
 
     it('should return empty when there are no controls', () => {
       const wrapper = mount(
-        <Row controls={[]} formUuid={formUuid} id={0} observations={[]} />
+        <Row controls={[]} errors={[]} formUuid={formUuid} id={0} observations={[]} />
       );
       const instance = wrapper.instance();
 
@@ -95,7 +97,7 @@ describe('Row', () => {
   describe('getErrors', () => {
     it('should return errors of its child controls', () => {
       const wrapper = shallow(
-          <Row controls={controls} formUuid={formUuid} id={0} observations={[]} />
+          <Row controls={controls} errors={[]} formUuid={formUuid} id={0} observations={[]} />
       );
       const instance = wrapper.instance();
 

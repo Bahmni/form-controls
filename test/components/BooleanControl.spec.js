@@ -63,10 +63,28 @@ describe('BooleanControl', () => {
   const formNamespace = `${formUuid}/100`;
 
   it('should render Dummy Control of displayType button by default', () => {
-    const wrapper = shallow(<BooleanControl formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(
+      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />
+    );
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
     expect(wrapper.find('DummyRadioControl').props().id).to.eql('someFormUuid-100');
     expect(wrapper.find('DummyRadioControl').props().options).to.deep.eql(metadata.options);
+  });
+
+  it('should pass hasError to child Controls if present', () => {
+    const errors = [{ controlId: '100' }];
+    const wrapper = shallow(
+      <BooleanControl errors={errors} formUuid={formUuid} metadata={metadata} />
+    );
+    expect(wrapper.find('DummyRadioControl').props().hasErrors).to.eql(true);
+  });
+
+  it('should pass hasError as false to child Controls if no error for the control', () => {
+    const errors = [{ controlId: 'someOtherId' }];
+    const wrapper = shallow(
+      <BooleanControl errors={errors} formUuid={formUuid} metadata={metadata} />
+    );
+    expect(wrapper.find('DummyRadioControl').props().hasErrors).to.eql(false);
   });
 
   it('should render Dummy Control of specified displayType', () => {
@@ -74,7 +92,9 @@ describe('BooleanControl', () => {
     const spy = sinon.spy(window.componentStore, 'getRegisteredComponent');
 
     metadata.displayType = 'radio';
-    const wrapper = shallow(<BooleanControl formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(
+      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />
+    );
 
     sinon.assert.calledWith(spy, 'radio');
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
@@ -86,7 +106,9 @@ describe('BooleanControl', () => {
 
   it('should return null when registered component not found', () => {
     metadata.displayType = 'somethingRandom';
-    const wrapper = shallow(<BooleanControl formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(
+      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />
+    );
     expect(wrapper).to.be.blank();
   });
 
@@ -103,6 +125,7 @@ describe('BooleanControl', () => {
     };
     const wrapper = mount(
       <BooleanControl
+        errors={[]}
         formUuid={formUuid}
         metadata={metadata}
         obs={{ value: true }}
@@ -126,13 +149,13 @@ describe('BooleanControl', () => {
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
     };
-    const wrapper = mount(<BooleanControl formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = mount(<BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.deep.eql(expectedObs);
   });
 
   it('should return undefined when child value is undefined', () => {
-    const wrapper = mount(<BooleanControl formUuid={formUuid} metadata={metadata} />);
+    const wrapper = mount(<BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.deep.eql(undefined);
   });
@@ -145,7 +168,9 @@ describe('BooleanControl', () => {
     const stub = sinon.stub(Validator, 'getErrors');
     stub.withArgs({ id: '100', properties, value: false }).returns([{ errorType: 'something' }]);
 
-    const wrapper = mount(<BooleanControl formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = mount(
+      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    );
     const instance = wrapper.instance();
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
@@ -166,7 +191,9 @@ describe('BooleanControl', () => {
       formNamespace,
       voided: true,
     };
-    const wrapper = mount(<BooleanControl formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = mount(
+      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    );
     const instance = wrapper.instance();
     sinon.stub(instance.childControl, 'getValue', () => undefined);
     expect(instance.getValue()).to.deep.eql(expectedObs);

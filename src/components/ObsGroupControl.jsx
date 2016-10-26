@@ -47,8 +47,8 @@ export class ObsGroupControl extends Component {
   }
 
   render() {
-    const { formUuid, metadata: { controls, concept }, obs } = this.props;
-    const childProps = { formUuid, ref: this.storeChildRef };
+    const { errors, formUuid, metadata: { controls, concept }, obs } = this.props;
+    const childProps = { errors, formUuid, ref: this.storeChildRef };
     const obsGroupMembers = (obs && obs.groupMembers) ? obs.groupMembers : [];
     const groupedRowControls = getGroupedControls(controls, 'row');
     return (
@@ -63,6 +63,7 @@ export class ObsGroupControl extends Component {
 }
 
 ObsGroupControl.propTypes = {
+  errors: PropTypes.array.isRequired,
   formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     controls: PropTypes.array.isRequired,

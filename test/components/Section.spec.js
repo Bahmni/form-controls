@@ -65,8 +65,10 @@ describe('Section', () => {
 
   describe('render', () => {
     it('should render section', () => {
+      const errors=[{ errorType: 'someErrorType' }];
       const wrapper = mount(
         <Section
+          errors={errors}
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}
@@ -76,6 +78,7 @@ describe('Section', () => {
       expect(wrapper).to.have.exactly(2).descendants('Row');
       expect(wrapper).to.have.exactly(3).descendants('DummyControl');
       expect(wrapper.find('Row').at(0).props().observations).to.eql([]);
+      expect(wrapper.find('DummyControl').at(0).props().errors).to.eql(errors);
     });
 
     it('should render section control with observations', () => {
@@ -91,6 +94,7 @@ describe('Section', () => {
       ];
       const wrapper = mount(
         <Section
+          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={observations}
@@ -105,6 +109,7 @@ describe('Section', () => {
       metadataClone.controls = [];
       const wrapper = shallow(
         <Section
+          errors={[]}
           formUuid={formUuid}
           metadata={metadataClone}
           obs={[]}
@@ -118,6 +123,7 @@ describe('Section', () => {
       window.componentStore.deRegisterComponent('randomType');
       const wrapper = shallow(
         <Section
+          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}
@@ -132,6 +138,7 @@ describe('Section', () => {
     it('should return the observations from child Controls', () => {
       const wrapper = mount(
         <Section
+          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}
@@ -146,6 +153,7 @@ describe('Section', () => {
       metadataClone.controls = [];
       const wrapper = mount(
         <Section
+          errors={[]}
           formUuid={formUuid}
           metadata={metadataClone}
           obs={[]}
@@ -160,6 +168,7 @@ describe('Section', () => {
     it('should return errors from child controls', () => {
       const wrapper = mount(
         <Section
+          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}

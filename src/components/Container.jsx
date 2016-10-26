@@ -7,6 +7,7 @@ export class Container extends Component {
   constructor(props) {
     super(props);
     this.childControls = {};
+    this.state = { errors: [] };
     this.storeChildRef = this.storeChildRef.bind(this);
   }
 
@@ -20,6 +21,7 @@ export class Container extends Component {
       return { observations };
     }
 
+    this.setState({ errors });
     return { errors };
   }
 
@@ -29,7 +31,7 @@ export class Container extends Component {
 
   render() {
     const { observations, metadata: { controls, uuid: formUuid } } = this.props;
-    const childProps = { formUuid, ref: this.storeChildRef };
+    const childProps = { errors: this.state.errors, formUuid, ref: this.storeChildRef };
     const groupedRowControls = getGroupedControls(controls, 'row');
     return (
       <div>{displayRowControls(groupedRowControls, observations, childProps)}</div>

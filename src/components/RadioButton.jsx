@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import map from 'lodash/map';
+import classNames from 'classnames';
 
 export class RadioButton extends Component {
   constructor(props) {
@@ -33,11 +34,13 @@ export class RadioButton extends Component {
   }
 
   render() {
-    return <div>{this.displayRadioButtons()}</div>;
+    const className = classNames({ 'form-builder-error': this.props.hasErrors });
+    return <div className={className}>{this.displayRadioButtons()}</div>;
   }
 }
 
 RadioButton.propTypes = {
+  hasErrors: PropTypes.bool.isRequired,
   id: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   value: PropTypes.any,

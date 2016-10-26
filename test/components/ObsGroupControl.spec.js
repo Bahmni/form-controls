@@ -69,8 +69,10 @@ describe('ObsGroupControl', () => {
   describe('render', () => {
     it('should render obsGroup control', () => {
       const observation = {};
+      const errors = [{ errorType: 'someErrorType' }];
       const wrapper = mount(
         <ObsGroupControl
+          errors={errors}
           formUuid={formUuid}
           metadata={metadata}
           obs={observation}
@@ -80,6 +82,7 @@ describe('ObsGroupControl', () => {
       expect(wrapper).to.have.exactly(3).descendants('DummyControl');
       expect(wrapper.find('Row').at(0).props().observations).to.eql([]);
       expect(wrapper.find('legend').text()).to.eql(obsGroupConcept.name);
+      expect(wrapper.find('DummyControl').at(0).props().errors).to.eql(errors);
     });
 
     it('should render obsGroup control with observations', () => {
@@ -91,6 +94,7 @@ describe('ObsGroupControl', () => {
       };
       const wrapper = mount(
         <ObsGroupControl
+          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={observation}
@@ -105,6 +109,7 @@ describe('ObsGroupControl', () => {
       window.componentStore.deRegisterComponent('randomType');
       const wrapper = mount(
         <ObsGroupControl
+          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={{}}
@@ -119,6 +124,7 @@ describe('ObsGroupControl', () => {
     it('should return the observations from childControls', () => {
       const wrapper = mount(
         <ObsGroupControl
+          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={{}}
@@ -145,6 +151,7 @@ describe('ObsGroupControl', () => {
       metadataClone.controls = [];
       const wrapper = mount(
         <ObsGroupControl
+          errors={[]}
           formUuid={formUuid}
           metadata={metadataClone}
           obs={{}}
@@ -156,6 +163,7 @@ describe('ObsGroupControl', () => {
     it('should return voided obs if all the child obs are voided', () => {
       const wrapper = mount(
         <ObsGroupControl
+          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={{}}
@@ -187,6 +195,7 @@ describe('ObsGroupControl', () => {
     it('should return all children errors', () => {
       const wrapper = mount(
         <ObsGroupControl
+          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={{}}

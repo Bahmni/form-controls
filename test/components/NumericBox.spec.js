@@ -47,13 +47,25 @@ describe('NumericBox', () => {
   const formNamespace = `${formUuid}/100`;
 
   it('should render NumericBox', () => {
-    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(<NumericBox errors={[]} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input').props().defaultValue).to.be.eql(undefined);
   });
 
+  it('should render NumericBox with errors if error is present', () => {
+    const errors = [{ controlId: '100' }];
+    const wrapper = shallow(<NumericBox errors={errors} formUuid={formUuid} metadata={metadata} />);
+    expect(wrapper.find('input')).to.have.className('form-builder-error');
+  });
+
+  it('should not render NumericBox with errors if error is present for control', () => {
+    const errors = [{ controlId: 'someOtherId' }, { controlId: 'differentId' }];
+    const wrapper = shallow(<NumericBox errors={errors} formUuid={formUuid} metadata={metadata} />);
+    expect(wrapper.find('input')).to.have.className('');
+  });
+
   it('should render NumericBox with default value', () => {
-    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = shallow(<NumericBox errors={[]}  formUuid={formUuid} metadata={metadata} obs={obs} />);
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input').props().defaultValue).to.be.eql('007');
   });
@@ -65,7 +77,7 @@ describe('NumericBox', () => {
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
     };
-    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = shallow(<NumericBox errors={[]}  formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(expectedObs);
   });
@@ -77,14 +89,14 @@ describe('NumericBox', () => {
       observationDateTime: null,
       formNamespace,
     };
-    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = shallow(<NumericBox errors={[]}  formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = wrapper.instance();
     wrapper.find('input').simulate('change', { target: { value: '999' } });
     expect(instance.getValue()).to.eql(expectedObs);
   });
 
   it('should return value only if there was initial value or if the value was changed', () => {
-    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(<NumericBox errors={[]}  formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
   });
@@ -94,7 +106,7 @@ describe('NumericBox', () => {
     const controlDetails = { id: '100', properties, value: '999' };
     stub.withArgs(sinon.match(controlDetails)).returns([{ errorType: 'something' }]);
 
-    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(<NumericBox errors={[]}  formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
     wrapper.find('input').simulate('change', { target: { value: '999' } });
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
@@ -109,7 +121,7 @@ describe('NumericBox', () => {
       voided: true,
     };
 
-    const wrapper = shallow(<NumericBox formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = shallow(<NumericBox errors={[]}  formUuid={formUuid} metadata={metadata} obs={obs} />);
     const instance = wrapper.instance();
     wrapper.find('input').simulate('change', { target: { value: '' } });
 
