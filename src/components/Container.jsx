@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
+import isEmpty from 'lodash/isEmpty';
 
 export class Container extends Component {
   constructor(props) {
@@ -10,12 +11,16 @@ export class Container extends Component {
   }
 
   getValue() {
-    const observations = getObsFromChildControls(this.childControls);
-    return [].concat.apply([], observations).filter(obs => obs !== undefined);
-  }
+    const errors = getErrorsFromChildControls(this.childControls);
+    const childObservations = getObsFromChildControls(this.childControls);
+    const observations = [].concat.apply([], childObservations).filter(obs => obs !== undefined);
+    const nonVoidedObs = observations.filter(obs => obs.voided !== true);
 
-  getErrors() {
-    return getErrorsFromChildControls(this.childControls);
+    if (isEmpty(nonVoidedObs) || isEmpty(errors)) {
+      return { observations };
+    }
+
+    return { errors };
   }
 
   storeChildRef(ref) {
