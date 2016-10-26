@@ -83,7 +83,7 @@
     label{
       float: left;
       width: 150px;
-      margin-right: 20px;
+      margin-right: 10px;
       font-size: 12px;
       margin-top: 8px;
       text-align: right;
@@ -109,4 +109,9 @@
   border: 1px solid #c0c0c0;
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em;
+}
+
+.form-builder-asterisk {
+  color: red;
+  margin-right: 5px;
 }

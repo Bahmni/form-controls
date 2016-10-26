@@ -66,7 +66,9 @@ describe('TextBox', () => {
   });
 
   it('should render TextBox with default value', () => {
-    const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    );
     expect(wrapper.find('input').props().type).to.be.eql('text');
     expect(wrapper.find('input').props().defaultValue).to.be.eql('someValue');
   });
@@ -79,7 +81,9 @@ describe('TextBox', () => {
       formNamespace,
     };
 
-    const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    );
     const instance = wrapper.instance();
 
     expect(instance.getValue()).to.eql(expectedObs);
@@ -93,7 +97,9 @@ describe('TextBox', () => {
       formNamespace,
     };
 
-    const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    );
     const instance = wrapper.instance();
     wrapper.find('input').simulate('change', { target: { value: 'My new value' } });
 
@@ -126,7 +132,9 @@ describe('TextBox', () => {
       voided: true,
     };
 
-    const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    );
     const instance = wrapper.instance();
     wrapper.find('input').simulate('change', { target: { value: '' } });
 

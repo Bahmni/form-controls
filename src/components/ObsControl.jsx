@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Label } from 'components/Label.jsx';
 import 'src/helpers/componentStore';
+import find from 'lodash/find';
 
 export class ObsControl extends Component {
 
@@ -34,6 +35,15 @@ export class ObsControl extends Component {
     });
   }
 
+  markMandatory() {
+    const { properties } = this.props.metadata;
+    const isMandatory = find(properties, (value, key) => (key === 'mandatory' && value));
+    if (isMandatory) {
+      return <span className="form-builder-asterisk">*</span>;
+    }
+    return null;
+  }
+
   render() {
     const { concept, label } = this.props.metadata;
     const registeredComponent = window.componentStore.getRegisteredComponent(concept.datatype);
@@ -41,6 +51,7 @@ export class ObsControl extends Component {
       return (
         <div>
           <Label metadata={label} />
+          {this.markMandatory()}
           {this.displayObsControl(registeredComponent)}
         </div>
       );

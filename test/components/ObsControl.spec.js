@@ -75,12 +75,14 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('Numeric'),
       label,
-      properties: {},
+      properties: { mandatory: true },
     };
 
     const errors = [{ controlId: '100', errorType: 'mandatory' }];
     const wrapper = mount(<ObsControl errors={errors} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper.find('input').at(0)).to.have.className('form-builder-error');
+    expect(wrapper.find('span').text()).to.eql('*');
+    expect(wrapper.find('span')).to.have.className('form-builder-asterisk');
   });
 
   it('should not render child control with error when there are no errors for control', () => {
@@ -95,6 +97,7 @@ describe('ObsControl', () => {
     const errors = [{ controlId: 'somethingElse', errorType: 'mandatory' }];
     const wrapper = mount(<ObsControl errors={errors} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper.find('input').at(0)).to.not.have.className('form-builder-error');
+    expect(wrapper).to.not.have.descendants('span');
   });
 
   it('should return null when registered component not found', () => {
@@ -131,7 +134,9 @@ describe('ObsControl', () => {
       formNamespace,
     };
 
-    const obsControl = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />);
+    const obsControl = mount(
+      <ObsControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    );
     const instance = obsControl.instance();
     const obsControlValue = instance.getValue();
 

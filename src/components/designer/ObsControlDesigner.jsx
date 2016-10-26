@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { LabelDesigner } from 'components/designer/Label.jsx';
 import 'src/helpers/componentStore';
+import find from 'lodash/find';
 
 export class ObsControlDesigner extends Component {
 
@@ -36,6 +37,15 @@ export class ObsControlDesigner extends Component {
     });
   }
 
+  markMandatory() {
+    const { properties } = this.props.metadata;
+    const isMandatory = find(properties, (value, key) => (key === 'mandatory' && value));
+    if (isMandatory) {
+      return <span className="form-builder-asterisk">*</span>;
+    }
+    return null;
+  }
+
   render() {
     const { metadata, metadata: { concept } } = this.props;
     const designerComponent = concept && window.componentStore.getDesignerComponent(concept.datatype); // eslint-disable-line max-len
@@ -47,6 +57,7 @@ export class ObsControlDesigner extends Component {
             onSelect={ (event) => this.props.onSelect(event, metadata) }
             ref={ this.storeLabelRef }
           />
+          {this.markMandatory()}
           {this.displayObsControl(designerComponent)}
         </div>
       );

@@ -31,7 +31,7 @@ describe('Button Component', () => {
   });
 
   it('should render error class when control has error', () => {
-    const wrapper = shallow(<Button hasErrors={true} id="someId" options={options} value />);
+    const wrapper = shallow(<Button hasErrors id="someId" options={options} value />);
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
     expect(wrapper.find('button').at(1)).to.have.className('fl');
     expect(wrapper).to.have.className('form-control-buttons form-builder-error');

@@ -103,6 +103,23 @@ describe('ObsControlDesigner', () => {
       expect(wrapper).to.have.descendants('input');
     });
 
+    it('should not display asterisk when field is not mandatory', () => {
+      expect(wrapper).to.not.have.descendants('span');
+    });
+
+    it('should display asterisk when field is mandatory', () => {
+      metadata = {
+        id: '123',
+        type: 'obsControl',
+        concept,
+        label,
+        properties: { mandatory: true },
+      };
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      expect(wrapper.find('span')).to.have.className('form-builder-asterisk');
+      expect(wrapper.find('span').text()).to.eql('*');
+    });
+
     it('should pass appropriate props to Label', () => {
       const expectedLabelMetadata = { type: 'label', value: 'dummyPulse', properties: {} };
       expect(wrapper.find('LabelDesigner').props().metadata).to.deep.eql(expectedLabelMetadata);

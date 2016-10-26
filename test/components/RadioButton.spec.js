@@ -34,7 +34,7 @@ describe('RadioButton Component', () => {
   });
 
   it('should render the radio button with error if hasErrors is true', () => {
-    const wrapper = shallow(<RadioButton hasErrors={true} id="someId" options={options} value />);
+    const wrapper = shallow(<RadioButton hasErrors id="someId" options={options} value />);
     expect(wrapper).to.have.className('form-builder-error');
   });
 

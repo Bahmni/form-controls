@@ -65,7 +65,7 @@ describe('Section', () => {
 
   describe('render', () => {
     it('should render section', () => {
-      const errors=[{ errorType: 'someErrorType' }];
+      const errors = [{ errorType: 'someErrorType' }];
       const wrapper = mount(
         <Section
           errors={errors}

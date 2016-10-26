@@ -47,14 +47,14 @@ export class NumericBox extends Component {
     return Validator.getErrors(controlDetails);
   }
 
-  handleChange(e) {
-    this.value = e.target.value;
-    this.observationDateTime = null;
-  }
-
   getClassName() {
     const { errors, metadata: { id } } = this.props;
     return classNames({ 'form-builder-error': hasError(errors, id) });
+  }
+
+  handleChange(e) {
+    this.value = e.target.value;
+    this.observationDateTime = null;
   }
 
   render() {
