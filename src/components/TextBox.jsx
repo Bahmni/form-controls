@@ -4,6 +4,7 @@ import { createFormNamespace } from 'src/helpers/formNamespace';
 import { Validator } from 'src/helpers/Validator';
 import { hasError } from 'src/helpers/controlsHelper';
 import classNames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 class Mapper {
   constructor(obs) {
@@ -24,7 +25,13 @@ export class TextBox extends Component {
     this.mapper = new Mapper(obs);
     this.value = props.obs && props.obs.value;
     this.observationDateTime = props.obs && props.obs.observationDateTime;
+    this.state = { hasErrors: false };
     this.getValue = this.getValue.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { errors, metadata: { id } } = nextProps;
+    this.setState({ hasErrors: hasError(errors, id) });
   }
 
   getValue() {
@@ -55,13 +62,14 @@ export class TextBox extends Component {
   handleChange(e) {
     this.value = e.target.value;
     this.observationDateTime = null;
+    this.setState({ hasErrors: !isEmpty(this.getErrors()) });
   }
 
   render() {
     const defaultValue = this.props.obs && this.props.obs.value;
     return (
       <input
-        className={this.getClassName()}
+        className={classNames({ 'form-builder-error': this.state.hasErrors })}
         defaultValue={defaultValue}
         onChange={(e) => this.handleChange(e)}
         type="text"

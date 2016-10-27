@@ -4,6 +4,7 @@ import { createFormNamespace } from 'src/helpers/formNamespace';
 import { Validator } from 'src/helpers/Validator';
 import { hasError } from 'src/helpers/controlsHelper';
 import classNames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 class Mapper {
   constructor(obs) {
@@ -23,8 +24,14 @@ export class NumericBox extends Component {
     const concept = props.metadata.concept;
     const obs = Object.assign({}, { concept }, props.obs, { formNamespace });
     this.mapper = new Mapper(obs);
+    this.state = { hasErrors: false };
     this.observationDateTime = props.obs && props.obs.observationDateTime;
     this.getValue = this.getValue.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { errors, metadata: { id } } = nextProps;
+    this.setState({ hasErrors: hasError(errors, id) });
   }
 
   getValue() {
@@ -47,21 +54,17 @@ export class NumericBox extends Component {
     return Validator.getErrors(controlDetails);
   }
 
-  getClassName() {
-    const { errors, metadata: { id } } = this.props;
-    return classNames({ 'form-builder-error': hasError(errors, id) });
-  }
-
   handleChange(e) {
     this.value = e.target.value;
     this.observationDateTime = null;
+    this.setState({ hasErrors: !isEmpty(this.getErrors()) });
   }
 
   render() {
     const defaultValue = this.props.obs && this.props.obs.value;
     return (
       <input
-        className={this.getClassName()}
+        className={classNames({ 'form-builder-error': this.state.hasErrors })}
         defaultValue={defaultValue}
         onChange={(e) => this.handleChange(e)}
         type="number"

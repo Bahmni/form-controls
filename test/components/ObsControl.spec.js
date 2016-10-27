@@ -81,7 +81,8 @@ describe('ObsControl', () => {
     };
 
     const errors = [{ controlId: '100', errorType: 'mandatory' }];
-    const wrapper = mount(<ObsControl errors={errors} formUuid={formUuid} metadata={metadata} />);
+    const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
+    wrapper.setProps({ errors });
     expect(wrapper.find('input').at(0)).to.have.className('form-builder-error');
     expect(wrapper.find('span').text()).to.eql('*');
     expect(wrapper.find('span')).to.have.className('form-builder-asterisk');

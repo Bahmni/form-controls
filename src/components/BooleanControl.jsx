@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import { createFormNamespace } from 'src/helpers/formNamespace';
-import { Validator } from 'src/helpers/Validator';
-import { hasError } from 'src/helpers/controlsHelper';
 
 class Mapper {
   constructor(obs) {
@@ -43,10 +41,7 @@ export class BooleanControl extends Component {
   }
 
   getErrors() {
-    const value = this.childControl.getValue();
-    const { id, properties } = this.props.metadata;
-    const controlDetails = { id, properties, value };
-    return Validator.getErrors(controlDetails);
+    return this.childControl.getErrors();
   }
 
   storeChildRef(ref) {
@@ -54,17 +49,14 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { id, displayType, options } = this.props.metadata;
-    const childControlId = `${this.props.formUuid}-${id}`;
+    const { displayType } = this.props.metadata;
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
-      return React.createElement(registeredComponent, {
-        hasErrors: hasError(this.props.errors, id),
-        id: childControlId,
-        options,
-        value: this.value,
+      const childProps = {
         ref: this.storeChildRef,
-      });
+        ...this.props,
+      };
+      return React.createElement(registeredComponent, childProps);
     }
     return null;
   }

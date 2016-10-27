@@ -3,14 +3,18 @@ import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { BooleanControl } from 'components/BooleanControl.jsx';
-import { Validator } from 'src/helpers/Validator';
 import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
 class DummyRadioControl extends Component {
   getValue() {
-    return this.props.value;
+    const value = this.props.obs && this.props.obs.value;
+    return value;
+  }
+
+  getErrors() {
+    return [{ errorType: 'somethingFromChild' }];
   }
 
   render() {
@@ -19,7 +23,7 @@ class DummyRadioControl extends Component {
 }
 
 DummyRadioControl.propTypes = {
-  value: PropTypes.any,
+  obs: PropTypes.shape({ value: PropTypes.bool }),
 };
 
 describe('BooleanControl', () => {
@@ -63,33 +67,20 @@ describe('BooleanControl', () => {
   const formNamespace = `${formUuid}/100`;
 
   it('should render Dummy Control of displayType button by default', () => {
+    const errors = [{ errorType: 'mandatory' }];
     const wrapper = shallow(
-      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />
+      <BooleanControl errors={errors} formUuid={formUuid} metadata={metadata} />
     );
+    const expectedChildProps = { errors, formUuid, metadata };
+
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
-    expect(wrapper.find('DummyRadioControl').props().id).to.eql('someFormUuid-100');
-    expect(wrapper.find('DummyRadioControl').props().options).to.deep.eql(metadata.options);
-  });
-
-  it('should pass hasError to child Controls if present', () => {
-    const errors = [{ controlId: '100' }];
-    const wrapper = shallow(
-      <BooleanControl errors={errors} formUuid={formUuid} metadata={metadata} />
-    );
-    expect(wrapper.find('DummyRadioControl').props().hasErrors).to.eql(true);
-  });
-
-  it('should pass hasError as false to child Controls if no error for the control', () => {
-    const errors = [{ controlId: 'someOtherId' }];
-    const wrapper = shallow(
-      <BooleanControl errors={errors} formUuid={formUuid} metadata={metadata} />
-    );
-    expect(wrapper.find('DummyRadioControl').props().hasErrors).to.eql(false);
+    expect(wrapper.find('DummyRadioControl').props()).to.deep.eql(expectedChildProps);
   });
 
   it('should render Dummy Control of specified displayType', () => {
     window.componentStore.registerComponent('radio', DummyRadioControl);
     const spy = sinon.spy(window.componentStore, 'getRegisteredComponent');
+    const expectedMetadata = { errors: [], formUuid, metadata };
 
     metadata.displayType = 'radio';
     const wrapper = shallow(
@@ -98,8 +89,7 @@ describe('BooleanControl', () => {
 
     sinon.assert.calledWith(spy, 'radio');
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
-    expect(wrapper.find('DummyRadioControl').props().id).to.eql('someFormUuid-100');
-    expect(wrapper.find('DummyRadioControl').props().options).to.deep.eql(metadata.options);
+    expect(wrapper.find('DummyRadioControl').props()).to.deep.eql(expectedMetadata);
 
     window.componentStore.deRegisterComponent('radio');
   });
@@ -167,14 +157,11 @@ describe('BooleanControl', () => {
       value: false,
       observationDateTime: '2016-09-08T10:10:38.000+0530',
     };
-    const stub = sinon.stub(Validator, 'getErrors');
-    stub.withArgs({ id: '100', properties, value: false }).returns([{ errorType: 'something' }]);
-
     const wrapper = mount(
       <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
     );
     const instance = wrapper.instance();
-    expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
+    expect(instance.getErrors()).to.eql([{ errorType: 'somethingFromChild' }]);
   });
 
   it('should return voided obs when obs are passed and child value is undefined', () => {

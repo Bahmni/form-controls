@@ -55,7 +55,8 @@ describe('TextBox', () => {
 
   it('should render TextBox with errors if error is present', () => {
     const errors = [{ controlId: '100' }];
-    const wrapper = shallow(<TextBox errors={errors} formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
+    wrapper.setProps({ errors });
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
