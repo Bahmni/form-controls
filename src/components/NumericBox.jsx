@@ -42,7 +42,7 @@ export class NumericBox extends Component {
       };
       return this.mapper.mapTo(obs);
     } else if (this.props.obs) {
-      const voidedObs = Object.assign({}, this.props.obs, { voided: true });
+      const voidedObs = Object.assign({}, this.props.obs, { voided: true, value: this.value });
       return this.mapper.mapTo(voidedObs);
     }
     return undefined;

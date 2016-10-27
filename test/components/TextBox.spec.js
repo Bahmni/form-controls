@@ -127,7 +127,7 @@ describe('TextBox', () => {
   it('should return the voided obs if value is set to undefined', () => {
     const expectedObs = {
       concept,
-      value: 'someValue',
+      value: '',
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
       voided: true,
