@@ -1,6 +1,6 @@
 {
   "name": "bahmni-form-controls",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "dependencies": {
     "abab": {
       "version": "1.0.3",

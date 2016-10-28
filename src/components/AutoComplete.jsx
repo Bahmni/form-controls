@@ -32,6 +32,9 @@ export class AutoComplete extends Component {
       .then((data) => {
         const options = data.results;
         return { options };
+      }).catch(() => {
+        const options = [];
+        return { options };
       });
   }
 
