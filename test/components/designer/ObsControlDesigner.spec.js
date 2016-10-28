@@ -34,11 +34,17 @@ describe('ObsControlDesigner', () => {
         name: 'someDatatype',
       },
       uuid: 'someUuid',
+      allowDecimal: false,
     };
     const expectedMetadata = {
       id: 'someId',
       type: 'obsControl',
-      concept: { name: 'someName', datatype: 'someDatatype', uuid: 'someUuid' },
+      concept: {
+        name: 'someName',
+        datatype: 'someDatatype',
+        uuid: 'someUuid',
+        properties: { allowDecimal: false },
+      },
       label: {
         type: 'label',
         value: someConcept.name.name,

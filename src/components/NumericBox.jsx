@@ -49,7 +49,13 @@ export class NumericBox extends Component {
   }
 
   getErrors() {
-    const { id, properties } = this.props.metadata;
+    const {
+      concept: { properties: conceptProperties },
+      id,
+      properties: metadataProperties,
+    } = this.props.metadata;
+
+    const properties = Object.assign({}, conceptProperties, metadataProperties);
     const controlDetails = { id, properties, value: this.value };
     return Validator.getErrors(controlDetails);
   }

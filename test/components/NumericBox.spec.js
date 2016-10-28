@@ -20,7 +20,10 @@ describe('NumericBox', () => {
   const concept = {
     uuid: '70645842-be6a-4974-8d5f-45b52990e132',
     name: 'Pulse',
-    dataType: 'Text',
+    dataType: 'Numeric',
+    properties: {
+      allowDecimal: true,
+    },
   };
 
   const properties = {
@@ -110,10 +113,11 @@ describe('NumericBox', () => {
     expect(instance.getValue()).to.eql(undefined);
   });
 
-  it('getErrors should return errors if present', () => {
+  it('getErrors should return errors for its and concept properties if present', () => {
     const stub = sinon.stub(Validator, 'getErrors');
-    const controlDetails = { id: '100', properties, value: '999' };
-    stub.withArgs(sinon.match(controlDetails)).returns([{ errorType: 'something' }]);
+    const allProperties = Object.assign({}, properties, concept.properties);
+    const controlDetails = { id: '100', properties: allProperties, value: '999' };
+    stub.withArgs(controlDetails).returns([{ errorType: 'something' }]);
 
     const wrapper = shallow(
       <NumericBox errors={[]} formUuid={formUuid} metadata={metadata} />
