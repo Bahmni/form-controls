@@ -107,6 +107,16 @@ describe('TextBox', () => {
     expect(instance.getValue()).to.eql(expectedObs);
   });
 
+  it('should return undefined if only spaces are entered in the text box', () => {
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} />
+    );
+    const instance = wrapper.instance();
+    wrapper.find('input').simulate('change', { target: { value: '  ' } });
+
+    expect(instance.getValue()).to.eql(undefined);
+  });
+
   it('should return value only if there was initial value or if the value was changed', () => {
     const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
@@ -127,7 +137,7 @@ describe('TextBox', () => {
   it('should return the voided obs if value is set to undefined', () => {
     const expectedObs = {
       concept,
-      value: '',
+      value: undefined,
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
       voided: true,

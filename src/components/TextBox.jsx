@@ -35,14 +35,15 @@ export class TextBox extends Component {
   }
 
   getValue() {
-    if (this.value) {
+    const value = this.value ? this.value.trim() : undefined;
+    if (value) {
       const obs = {
-        value: this.value,
+        value,
         observationDateTime: this.observationDateTime,
       };
       return this.mapper.mapTo(obs);
     } else if (this.props.obs) {
-      const voidedObs = Object.assign({}, this.props.obs, { voided: true, value: this.value });
+      const voidedObs = Object.assign({}, this.props.obs, { voided: true, value });
       return this.mapper.mapTo(voidedObs);
     }
     return undefined;
@@ -52,11 +53,6 @@ export class TextBox extends Component {
     const { id, properties } = this.props.metadata;
     const controlDetails = { id, properties, value: this.value };
     return Validator.getErrors(controlDetails);
-  }
-
-  getClassName() {
-    const { errors, metadata: { id } } = this.props;
-    return classNames({ 'form-builder-error': hasError(errors, id) });
   }
 
   handleChange(e) {
