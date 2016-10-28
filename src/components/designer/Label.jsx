@@ -43,7 +43,8 @@ export class LabelDesigner extends Component {
   }
 
   updateValue() {
-    const value = (this.input && this.input.value) ? this.input.value : this.state.value;
+    const updatedValue = (this.input && this.input.value) ? this.input.value.trim() : undefined;
+    const value = updatedValue || this.state.value;
     this.setState({
       isEditable: false,
       value,
