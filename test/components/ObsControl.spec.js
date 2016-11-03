@@ -116,7 +116,7 @@ describe('ObsControl', () => {
     expect(wrapper).to.be.blank();
   });
 
-  it.only('should return the obsControl value', () => {
+  it('should return the obsControl value', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
