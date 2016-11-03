@@ -49,29 +49,28 @@ describe('TextBox', () => {
 
   it('should render TextBox', () => {
     const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
-    expect(wrapper.find('input').props().type).to.be.eql('text');
-    expect(wrapper.find('input').props().defaultValue).to.eql(undefined);
+    expect(wrapper).to.have.descendants('textarea');
+    expect(wrapper.find('textarea').props().defaultValue).to.eql(undefined);
   });
 
   it('should render TextBox with errors if error is present', () => {
     const errors = [{ controlId: '100' }];
     const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
     wrapper.setProps({ errors });
-    expect(wrapper.find('input')).to.have.className('form-builder-error');
+    expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 
   it('should not render TextBox with errors if error is present for control', () => {
     const errors = [{ controlId: 'someOtherId' }, { controlId: 'differentId' }];
     const wrapper = shallow(<TextBox errors={errors} formUuid={formUuid} metadata={metadata} />);
-    expect(wrapper.find('input')).to.have.className('');
+    expect(wrapper.find('textarea')).to.have.className('');
   });
 
   it('should render TextBox with default value', () => {
     const wrapper = shallow(
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
     );
-    expect(wrapper.find('input').props().type).to.be.eql('text');
-    expect(wrapper.find('input').props().defaultValue).to.be.eql('someValue');
+    expect(wrapper.find('textarea').props().defaultValue).to.be.eql('someValue');
   });
 
   it('should return the default value of the text box if there is no change', () => {
@@ -102,7 +101,7 @@ describe('TextBox', () => {
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
     );
     const instance = wrapper.instance();
-    wrapper.find('input').simulate('change', { target: { value: 'My new value' } });
+    wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
 
     expect(instance.getValue()).to.eql(expectedObs);
   });
@@ -112,7 +111,7 @@ describe('TextBox', () => {
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} />
     );
     const instance = wrapper.instance();
-    wrapper.find('input').simulate('change', { target: { value: '  ' } });
+    wrapper.find('textarea').simulate('change', { target: { value: '  ' } });
 
     expect(instance.getValue()).to.eql(undefined);
   });
@@ -130,7 +129,7 @@ describe('TextBox', () => {
 
     const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
-    wrapper.find('input').simulate('change', { target: { value: 'My new value' } });
+    wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
 
@@ -147,7 +146,7 @@ describe('TextBox', () => {
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
     );
     const instance = wrapper.instance();
-    wrapper.find('input').simulate('change', { target: { value: '' } });
+    wrapper.find('textarea').simulate('change', { target: { value: '' } });
 
     expect(instance.getValue()).to.eql(expectedObs);
   });

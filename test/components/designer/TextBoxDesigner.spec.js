@@ -24,9 +24,8 @@ describe('TextBoxDesigner', () => {
     wrapper = shallow(<TextBoxDesigner metadata={metadata} />);
   });
 
-  it('should render the input', () => {
-    expect(wrapper).to.have.descendants('input');
-    expect(wrapper.find('input').props().type).to.eql('text');
+  it('should render the TextBox designer component', () => {
+    expect(wrapper).to.have.descendants('textarea');
   });
 
   it('should return json definition', () => {

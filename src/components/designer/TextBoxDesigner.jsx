@@ -7,7 +7,7 @@ export class TextBoxDesigner extends Component {
   }
 
   render() {
-    return (<input type="text" />);
+    return (<textarea />);
   }
 }
 

@@ -64,11 +64,10 @@ export class TextBox extends Component {
   render() {
     const defaultValue = this.props.obs && this.props.obs.value;
     return (
-      <input
+      <textarea
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
         defaultValue={defaultValue}
         onChange={(e) => this.handleChange(e)}
-        type="text"
       />
     );
   }

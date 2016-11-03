@@ -53,7 +53,7 @@ describe('ObsControl', () => {
     const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('TextBox');
-    expect(wrapper.find('input').at(0).props().type).to.be.eql('text');
+    expect(wrapper).to.have.exactly(1).descendants('textarea');
   });
 
   it('should render NumericBox', () => {
