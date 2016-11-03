@@ -12,7 +12,9 @@
     "posttest": "eslint --ext .js --ext .jsx ./src && eslint --ext .js --ext .jsx ./test",
     "eslintFix": "eslint --ext .js --ext .jsx ./src --fix && eslint --ext .js --ext .jsx ./test --fix",
     "publish": "publish",
-    "ci": "npm run clean && npm run build && npm run publish"
+    "ci": "npm run clean && npm run build && npm run publish",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "author": "bahmni@thoughtworks.com",
   "devDependencies": {
@@ -30,7 +32,7 @@
     "core-js": "^2.4.1",
     "css-loader": "^0.25.0",
     "enzyme": "^2.4.1",
-    "eslint": "^3.1.1",
+    "eslint": "^3.9.0",
     "eslint-config-airbnb": "^6.2.0",
     "eslint-import-resolver-webpack": "^0.4.0",
     "eslint-loader": "^1.4.1",
@@ -62,7 +64,8 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "@kadira/storybook": "^2.21.0"
   },
   "peerDependencies": {
     "react": "^15.3.2",

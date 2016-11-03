@@ -1,31 +1,22 @@
-import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
-import { createFormNamespace } from 'src/helpers/formNamespace';
-import { Validator } from 'src/helpers/Validator';
-import { hasError } from 'src/helpers/controlsHelper';
-import classNames from 'classnames';
-import isEmpty from 'lodash/isEmpty';
+import React, {Component, PropTypes} from "react";
+import "src/helpers/componentStore";
+import {createFormNamespace} from "src/helpers/formNamespace";
+import {Validator} from "src/helpers/Validator";
+import {hasError} from "src/helpers/controlsHelper";
+import classNames from "classnames";
+import isEmpty from "lodash/isEmpty";
+import {ObsMapper} from "../helpers/ObsMapper";
+import {Obs} from "../helpers/Obs";
 
-class Mapper {
-  constructor(obs) {
-    this.obs = obs;
-  }
-
-  mapTo(obs) {
-    return Object.assign({}, this.obs, obs);
-  }
-}
 
 export class TextBox extends Component {
   constructor(props) {
     super(props);
-    const formNamespace = createFormNamespace(props.formUuid, props.metadata.id);
-    const concept = props.metadata.concept;
-    const obs = Object.assign({}, { concept }, props.obs, { formNamespace });
-    this.mapper = new Mapper(obs);
-    this.value = props.obs && props.obs.value;
-    this.observationDateTime = props.obs && props.obs.observationDateTime;
-    this.state = { hasErrors: false };
+    //TODO: This will be moved to the place where obs is created originally
+    this.obs = new Obs(props.formUuid,props.metadata,props.obs);
+    this.mapper = new ObsMapper();
+    this.initialValue = this.mapper.getValue(this.obs);
+    this.state = { value: this.initialValue, hasErrors: false };
     this.getValue = this.getValue.bind(this);
   }
 
@@ -35,22 +26,19 @@ export class TextBox extends Component {
   }
 
   getValue() {
-    if (this.value) {
-      const obs = {
-        value: this.value,
-        observationDateTime: this.observationDateTime,
-      };
-      return this.mapper.mapTo(obs);
-    } else if (this.props.obs) {
-      const voidedObs = Object.assign({}, this.props.obs, { voided: true, value: this.value });
-      return this.mapper.mapTo(voidedObs);
+    if(this.isDirty()){
+      return this.mapper.setValue(this.obs,this.state.value);
     }
-    return undefined;
+    return this.obs;
+  }
+
+  isDirty(){
+    return this.initialValue !== this.state.value;
   }
 
   getErrors() {
     const { id, properties } = this.props.metadata;
-    const controlDetails = { id, properties, value: this.value };
+    const controlDetails = { id, properties, value: this.state.value };
     return Validator.getErrors(controlDetails);
   }
 
@@ -60,13 +48,13 @@ export class TextBox extends Component {
   }
 
   handleChange(e) {
-    this.value = e.target.value;
-    this.observationDateTime = null;
-    this.setState({ hasErrors: !isEmpty(this.getErrors()) });
+    console.log("The state before : "+ this.state.value);
+    this.setState({ value: e.target.value, hasErrors: !isEmpty(this.getErrors()) });
+    console.log("The state after : "+ e.target.value);
   }
 
   render() {
-    const defaultValue = this.props.obs && this.props.obs.value;
+    const defaultValue = this.state.value;
     return (
       <input
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
@@ -88,6 +76,7 @@ TextBox.propTypes = {
     type: PropTypes.string,
   }),
   obs: PropTypes.object,
+  //Change the obs props to value
 };
 
 window.componentStore.registerComponent('text', TextBox);
