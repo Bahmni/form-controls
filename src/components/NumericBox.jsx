@@ -29,6 +29,10 @@ export class NumericBox extends Component {
     this.getValue = this.getValue.bind(this);
   }
 
+  componentDidMount() {
+    this.input.value = this.value;
+  }
+
   componentWillReceiveProps(nextProps) {
     const { errors, metadata: { id } } = nextProps;
     this.setState({ hasErrors: hasError(errors, id) });
@@ -67,12 +71,11 @@ export class NumericBox extends Component {
   }
 
   render() {
-    const defaultValue = this.props.obs && this.props.obs.value;
     return (
       <input
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
-        defaultValue={defaultValue}
         onChange={(e) => this.handleChange(e)}
+        ref={(elem) => { this.input = elem; }}
         type="number"
       />
     );

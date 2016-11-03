@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { NumericBox } from 'components/NumericBox.jsx';
@@ -52,7 +52,7 @@ describe('NumericBox', () => {
   it('should render NumericBox', () => {
     const wrapper = shallow(<NumericBox errors={[]} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper.find('input').props().type).to.be.eql('number');
-    expect(wrapper.find('input').props().defaultValue).to.be.eql(undefined);
+    expect(wrapper.find('input')).to.have.value(undefined);
   });
 
   it('should render NumericBox with errors if error is present', () => {
@@ -69,11 +69,11 @@ describe('NumericBox', () => {
   });
 
   it('should render NumericBox with default value', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <NumericBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
-    expect(wrapper.find('input').props().defaultValue).to.be.eql('007');
+    expect(wrapper.find('input')).to.have.value('007');
   });
 
   it('should get the default value of the NumericBox if there is no change', () => {
