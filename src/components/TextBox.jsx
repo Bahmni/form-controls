@@ -38,8 +38,9 @@ export class TextBox extends Component {
     const value = this.value ? this.value.trim() : undefined;
     if (value) {
       const obs = {
-        value,
         observationDateTime: this.observationDateTime,
+        value,
+        voided: false,
       };
       return this.mapper.mapTo(obs);
     } else if (this.props.obs) {

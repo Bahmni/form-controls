@@ -109,9 +109,10 @@ describe('BooleanControl', () => {
         name: 'Pulse',
         datatype: 'Boolean',
       },
-      value: true,
-      observationDateTime: undefined,
       formNamespace,
+      observationDateTime: undefined,
+      value: true,
+      voided: false,
     };
     const wrapper = mount(
       <BooleanControl
@@ -135,9 +136,10 @@ describe('BooleanControl', () => {
         name: 'Pulse',
         datatype: 'Boolean',
       },
-      value: false,
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      value: false,
+      voided: false,
     };
     const wrapper = mount(
       <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
@@ -185,6 +187,33 @@ describe('BooleanControl', () => {
     );
     const instance = wrapper.instance();
     sinon.stub(instance.childControl, 'getValue', () => undefined);
+    expect(instance.getValue()).to.deep.eql(expectedObs);
+  });
+
+  it('should return the obs when previously voided obs is changed', () => {
+    const voidedObs = {
+      value: undefined,
+      voided: true,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+    };
+    const expectedObs = {
+      concept: {
+        uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+        name: 'Pulse',
+        datatype: 'Boolean',
+      },
+      formNamespace,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      value: false,
+      voided: false,
+    };
+
+    const wrapper = mount(
+      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={voidedObs} />
+    );
+
+    const instance = wrapper.instance();
+    sinon.stub(instance.childControl, 'getValue', () => false);
     expect(instance.getValue()).to.deep.eql(expectedObs);
   });
 });

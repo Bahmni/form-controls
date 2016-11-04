@@ -79,9 +79,10 @@ describe('NumericBox', () => {
   it('should get the default value of the NumericBox if there is no change', () => {
     const expectedObs = {
       concept,
-      value: '007',
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      value: '007',
+      voided: false,
     };
     const wrapper = shallow(
       <NumericBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
@@ -93,9 +94,10 @@ describe('NumericBox', () => {
   it('should get user entered value of the NumericBox', () => {
     const expectedObs = {
       concept,
-      value: '999',
-      observationDateTime: null,
       formNamespace,
+      observationDateTime: null,
+      value: '999',
+      voided: false,
     };
     const wrapper = shallow(
       <NumericBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
@@ -141,6 +143,29 @@ describe('NumericBox', () => {
     );
     const instance = wrapper.instance();
     wrapper.find('input').simulate('change', { target: { value: '' } });
+
+    expect(instance.getValue()).to.eql(expectedObs);
+  });
+
+  it('should return the obs when previously voided obs is changed', () => {
+    const voidedObs = {
+      value: '',
+      voided: true,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+    };
+    const expectedObs = {
+      concept,
+      value: '100',
+      observationDateTime: null,
+      formNamespace,
+      voided: false,
+    };
+
+    const wrapper = shallow(
+      <NumericBox errors={[]} formUuid={formUuid} metadata={metadata} obs={voidedObs} />
+    );
+    const instance = wrapper.instance();
+    wrapper.find('input').simulate('change', { target: { value: '100' } });
 
     expect(instance.getValue()).to.eql(expectedObs);
   });

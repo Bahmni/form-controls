@@ -90,12 +90,30 @@ describe('Container', () => {
     observationDateTime: '2016-09-08T10:10:38.000+0530',
   };
 
+  const expectedObservation1 = {
+    concept: textBoxConcept,
+    formNamespace: 'fm1/101',
+    label: 'Pulse',
+    observationDateTime: '2016-09-08T10:10:38.000+0530',
+    value: '72',
+    voided: false,
+  };
+
   const observation2 = {
     concept: numericBoxConcept,
     label: 'Temperature',
     value: '98',
     formNamespace: 'fm1/102',
     observationDateTime: '2016-09-08T10:10:38.000+0530',
+  };
+
+  const expectedObservation2 = {
+    concept: numericBoxConcept,
+    formNamespace: 'fm1/102',
+    label: 'Temperature',
+    observationDateTime: '2016-09-08T10:10:38.000+0530',
+    value: '98',
+    voided: false,
   };
 
   const observations = [observation1, observation2];
@@ -134,8 +152,8 @@ describe('Container', () => {
     it('should return the observations of its children which are data controls', () => {
       const wrapper = mount(<Container metadata={metadata} observations={observations} />);
       const instance = wrapper.instance();
-
-      expect(instance.getValue()).to.deep.equal({ observations: [observation1, observation2] });
+      const expectedValue = { observations: [expectedObservation1, expectedObservation2] };
+      expect(instance.getValue()).to.deep.equal(expectedValue);
     });
 
     it('should return empty when there are no observations', () => {
@@ -208,7 +226,7 @@ describe('Container', () => {
       const voidedObservation = {
         concept: textBoxConcept,
         label: 'Pulse',
-        value: '72',
+        value: undefined,
         formNamespace: 'fm1/101',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
         voided: true,
@@ -313,15 +331,18 @@ describe('Container', () => {
     it('should return observations of all children', () => {
       const observation3 = {
         concept: numericBoxConcept,
-        label: 'Temperature',
-        value: '98',
         formNamespace: 'fm1/301',
+        label: 'Temperature',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
+        value: '98',
+        voided: false,
       };
       const obs = [observation1, observation2, observation3];
       const wrapper = mount(<Container metadata={metadataWithSection} observations={obs} />);
       const instance = wrapper.instance();
-      const expectedValue = { observations: [observation1, observation2, observation3] };
+      const expectedValue = {
+        observations: [expectedObservation1, expectedObservation2, observation3],
+      };
       expect(instance.getValue()).to.deep.equal(expectedValue);
     });
   });

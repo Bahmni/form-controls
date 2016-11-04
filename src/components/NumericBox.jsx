@@ -41,8 +41,9 @@ export class NumericBox extends Component {
   getValue() {
     if (this.value) {
       const obs = {
-        value: this.value,
         observationDateTime: this.observationDateTime,
+        value: this.value,
+        voided: false,
       };
       return this.mapper.mapTo(obs);
     } else if (this.props.obs) {

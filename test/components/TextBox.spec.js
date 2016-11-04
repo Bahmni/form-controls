@@ -76,9 +76,10 @@ describe('TextBox', () => {
   it('should return the default value of the text box if there is no change', () => {
     const expectedObs = {
       concept,
-      value: 'someValue',
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      value: 'someValue',
+      voided: false,
     };
 
     const wrapper = shallow(
@@ -92,9 +93,10 @@ describe('TextBox', () => {
   it('should get user entered value of the text box', () => {
     const expectedObs = {
       concept,
-      value: 'My new value',
-      observationDateTime: null,
       formNamespace,
+      observationDateTime: null,
+      value: 'My new value',
+      voided: false,
     };
 
     const wrapper = shallow(
@@ -147,6 +149,29 @@ describe('TextBox', () => {
     );
     const instance = wrapper.instance();
     wrapper.find('textarea').simulate('change', { target: { value: '' } });
+
+    expect(instance.getValue()).to.eql(expectedObs);
+  });
+
+  it('should return the obs when previously voided obs is changed', () => {
+    const voidedObs = {
+      value: '',
+      voided: true,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+    };
+    const expectedObs = {
+      concept,
+      value: 'something',
+      observationDateTime: null,
+      formNamespace,
+      voided: false,
+    };
+
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={voidedObs} />
+    );
+    const instance = wrapper.instance();
+    wrapper.find('textarea').simulate('change', { target: { value: 'something' } });
 
     expect(instance.getValue()).to.eql(expectedObs);
   });

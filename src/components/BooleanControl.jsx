@@ -29,8 +29,9 @@ export class BooleanControl extends Component {
     const childControlValue = this.childControl.getValue();
     if (childControlValue !== undefined) {
       const obs = {
-        value: childControlValue,
         observationDateTime: this.observationDateTime,
+        value: childControlValue,
+        voided: false,
       };
       return this.mapper.mapTo(obs);
     } else if (this.props.obs) {
