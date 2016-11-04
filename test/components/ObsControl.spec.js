@@ -5,6 +5,7 @@ import chai, { expect } from 'chai';
 import { ObsControl } from 'components/ObsControl.jsx';
 import { TextBox } from 'components/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
+import { Obs } from 'src/helpers/Obs';
 
 chai.use(chaiEnzyme());
 
@@ -36,8 +37,6 @@ describe('ObsControl', () => {
   };
 
   const formUuid = 'someFormUuid';
-
-  const formNamespace = `${formUuid}/100`;
 
   const properties = { location: { row: 0, column: 1 } };
 
@@ -130,7 +129,7 @@ describe('ObsControl', () => {
       observationDateTime: '2016-09-08T10:10:38.000+0530',
     };
 
-    const expectedObs = new Obs(formUuid,metadata,obs);
+    const expectedObs = new Obs(formUuid, metadata, obs);
 
     const obsControl = mount(
       <ObsControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
@@ -138,10 +137,7 @@ describe('ObsControl', () => {
     const instance = obsControl.instance();
     const obsControlValue = instance.getValue();
 
-    console.log(obsControlValue);
-    console.log(expectedObs);
-
-    // expect(obsControlValue).to.deep.eql(expectedObs);
+    expect(obsControlValue).to.deep.eql(expectedObs);
   });
 
   it('should return the child control errors', () => {

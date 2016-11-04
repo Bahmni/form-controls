@@ -10,6 +10,7 @@ export class Obs {
       this.uuid = extras.uuid;
       this.value = extras.value;
       this.observationDateTime = extras.observationDateTime;
+      this.voided = extras.voided;
     }
   }
 

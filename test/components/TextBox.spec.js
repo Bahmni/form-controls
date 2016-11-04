@@ -2,10 +2,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { TextBox } from '../../src/components/TextBox.jsx';
+import { TextBox } from 'src/components/TextBox.jsx';
 import { Validator } from 'src/helpers/Validator';
 import sinon from 'sinon';
-import {Obs} from "../../src/helpers/Obs";
+import { Obs } from 'src/helpers/Obs';
 
 chai.use(chaiEnzyme());
 
@@ -46,8 +46,6 @@ describe('TextBox', () => {
 
   const formUuid = 'someFormUuid';
 
-  const formNamespace = `${formUuid}/100`;
-
   it('should render TextBox', () => {
     const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper.find('input').props().type).to.be.eql('text');
@@ -76,21 +74,18 @@ describe('TextBox', () => {
   });
 
   it('should return the default value of the text box if there is no change', () => {
-    const expectedObs = new Obs(formUuid,metadata,obs);
-
-    console.log(expectedObs);
-
+    const expectedObs = new Obs(formUuid, metadata, obs);
     const wrapper = shallow(
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
     );
     const instance = wrapper.instance();
-    expect(instance.isDirty()).to.be.false;
+    expect(instance.isDirty()).to.be.eql(false);
     expect(instance.getValue()).to.eql(expectedObs);
   });
 
   it('should get user entered value of the text box', () => {
-    const expectedObs = new Obs(formUuid,metadata,undefined);
-    expectedObs.set('My new value');
+    let expectedObs = new Obs(formUuid, metadata, undefined);
+    expectedObs = expectedObs.set('My new value');
 
     const wrapper = shallow(
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
@@ -98,12 +93,11 @@ describe('TextBox', () => {
     const instance = wrapper.instance();
     wrapper.find('input').simulate('change', { target: { value: 'My new value' } });
 
-    expect(instance.isDirty()).to.be.true;
-    console.log(instance.state.value);
-    //expect(instance.getValue()).to.eql(expectedObs);
+    expect(instance.isDirty()).to.be.eql(true);
+    expect(instance.getValue()).to.eql(expectedObs);
   });
 
-  it.skip('should return value only if there was initial value or if the value was changed', () => {
+  it('should return value only if there was initial value or if the value was changed', () => {
     const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
@@ -121,7 +115,7 @@ describe('TextBox', () => {
   });
 
   it('should return the voided obs if value is set to undefined', () => {
-    const expectedObs = new Obs(formUuid,metadata,obs).void();
+    const expectedObs = new Obs(formUuid, metadata, obs).void();
 
     const wrapper = shallow(
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />

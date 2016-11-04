@@ -23,13 +23,13 @@ describe('ObsMapper', () => {
 
   it('should set the value to obs if value is present', () => {
     const mapper = new ObsMapper();
-    mapper.setValue(obs, '123')
+    mapper.setValue(obs, '123');
     sinon.assert.calledOnce(obs.set.withArgs('123'));
   });
 
   it('should void the obs if value is not present', () => {
     const mapper = new ObsMapper();
-    mapper.setValue(obs, undefined)
+    mapper.setValue(obs, undefined);
     sinon.assert.calledOnce(obs.void);
   });
 });
