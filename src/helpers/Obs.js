@@ -10,6 +10,7 @@ export class Obs {
       this.uuid = extras.uuid;
       this.value = extras.value;
       this.observationDateTime = extras.observationDateTime;
+      this.voided = extras.voided;
     }
   }
 
@@ -21,6 +22,7 @@ export class Obs {
     const clone = new Obs(this._formUuid, this._metadata, this);
     clone.observationDateTime = null;
     clone.value = value;
+    clone.voided = false;
     return clone;
   }
 

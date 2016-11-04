@@ -14,6 +14,9 @@ chai.use(chaiEnzyme());
 
 describe('Container', () => {
   let metadata;
+  let observations;
+  let observation1;
+  let observation2;
   before(() => {
     componentStore.registerComponent('label', Label);
     componentStore.registerComponent('text', TextBox);
@@ -80,43 +83,31 @@ describe('Container', () => {
         },
       ],
     };
+
+    observation1 = {
+      concept: textBoxConcept,
+      value: '72',
+      formNamespace: 'fm1/101',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      uuid: undefined,
+      voided: false,
+      _metadata: metadata.controls[1],
+      _formUuid: 'fm1',
+    };
+
+    observation2 = {
+      concept: numericBoxConcept,
+      value: '98',
+      formNamespace: 'fm1/102',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      uuid: undefined,
+      voided: false,
+      _metadata: metadata.controls[1],
+      _formUuid: 'fm1',
+    };
+
+    observations = [observation1, observation2];
   });
-
-  const observation1 = {
-    concept: textBoxConcept,
-    label: 'Pulse',
-    value: '72',
-    formNamespace: 'fm1/101',
-    observationDateTime: '2016-09-08T10:10:38.000+0530',
-  };
-
-  const expectedObservation1 = {
-    concept: textBoxConcept,
-    formNamespace: 'fm1/101',
-    label: 'Pulse',
-    observationDateTime: '2016-09-08T10:10:38.000+0530',
-    value: '72',
-    voided: false,
-  };
-
-  const observation2 = {
-    concept: numericBoxConcept,
-    label: 'Temperature',
-    value: '98',
-    formNamespace: 'fm1/102',
-    observationDateTime: '2016-09-08T10:10:38.000+0530',
-  };
-
-  const expectedObservation2 = {
-    concept: numericBoxConcept,
-    formNamespace: 'fm1/102',
-    label: 'Temperature',
-    observationDateTime: '2016-09-08T10:10:38.000+0530',
-    value: '98',
-    voided: false,
-  };
-
-  const observations = [observation1, observation2];
 
   describe('render', () => {
     it('should render form', () => {
@@ -152,8 +143,8 @@ describe('Container', () => {
     it('should return the observations of its children which are data controls', () => {
       const wrapper = mount(<Container metadata={metadata} observations={observations} />);
       const instance = wrapper.instance();
-      const expectedValue = { observations: [expectedObservation1, expectedObservation2] };
-      expect(instance.getValue()).to.deep.equal(expectedValue);
+
+      expect(instance.getValue()).to.deep.equal({ observations: [observation1, observation2] });
     });
 
     it('should return empty when there are no observations', () => {
@@ -225,11 +216,13 @@ describe('Container', () => {
       };
       const voidedObservation = {
         concept: textBoxConcept,
-        label: 'Pulse',
-        value: undefined,
+        uuid: 'someUuid',
+        value: '72',
         formNamespace: 'fm1/101',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
         voided: true,
+        _metadata: metadata.controls[1],
+        _formUuid: 'fm1',
       };
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
@@ -290,7 +283,6 @@ describe('Container', () => {
             {
               id: '101',
               type: 'obsControl',
-              displayType: 'text',
               concept: textBoxConcept,
               label,
               properties: getLocationProperties(1, 0),
@@ -298,7 +290,6 @@ describe('Container', () => {
             {
               id: '102',
               type: 'obsControl',
-              displayType: 'numeric',
               concept: numericBoxConcept,
               label,
               properties: getLocationProperties(2, 0),
@@ -331,18 +322,18 @@ describe('Container', () => {
     it('should return observations of all children', () => {
       const observation3 = {
         concept: numericBoxConcept,
-        formNamespace: 'fm1/301',
         label: 'Temperature',
-        observationDateTime: '2016-09-08T10:10:38.000+0530',
         value: '98',
+        formNamespace: 'fm1/301',
+        observationDateTime: '2016-09-08T10:10:38.000+0530',
+        _metadata: metadataWithSection.controls[1],
+        _formUuid: 'fm1',
         voided: false,
       };
       const obs = [observation1, observation2, observation3];
       const wrapper = mount(<Container metadata={metadataWithSection} observations={obs} />);
       const instance = wrapper.instance();
-      const expectedValue = {
-        observations: [expectedObservation1, expectedObservation2, observation3],
-      };
+      const expectedValue = { observations: [observation1, observation2, observation3] };
       expect(instance.getValue()).to.deep.equal(expectedValue);
     });
   });

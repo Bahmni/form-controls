@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Obs } from '../../src/helpers/Obs';
+import { Obs } from 'src/helpers/Obs';
 
 describe('Obs', () => {
   const concept = {
@@ -68,5 +68,12 @@ describe('Obs', () => {
     expect(actualObject).to.have.property('value').and.equal('abcd');
     expect(actualObject).to.have.property('observationDateTime').to.be.eql(undefined);
     expect(actualObject).to.have.property('voided').and.equal(true);
+  });
+
+  it('should compare obs', () => {
+    const obs = new Obs('formUuid', metadata, existingObs);
+    const modifiedObs = obs.set('efgh');
+
+    expect(obs.equals(modifiedObs)).to.be.eql(false);
   });
 });
