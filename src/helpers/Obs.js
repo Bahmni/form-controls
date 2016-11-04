@@ -1,35 +1,37 @@
 import { createFormNamespace } from './formNamespace';
 
 export class Obs {
-  constructor(formUuid, metadata, extras) {
-    this._formUuid = formUuid;
-    this._metadata = metadata;
+  constructor(formUuid, metadata, observation) {
     this.concept = metadata.concept;
     this.formNamespace = createFormNamespace(formUuid, metadata.id);
-    if (extras) {
-      this.uuid = extras.uuid;
-      this.value = extras.value;
-      this.observationDateTime = extras.observationDateTime;
-      this.voided = extras.voided;
+    if (observation) {
+      this.uuid = observation.uuid;
+      this.value = observation.value;
+      this.observationDateTime = observation.observationDateTime;
+      this.voided = observation.voided;
     }
   }
 
-  get() {
+  getUuid() {
+    return this.uuid;
+  }
+
+  getValue() {
     return this.value;
   }
 
-  set(value) {
-    const clone = new Obs(this._formUuid, this._metadata, this);
-    clone.observationDateTime = null;
-    clone.value = value;
-    clone.voided = false;
-    return clone;
+  setValue(value) {
+    this.observationDateTime = null;
+    this.value = value;
+    this.voided = false;
   }
 
   void() {
-    const clone = new Obs(this._formUuid, this._metadata, this);
-    clone.voided = true;
-    return clone;
+    this.voided = true;
+  }
+
+  isVoided() {
+    return this.voided;
   }
 
   equals(o) {

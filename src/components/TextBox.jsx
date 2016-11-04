@@ -7,15 +7,13 @@ import isEmpty from 'lodash/isEmpty';
 import { ObsMapper } from 'src/helpers/ObsMapper';
 import { Obs } from 'src/helpers/Obs';
 
-
 export class TextBox extends Component {
   constructor(props) {
     super(props);
     // TODO: This will be moved to the place where obs is created originally
-    this.obs = new Obs(props.formUuid, props.metadata, props.obs);
-    this.mapper = new ObsMapper();
-    this.initialValue = this.mapper.getValue(this.obs);
-    this.state = { value: this.initialValue, hasErrors: false };
+    const obs = new Obs(props.formUuid, props.metadata, props.obs);
+    this.mapper = new ObsMapper(obs);
+    this.state = { hasErrors: false };
     this.getValue = this.getValue.bind(this);
   }
 
@@ -25,32 +23,26 @@ export class TextBox extends Component {
   }
 
   getValue() {
-    if (this.isDirty()) {
-      const value = this.state.value ? this.state.value.trim() : undefined;
-      return this.mapper.setValue(this.obs, value);
-    }
-    return (this.initialValue ? this.obs : undefined);
+    return this.mapper.getObs();
   }
 
   getErrors() {
     const { id, properties } = this.props.metadata;
-    const controlDetails = { id, properties, value: this.state.value };
+    const controlDetails = { id, properties, value: this.mapper.getValue() };
     return Validator.getErrors(controlDetails);
-  }
-
-  isDirty() {
-    return this.initialValue !== this.state.value;
   }
 
   handleChange(e) {
     const value = e.target.value.trim() !== '' ? e.target.value.trim() : undefined;
-    this.setState({
-      value,
-      hasErrors: !isEmpty(this.getErrors()) });
+    this.mapper.setValue(value);
+    const hasErrors = !isEmpty(this.getErrors());
+    if (this.state.hasErrors !== hasErrors) {
+      this.setState({ hasErrors });
+    }
   }
 
   render() {
-    const defaultValue = this.state.value;
+    const defaultValue = this.mapper.getValue();
     return (
       <textarea
         className={classNames({ 'form-builder-error': this.state.hasErrors })}

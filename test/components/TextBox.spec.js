@@ -78,13 +78,18 @@ describe('TextBox', () => {
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
     );
     const instance = wrapper.instance();
-    expect(instance.isDirty()).to.be.eql(false);
     expect(instance.getValue()).to.eql(expectedObs);
   });
 
   it('should get user entered value of the text box', () => {
-    let expectedObs = new Obs(formUuid, metadata, undefined);
-    expectedObs = expectedObs.set('My new value');
+    const expectedObs = {
+      concept,
+      formNamespace: 'someFormUuid/100',
+      uuid: undefined,
+      value: 'My new value',
+      observationDateTime: null,
+      voided: false,
+    };
 
     const wrapper = shallow(
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
@@ -92,7 +97,6 @@ describe('TextBox', () => {
     const instance = wrapper.instance();
     wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
 
-    expect(instance.isDirty()).to.be.eql(true);
     expect(instance.getValue()).to.eql(expectedObs);
   });
 
@@ -131,7 +135,14 @@ describe('TextBox', () => {
       voided: true,
       observationDateTime: '2016-09-08T10:10:38.000+0530',
     };
-    const expectedObs = new Obs(formUuid, metadata, obs).set('something');
+    const expectedObs = {
+      concept,
+      formNamespace: 'someFormUuid/100',
+      uuid: undefined,
+      value: 'something',
+      observationDateTime: null,
+      voided: false,
+    };
 
     const wrapper = shallow(
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={voidedObs} />

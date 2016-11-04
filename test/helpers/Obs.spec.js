@@ -26,54 +26,77 @@ describe('Obs', () => {
     concept,
     value: 'abcd',
     formNamespace: 'formUuid/100',
+    observationDateTime: '2016-09-08T10:10:38.000+0530',
+    uuid: 'someUuid',
   };
 
   it('should create a default obs when obs is not passed', () => {
     const obs = new Obs('formUuid', metadata, undefined);
     expect(obs).to.have.property('concept').and.equal(concept);
     expect(obs).to.have.property('formNamespace').and.equal('formUuid/100');
-    expect(obs.get()).to.be.eql(undefined);
+    expect(obs.getValue()).to.be.eql(undefined);
   });
 
-  it('should update the default obs on setting a value', () => {
+  it('should update the obs on setting a value', () => {
     const obs = new Obs('formUuid', metadata, undefined);
+    const expectedObs = {
+      concept,
+      formNamespace: 'formUuid/100',
+      observationDateTime: null,
+      value: '345',
+      voided: false,
+    };
+    obs.setValue('345');
 
-    const actualObject = obs.set('345');
-    expect(actualObject).to.have.property('concept').and.equal(concept);
-    expect(actualObject).to.have.property('formNamespace').and.equal('formUuid/100');
-    expect(actualObject).to.have.property('value').and.equal('345');
-    expect(actualObject).to.have.property('observationDateTime').to.be.a('null');
-    expect(actualObject.get()).to.be.eql('345');
+    expect(obs).to.deep.eql(expectedObs);
+    expect(obs.getValue()).to.be.eql('345');
   });
 
   it('should update an existing obs on setting a value', () => {
     const obs = new Obs('formUuid', metadata, existingObs);
+    const expectedObs = {
+      concept,
+      formNamespace: 'formUuid/100',
+      observationDateTime: null,
+      value: '345',
+      voided: false,
+      uuid: 'someUuid',
+    };
 
-    const actualObject = obs.set('345');
-    expect(obs).to.have.property('value').and.equal('abcd');
-    expect(actualObject).to.have.property('concept').and.equal(concept);
-    expect(actualObject).to.have.property('formNamespace').and.equal('formUuid/100');
-    expect(actualObject).to.have.property('value').and.equal('345');
-    expect(actualObject).to.have.property('observationDateTime').to.be.a('null');
+    expect(obs.getValue()).to.be.eql('abcd');
 
-    expect(actualObject.get()).to.be.eql('345');
+    obs.setValue('345');
+    expect(obs).to.deep.eql(expectedObs);
+    expect(obs.getValue()).to.be.eql('345');
   });
 
-  it('should void an obs if a value of undefined is set', () => {
+  it('should void an obs', () => {
     const obs = new Obs('formUuid', metadata, existingObs);
-    const actualObject = obs.void();
+    const expectedObs = {
+      concept,
+      formNamespace: 'formUuid/100',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      value: 'abcd',
+      voided: true,
+      uuid: 'someUuid',
+    };
 
-    expect(actualObject).to.have.property('concept').and.equal(concept);
-    expect(actualObject).to.have.property('formNamespace').and.equal('formUuid/100');
-    expect(actualObject).to.have.property('value').and.equal('abcd');
-    expect(actualObject).to.have.property('observationDateTime').to.be.eql(undefined);
-    expect(actualObject).to.have.property('voided').and.equal(true);
+    obs.void();
+
+    expect(obs).to.deep.eql(expectedObs);
   });
 
-  it('should compare obs', () => {
+  it('should return equal when value of two obs are same', () => {
     const obs = new Obs('formUuid', metadata, existingObs);
-    const modifiedObs = obs.set('efgh');
+    const otherObs = new Obs('formUuid', metadata, existingObs);
 
-    expect(obs.equals(modifiedObs)).to.be.eql(false);
+    expect(obs.equals(otherObs)).to.be.eql(true);
+  });
+
+  it('should not return equal when value of two obs are different', () => {
+    const obs = new Obs('formUuid', metadata, existingObs);
+    const otherObs = new Obs('formUuid', metadata, { value: 'somethingElse' });
+
+    expect(obs.equals(otherObs)).to.be.eql(false);
   });
 });

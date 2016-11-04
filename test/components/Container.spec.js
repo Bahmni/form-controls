@@ -17,6 +17,7 @@ describe('Container', () => {
   let observations;
   let observation1;
   let observation2;
+
   before(() => {
     componentStore.registerComponent('label', Label);
     componentStore.registerComponent('text', TextBox);
@@ -86,24 +87,20 @@ describe('Container', () => {
 
     observation1 = {
       concept: textBoxConcept,
-      value: '72',
       formNamespace: 'fm1/101',
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       uuid: undefined,
+      value: '72',
       voided: false,
-      _metadata: metadata.controls[1],
-      _formUuid: 'fm1',
     };
 
     observation2 = {
       concept: numericBoxConcept,
-      value: '98',
       formNamespace: 'fm1/102',
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       uuid: undefined,
+      value: '98',
       voided: false,
-      _metadata: metadata.controls[1],
-      _formUuid: 'fm1',
     };
 
     observations = [observation1, observation2];
@@ -221,8 +218,6 @@ describe('Container', () => {
         formNamespace: 'fm1/101',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
         voided: true,
-        _metadata: metadata.controls[1],
-        _formUuid: 'fm1',
       };
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
@@ -326,8 +321,6 @@ describe('Container', () => {
         value: '98',
         formNamespace: 'fm1/301',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
-        _metadata: metadataWithSection.controls[1],
-        _formUuid: 'fm1',
         voided: false,
       };
       const obs = [observation1, observation2, observation3];

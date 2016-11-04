@@ -1,16 +1,37 @@
 export class ObsMapper {
-  getValue(obs) {
-    return obs.get();
+  constructor(obs) {
+    this.obs = obs;
   }
 
-  setValue(obs, value) {
-    if (value) {
-      return obs.set(value);
+  _isNewVoidedObs() {
+    return !this.obs.getUuid() && this.obs.isVoided();
+  }
+
+  _hasNoValue() {
+    const value = this.obs.getValue();
+    return value === '' || value === undefined;
+  }
+
+  getValue() {
+    return ((this._hasNoValue() || this.obs.isVoided()) ? undefined : this.obs.getValue());
+  }
+
+  getObs() {
+    if (this._hasNoValue() || this._isNewVoidedObs()) {
+      return undefined;
     }
-    return obs.void();
+    return this.obs;
   }
 
-  equals(initialObs, finalObs) {
-    return initialObs.equals(finalObs);
+  setValue(value) {
+    if (value) {
+      this.obs.setValue(value);
+    } else {
+      this.obs.void();
+    }
+  }
+
+  equals(finalObs) {
+    return this.obs.equals(finalObs);
   }
 }
