@@ -38,6 +38,7 @@ export class Button extends Component {
   changeValue(valueSelected) {
     const value = this.state.value === valueSelected ? undefined : valueSelected;
     this.setState({ value, hasErrors: !isEmpty(this.getErrorForValue(value)) });
+    this.props.onChange();
   }
 
   displayButtons() {
@@ -71,6 +72,7 @@ Button.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   obs: PropTypes.object,
+  onChange: PropTypes.func.isRequired,
 };
 
 window.componentStore.registerComponent('button', Button);

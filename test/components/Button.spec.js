@@ -11,6 +11,8 @@ chai.use(chaiEnzyme());
 describe('Button Component', () => {
   let metadata;
   let obs;
+  const onChangeMockFunction = { onChange: () => {} };
+  const onChangeMock = sinon.mock(onChangeMockFunction);
 
   beforeEach(() => {
     metadata = {
@@ -42,7 +44,7 @@ describe('Button Component', () => {
 
   it('should render button component', () => {
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} />
+      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
     );
     expect(wrapper).to.have.exactly(2).descendants('button');
 
@@ -57,7 +59,13 @@ describe('Button Component', () => {
 
   it('should render button with selected value', () => {
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} obs={obs} />
+      <Button
+        errors={[]}
+        formUuid="someFormUuid"
+        metadata={metadata}
+        obs={obs}
+        onChange={() => {}}
+      />
     );
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
     expect(wrapper.find('button').at(1)).to.have.className('fl');
@@ -65,7 +73,13 @@ describe('Button Component', () => {
 
   it('should render error class when control has error', () => {
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} obs={obs} />
+      <Button
+        errors={[]}
+        formUuid="someFormUuid"
+        metadata={metadata}
+        obs={obs}
+        onChange={() => {}}
+      />
     );
     wrapper.setProps({ errors: [{ controlId: '100' }] });
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
@@ -75,7 +89,13 @@ describe('Button Component', () => {
 
   it('should change the value on click', () => {
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} obs={obs} />
+      <Button
+        errors={[]}
+        formUuid="someFormUuid"
+        metadata={metadata}
+        obs={obs}
+        onChange={() => {}}
+      />
     );
     wrapper.find('button').at(1).simulate('click');
     const instance = wrapper.instance();
@@ -85,9 +105,23 @@ describe('Button Component', () => {
     expect(wrapper.find('button').at(1)).to.have.className('fl active');
   });
 
+  it('should call onChange function when value is changed', () => {
+    onChangeMock.expects('onChange').once();
+    const wrapper = shallow(
+      <Button
+        errors={[]}
+        formUuid="someFormUuid"
+        metadata={metadata}
+        onChange={onChangeMockFunction.onChange}
+      />
+    );
+    wrapper.find('button').at(1).simulate('click');
+    onChangeMock.verify();
+  });
+
   it('should return the value as undefined if not selected', () => {
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} />
+      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
     );
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
@@ -95,7 +129,7 @@ describe('Button Component', () => {
 
   it('should change the value to undefined if double clicked', () => {
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} />
+      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
     );
     wrapper.find('button').at(1).simulate('click');
     const instance = wrapper.instance();
@@ -108,7 +142,7 @@ describe('Button Component', () => {
   it('should throw error on change if present', () => {
     metadata.properties = { mandatory: true };
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} />
+      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
     );
     wrapper.find('button').at(1).simulate('click');
     expect(wrapper).to.have.className('form-control-buttons');
@@ -126,7 +160,13 @@ describe('Button Component', () => {
     metadata.properties = { mandatory: true };
     obs = { value: 'someValue' };
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} obs={obs} />
+      <Button
+        errors={[]}
+        formUuid="someFormUuid"
+        metadata={metadata}
+        obs={obs}
+        onChange={() => {}}
+      />
     );
     const instance = wrapper.instance();
     expect(instance.getErrors()).to.deep.eql([{ errorType: 'someErrorType' }]);

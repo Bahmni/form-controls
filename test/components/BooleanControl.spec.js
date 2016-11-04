@@ -71,16 +71,19 @@ describe('BooleanControl', () => {
     const wrapper = shallow(
       <BooleanControl errors={errors} formUuid={formUuid} metadata={metadata} />
     );
-    const expectedChildProps = { errors, formUuid, metadata };
 
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
-    expect(wrapper.find('DummyRadioControl').props()).to.deep.eql(expectedChildProps);
+    expect(Object.keys(wrapper.find('DummyRadioControl').props())).to.have.length(4);
+
+    expect(wrapper.find('DummyRadioControl')).to.have.prop('errors').to.deep.eql(errors);
+    expect(wrapper.find('DummyRadioControl')).to.have.prop('formUuid').to.deep.eql(formUuid);
+    expect(wrapper.find('DummyRadioControl')).to.have.prop('metadata').to.deep.eql(metadata);
+    expect(wrapper.find('DummyRadioControl')).to.have.prop('onChange');
   });
 
   it('should render Dummy Control of specified displayType', () => {
     window.componentStore.registerComponent('radio', DummyRadioControl);
     const spy = sinon.spy(window.componentStore, 'getRegisteredComponent');
-    const expectedMetadata = { errors: [], formUuid, metadata };
 
     metadata.displayType = 'radio';
     const wrapper = shallow(
@@ -89,7 +92,10 @@ describe('BooleanControl', () => {
 
     sinon.assert.calledWith(spy, 'radio');
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
-    expect(wrapper.find('DummyRadioControl').props()).to.deep.eql(expectedMetadata);
+    expect(wrapper.find('DummyRadioControl')).to.have.prop('errors').to.deep.eql([]);
+    expect(wrapper.find('DummyRadioControl')).to.have.prop('formUuid').to.deep.eql(formUuid);
+    expect(wrapper.find('DummyRadioControl')).to.have.prop('metadata').to.deep.eql(metadata);
+    expect(wrapper.find('DummyRadioControl')).to.have.prop('onChange');
 
     window.componentStore.deRegisterComponent('radio');
   });
@@ -147,6 +153,24 @@ describe('BooleanControl', () => {
     const instance = wrapper.instance();
     expect(instance.getValue()).to.deep.eql(expectedObs);
   });
+
+  it('should set observationDateTime to null on change of value', () => {
+    const obs = {
+      value: false,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+    };
+
+    const wrapper = mount(
+      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    );
+    const instance = wrapper.instance();
+
+    expect(wrapper.find('DummyRadioControl')).to.have.prop('onChange');
+    expect(instance.getValue().observationDateTime).to.eql('2016-09-08T10:10:38.000+0530');
+    wrapper.find('DummyRadioControl').props().onChange();
+    expect(instance.getValue().observationDateTime).to.eql(null);
+  });
+
 
   it('should return undefined when child value is undefined', () => {
     const wrapper = mount(<BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />);

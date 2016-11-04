@@ -37,6 +37,7 @@ export class RadioButton extends Component {
 
   changeValue(value) {
     this.setState({ value, hasErrors: !isEmpty(this.getErrorForValue(value)) });
+    this.props.onChange();
   }
 
   displayRadioButtons() {
@@ -74,6 +75,7 @@ RadioButton.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   obs: PropTypes.object,
+  onChange: PropTypes.func.isRequired,
 };
 
 window.componentStore.registerComponent('radio', RadioButton);

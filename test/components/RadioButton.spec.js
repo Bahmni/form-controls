@@ -11,6 +11,8 @@ chai.use(chaiEnzyme());
 describe('RadioButton Component', () => {
   let metadata;
   let obs;
+  const onChangeMockFunction = { onChange: () => {} };
+  const onChangeMock = sinon.mock(onChangeMockFunction);
 
   beforeEach(() => {
     metadata = {
@@ -42,7 +44,7 @@ describe('RadioButton Component', () => {
 
   it('should render the radio component', () => {
     const wrapper = shallow(
-      <RadioButton errors={[]} formUuid="someFormUuid" metadata={metadata} />
+      <RadioButton errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
     );
     expect(wrapper).to.have.exactly(2).descendants('input');
 
@@ -61,7 +63,13 @@ describe('RadioButton Component', () => {
 
   it('should render the radio button with selected value', () => {
     const wrapper = shallow(
-      <RadioButton errors={[]} formUuid="someFormUuid" metadata={metadata} obs={obs} />
+      <RadioButton
+        errors={[]}
+        formUuid="someFormUuid"
+        metadata={metadata}
+        obs={obs}
+        onChange={() => {}}
+      />
     );
     expect(wrapper.find('input').at(0).props().checked).to.eql(true);
     expect(wrapper.find('input').at(1).props().checked).to.eql(false);
@@ -69,7 +77,13 @@ describe('RadioButton Component', () => {
 
   it('should render the radio button with error if hasErrors is true', () => {
     const wrapper = shallow(
-      <RadioButton errors={[]} formUuid="someFormUuid" metadata={metadata} obs={obs} />
+      <RadioButton
+        errors={[]}
+        formUuid="someFormUuid"
+        metadata={metadata}
+        obs={obs}
+        onChange={() => {}}
+      />
     );
     wrapper.setProps({ errors: [{ controlId: '100' }] });
     expect(wrapper).to.have.className('form-builder-error');
@@ -77,16 +91,30 @@ describe('RadioButton Component', () => {
 
   it('should change the value on select', () => {
     const wrapper = shallow(
-      <RadioButton errors={[]} formUuid="someFormUuid" metadata={metadata} />
+      <RadioButton errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
     );
     wrapper.find('div').at(2).simulate('click');
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(false);
   });
 
+  it('should call onChange function when value is changed', () => {
+    onChangeMock.expects('onChange').once();
+    const wrapper = shallow(
+      <RadioButton
+        errors={[]}
+        formUuid="someFormUuid"
+        metadata={metadata}
+        onChange={onChangeMockFunction.onChange}
+      />
+    );
+    wrapper.find('div').at(2).simulate('click');
+    onChangeMock.verify();
+  });
+
   it('should return the value as undefined if not selected', () => {
     const wrapper = shallow(
-      <RadioButton errors={[]} formUuid="someFormUuid" metadata={metadata} />
+      <RadioButton errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
     );
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
@@ -100,7 +128,13 @@ describe('RadioButton Component', () => {
     metadata.properties = { mandatory: true };
     obs = { value: 'someValue' };
     const wrapper = shallow(
-      <RadioButton errors={[]} formUuid="someFormUuid" metadata={metadata} obs={obs} />
+      <RadioButton
+        errors={[]}
+        formUuid="someFormUuid"
+        metadata={metadata}
+        obs={obs}
+        onChange={() => {}}
+      />
     );
     const instance = wrapper.instance();
     expect(instance.getErrors()).to.deep.eql([{ errorType: 'someErrorType' }]);

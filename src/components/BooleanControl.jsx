@@ -50,12 +50,17 @@ export class BooleanControl extends Component {
     this.childControl = ref;
   }
 
+  handleChange() {
+    this.observationDateTime = null;
+  }
+
   render() {
     const { displayType } = this.props.metadata;
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
       const childProps = {
         ref: this.storeChildRef,
+        onChange: () => this.handleChange(),
         ...this.props,
       };
       return React.createElement(registeredComponent, childProps);
