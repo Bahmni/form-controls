@@ -40,8 +40,9 @@ describe('TextBox', () => {
   };
 
   const obs = {
-    value: 'someValue',
     observationDateTime: '2016-09-08T10:10:38.000+0530',
+    uuid: 'someUuid',
+    value: 'someValue',
   };
 
   const formUuid = 'someFormUuid';
@@ -85,9 +86,9 @@ describe('TextBox', () => {
     const expectedObs = {
       concept,
       formNamespace: 'someFormUuid/100',
-      uuid: undefined,
-      value: 'My new value',
       observationDateTime: null,
+      uuid: 'someUuid',
+      value: 'My new value',
       voided: false,
     };
 
@@ -117,8 +118,15 @@ describe('TextBox', () => {
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
 
-  it('should return the voided obs if value is set to undefined', () => {
-    const expectedObs = new Obs(formUuid, metadata, obs).void();
+  it('should return the voided obs if value is removed', () => {
+    const expectedObs = {
+      concept,
+      formNamespace: 'someFormUuid/100',
+      uuid: 'someUuid',
+      value: 'someValue',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      voided: true,
+    };
 
     const wrapper = shallow(
       <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />

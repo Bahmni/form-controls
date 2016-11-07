@@ -1,36 +1,23 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import { createFormNamespace } from 'src/helpers/formNamespace';
 import { Validator } from 'src/helpers/Validator';
 import { hasError } from 'src/helpers/controlsHelper';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-
-class Mapper {
-  constructor(obs) {
-    this.obs = obs;
-  }
-
-  mapTo(obs) {
-    return Object.assign({}, this.obs, obs);
-  }
-}
+import { ObsMapper } from 'src/helpers/ObsMapper';
+import { Obs } from 'src/helpers/Obs';
 
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
-    this.value = props.obs && props.obs.value;
-    const formNamespace = createFormNamespace(props.formUuid, props.metadata.id);
-    const concept = props.metadata.concept;
-    const obs = Object.assign({}, { concept }, props.obs, { formNamespace });
-    this.mapper = new Mapper(obs);
+    const obs = new Obs(props.formUuid, props.metadata, props.obs);
+    this.mapper = new ObsMapper(obs);
     this.state = { hasErrors: false };
-    this.observationDateTime = props.obs && props.obs.observationDateTime;
     this.getValue = this.getValue.bind(this);
   }
 
   componentDidMount() {
-    this.input.value = this.value;
+    this.input.value = this.mapper.getValue();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,18 +26,7 @@ export class NumericBox extends Component {
   }
 
   getValue() {
-    if (this.value) {
-      const obs = {
-        observationDateTime: this.observationDateTime,
-        value: this.value,
-        voided: false,
-      };
-      return this.mapper.mapTo(obs);
-    } else if (this.props.obs) {
-      const voidedObs = Object.assign({}, this.props.obs, { voided: true, value: this.value });
-      return this.mapper.mapTo(voidedObs);
-    }
-    return undefined;
+    return this.mapper.getObs();
   }
 
   getErrors() {
@@ -61,14 +37,16 @@ export class NumericBox extends Component {
     } = this.props.metadata;
 
     const properties = Object.assign({}, conceptProperties, metadataProperties);
-    const controlDetails = { id, properties, value: this.value };
+    const controlDetails = { id, properties, value: this.mapper.getValue() };
     return Validator.getErrors(controlDetails);
   }
 
   handleChange(e) {
-    this.value = e.target.value;
-    this.observationDateTime = null;
-    this.setState({ hasErrors: !isEmpty(this.getErrors()) });
+    this.mapper.setValue(e.target.value);
+    const hasErrors = !isEmpty(this.getErrors());
+    if (this.state.hasErrors !== hasErrors) {
+      this.setState({ hasErrors });
+    }
   }
 
   render() {

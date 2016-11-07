@@ -317,10 +317,10 @@ describe('Container', () => {
     it('should return observations of all children', () => {
       const observation3 = {
         concept: numericBoxConcept,
-        label: 'Temperature',
-        value: '98',
         formNamespace: 'fm1/301',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
+        uuid: undefined,
+        value: '98',
         voided: false,
       };
       const obs = [observation1, observation2, observation3];

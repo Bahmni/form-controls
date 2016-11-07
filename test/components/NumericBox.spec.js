@@ -41,8 +41,10 @@ describe('NumericBox', () => {
   };
 
   const obs = {
-    value: '007',
     observationDateTime: '2016-09-08T10:10:38.000+0530',
+    uuid: 'someUuid',
+    value: '007',
+    voided: false,
   };
 
   const formUuid = 'f1';
@@ -81,6 +83,7 @@ describe('NumericBox', () => {
       concept,
       formNamespace,
       observationDateTime: '2016-09-08T10:10:38.000+0530',
+      uuid: 'someUuid',
       value: '007',
       voided: false,
     };
@@ -96,6 +99,7 @@ describe('NumericBox', () => {
       concept,
       formNamespace,
       observationDateTime: null,
+      uuid: 'someUuid',
       value: '999',
       voided: false,
     };
@@ -129,12 +133,13 @@ describe('NumericBox', () => {
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
 
-  it('should return the voided obs if value is set to undefined', () => {
+  it('should return the voided obs if value is removed', () => {
     const expectedObs = {
       concept,
-      value: '',
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      uuid: 'someUuid',
+      value: '007',
       voided: true,
     };
 
@@ -142,6 +147,7 @@ describe('NumericBox', () => {
       <NumericBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
     );
     const instance = wrapper.instance();
+
     wrapper.find('input').simulate('change', { target: { value: '' } });
 
     expect(instance.getValue()).to.eql(expectedObs);
@@ -155,9 +161,10 @@ describe('NumericBox', () => {
     };
     const expectedObs = {
       concept,
-      value: '100',
-      observationDateTime: null,
       formNamespace,
+      observationDateTime: null,
+      uuid: undefined,
+      value: '100',
       voided: false,
     };
 
