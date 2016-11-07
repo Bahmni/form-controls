@@ -44,6 +44,14 @@ describe('ObsMapper', () => {
       const mapper = new ObsMapper(obs);
       expect(mapper.getValue()).to.eql('someValue');
     });
+
+    it('should return value when obs has value false', () => {
+      obs.getValue.returns(false);
+      obs.isVoided.returns(false);
+
+      const mapper = new ObsMapper(obs);
+      expect(mapper.getValue()).to.eql(false);
+    });
   });
 
   describe('getObs', () => {

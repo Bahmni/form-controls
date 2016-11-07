@@ -1,45 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import { createFormNamespace } from 'src/helpers/formNamespace';
-
-class Mapper {
-  constructor(obs) {
-    this.obs = obs;
-  }
-
-  mapTo(obs) {
-    return Object.assign({}, this.obs, obs);
-  }
-}
+import { ObsMapper } from 'src/helpers/ObsMapper';
+import { Obs } from 'src/helpers/Obs';
 
 export class BooleanControl extends Component {
   constructor(props) {
     super(props);
-    this.value = props.obs && props.obs.value;
-    const formNamespace = createFormNamespace(props.formUuid, props.metadata.id);
-    const concept = props.metadata.concept;
-    const obs = Object.assign({}, { concept }, props.obs, { formNamespace });
-    this.mapper = new Mapper(obs);
-    this.observationDateTime = props.obs && props.obs.observationDateTime;
+    const obs = new Obs(props.formUuid, props.metadata, props.obs);
+    this.mapper = new ObsMapper(obs);
     this.getValue = this.getValue.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
   }
 
   getValue() {
     const childControlValue = this.childControl.getValue();
-    if (childControlValue !== undefined) {
-      const obs = {
-        observationDateTime: this.observationDateTime,
-        value: childControlValue,
-        voided: false,
-      };
-      return this.mapper.mapTo(obs);
-    } else if (this.props.obs) {
-      const voidedObs = Object.assign({},
-        this.props.obs, { voided: true, value: childControlValue });
-      return this.mapper.mapTo(voidedObs);
-    }
-    return undefined;
+    this.mapper.setValue(childControlValue);
+    return this.mapper.getObs();
   }
 
   getErrors() {
@@ -50,17 +26,14 @@ export class BooleanControl extends Component {
     this.childControl = ref;
   }
 
-  handleChange() {
-    this.observationDateTime = null;
-  }
-
   render() {
     const { displayType } = this.props.metadata;
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
+      const initialValue = this.mapper.getValue();
       const childProps = {
         ref: this.storeChildRef,
-        onChange: () => this.handleChange(),
+        value: initialValue,
         ...this.props,
       };
       return React.createElement(registeredComponent, childProps);

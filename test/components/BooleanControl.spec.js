@@ -9,8 +9,7 @@ chai.use(chaiEnzyme());
 
 class DummyRadioControl extends Component {
   getValue() {
-    const value = this.props.obs && this.props.obs.value;
-    return value;
+    return this.props.value;
   }
 
   getErrors() {
@@ -23,7 +22,7 @@ class DummyRadioControl extends Component {
 }
 
 DummyRadioControl.propTypes = {
-  obs: PropTypes.shape({ value: PropTypes.bool }),
+  value: PropTypes.bool,
 };
 
 describe('BooleanControl', () => {
@@ -78,7 +77,6 @@ describe('BooleanControl', () => {
     expect(wrapper.find('DummyRadioControl')).to.have.prop('errors').to.deep.eql(errors);
     expect(wrapper.find('DummyRadioControl')).to.have.prop('formUuid').to.deep.eql(formUuid);
     expect(wrapper.find('DummyRadioControl')).to.have.prop('metadata').to.deep.eql(metadata);
-    expect(wrapper.find('DummyRadioControl')).to.have.prop('onChange');
   });
 
   it('should render Dummy Control of specified displayType', () => {
@@ -95,7 +93,6 @@ describe('BooleanControl', () => {
     expect(wrapper.find('DummyRadioControl')).to.have.prop('errors').to.deep.eql([]);
     expect(wrapper.find('DummyRadioControl')).to.have.prop('formUuid').to.deep.eql(formUuid);
     expect(wrapper.find('DummyRadioControl')).to.have.prop('metadata').to.deep.eql(metadata);
-    expect(wrapper.find('DummyRadioControl')).to.have.prop('onChange');
 
     window.componentStore.deRegisterComponent('radio');
   });
@@ -116,7 +113,8 @@ describe('BooleanControl', () => {
         datatype: 'Boolean',
       },
       formNamespace,
-      observationDateTime: undefined,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      uuid: undefined,
       value: true,
       voided: false,
     };
@@ -125,16 +123,18 @@ describe('BooleanControl', () => {
         errors={[]}
         formUuid={formUuid}
         metadata={metadata}
-        obs={{ value: true }}
+        obs={{ value: true, voided: false, observationDateTime: '2016-09-08T10:10:38.000+0530' }}
       />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.deep.eql(expectedObs);
   });
 
-  it('should return the updated boolean control value', () => {
+  it('should return updated boolean control value with obsDateTime as null', () => {
     const obs = {
-      value: false,
       observationDateTime: '2016-09-08T10:10:38.000+0530',
+      uuid: 'someUuid',
+      value: false,
+      voided: false,
     };
     const expectedObs = {
       concept: {
@@ -143,34 +143,18 @@ describe('BooleanControl', () => {
         datatype: 'Boolean',
       },
       formNamespace,
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
-      value: false,
+      observationDateTime: null,
+      uuid: 'someUuid',
+      value: true,
       voided: false,
     };
     const wrapper = mount(
       <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
     );
     const instance = wrapper.instance();
+    sinon.stub(instance.childControl, 'getValue', () => true);
     expect(instance.getValue()).to.deep.eql(expectedObs);
   });
-
-  it('should set observationDateTime to null on change of value', () => {
-    const obs = {
-      value: false,
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
-    };
-
-    const wrapper = mount(
-      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
-    );
-    const instance = wrapper.instance();
-
-    expect(wrapper.find('DummyRadioControl')).to.have.prop('onChange');
-    expect(instance.getValue().observationDateTime).to.eql('2016-09-08T10:10:38.000+0530');
-    wrapper.find('DummyRadioControl').props().onChange();
-    expect(instance.getValue().observationDateTime).to.eql(null);
-  });
-
 
   it('should return undefined when child value is undefined', () => {
     const wrapper = mount(<BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />);
@@ -192,8 +176,9 @@ describe('BooleanControl', () => {
 
   it('should return voided obs when obs are passed and child value is undefined', () => {
     const obs = {
-      value: false,
       observationDateTime: '2016-09-08T10:10:38.000+0530',
+      uuid: 'someUuid',
+      value: false,
     };
     const expectedObs = {
       concept: {
@@ -201,9 +186,10 @@ describe('BooleanControl', () => {
         name: 'Pulse',
         datatype: 'Boolean',
       },
-      value: undefined,
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
       formNamespace,
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      uuid: 'someUuid',
+      value: false,
       voided: true,
     };
     const wrapper = mount(
@@ -227,7 +213,8 @@ describe('BooleanControl', () => {
         datatype: 'Boolean',
       },
       formNamespace,
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
+      observationDateTime: null,
+      uuid: undefined,
       value: false,
       voided: false,
     };

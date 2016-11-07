@@ -9,8 +9,7 @@ import isEmpty from 'lodash/isEmpty';
 export class Button extends Component {
   constructor(props) {
     super(props);
-    const value = props.obs && props.obs.value;
-    this.state = { value, hasErrors: false };
+    this.state = { value: props.value, hasErrors: false };
     this.changeValue = this.changeValue.bind(this);
     this.getErrors = this.getErrors.bind(this);
   }
@@ -38,7 +37,6 @@ export class Button extends Component {
   changeValue(valueSelected) {
     const value = this.state.value === valueSelected ? undefined : valueSelected;
     this.setState({ value, hasErrors: !isEmpty(this.getErrorForValue(value)) });
-    this.props.onChange();
   }
 
   displayButtons() {
@@ -71,8 +69,7 @@ Button.propTypes = {
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
   }),
-  obs: PropTypes.object,
-  onChange: PropTypes.func.isRequired,
+  value: PropTypes.any,
 };
 
 window.componentStore.registerComponent('button', Button);

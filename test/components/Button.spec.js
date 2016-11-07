@@ -10,9 +10,7 @@ chai.use(chaiEnzyme());
 
 describe('Button Component', () => {
   let metadata;
-  let obs;
-  const onChangeMockFunction = { onChange: () => {} };
-  const onChangeMock = sinon.mock(onChangeMockFunction);
+  let value;
 
   beforeEach(() => {
     metadata = {
@@ -36,10 +34,7 @@ describe('Button Component', () => {
       ],
     };
 
-    obs = {
-      value: true,
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
-    };
+    value = true;
   });
 
   it('should render button component', () => {
@@ -63,8 +58,8 @@ describe('Button Component', () => {
         errors={[]}
         formUuid="someFormUuid"
         metadata={metadata}
-        obs={obs}
         onChange={() => {}}
+        value={value}
       />
     );
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
@@ -77,8 +72,8 @@ describe('Button Component', () => {
         errors={[]}
         formUuid="someFormUuid"
         metadata={metadata}
-        obs={obs}
         onChange={() => {}}
+        value={value}
       />
     );
     wrapper.setProps({ errors: [{ controlId: '100' }] });
@@ -93,8 +88,8 @@ describe('Button Component', () => {
         errors={[]}
         formUuid="someFormUuid"
         metadata={metadata}
-        obs={obs}
         onChange={() => {}}
+        value={value}
       />
     );
     wrapper.find('button').at(1).simulate('click');
@@ -103,20 +98,6 @@ describe('Button Component', () => {
 
     expect(wrapper.find('button').at(0)).to.have.className('fl');
     expect(wrapper.find('button').at(1)).to.have.className('fl active');
-  });
-
-  it('should call onChange function when value is changed', () => {
-    onChangeMock.expects('onChange').once();
-    const wrapper = shallow(
-      <Button
-        errors={[]}
-        formUuid="someFormUuid"
-        metadata={metadata}
-        onChange={onChangeMockFunction.onChange}
-      />
-    );
-    wrapper.find('button').at(1).simulate('click');
-    onChangeMock.verify();
   });
 
   it('should return the value as undefined if not selected', () => {
@@ -158,14 +139,14 @@ describe('Button Component', () => {
     stub.withArgs(args).returns([{ errorType: 'someErrorType' }]);
 
     metadata.properties = { mandatory: true };
-    obs = { value: 'someValue' };
+    value = 'someValue';
     const wrapper = shallow(
       <Button
         errors={[]}
         formUuid="someFormUuid"
         metadata={metadata}
-        obs={obs}
         onChange={() => {}}
+        value={value}
       />
     );
     const instance = wrapper.instance();

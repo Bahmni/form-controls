@@ -24,7 +24,7 @@ export class ObsMapper {
   }
 
   setValue(value) {
-    if (value) {
+    if (value !== '' && value !== undefined) {
       this.obs.setValue(value);
     } else {
       this.obs.void();

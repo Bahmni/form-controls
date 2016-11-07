@@ -24,7 +24,7 @@ describe('Obs', () => {
 
   const existingObs = {
     concept,
-    value: 'abcd',
+    value: 'someValue',
     formNamespace: 'formUuid/100',
     observationDateTime: '2016-09-08T10:10:38.000+0530',
     uuid: 'someUuid',
@@ -63,11 +63,20 @@ describe('Obs', () => {
       uuid: 'someUuid',
     };
 
-    expect(obs.getValue()).to.be.eql('abcd');
+    expect(obs.getValue()).to.be.eql('someValue');
 
     obs.setValue('345');
     expect(obs).to.deep.eql(expectedObs);
     expect(obs.getValue()).to.be.eql('345');
+  });
+
+  it('should not update an existing obs if value is same', () => {
+    const obs = new Obs('formUuid', metadata, existingObs);
+    expect(obs.getValue()).to.be.eql('someValue');
+
+    obs.setValue('someValue');
+
+    expect(obs.observationDateTime).to.be.eql('2016-09-08T10:10:38.000+0530');
   });
 
   it('should void an obs', () => {
@@ -76,7 +85,7 @@ describe('Obs', () => {
       concept,
       formNamespace: 'formUuid/100',
       observationDateTime: '2016-09-08T10:10:38.000+0530',
-      value: 'abcd',
+      value: 'someValue',
       voided: true,
       uuid: 'someUuid',
     };

@@ -10,9 +10,7 @@ chai.use(chaiEnzyme());
 
 describe('RadioButton Component', () => {
   let metadata;
-  let obs;
-  const onChangeMockFunction = { onChange: () => {} };
-  const onChangeMock = sinon.mock(onChangeMockFunction);
+  let value;
 
   beforeEach(() => {
     metadata = {
@@ -36,10 +34,7 @@ describe('RadioButton Component', () => {
       ],
     };
 
-    obs = {
-      value: true,
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
-    };
+    value = true;
   });
 
   it('should render the radio component', () => {
@@ -67,8 +62,8 @@ describe('RadioButton Component', () => {
         errors={[]}
         formUuid="someFormUuid"
         metadata={metadata}
-        obs={obs}
         onChange={() => {}}
+        value={value}
       />
     );
     expect(wrapper.find('input').at(0).props().checked).to.eql(true);
@@ -81,8 +76,8 @@ describe('RadioButton Component', () => {
         errors={[]}
         formUuid="someFormUuid"
         metadata={metadata}
-        obs={obs}
         onChange={() => {}}
+        value={value}
       />
     );
     wrapper.setProps({ errors: [{ controlId: '100' }] });
@@ -96,20 +91,6 @@ describe('RadioButton Component', () => {
     wrapper.find('div').at(2).simulate('click');
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(false);
-  });
-
-  it('should call onChange function when value is changed', () => {
-    onChangeMock.expects('onChange').once();
-    const wrapper = shallow(
-      <RadioButton
-        errors={[]}
-        formUuid="someFormUuid"
-        metadata={metadata}
-        onChange={onChangeMockFunction.onChange}
-      />
-    );
-    wrapper.find('div').at(2).simulate('click');
-    onChangeMock.verify();
   });
 
   it('should return the value as undefined if not selected', () => {
@@ -126,14 +107,14 @@ describe('RadioButton Component', () => {
     stub.withArgs(args).returns([{ errorType: 'someErrorType' }]);
 
     metadata.properties = { mandatory: true };
-    obs = { value: 'someValue' };
+    value = 'someValue';
     const wrapper = shallow(
       <RadioButton
         errors={[]}
         formUuid="someFormUuid"
         metadata={metadata}
-        obs={obs}
         onChange={() => {}}
+        value={value}
       />
     );
     const instance = wrapper.instance();

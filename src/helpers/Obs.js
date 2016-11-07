@@ -20,10 +20,16 @@ export class Obs {
     return this.value;
   }
 
+  isDirty(value) {
+    return this.value !== value;
+  }
+
   setValue(value) {
-    this.observationDateTime = null;
-    this.value = value;
-    this.voided = false;
+    if (this.isDirty(value)) {
+      this.observationDateTime = null;
+      this.value = value;
+      this.voided = false;
+    }
   }
 
   void() {
