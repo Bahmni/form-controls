@@ -8,10 +8,13 @@ export class AutoComplete extends Component {
   constructor(props) {
     super(props);
     this.optionsUrl = props.optionsUrl;
+    this.childRef = undefined;
     this.getValueFromProps = this.getValueFromProps.bind(this);
     this.getValue = this.getValue.bind(this);
     this.getOptions = this.getOptions.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
+    this.storeChildRef = this.storeChildRef.bind(this);
     this.state = { value: this.getValueFromProps(props) };
   }
 
@@ -52,6 +55,16 @@ export class AutoComplete extends Component {
     }
   }
 
+  storeChildRef(ref) {
+    if (ref) this.childRef = ref;
+  }
+
+  handleFocus() {
+    if (this.childRef) {
+      this.childRef.loadOptions('');
+    }
+  }
+
   render() {
     const { autofocus, disabled, labelKey, valueKey,
                   asynchronous, options, multi, minimumInput } = this.props;
@@ -70,7 +83,12 @@ export class AutoComplete extends Component {
     if (asynchronous) {
       return (
         <div className="obs-control-select-wrapper">
-          <Select.Async { ...props } loadOptions={ this.getOptions } />
+          <Select.Async
+            { ...props }
+            loadOptions={ this.getOptions }
+            onFocus={ this.handleFocus }
+            ref={this.storeChildRef}
+          />
         </div>
       );
     }

@@ -49,6 +49,14 @@ describe('AutoComplete', () => {
       const instance = wrapper.instance();
       expect(instance.getValue()).to.eql(concept);
     });
+
+    it('should clear the options on Focus for aysnchronous', () => {
+      const wrapper = mount(<AutoComplete />);
+      const instance = wrapper.instance();
+      const loadOptionsSpy = sinon.spy(instance.childRef, 'loadOptions');
+      wrapper.find('Select').props().onFocus();
+      sinon.assert.calledOnce(loadOptionsSpy);
+    });
   });
 
   context('when component is not asynchronous', () => {
