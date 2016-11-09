@@ -4,20 +4,16 @@ import { Validator } from 'src/helpers/Validator';
 import { hasError } from 'src/helpers/controlsHelper';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import { ObsMapper } from 'src/helpers/ObsMapper';
-import { Obs } from 'src/helpers/Obs';
 
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
-    const obs = new Obs(props.formUuid, props.metadata, props.obs);
-    this.mapper = new ObsMapper(obs);
     this.state = { hasErrors: false };
     this.getValue = this.getValue.bind(this);
   }
 
   componentDidMount() {
-    this.input.value = this.mapper.getValue();
+    this.input.value = this.props.mapper.getValue();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -26,7 +22,7 @@ export class NumericBox extends Component {
   }
 
   getValue() {
-    return this.mapper.getObs();
+    return this.props.mapper.getObs();
   }
 
   getErrors() {
@@ -37,12 +33,12 @@ export class NumericBox extends Component {
     } = this.props.metadata;
 
     const properties = Object.assign({}, conceptProperties, metadataProperties);
-    const controlDetails = { id, properties, value: this.mapper.getValue() };
+    const controlDetails = { id, properties, value: this.props.mapper.getValue() };
     return Validator.getErrors(controlDetails);
   }
 
   handleChange(e) {
-    this.mapper.setValue(e.target.value);
+    this.props.mapper.setValue(e.target.value);
     const hasErrors = !isEmpty(this.getErrors());
     if (this.state.hasErrors !== hasErrors) {
       this.setState({ hasErrors });
@@ -64,12 +60,12 @@ export class NumericBox extends Component {
 NumericBox.propTypes = {
   errors: PropTypes.array.isRequired,
   formUuid: PropTypes.string.isRequired,
+  mapper: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
     properties: PropTypes.object.isRequired,
   }),
-  obs: PropTypes.object,
 };
 
 window.componentStore.registerComponent('numeric', NumericBox);

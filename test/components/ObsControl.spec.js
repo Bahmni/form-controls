@@ -6,6 +6,7 @@ import { ObsControl } from 'components/ObsControl.jsx';
 import { TextBox } from 'components/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { Obs } from 'src/helpers/Obs';
+import { ObsMapper } from 'src/helpers/ObsMapper';
 
 chai.use(chaiEnzyme());
 
@@ -63,11 +64,13 @@ describe('ObsControl', () => {
       label,
       properties,
     };
-
+    const observation = new Obs(formUuid, metadata, undefined);
+    const mapper = new ObsMapper(observation);
     const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('NumericBox');
     expect(wrapper.find('input').at(0).props().type).to.be.eql('number');
+    expect(wrapper.find(NumericBox).props().mapper).to.deep.eql(mapper);
   });
 
   it('should render child control with error when present', () => {

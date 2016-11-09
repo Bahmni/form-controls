@@ -6,6 +6,7 @@ import { TextBox } from 'src/components/TextBox.jsx';
 import { Validator } from 'src/helpers/Validator';
 import sinon from 'sinon';
 import { Obs } from 'src/helpers/Obs';
+import { ObsMapper } from 'src/helpers/ObsMapper';
 
 chai.use(chaiEnzyme());
 
@@ -47,42 +48,59 @@ describe('TextBox', () => {
 
   const formUuid = 'someFormUuid';
 
+  function getMapper(obsData) {
+    const observation = new Obs(formUuid, metadata, obsData);
+    return new ObsMapper(observation);
+  }
+
   it('should render TextBox', () => {
-    const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const mapper = getMapper(undefined);
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
+    );
     expect(wrapper).to.have.descendants('textarea');
     expect(wrapper.find('textarea').props().defaultValue).to.eql(undefined);
   });
 
   it('should render TextBox with errors if error is present', () => {
+    const mapper = getMapper(undefined);
     const errors = [{ controlId: '100' }];
-    const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
+    );
     wrapper.setProps({ errors });
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 
   it('should not render TextBox with errors if error is present for control', () => {
+    const mapper = getMapper(undefined);
     const errors = [{ controlId: 'someOtherId' }, { controlId: 'differentId' }];
-    const wrapper = shallow(<TextBox errors={errors} formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(
+      <TextBox errors={errors} formUuid={formUuid} mapper={mapper} metadata={metadata} />
+    );
     expect(wrapper.find('textarea')).to.have.className('');
   });
 
   it('should render TextBox with default value', () => {
+    const mapper = getMapper(obs);
     const wrapper = shallow(
-      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+      <TextBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
     expect(wrapper.find('textarea').props().defaultValue).to.be.eql('someValue');
   });
 
   it('should return the default value of the text box if there is no change', () => {
+    const mapper = getMapper(obs);
     const expectedObs = new Obs(formUuid, metadata, obs);
     const wrapper = shallow(
-      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+      <TextBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(expectedObs);
   });
 
   it('should get user entered value of the text box', () => {
+    const mapper = getMapper(obs);
     const expectedObs = {
       concept,
       formNamespace: 'someFormUuid/100',
@@ -93,7 +111,7 @@ describe('TextBox', () => {
     };
 
     const wrapper = shallow(
-      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+      <TextBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
     const instance = wrapper.instance();
     wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
@@ -102,23 +120,30 @@ describe('TextBox', () => {
   });
 
   it('should return value only if there was initial value or if the value was changed', () => {
-    const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const mapper = getMapper(undefined);
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
+    );
     const instance = wrapper.instance();
     expect(instance.getValue()).to.eql(undefined);
   });
 
   it('getErrors should return errors if present', () => {
+    const mapper = getMapper(undefined);
     const stub = sinon.stub(Validator, 'getErrors');
     const controlDetails = { id: '100', properties, value: 'My new value' };
     stub.withArgs(controlDetails).returns([{ errorType: 'something' }]);
 
-    const wrapper = shallow(<TextBox errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const wrapper = shallow(
+      <TextBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
+    );
     const instance = wrapper.instance();
     wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
   });
 
   it('should return the voided obs if value is removed', () => {
+    const mapper = getMapper(obs);
     const expectedObs = {
       concept,
       formNamespace: 'someFormUuid/100',
@@ -129,7 +154,7 @@ describe('TextBox', () => {
     };
 
     const wrapper = shallow(
-      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+      <TextBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
     const instance = wrapper.instance();
     wrapper.find('textarea').simulate('change', { target: { value: '' } });
@@ -143,6 +168,7 @@ describe('TextBox', () => {
       voided: true,
       observationDateTime: '2016-09-08T10:10:38.000+0530',
     };
+    const mapper = getMapper(voidedObs);
     const expectedObs = {
       concept,
       formNamespace: 'someFormUuid/100',
@@ -153,7 +179,7 @@ describe('TextBox', () => {
     };
 
     const wrapper = shallow(
-      <TextBox errors={[]} formUuid={formUuid} metadata={metadata} obs={voidedObs} />
+      <TextBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
     const instance = wrapper.instance();
     wrapper.find('textarea').simulate('change', { target: { value: 'something' } });

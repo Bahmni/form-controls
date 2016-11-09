@@ -2,12 +2,16 @@ import React, { Component, PropTypes } from 'react';
 import { Label } from 'components/Label.jsx';
 import 'src/helpers/componentStore';
 import find from 'lodash/find';
+import { ObsMapper } from 'src/helpers/ObsMapper';
+import { Obs } from 'src/helpers/Obs';
 
 export class ObsControl extends Component {
 
   constructor(props) {
     super(props);
     this.childControl = undefined;
+    const obs = new Obs(props.formUuid, props.metadata, props.obs);
+    this.mapper = new ObsMapper(obs);
     this.getValue = this.getValue.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
   }
@@ -30,7 +34,7 @@ export class ObsControl extends Component {
       errors,
       formUuid,
       metadata,
-      obs: this.props.obs,
+      mapper: this.mapper,
       ref: this.storeChildRef,
     });
   }

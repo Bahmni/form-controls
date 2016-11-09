@@ -4,6 +4,8 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { BooleanControl } from 'components/BooleanControl.jsx';
 import sinon from 'sinon';
+import { ObsMapper } from 'src/helpers/ObsMapper';
+import { Obs } from 'src/helpers/Obs';
 
 chai.use(chaiEnzyme());
 
@@ -43,6 +45,7 @@ describe('BooleanControl', () => {
     mandatory: true,
   };
 
+  const formUuid = 'someFormUuid';
   beforeEach(() => {
     metadata = {
       id: '100',
@@ -61,18 +64,22 @@ describe('BooleanControl', () => {
     };
   });
 
-  const formUuid = 'someFormUuid';
+  function getMapper(obsData) {
+    const observation = new Obs(formUuid, metadata, obsData);
+    return new ObsMapper(observation);
+  }
 
   const formNamespace = `${formUuid}/100`;
 
   it('should render Dummy Control of displayType button by default', () => {
+    const mapper = getMapper(undefined);
     const errors = [{ errorType: 'mandatory' }];
     const wrapper = shallow(
-      <BooleanControl errors={errors} formUuid={formUuid} metadata={metadata} />
+      <BooleanControl errors={errors} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
-    expect(Object.keys(wrapper.find('DummyRadioControl').props())).to.have.length(4);
+    expect(Object.keys(wrapper.find('DummyRadioControl').props())).to.have.length(5);
 
     expect(wrapper.find('DummyRadioControl')).to.have.prop('errors').to.deep.eql(errors);
     expect(wrapper.find('DummyRadioControl')).to.have.prop('formUuid').to.deep.eql(formUuid);
@@ -80,12 +87,13 @@ describe('BooleanControl', () => {
   });
 
   it('should render Dummy Control of specified displayType', () => {
+    const mapper = getMapper(undefined);
     window.componentStore.registerComponent('radio', DummyRadioControl);
     const spy = sinon.spy(window.componentStore, 'getRegisteredComponent');
 
     metadata.displayType = 'radio';
     const wrapper = shallow(
-      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />
+      <BooleanControl errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
 
     sinon.assert.calledWith(spy, 'radio');
@@ -98,14 +106,16 @@ describe('BooleanControl', () => {
   });
 
   it('should return null when registered component not found', () => {
+    const mapper = getMapper(undefined);
     metadata.displayType = 'somethingRandom';
     const wrapper = shallow(
-      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />
+      <BooleanControl errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
     expect(wrapper).to.be.blank();
   });
 
   it('should return the boolean control value', () => {
+    const obs = { value: true, voided: false, observationDateTime: '2016-09-08T10:10:38.000+0530' };
     const expectedObs = {
       concept: {
         uuid: '70645842-be6a-4974-8d5f-45b52990e132',
@@ -118,12 +128,13 @@ describe('BooleanControl', () => {
       value: true,
       voided: false,
     };
+    const mapper = getMapper(obs);
     const wrapper = mount(
       <BooleanControl
         errors={[]}
         formUuid={formUuid}
+        mapper={mapper}
         metadata={metadata}
-        obs={{ value: true, voided: false, observationDateTime: '2016-09-08T10:10:38.000+0530' }}
       />);
     const instance = wrapper.instance();
     expect(instance.getValue()).to.deep.eql(expectedObs);
@@ -148,8 +159,9 @@ describe('BooleanControl', () => {
       value: true,
       voided: false,
     };
+    const mapper = getMapper(obs);
     const wrapper = mount(
-      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+      <BooleanControl errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
     const instance = wrapper.instance();
     sinon.stub(instance.childControl, 'getValue', () => true);
@@ -157,7 +169,10 @@ describe('BooleanControl', () => {
   });
 
   it('should return undefined when child value is undefined', () => {
-    const wrapper = mount(<BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const mapper = getMapper(undefined);
+    const wrapper = mount(
+      <BooleanControl errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
+    );
     const instance = wrapper.instance();
     expect(instance.getValue()).to.deep.eql(undefined);
   });
@@ -167,8 +182,9 @@ describe('BooleanControl', () => {
       value: false,
       observationDateTime: '2016-09-08T10:10:38.000+0530',
     };
+    const mapper = getMapper(obs);
     const wrapper = mount(
-      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+      <BooleanControl errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
     const instance = wrapper.instance();
     expect(instance.getErrors()).to.eql([{ errorType: 'somethingFromChild' }]);
@@ -192,8 +208,9 @@ describe('BooleanControl', () => {
       value: false,
       voided: true,
     };
+    const mapper = getMapper(obs);
     const wrapper = mount(
-      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+      <BooleanControl errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
     const instance = wrapper.instance();
     sinon.stub(instance.childControl, 'getValue', () => undefined);
@@ -218,9 +235,9 @@ describe('BooleanControl', () => {
       value: false,
       voided: false,
     };
-
+    const mapper = getMapper(voidedObs);
     const wrapper = mount(
-      <BooleanControl errors={[]} formUuid={formUuid} metadata={metadata} obs={voidedObs} />
+      <BooleanControl errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
     );
 
     const instance = wrapper.instance();
