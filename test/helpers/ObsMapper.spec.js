@@ -12,6 +12,8 @@ describe('ObsMapper', () => {
     setValue: sinon.spy(),
     void: sinon.spy(),
     isVoided: sinon.stub(),
+    setComment: sinon.spy(),
+    getComment: sinon.stub(),
   };
 
   describe('getValue', () => {
@@ -100,5 +102,17 @@ describe('ObsMapper', () => {
     const mapper = new ObsMapper(obs);
     mapper.setValue(undefined);
     sinon.assert.calledOnce(obs.void);
+  });
+
+  it('should set comment to obs', () => {
+    const mapper = new ObsMapper(obs);
+    mapper.setComment('Some Comment');
+    sinon.assert.calledOnce(obs.setComment.withArgs('Some Comment'));
+  });
+
+  it('should get comment from obs', () => {
+    obs.getComment.returns('New Comment');
+    const mapper = new ObsMapper(obs);
+    expect(mapper.getComment()).to.eql('New Comment');
   });
 });

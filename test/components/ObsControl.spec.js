@@ -159,4 +159,57 @@ describe('ObsControl', () => {
     const obsControlValue = instance.getErrors();
     expect(obsControlValue).to.deep.eql([{ errorType: 'something' }]);
   });
+
+  it('should render comment if addComment property is enabled', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Numeric'),
+      label,
+      properties: { addComment: true },
+    };
+
+    const wrapper = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
+    expect(wrapper).to.have.descendants('Comment');
+  });
+
+  it('should not render comment if addComment property is disabled/not present', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Numeric'),
+      label,
+      properties: {},
+    };
+
+    const wrapper = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
+    expect(wrapper).to.not.have.descendants('Comment');
+  });
+
+  it('should return obs with comments', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Numeric'),
+      label,
+      properties: { addComment: true },
+    };
+
+    const obs = {
+      value: '72',
+      observationDateTime: '2016-09-08T10:10:38.000+0530',
+    };
+
+    const expectedObs = new Obs(formUuid, metadata, { comment: 'Some Comment', ...obs });
+
+    const wrapper = mount(
+      <ObsControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    );
+
+    wrapper.find('.comment-toggle').simulate('click');
+    wrapper.find('.obs-comment-section').simulate('change', { target: { value: 'Some Comment' } });
+    const instance = wrapper.instance();
+    const obsControlValue = instance.getValue();
+    expect(obsControlValue).to.deep.eql(expectedObs);
+  });
 });

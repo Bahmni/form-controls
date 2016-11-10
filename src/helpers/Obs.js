@@ -9,6 +9,7 @@ export class Obs {
       this.value = observation.value;
       this.observationDateTime = observation.observationDateTime;
       this.voided = observation.voided;
+      this.comment = observation.comment;
     }
   }
 
@@ -30,6 +31,14 @@ export class Obs {
       this.value = value;
       this.voided = false;
     }
+  }
+
+  setComment(comment) {
+    this.comment = comment;
+  }
+
+  getComment() {
+    return this.comment;
   }
 
   void() {

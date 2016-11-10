@@ -92,6 +92,7 @@ describe('Container', () => {
       uuid: undefined,
       value: '72',
       voided: false,
+      comment: undefined,
     };
 
     observation2 = {
@@ -101,6 +102,7 @@ describe('Container', () => {
       uuid: undefined,
       value: '98',
       voided: false,
+      comment: undefined,
     };
 
     observations = [observation1, observation2];
@@ -218,6 +220,7 @@ describe('Container', () => {
         formNamespace: 'fm1/101',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
         voided: true,
+        comment: undefined,
       };
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
@@ -322,6 +325,7 @@ describe('Container', () => {
         uuid: undefined,
         value: '98',
         voided: false,
+        comment: undefined,
       };
       const obs = [observation1, observation2, observation3];
       const wrapper = mount(<Container metadata={metadataWithSection} observations={obs} />);

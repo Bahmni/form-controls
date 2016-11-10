@@ -104,6 +104,7 @@ describe('NumericBox', () => {
       uuid: 'someUuid',
       value: '007',
       voided: false,
+      comment: undefined,
     };
     const wrapper = shallow(
       <NumericBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
@@ -121,6 +122,7 @@ describe('NumericBox', () => {
       uuid: 'someUuid',
       value: '999',
       voided: false,
+      comment: undefined,
     };
     const wrapper = shallow(
       <NumericBox errors={[]} formUuid={formUuid} mapper={mapper} metadata={metadata} />
@@ -163,6 +165,7 @@ describe('NumericBox', () => {
       uuid: 'someUuid',
       value: '007',
       voided: true,
+      comment: undefined,
     };
 
     const wrapper = shallow(
@@ -189,6 +192,7 @@ describe('NumericBox', () => {
       uuid: undefined,
       value: '100',
       voided: false,
+      comment: undefined,
     };
 
     const wrapper = shallow(

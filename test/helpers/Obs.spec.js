@@ -61,6 +61,7 @@ describe('Obs', () => {
       value: '345',
       voided: false,
       uuid: 'someUuid',
+      comment: undefined,
     };
 
     expect(obs.getValue()).to.be.eql('someValue');
@@ -88,6 +89,7 @@ describe('Obs', () => {
       value: 'someValue',
       voided: true,
       uuid: 'someUuid',
+      comment: undefined,
     };
 
     obs.void();
@@ -107,5 +109,17 @@ describe('Obs', () => {
     const otherObs = new Obs('formUuid', metadata, { value: 'somethingElse' });
 
     expect(obs.equals(otherObs)).to.be.eql(false);
+  });
+
+  it('should add comment to obs', () => {
+    const obs = new Obs('formUuid', metadata, existingObs);
+    obs.setComment('New Comment');
+    expect(obs).to.have.property('comment').and.equal('New Comment');
+  });
+
+  it('should get comment from obs', () => {
+    const obs = new Obs('formUuid', metadata, existingObs);
+    obs.setComment('New Comment');
+    expect(obs.getComment()).and.equal('New Comment');
   });
 });

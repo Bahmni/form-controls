@@ -4,6 +4,7 @@ import 'src/helpers/componentStore';
 import find from 'lodash/find';
 import { ObsMapper } from 'src/helpers/ObsMapper';
 import { Obs } from 'src/helpers/Obs';
+import { Comment } from 'components/Comment.jsx';
 
 export class ObsControl extends Component {
 
@@ -48,6 +49,17 @@ export class ObsControl extends Component {
     return null;
   }
 
+  showComment() {
+    const { properties } = this.props.metadata;
+    const isAddCommentsEnabled = find(properties, (value, key) => (key === 'addComment' && value));
+    if (isAddCommentsEnabled) {
+      return (
+        <Comment mapper={this.mapper} />
+      );
+    }
+    return null;
+  }
+
   render() {
     const { concept, label } = this.props.metadata;
     const registeredComponent = window.componentStore.getRegisteredComponent(concept.datatype);
@@ -57,6 +69,7 @@ export class ObsControl extends Component {
           <Label metadata={label} />
           {this.markMandatory()}
           {this.displayObsControl(registeredComponent)}
+          {this.showComment()}
         </div>
       );
     }

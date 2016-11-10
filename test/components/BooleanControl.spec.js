@@ -127,6 +127,7 @@ describe('BooleanControl', () => {
       uuid: undefined,
       value: true,
       voided: false,
+      comment: undefined,
     };
     const mapper = getMapper(obs);
     const wrapper = mount(
@@ -158,6 +159,7 @@ describe('BooleanControl', () => {
       uuid: 'someUuid',
       value: true,
       voided: false,
+      comment: undefined,
     };
     const mapper = getMapper(obs);
     const wrapper = mount(
@@ -207,6 +209,7 @@ describe('BooleanControl', () => {
       uuid: 'someUuid',
       value: false,
       voided: true,
+      comment: undefined,
     };
     const mapper = getMapper(obs);
     const wrapper = mount(
@@ -234,6 +237,7 @@ describe('BooleanControl', () => {
       uuid: undefined,
       value: false,
       voided: false,
+      comment: undefined,
     };
     const mapper = getMapper(voidedObs);
     const wrapper = mount(

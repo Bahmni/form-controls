@@ -31,6 +31,14 @@ export class ObsMapper {
     }
   }
 
+  setComment(comment) {
+    this.obs.setComment(comment);
+  }
+
+  getComment() {
+    return this.obs.getComment();
+  }
+
   equals(finalObs) {
     return this.obs.equals(finalObs);
   }

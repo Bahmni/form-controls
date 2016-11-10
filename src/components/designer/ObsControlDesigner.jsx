@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { LabelDesigner } from 'components/designer/Label.jsx';
+import { CommentDesigner } from 'components/designer/Comment.jsx';
 import 'src/helpers/componentStore';
 import find from 'lodash/find';
 
@@ -46,6 +47,17 @@ export class ObsControlDesigner extends Component {
     return null;
   }
 
+  showComment() {
+    const { properties } = this.props.metadata;
+    const isAddCommentsEnabled = find(properties, (value, key) => (key === 'addComment' && value));
+    if (isAddCommentsEnabled) {
+      return (
+        <CommentDesigner />
+      );
+    }
+    return null;
+  }
+
   render() {
     const { metadata, metadata: { concept } } = this.props;
     const designerComponent = concept && window.componentStore.getDesignerComponent(concept.datatype); // eslint-disable-line max-len
@@ -59,6 +71,7 @@ export class ObsControlDesigner extends Component {
           />
           {this.markMandatory()}
           {this.displayObsControl(designerComponent)}
+          {this.showComment()}
         </div>
       );
     }
@@ -135,6 +148,11 @@ const descriptor = {
         attributes: [
           {
             name: 'mandatory',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
+          {
+            name: 'addComment',
             dataType: 'boolean',
             defaultValue: false,
           },

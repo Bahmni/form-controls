@@ -108,6 +108,7 @@ describe('TextBox', () => {
       uuid: 'someUuid',
       value: 'My new value',
       voided: false,
+      comment: undefined,
     };
 
     const wrapper = shallow(
@@ -151,6 +152,7 @@ describe('TextBox', () => {
       value: 'someValue',
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       voided: true,
+      comment: undefined,
     };
 
     const wrapper = shallow(
@@ -176,6 +178,7 @@ describe('TextBox', () => {
       value: 'something',
       observationDateTime: null,
       voided: false,
+      comment: undefined,
     };
 
     const wrapper = shallow(
