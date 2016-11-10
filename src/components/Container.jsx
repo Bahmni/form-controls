@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 import isEmpty from 'lodash/isEmpty';
+import ControlTree from "src/helpers/ControlTree";
 
 export class Container extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ export class Container extends Component {
     this.childControls = {};
     this.state = { errors: [] };
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.controlTree = new ControlTree(props.metadata, props.observations);
   }
 
   getValue() {
@@ -25,13 +27,17 @@ export class Container extends Component {
     return { errors };
   }
 
+  getValueDup() {
+    return this.controlTree.getObs();
+  }
+
   storeChildRef(ref) {
     if (ref) this.childControls[ref.props.id] = ref;
   }
 
   render() {
     const { observations, metadata: { controls, uuid: formUuid } } = this.props;
-    const childProps = { errors: this.state.errors, formUuid, ref: this.storeChildRef };
+    const childProps = { errors: this.state.errors, formUuid, ref: this.storeChildRef, controlTree: this.controlTree };
     const groupedRowControls = getGroupedControls(controls, 'row');
     return (
       <div>{displayRowControls(groupedRowControls, observations, childProps)}</div>

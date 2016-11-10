@@ -10,6 +10,19 @@ export class ObsControl extends Component {
     this.childControl = undefined;
     this.getValue = this.getValue.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.props.controlTree.registerControl(
+      this.props.metadata.id,
+      this.dataCB.bind(this),
+      this.errorCB.bind(this)
+    );
+  }
+
+  dataCB(){
+    console.log("datacb not implemented");
+  }
+
+  errorCB(){
+    console.log("errorcb not implemented");
   }
 
   getValue() {
@@ -24,6 +37,10 @@ export class ObsControl extends Component {
     this.childControl = ref;
   }
 
+  onChng(obs) {
+    this.props.controlTree.setData(this.props.metadata.id, obs);
+  }
+
   displayObsControl(registeredComponent) {
     const { errors, formUuid, metadata } = this.props;
     return React.createElement(registeredComponent, {
@@ -32,6 +49,8 @@ export class ObsControl extends Component {
       metadata,
       obs: this.props.obs,
       ref: this.storeChildRef,
+      controlTree: this.props.controlTree,
+      onChng: this.onChng.bind(this),
     });
   }
 
@@ -76,6 +95,7 @@ ObsControl.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   obs: PropTypes.object,
+  controlTree: PropTypes.object.isRequired,
 };
 
 window.componentStore.registerComponent('obsControl', ObsControl);

@@ -35,6 +35,7 @@ export class TextBox extends Component {
   handleChange(e) {
     const value = e.target.value.trim() !== '' ? e.target.value.trim() : undefined;
     this.mapper.setValue(value);
+    this.props.onChng(this.mapper.getObs());
     const hasErrors = !isEmpty(this.getErrors());
     if (this.state.hasErrors !== hasErrors) {
       this.setState({ hasErrors });
