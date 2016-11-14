@@ -18,6 +18,7 @@
   },
   "author": "bahmni@thoughtworks.com",
   "devDependencies": {
+    "@kadira/storybook": "^2.21.0",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.2",
@@ -53,6 +54,7 @@
     "karma-mocha-reporter": "^2.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
+    "karma-webpack-with-fast-source-maps": "^1.10.0",
     "mocha": "^2.5.3",
     "node-sass": "^3.10.1",
     "publish": "^0.6.0",
@@ -64,8 +66,7 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1",
-    "@kadira/storybook": "^2.21.0"
+    "webpack-dev-server": "^1.14.1"
   },
   "peerDependencies": {
     "react": "^15.3.2",

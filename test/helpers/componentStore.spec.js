@@ -3,21 +3,11 @@
 import { expect } from 'chai';
 import { TextBox } from 'components/TextBox.jsx';
 import { Label } from 'components/Label.jsx';
-import 'src/helpers/componentStore';
 
 describe('ComponentStore', () => {
   beforeEach(() => {
-    componentStore.deRegisterComponent('text');
-    componentStore.deRegisterComponent('label');
-    componentStore.deRegisterDesignerComponent('text');
-    componentStore.deRegisterDesignerComponent('label');
-  });
-
-  after(() => {
-    componentStore.deRegisterComponent('text');
-    componentStore.deRegisterComponent('label');
-    componentStore.deRegisterDesignerComponent('text');
-    componentStore.deRegisterDesignerComponent('label');
+    componentStore.componentList = {};
+    componentStore.designerComponentList = {};
   });
 
   describe('registerComponent', () => {

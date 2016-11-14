@@ -154,6 +154,7 @@ describe('NumericBox', () => {
     const instance = wrapper.instance();
     wrapper.find('input').simulate('change', { target: { value: '999' } });
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
+    stub.restore();
   });
 
   it('should return the voided obs if value is removed', () => {

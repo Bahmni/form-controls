@@ -141,6 +141,7 @@ describe('TextBox', () => {
     const instance = wrapper.instance();
     wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
     expect(instance.getErrors()).to.eql([{ errorType: 'something' }]);
+    stub.restore();
   });
 
   it('should return the voided obs if value is removed', () => {

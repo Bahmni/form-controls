@@ -5,7 +5,7 @@ let webpack = require('webpack');
 let srcPath = path.join(__dirname, './src');
 
 module.exports = {
-  devtool: 'eval',
+  devtool: 'cheap-module-source-map',
   entry: {
     helpers: ['./src/helpers/componentStore.js', './src/helpers/formRenderer.js'],
     bundle: './src/index.jsx'

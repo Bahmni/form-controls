@@ -151,5 +151,6 @@ describe('Button Component', () => {
     );
     const instance = wrapper.instance();
     expect(instance.getErrors()).to.deep.eql([{ errorType: 'someErrorType' }]);
+    stub.restore();
   });
 });
