@@ -154,19 +154,19 @@ describe('ObsControlDesigner', () => {
       expect(instance.getJsonDefinition()).to.eql(expectedJson);
     });
 
-    it('should render comment if addComment is configured', () => {
+    it('should render comment if notes is configured', () => {
       metadata = {
         id: '123',
         type: 'obsControl',
         concept,
         label,
-        properties: { addComment: true },
+        properties: { notes: true },
       };
       wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
       expect(wrapper).to.have.descendants('CommentDesigner');
     });
 
-    it('should not render comment if addComment is not configured/not present', () => {
+    it('should not render comment if notes is not configured/not present', () => {
       metadata = {
         id: '123',
         type: 'obsControl',

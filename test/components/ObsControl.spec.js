@@ -160,20 +160,20 @@ describe('ObsControl', () => {
     expect(obsControlValue).to.deep.eql([{ errorType: 'something' }]);
   });
 
-  it('should render comment if addComment property is enabled', () => {
+  it('should render notes if notes property is enabled', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
       concept: getConcept('Numeric'),
       label,
-      properties: { addComment: true },
+      properties: { notes: true },
     };
 
     const wrapper = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
     expect(wrapper).to.have.descendants('Comment');
   });
 
-  it('should not render comment if addComment property is disabled/not present', () => {
+  it('should not render comment if notes property is disabled/not present', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
@@ -192,7 +192,7 @@ describe('ObsControl', () => {
       type: 'obsControl',
       concept: getConcept('Numeric'),
       label,
-      properties: { addComment: true },
+      properties: { notes: true },
     };
 
     const obs = {

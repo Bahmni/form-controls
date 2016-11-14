@@ -49,7 +49,7 @@ export class ObsControlDesigner extends Component {
 
   showComment() {
     const { properties } = this.props.metadata;
-    const isAddCommentsEnabled = find(properties, (value, key) => (key === 'addComment' && value));
+    const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
       return (
         <CommentDesigner />
@@ -152,7 +152,7 @@ const descriptor = {
             defaultValue: false,
           },
           {
-            name: 'addComment',
+            name: 'notes',
             dataType: 'boolean',
             defaultValue: false,
           },

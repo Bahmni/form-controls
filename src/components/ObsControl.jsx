@@ -51,7 +51,7 @@ export class ObsControl extends Component {
 
   showComment() {
     const { properties } = this.props.metadata;
-    const isAddCommentsEnabled = find(properties, (value, key) => (key === 'addComment' && value));
+    const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
       return (
         <Comment mapper={this.mapper} />
