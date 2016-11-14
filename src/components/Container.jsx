@@ -2,13 +2,25 @@ import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 import isEmpty from 'lodash/isEmpty';
+import {Obs} from "../helpers/Obs";
+import { List,Map } from 'immutable'
+import {ControlState} from "src/ControlState";
 
 export class Container extends Component {
   constructor(props) {
     super(props);
     this.childControls = {};
-    this.state = { errors: [] };
+    const { observations, metadata } = this.props;
+    this.data = this.transformObs(observations,metadata);
+    this.state = { errors: [], data: this.data };
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.onValueChanged = this.onValueChanged.bind(this);
+  }
+
+  onValueChanged(obs,errors){
+    console.log("The value of obs changed", obs);
+    const data = this.state.data;
+    this.setState({ data: data.setIn([ obs.formNamespace, 0], obs).setIn( [obs.formNamespace,1], errors)});
   }
 
   getValue() {
@@ -29,12 +41,35 @@ export class Container extends Component {
     if (ref) this.childControls[ref.props.id] = ref;
   }
 
+  transformObs(observations, metadata, formUuid){
+    const controlState = new ControlState();
+    //Needs to be moved to a separate mapper.
+    var data = new Map();
+    observations.forEach((observation) => (
+        data = data.set(observation.formNamespace, List.of(
+            new Obs({ concept: metadata.concept, formNamespace: observation.formNamespace//createFormNamespace(formUuid,metadata.id)
+              , uuid: observation.uuid,value: observation.value,observationDateTime : observation.observationDateTime,voided : observation.voided, comment: observation.comment})
+            ,[],true))
+    ));
+    return data;
+  }
+
+  getObsList(){
+    const obsList = [];
+    this.state.data.map( entry => (
+        obsList.push(entry.get(0))
+    ));
+    return obsList;
+  }
+
   render() {
-    const { observations, metadata: { controls, uuid: formUuid } } = this.props;
-    const childProps = { errors: this.state.errors, formUuid, ref: this.storeChildRef };
+    const { metadata: { controls, uuid: formUuid } } = this.props;
+
+    const childProps = { errors: this.state.errors, formUuid, ref: this.storeChildRef, onValueChanged: this.onValueChanged };
     const groupedRowControls = getGroupedControls(controls, 'row');
+    const obsList = this.getObsList();
     return (
-      <div>{displayRowControls(groupedRowControls, observations, childProps)}</div>
+      <div>{displayRowControls(groupedRowControls, obsList, childProps)}</div>
     );
   }
 }

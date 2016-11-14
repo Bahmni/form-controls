@@ -1,55 +1,44 @@
-import { createFormNamespace } from './formNamespace';
+import { Record } from 'immutable'
 
-export class Obs {
-  constructor(formUuid, metadata, observation) {
-    this.concept = metadata.concept;
-    this.formNamespace = createFormNamespace(formUuid, metadata.id);
-    if (observation) {
-      this.uuid = observation.uuid;
-      this.value = observation.value;
-      this.observationDateTime = observation.observationDateTime;
-      this.voided = observation.voided;
-      this.comment = observation.comment;
-    }
-  }
+const ImmutableObs = Record({ concept: undefined, uuid: undefined, value: undefined, observationDateTime: undefined, voided: false, comment: undefined, formNamespace: undefined});
 
+export class Obs extends ImmutableObs{
   getUuid() {
-    return this.uuid;
+    return this.get('uuid');
   }
 
   getValue() {
-    return this.value;
+    return this.get('value');
   }
 
   isDirty(value) {
-    return this.value !== value;
+    return this.get('value') !== value;
   }
 
   setValue(value) {
     if (this.isDirty(value)) {
-      this.observationDateTime = null;
-      this.value = value;
-      this.voided = false;
+      return this.set('observationDateTime', null).set('value', value).set('voided',false);
     }
+    return this;
   }
 
   setComment(comment) {
-    this.comment = comment;
+    return this.set('comment', comment);
   }
 
   getComment() {
-    return this.comment;
+    return this.get('comment');
   }
 
   void() {
-    this.voided = true;
+    return this.set('voided', true);
   }
 
   isVoided() {
-    return this.voided;
+    return this.get('voided');
   }
 
-  equals(o) {
-    return this.value === o.value;
+  getFormNamespace(){
+    return this.get('formNamespace');
   }
 }

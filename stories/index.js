@@ -46,6 +46,21 @@ const obs = {
     value: 'someValue',
 };
 
+const obsList = [
+    {
+        observationDateTime: '2016-09-08T10:10:38.000+0530',
+        uuid: 'systolicUuid',
+        value: '120',
+        formNamespace: 'formUuid/1'
+    },
+    {
+        observationDateTime: '2016-09-08T10:10:38.000+0530',
+        uuid: 'diastolicUuid',
+        value: '80',
+        formNamespace: 'formUuid/2'
+    }
+];
+
 const form = {
     "id": "fbc5d897-64e4-4cc1-90a3-47fde7a98026",
     "uuid": "fbc5d897-64e4-4cc1-90a3-47fde7a98026",
@@ -97,9 +112,9 @@ const form = {
 
 componentStore.registerComponent('label', Label);
 componentStore.registerComponent('text', TextBox);
-componentStore.registerComponent('numeric', NumericBox);
+// componentStore.registerComponent('numeric', NumericBox);
 componentStore.registerComponent('obsControl', ObsControl);
-componentStore.registerComponent('section', Section);
+// componentStore.registerComponent('section', Section);
 
 storiesOf('Welcome', module)
   .add('to Storybook', () => (
@@ -125,5 +140,5 @@ storiesOf('TextBox',module)
 
 storiesOf('Container',module)
     .add('Sample Form', () => (
-        <Container metadata={form} observations={[]} />
+        <Container metadata={form} observations={obsList} />
     ));
