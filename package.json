@@ -74,6 +74,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "immutable":"3.8.1",
     "react-select": "1.0.0-rc.1",
     "whatwg-fetch": "^1.0.0"
   }

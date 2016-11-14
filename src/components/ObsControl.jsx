@@ -5,16 +5,26 @@ import find from 'lodash/find';
 import { ObsMapper } from 'src/helpers/ObsMapper';
 import { Obs } from 'src/helpers/Obs';
 import { Comment } from 'components/Comment.jsx';
+import constants from 'src/constants';
 
 export class ObsControl extends Component {
 
   constructor(props) {
     super(props);
     this.childControl = undefined;
-    const obs = new Obs(props.formUuid, props.metadata, props.obs);
-    this.mapper = new ObsMapper(obs);
+    this.mapper = new ObsMapper(this.props.obs);
+    this.state = { obs: this.props.obs};
     this.getValue = this.getValue.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps,nextState){
+    return true;
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    console.log("ObsControl - The component with value ["+ prevProps.obs +"] is updated!!");
   }
 
   getValue() {
@@ -29,6 +39,14 @@ export class ObsControl extends Component {
     this.childControl = ref;
   }
 
+  onChange(value,errors){
+    const updatedObs = this.mapper.setValue(value);
+    // this.setState({ obs: this.mapper.getObs()});
+    this.props.onValueChanged(updatedObs, errors);
+  }
+
+
+
   displayObsControl(registeredComponent) {
     const { errors, formUuid, metadata } = this.props;
     return React.createElement(registeredComponent, {
@@ -37,6 +55,9 @@ export class ObsControl extends Component {
       metadata,
       mapper: this.mapper,
       ref: this.storeChildRef,
+      onChange: this.onChange,
+      value: this.mapper.getValue(),
+      validations: [ constants.validations.mandatory, constants.validations.allowDecimal ]
     });
   }
 
@@ -93,6 +114,7 @@ ObsControl.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   obs: PropTypes.object,
+  onValueChanged: PropTypes.func.isRequired
 };
 
 window.componentStore.registerComponent('obsControl', ObsControl);

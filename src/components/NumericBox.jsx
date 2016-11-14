@@ -1,48 +1,41 @@
-import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
-import { Validator } from 'src/helpers/Validator';
-import { hasError } from 'src/helpers/controlsHelper';
-import classNames from 'classnames';
-import isEmpty from 'lodash/isEmpty';
+import React, {Component, PropTypes} from "react";
+import "src/helpers/componentStore";
+import {Validator} from "src/helpers/Validator";
+import {hasError} from "src/helpers/controlsHelper";
+import classNames from "classnames";
 
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasErrors: false };
-    this.getValue = this.getValue.bind(this);
+    this._hasErrors = this._hasErrors.bind(this);
+    this._getErrors = this._getErrors.bind(this);
+    this.state = { hasErrors: this._hasErrors(this.props.errors) };
   }
 
-  componentDidMount() {
-    this.input.value = this.props.mapper.getValue();
+  shouldComponentUpdate(nextProps,nextState){
+    if(this.props.value === nextProps.value && this.props.errors === nextProps.errors){
+      return false;
+    }
+    return true;
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { errors, metadata: { id } } = nextProps;
-    this.setState({ hasErrors: hasError(errors, id) });
-  }
-
-  getValue() {
-    return this.props.mapper.getObs();
-  }
-
-  getErrors() {
-    const {
-      concept: { properties: conceptProperties },
-      id,
-      properties: metadataProperties,
-    } = this.props.metadata;
-
-    const properties = Object.assign({}, conceptProperties, metadataProperties);
-    const controlDetails = { id, properties, value: this.props.mapper.getValue() };
-    return Validator.getErrors(controlDetails);
+  componentDidUpdate(prevProps, prevState){
+    console.log("The component with value ["+ prevProps.value +"] is updated!!");
   }
 
   handleChange(e) {
-    this.props.mapper.setValue(e.target.value);
-    const hasErrors = !isEmpty(this.getErrors());
-    if (this.state.hasErrors !== hasErrors) {
-      this.setState({ hasErrors });
-    }
+    this.setState({ hasErrors: this._hasErrors(this._getErrors())});
+    this.props.onChange(e.target.value, this._getErrors());
+  }
+
+  _hasErrors(errors){
+    return errors.length > 0 ? true : false;
+  }
+
+  _getErrors(){
+    //This is temporary and need to be integrated to Validator and made more generic!!!
+    const errors = [];
+    return errors;
   }
 
   render() {
@@ -50,7 +43,7 @@ export class NumericBox extends Component {
       <input
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
         onChange={(e) => this.handleChange(e)}
-        ref={(elem) => { this.input = elem; }}
+        defaultValue = { this.props.value }
         type="number"
       />
     );
@@ -59,13 +52,9 @@ export class NumericBox extends Component {
 
 NumericBox.propTypes = {
   errors: PropTypes.array.isRequired,
-  formUuid: PropTypes.string.isRequired,
-  mapper: PropTypes.object.isRequired,
-  metadata: PropTypes.shape({
-    concept: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired,
-    properties: PropTypes.object.isRequired,
-  }),
+  value: PropTypes.string,
+  validations: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired
 };
 
 window.componentStore.registerComponent('numeric', NumericBox);

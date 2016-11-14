@@ -30,10 +30,12 @@ export class TextBox extends Component {
   handleChange(e) {
     const value = e.target.value.trim() !== '' ? e.target.value.trim() : undefined;
     this.props.mapper.setValue(value);
+
     const hasErrors = !isEmpty(this.getErrors());
     if (this.state.hasErrors !== hasErrors) {
       this.setState({ hasErrors });
     }
+    this.props.onValueChanged(this.props.mapper.getObs());
   }
 
   render() {
@@ -58,6 +60,8 @@ TextBox.propTypes = {
     properties: PropTypes.object.isRequired,
     type: PropTypes.string,
   }),
+  obs: PropTypes.object,
+  onValueChanged: PropTypes.func.isRequired
 };
 
 window.componentStore.registerComponent('text', TextBox);
