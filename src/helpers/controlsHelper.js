@@ -1,5 +1,6 @@
 import flatMap from 'lodash/flatMap';
 import some from 'lodash/some';
+import constants from 'src/constants';
 
 export function getObsFromChildControls(childControls) {
   const childControlsIds = Object.getOwnPropertyNames(childControls);
@@ -22,4 +23,11 @@ export function getErrorsFromChildControls(childControls) {
 
 export function hasError(errors, controlId) {
   return some(errors, error => error.controlId === controlId);
+}
+
+export function getValidations(properties) {
+  const validations = [];
+  if (properties.mandatory) validations.push(constants.validations.mandatory);
+  if (properties.allowDecimal === false) validations.push(constants.validations.allowDecimal);
+  return validations;
 }

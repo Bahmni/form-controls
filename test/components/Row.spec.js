@@ -3,6 +3,9 @@ import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import Row from 'components/Row.jsx';
+import sinon from 'sinon';
+import 'src/helpers/componentStore';
+
 
 chai.use(chaiEnzyme());
 
@@ -47,6 +50,7 @@ describe('Row', () => {
   const formUuid = 'someUuid';
 
   before(() => {
+    window.componentStore.componentList = {};
     window.componentStore.registerComponent('randomType', DummyControl);
   });
 
@@ -54,11 +58,20 @@ describe('Row', () => {
     window.componentStore.deRegisterComponent('randomType');
   });
 
+  const onChangeSpy = sinon.spy();
+
   describe('render', () => {
     it('should render rows', () => {
       const error = [{ errorType: 'someErrorType' }];
       const wrapper = mount(
-        <Row controls={controls} errors={error} formUuid={formUuid} id={0} observations={[]} />
+        <Row
+          controls={controls}
+          errors={error}
+          formUuid={formUuid}
+          id={0}
+          observations={[]}
+          onValueChanged={onChangeSpy}
+        />
       );
 
       expect(wrapper).to.have.exactly(3).descendants('DummyControl');
@@ -68,7 +81,14 @@ describe('Row', () => {
 
     it('should not render rows when controls is empty', () => {
       const wrapper = shallow(
-        <Row controls={[]} errors={[]} formUuid={formUuid} id={0} observations={[]} />
+        <Row
+          controls={[]}
+          errors={[]}
+          formUuid={formUuid}
+          id={0}
+          observations={[]}
+          onValueChanged={onChangeSpy}
+        />
       );
 
       expect(wrapper).to.be.blank();
@@ -78,7 +98,14 @@ describe('Row', () => {
   describe('getValue', () => {
     it('should return the observations of its child controls', () => {
       const wrapper = mount(
-        <Row controls={controls} errors={[]} formUuid={formUuid} id={0} observations={[]} />
+        <Row
+          controls={controls}
+          errors={[]}
+          formUuid={formUuid}
+          id={0}
+          observations={[]}
+          onValueChanged={onChangeSpy}
+        />
       );
       const instance = wrapper.instance();
 
@@ -87,7 +114,14 @@ describe('Row', () => {
 
     it('should return empty when there are no controls', () => {
       const wrapper = mount(
-        <Row controls={[]} errors={[]} formUuid={formUuid} id={0} observations={[]} />
+        <Row
+          controls={[]}
+          errors={[]}
+          formUuid={formUuid}
+          id={0}
+          observations={[]}
+          onValueChanged={onChangeSpy}
+        />
       );
       const instance = wrapper.instance();
 
@@ -97,7 +131,14 @@ describe('Row', () => {
   describe('getErrors', () => {
     it('should return errors of its child controls', () => {
       const wrapper = shallow(
-          <Row controls={controls} errors={[]} formUuid={formUuid} id={0} observations={[]} />
+          <Row
+            controls={controls}
+            errors={[]}
+            formUuid={formUuid}
+            id={0}
+            observations={[]}
+            onValueChanged={onChangeSpy}
+          />
       );
       const instance = wrapper.instance();
 

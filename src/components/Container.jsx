@@ -3,7 +3,7 @@ import { displayRowControls, getGroupedControls } from 'src/helpers/controlsPars
 import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 import isEmpty from 'lodash/isEmpty';
 import {Obs} from "../helpers/Obs";
-import { List,Map } from 'immutable'
+import { List, Map } from 'immutable'
 import {ControlState} from "src/ControlState";
 
 export class Container extends Component {

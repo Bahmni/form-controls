@@ -12,7 +12,7 @@ import { Section } from 'components/Section.jsx';
 
 chai.use(chaiEnzyme());
 
-describe('Container', () => {
+describe.skip('Container', () => {
   let metadata;
   let observations;
   let observation1;

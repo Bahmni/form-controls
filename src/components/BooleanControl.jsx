@@ -1,36 +1,35 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
+import isEqual from 'lodash/isEqual';
 
 export class BooleanControl extends Component {
   constructor(props) {
     super(props);
-    this.getValue = this.getValue.bind(this);
-    this.storeChildRef = this.storeChildRef.bind(this);
+    this.onValueChange = this.onValueChange.bind(this);
   }
 
-  getValue() {
-    const childControlValue = this.childControl.getValue();
-    this.props.mapper.setValue(childControlValue);
-    return this.props.mapper.getObs();
+  shouldComponentUpdate(nextProps) {
+    if (this.props.value !== nextProps.value || !isEqual(this.props.errors, nextProps.errors)) {
+      return true;
+    }
+    return false;
   }
 
-  getErrors() {
-    return this.childControl.getErrors();
-  }
-
-  storeChildRef(ref) {
-    this.childControl = ref;
+  onValueChange(value, errors) {
+    this.props.onChange(value, errors);
   }
 
   render() {
-    const { displayType } = this.props.metadata;
+    const { displayType, errors, options, validations } = this.props;
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
-      const initialValue = this.props.mapper.getValue();
+      const initialValue = this.props.value;
       const childProps = {
-        ref: this.storeChildRef,
+        errors,
         value: initialValue,
-        ...this.props,
+        onValueChange: this.onValueChange,
+        options,
+        validations,
       };
       return React.createElement(registeredComponent, childProps);
     }
@@ -39,17 +38,12 @@ export class BooleanControl extends Component {
 }
 
 BooleanControl.propTypes = {
+  displayType: PropTypes.string.isRequired,
   errors: PropTypes.array.isRequired,
-  formUuid: PropTypes.string.isRequired,
-  mapper: PropTypes.object.isRequired,
-  metadata: PropTypes.shape({
-    concept: PropTypes.object.isRequired,
-    displayType: PropTypes.string,
-    id: PropTypes.string.isRequired,
-    options: PropTypes.array.isRequired,
-    properties: PropTypes.object,
-    type: PropTypes.string.isRequired,
-  }),
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
+  validations: PropTypes.array.isRequired,
+  value: PropTypes.any,
 };
 
 window.componentStore.registerComponent('boolean', BooleanControl);
