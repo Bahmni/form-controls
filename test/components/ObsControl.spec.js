@@ -2,25 +2,24 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
+import sinon from 'sinon';
 import { ObsControl } from 'components/ObsControl.jsx';
-import { TextBox } from 'components/TextBox.jsx';
-import { NumericBox } from 'components/NumericBox.jsx';
 import { Obs } from 'src/helpers/Obs';
-import { ObsMapper } from 'src/helpers/ObsMapper';
+import constants from 'src/constants';
+
 
 chai.use(chaiEnzyme());
 
 describe('ObsControl', () => {
+  const DummyControl = () => <input />;
+
   before(() => {
-    window.componentStore.registerComponent('obsControl', ObsControl);
-    window.componentStore.registerComponent('text', TextBox);
-    window.componentStore.registerComponent('numeric', NumericBox);
+    window.componentStore.componentList = {};
+    window.componentStore.registerComponent('text', DummyControl);
   });
 
   after(() => {
-    window.componentStore.deRegisterComponent('obsControl');
     window.componentStore.deRegisterComponent('text');
-    window.componentStore.deRegisterComponent('numeric');
   });
 
   function getConcept(datatype) {
@@ -37,11 +36,14 @@ describe('ObsControl', () => {
     type: 'label',
   };
 
-  const formUuid = 'someFormUuid';
-
   const properties = { location: { row: 0, column: 1 } };
+  let onChangeSpy;
 
-  it('should render TextBox with Label', () => {
+  beforeEach(() => {
+    onChangeSpy = sinon.spy();
+  });
+
+  it('should render dummyControl', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
@@ -50,59 +52,44 @@ describe('ObsControl', () => {
       properties,
     };
 
-    const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const observation = new Obs(metadata);
+    const wrapper = mount(
+      <ObsControl
+        errors={[]}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />);
     expect(wrapper).to.have.exactly(1).descendants('Label');
-    expect(wrapper).to.have.exactly(1).descendants('TextBox');
-    expect(wrapper).to.have.exactly(1).descendants('textarea');
-  });
+    expect(wrapper).to.have.exactly(1).descendants('DummyControl');
+    expect(wrapper).to.have.exactly(1).descendants('input');
 
-  it('should render NumericBox', () => {
-    const metadata = {
-      id: '100',
-      type: 'obsControl',
-      concept: getConcept('Numeric'),
-      label,
-      properties,
-    };
-    const observation = new Obs(formUuid, metadata, undefined);
-    const mapper = new ObsMapper(observation);
-    const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
-    expect(wrapper).to.have.exactly(1).descendants('Label');
-    expect(wrapper).to.have.exactly(1).descendants('NumericBox');
-    expect(wrapper.find('input').at(0).props().type).to.be.eql('number');
-    expect(wrapper.find(NumericBox).props().mapper).to.deep.eql(mapper);
+    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql([]);
+    expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql([]);
   });
 
   it('should render child control with error when present', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
-      concept: getConcept('Numeric'),
+      concept: getConcept('Text'),
       label,
       properties: { mandatory: true },
     };
+    const errors = [constants.validations.mandatory];
+    const observation = new Obs(metadata);
 
-    const errors = [{ controlId: '100', errorType: 'mandatory' }];
-    const wrapper = mount(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const wrapper = mount(
+      <ObsControl
+        errors={[]}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />);
     wrapper.setProps({ errors });
-    expect(wrapper.find('input').at(0)).to.have.className('form-builder-error');
+    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql(errors);
     expect(wrapper.find('span').text()).to.eql('*');
     expect(wrapper.find('span')).to.have.className('form-builder-asterisk');
-  });
-
-  it('should not render child control with error when there are no errors for control', () => {
-    const metadata = {
-      id: '100',
-      type: 'obsControl',
-      concept: getConcept('Numeric'),
-      label,
-      properties: {},
-    };
-
-    const errors = [{ controlId: 'somethingElse', errorType: 'mandatory' }];
-    const wrapper = mount(<ObsControl errors={errors} formUuid={formUuid} metadata={metadata} />);
-    expect(wrapper.find('input').at(0)).to.not.have.className('form-builder-error');
-    expect(wrapper).to.not.have.descendants('span');
   });
 
   it('should return null when registered component not found', () => {
@@ -114,7 +101,15 @@ describe('ObsControl', () => {
       properties,
     };
 
-    const wrapper = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const observation = new Obs(metadata);
+
+    const wrapper = shallow(
+      <ObsControl
+        errors={[]}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />);
     expect(wrapper).to.be.blank();
   });
 
@@ -127,20 +122,18 @@ describe('ObsControl', () => {
       properties,
     };
 
-    const obs = {
-      value: 'someInputValue',
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
-    };
-
-    const expectedObs = new Obs(formUuid, metadata, obs);
-
-    const obsControl = mount(
-      <ObsControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+    const observation = new Obs(metadata);
+    const wrapper = mount(
+      <ObsControl
+        errors={[]}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />
     );
-    const instance = obsControl.instance();
-    const obsControlValue = instance.getValue();
-
-    expect(obsControlValue).to.deep.eql(expectedObs);
+    const instance = wrapper.instance();
+    instance.onChange(true, []);
+    sinon.assert.calledOnce(onChangeSpy.withArgs(observation.setValue(true), []));
   });
 
   it('should return the child control errors', () => {
@@ -151,29 +144,46 @@ describe('ObsControl', () => {
       label,
       properties,
     };
+    const observation = new Obs(metadata);
+    const errors = [constants.validations.mandatory];
 
-    const obsControl = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
-    const instance = obsControl.instance();
-    instance.childControl = { getErrors: () => [{ errorType: 'something' }] };
-
-    const obsControlValue = instance.getErrors();
-    expect(obsControlValue).to.deep.eql([{ errorType: 'something' }]);
+    const wrapper = mount(
+      <ObsControl
+        errors={[]}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />
+    );
+    const instance = wrapper.instance();
+    instance.onChange(undefined, errors);
+    sinon.assert.calledOnce(onChangeSpy.withArgs(observation.void(), errors));
   });
 
   it('should render notes if notes property is enabled', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
-      concept: getConcept('Numeric'),
+      concept: getConcept('text'),
       label,
       properties: { notes: true },
     };
 
-    const wrapper = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const observation = new Obs(metadata);
+
+    const wrapper = mount(
+      <ObsControl
+        errors={[]}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />
+    );
+
     expect(wrapper).to.have.descendants('Comment');
   });
 
-  it('should not render comment if notes property is disabled/not present', () => {
+  it('should not render notes if notes property is disabled/not present', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
@@ -182,34 +192,39 @@ describe('ObsControl', () => {
       properties: {},
     };
 
-    const wrapper = shallow(<ObsControl errors={[]} formUuid={formUuid} metadata={metadata} />);
+    const observation = new Obs(metadata);
+
+    const wrapper = shallow(
+      <ObsControl
+        errors={[]}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />
+    );
     expect(wrapper).to.not.have.descendants('Comment');
   });
 
-  it('should return obs with comments', () => {
+  it('should not render the obsControl if properties are not updated', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
-      concept: getConcept('Numeric'),
+      concept: getConcept('text'),
       label,
-      properties: { notes: true },
+      properties,
     };
-
-    const obs = {
-      value: '72',
-      observationDateTime: '2016-09-08T10:10:38.000+0530',
-    };
-
-    const expectedObs = new Obs(formUuid, metadata, { comment: 'Some Comment', ...obs });
+    const observation = new Obs(metadata);
+    const errors = [constants.validations.mandatory];
 
     const wrapper = mount(
-      <ObsControl errors={[]} formUuid={formUuid} metadata={metadata} obs={obs} />
+      <ObsControl
+        errors={errors}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />
     );
-
-    wrapper.find('.comment-toggle').simulate('click');
-    wrapper.find('.obs-comment-section').simulate('change', { target: { value: 'Some Comment' } });
-    const instance = wrapper.instance();
-    const obsControlValue = instance.getValue();
-    expect(obsControlValue).to.deep.eql(expectedObs);
+    wrapper.setProps({ errors });
+    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql(errors);
   });
 });

@@ -1,49 +1,48 @@
-import React, {Component, PropTypes} from "react";
-import "src/helpers/componentStore";
-import {Validator} from "src/helpers/Validator";
-import {hasError} from "src/helpers/controlsHelper";
-import classNames from "classnames";
+import React, { Component, PropTypes } from 'react';
+import 'src/helpers/componentStore';
+import { Validator } from 'src/helpers/Validator';
+import classNames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
-    this._hasErrors = this._hasErrors.bind(this);
-    this._getErrors = this._getErrors.bind(this);
     this.state = { hasErrors: this._hasErrors(this.props.errors) };
   }
 
-  shouldComponentUpdate(nextProps,nextState){
-    if(this.props.value === nextProps.value && this.props.errors === nextProps.errors){
-      return false;
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.value !== nextProps.value ||
+      this.props.errors !== nextProps.errors ||
+      this.state.hasErrors !== nextState.hasErrors) {
+      return true;
     }
-    return true;
+    return false;
   }
 
-  componentDidUpdate(prevProps, prevState){
-    console.log("The component with value ["+ prevProps.value +"] is updated!!");
-  }
 
   handleChange(e) {
-    this.setState({ hasErrors: this._hasErrors(this._getErrors())});
-    this.props.onChange(e.target.value, this._getErrors());
+    const value = e.target.value;
+    const errors = this._getErrors(value);
+    this.setState({ hasErrors: this._hasErrors(errors) });
+    this.props.onChange(value, errors);
   }
 
-  _hasErrors(errors){
-    return errors.length > 0 ? true : false;
+  _hasErrors(errors) {
+    return !isEmpty(errors);
   }
 
-  _getErrors(){
-    //This is temporary and need to be integrated to Validator and made more generic!!!
-    const errors = [];
-    return errors;
+  _getErrors(value) {
+    const validations = this.props.validations;
+    const controlDetails = { validations, value };
+    return Validator.getErrors(controlDetails);
   }
 
   render() {
     return (
       <input
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
+        defaultValue={ this.props.value }
         onChange={(e) => this.handleChange(e)}
-        defaultValue = { this.props.value }
         type="number"
       />
     );
@@ -52,9 +51,9 @@ export class NumericBox extends Component {
 
 NumericBox.propTypes = {
   errors: PropTypes.array.isRequired,
-  value: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
   validations: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired
+  value: PropTypes.string,
 };
 
 window.componentStore.registerComponent('numeric', NumericBox);

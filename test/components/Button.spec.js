@@ -4,42 +4,26 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Button } from 'components/Button.jsx';
 import sinon from 'sinon';
-import { Validator } from 'src/helpers/Validator';
+import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
 describe('Button Component', () => {
-  let metadata;
-  let value;
+  const value = true;
+  const options = [
+    { name: 'Yes', value: true },
+    { name: 'No', value: false },
+  ];
+
+  let valueChangeSpy;
 
   beforeEach(() => {
-    metadata = {
-      id: '100',
-      type: 'obsControl',
-      concept: {
-        uuid: '70645842-be6a-4974-8d5f-45b52990e132',
-        name: 'Pulse',
-        datatype: 'Boolean',
-      },
-      properties: {
-        location: {
-          row: 0,
-          column: 0,
-        },
-      },
-      displayType: 'button',
-      options: [
-        { name: 'Yes', value: true },
-        { name: 'No', value: false },
-      ],
-    };
-
-    value = true;
+    valueChangeSpy = sinon.spy();
   });
 
   it('should render button component', () => {
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
+      <Button errors={[]} onValueChange={valueChangeSpy} options={options} validations={[]} />
     );
     expect(wrapper).to.have.exactly(2).descendants('button');
 
@@ -52,15 +36,15 @@ describe('Button Component', () => {
     expect(wrapper).to.have.className('form-control-buttons');
   });
 
-  it('should render button with selected value', () => {
+  it('should render button with default value', () => {
     const wrapper = shallow(
-      <Button
-        errors={[]}
-        formUuid="someFormUuid"
-        metadata={metadata}
-        onChange={() => {}}
-        value={value}
-      />
+     <Button
+       errors={[]}
+       onValueChange={valueChangeSpy}
+       options={options}
+       validations={[]}
+       value={value}
+     />
     );
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
     expect(wrapper.find('button').at(1)).to.have.className('fl');
@@ -69,88 +53,73 @@ describe('Button Component', () => {
   it('should render error class when control has error', () => {
     const wrapper = shallow(
       <Button
-        errors={[]}
-        formUuid="someFormUuid"
-        metadata={metadata}
-        onChange={() => {}}
-        value={value}
+        errors={[constants.validations.mandatory]}
+        onValueChange={valueChangeSpy}
+        options={options}
+        validations={[]}
+        value={undefined}
       />
     );
-    wrapper.setProps({ errors: [{ controlId: '100' }] });
-    expect(wrapper.find('button').at(0)).to.have.className('fl active');
-    expect(wrapper.find('button').at(1)).to.have.className('fl');
     expect(wrapper).to.have.className('form-control-buttons form-builder-error');
   });
 
   it('should change the value on click', () => {
     const wrapper = shallow(
       <Button
-        errors={[]}
-        formUuid="someFormUuid"
-        metadata={metadata}
-        onChange={() => {}}
+        errors={[constants.validations.mandatory]}
+        onValueChange={valueChangeSpy}
+        options={options}
+        validations={[]}
         value={value}
       />
     );
-    wrapper.find('button').at(1).simulate('click');
-    const instance = wrapper.instance();
-    expect(instance.getValue()).to.eql(false);
+    expect(wrapper.find('button').at(0)).to.have.className('fl active');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
 
+    wrapper.find('button').at(1).simulate('click');
     expect(wrapper.find('button').at(0)).to.have.className('fl');
     expect(wrapper.find('button').at(1)).to.have.className('fl active');
-  });
-
-  it('should return the value as undefined if not selected', () => {
-    const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
-    );
-    const instance = wrapper.instance();
-    expect(instance.getValue()).to.eql(undefined);
+    sinon.assert.calledOnce(valueChangeSpy.withArgs(false, []));
   });
 
   it('should change the value to undefined if double clicked', () => {
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
+      <Button errors={[]} onValueChange={valueChangeSpy} options={options} validations={[]} />
     );
     wrapper.find('button').at(1).simulate('click');
-    const instance = wrapper.instance();
-    expect(instance.getValue()).to.eql(false);
+    sinon.assert.calledOnce(valueChangeSpy.withArgs(false, []));
 
     wrapper.find('button').at(1).simulate('click');
-    expect(instance.getValue()).to.eql(undefined);
+    sinon.assert.calledOnce(valueChangeSpy.withArgs(undefined, []));
   });
 
-  it('should throw error on change if present', () => {
-    metadata.properties = { mandatory: true };
+  it('should throw validation error on change if present', () => {
+    const validations = [constants.validations.mandatory];
     const wrapper = shallow(
-      <Button errors={[]} formUuid="someFormUuid" metadata={metadata} onChange={() => {}} />
+      <Button
+        errors={[]}
+        onValueChange={valueChangeSpy}
+        options={options}
+        validations={validations}
+      />
     );
     wrapper.find('button').at(1).simulate('click');
     expect(wrapper).to.have.className('form-control-buttons');
-    expect(wrapper).to.not.have.className('form-builder-error');
 
     wrapper.find('button').at(1).simulate('click');
     expect(wrapper).to.have.className('form-control-buttons form-builder-error');
   });
 
-  it('should getError when present', () => {
-    const args = { id: '100', properties: { mandatory: true }, value: 'someValue' };
-    const stub = sinon.stub(Validator, 'getErrors');
-    stub.withArgs(args).returns([{ errorType: 'someErrorType' }]);
-
-    metadata.properties = { mandatory: true };
-    value = 'someValue';
+  it('should set state on change of props', () => {
     const wrapper = shallow(
       <Button
         errors={[]}
-        formUuid="someFormUuid"
-        metadata={metadata}
-        onChange={() => {}}
-        value={value}
+        onValueChange={valueChangeSpy}
+        options={options}
+        validations={[]}
       />
     );
-    const instance = wrapper.instance();
-    expect(instance.getErrors()).to.deep.eql([{ errorType: 'someErrorType' }]);
-    stub.restore();
+    wrapper.setProps({ errors: [constants.validations.mandatory] });
+    expect(wrapper).to.have.className('form-control-buttons form-builder-error');
   });
 });

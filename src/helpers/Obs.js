@@ -1,8 +1,18 @@
-import { Record } from 'immutable'
+/* eslint-disable new-cap */
+import { Record } from 'immutable';
 
-const ImmutableObs = Record({ concept: undefined, uuid: undefined, value: undefined, observationDateTime: undefined, voided: false, comment: undefined, formNamespace: undefined});
+const ImmutableObs = Record(
+  {
+    concept: undefined,
+    uuid: undefined,
+    value: undefined,
+    observationDateTime: undefined,
+    voided: false, comment: undefined,
+    formNamespace: undefined,
+  }
+);
 
-export class Obs extends ImmutableObs{
+export class Obs extends ImmutableObs {
   getUuid() {
     return this.get('uuid');
   }
@@ -17,7 +27,7 @@ export class Obs extends ImmutableObs{
 
   setValue(value) {
     if (this.isDirty(value)) {
-      return this.set('observationDateTime', null).set('value', value).set('voided',false);
+      return this.set('observationDateTime', null).set('value', value).set('voided', false);
     }
     return this;
   }
@@ -38,7 +48,8 @@ export class Obs extends ImmutableObs{
     return this.get('voided');
   }
 
-  getFormNamespace(){
+  getFormNamespace() {
     return this.get('formNamespace');
   }
 }
+/* eslint-disable new-cap */

@@ -2,62 +2,49 @@ import React, { Component, PropTypes } from 'react';
 import { Label } from 'components/Label.jsx';
 import 'src/helpers/componentStore';
 import find from 'lodash/find';
+import isEqual from 'lodash/isEqual';
 import { ObsMapper } from 'src/helpers/ObsMapper';
-import { Obs } from 'src/helpers/Obs';
 import { Comment } from 'components/Comment.jsx';
-import constants from 'src/constants';
+import { getValidations } from 'src/helpers/controlsHelper';
+import isEmpty from 'lodash/isEmpty';
 
 export class ObsControl extends Component {
 
   constructor(props) {
     super(props);
-    this.childControl = undefined;
-    this.mapper = new ObsMapper(this.props.obs);
-    this.state = { obs: this.props.obs};
-    this.getValue = this.getValue.bind(this);
-    this.storeChildRef = this.storeChildRef.bind(this);
+    this.mapper = new ObsMapper(props.obs);
+    this.state = { obs: props.obs, hasErrors: this._hasErrors(props.errors) };
     this.onChange = this.onChange.bind(this);
   }
 
-  shouldComponentUpdate(nextProps,nextState){
-    return true;
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.obs !== nextProps.obs ||
+      !isEqual(this.props.errors, nextProps.errors) ||
+      this.state.hasErrors !== nextState.hasErrors) {
+      return true;
+    }
+    return false;
   }
 
-  componentDidUpdate(prevProps, prevState){
-    console.log("ObsControl - The component with value ["+ prevProps.obs +"] is updated!!");
-  }
-
-  getValue() {
-    return this.childControl.getValue();
-  }
-
-  getErrors() {
-    return this.childControl.getErrors();
-  }
-
-  storeChildRef(ref) {
-    this.childControl = ref;
-  }
-
-  onChange(value,errors){
+  onChange(value, errors) {
     const updatedObs = this.mapper.setValue(value);
-    // this.setState({ obs: this.mapper.getObs()});
     this.props.onValueChanged(updatedObs, errors);
   }
 
-
+  _hasErrors(errors) {
+    return !isEmpty(errors);
+  }
 
   displayObsControl(registeredComponent) {
-    const { errors, formUuid, metadata } = this.props;
+    const { errors, metadata } = this.props;
+    const validations = getValidations(metadata.properties);
     return React.createElement(registeredComponent, {
+      displayType: metadata.displayType,
       errors,
-      formUuid,
-      metadata,
-      mapper: this.mapper,
-      ref: this.storeChildRef,
+      options: metadata.options,
       onChange: this.onChange,
       value: this.mapper.getValue(),
-      validations: [ constants.validations.mandatory, constants.validations.allowDecimal ]
+      validations,
     });
   }
 
@@ -100,21 +87,19 @@ export class ObsControl extends Component {
 
 ObsControl.propTypes = {
   errors: PropTypes.array.isRequired,
-  formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     label: PropTypes.shape({
-      id: PropTypes.string.isRequired,
       type: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
     }).isRequired,
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
   }),
-  obs: PropTypes.object,
-  onValueChanged: PropTypes.func.isRequired
+  obs: PropTypes.any.isRequired,
+  onValueChanged: PropTypes.func.isRequired,
 };
 
 window.componentStore.registerComponent('obsControl', ObsControl);

@@ -3,7 +3,7 @@ import { Validator } from 'src/helpers/Validator';
 import { Obs } from "src/helpers/Obs";
 import { ControlState } from "src/ControlState";
 
-describe.only('Control State', () => {
+describe.skip('Control State', () => {
 
     it('should set a new obs in the control state', () => {
         const controlState = new ControlState();

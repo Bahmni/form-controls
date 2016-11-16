@@ -1,15 +1,4 @@
-import {Obs} from "./Obs";
-import { createFormNamespace } from './formNamespace';
-
 export class ObsMapper {
-
-  // constructor(formUuid, metadata, observation){
-  //
-  //   if(observation){
-  //     const properties = {uuid: observation.uuid,value: observation.value,observationDateTime : observation.observationDateTime,voided : observation.voided, comment: observation.comment};
-  //   }
-  //   this.obs = new Obs({ concept: metadata.concept, formNamespace:createFormNamespace(formUuid,metadata.id)});
-  // }
 
   constructor(obs) {
     this.obs = obs;
@@ -38,9 +27,8 @@ export class ObsMapper {
   setValue(value) {
     if (value !== '' && value !== undefined) {
       return this.obs.setValue(value);
-    } else {
-      return this.obs.void();
     }
+    return this.obs.void();
   }
 
   setComment(comment) {

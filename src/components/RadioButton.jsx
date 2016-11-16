@@ -3,44 +3,38 @@ import 'src/helpers/componentStore';
 import map from 'lodash/map';
 import classNames from 'classnames';
 import { Validator } from 'src/helpers/Validator';
-import { hasError } from 'src/helpers/controlsHelper';
 import isEmpty from 'lodash/isEmpty';
 
 export class RadioButton extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: props.value, hasErrors: false };
-    this.changeValue = this.changeValue.bind(this);
-    this.getErrors = this.getErrors.bind(this);
+    this.state = { value: props.value, hasErrors: this._hasErrors(this.props.errors) };
   }
 
   componentWillReceiveProps(nextProps) {
-    const { errors, metadata: { id } } = nextProps;
-    this.setState({ hasErrors: hasError(errors, id) });
-  }
-
-  getValue() {
-    return this.state.value;
-  }
-
-  getErrorForValue(value) {
-    const { id, properties } = this.props.metadata;
-    const controlDetails = { id, properties, value };
-    return Validator.getErrors(controlDetails);
-  }
-
-  getErrors() {
-    const value = this.getValue();
-    return this.getErrorForValue(value);
+    const { errors } = nextProps;
+    this.setState({ hasErrors: this._hasErrors(errors) });
   }
 
   changeValue(value) {
-    this.setState({ value, hasErrors: !isEmpty(this.getErrorForValue(value)) });
+    const errors = this._getErrors(value);
+    this.setState({ value, hasErrors: this._hasErrors(errors) });
+    this.props.onValueChange(value, errors);
+  }
+
+  _hasErrors(errors) {
+    return !isEmpty(errors);
+  }
+
+  _getErrors(value) {
+    const validations = this.props.validations;
+    const controlDetails = { validations, value };
+    return Validator.getErrors(controlDetails);
   }
 
   displayRadioButtons() {
-    const name = `${this.props.formUuid}-${this.props.metadata.id}`;
-    return map(this.props.metadata.options, (option, index) =>
+    const name = (Math.random() * 1e32).toString(36);
+    return map(this.props.options, (option, index) =>
       <div className="options-list" key={index} onClick={() => this.changeValue(option.value)}>
         <input
           checked={this.state.value === option.value}
@@ -63,15 +57,9 @@ export class RadioButton extends Component {
 
 RadioButton.propTypes = {
   errors: PropTypes.array.isRequired,
-  formUuid: PropTypes.string.isRequired,
-  metadata: PropTypes.shape({
-    concept: PropTypes.object.isRequired,
-    displayType: PropTypes.string,
-    id: PropTypes.string.isRequired,
-    options: PropTypes.array.isRequired,
-    properties: PropTypes.object,
-    type: PropTypes.string.isRequired,
-  }),
+  onValueChange: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
+  validations: PropTypes.array.isRequired,
   value: PropTypes.any,
 };
 
