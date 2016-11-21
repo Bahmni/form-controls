@@ -12,7 +12,7 @@ import { Section } from 'components/Section.jsx';
 
 chai.use(chaiEnzyme());
 
-describe.skip('Container', () => {
+describe('Container', () => {
   let metadata;
   let observations;
   let observation1;
@@ -93,6 +93,7 @@ describe.skip('Container', () => {
       value: '72',
       voided: false,
       comment: undefined,
+      groupMembers: [],
     };
 
     observation2 = {
@@ -103,6 +104,7 @@ describe.skip('Container', () => {
       value: '98',
       voided: false,
       comment: undefined,
+      groupMembers: [],
     };
 
     observations = [observation1, observation2];
@@ -143,6 +145,7 @@ describe.skip('Container', () => {
       const wrapper = mount(<Container metadata={metadata} observations={observations} />);
       const instance = wrapper.instance();
 
+      // expect(instance.getValue()).to.deep.equal({ observations: [observation1, observation2] });
       expect(instance.getValue()).to.deep.equal({ observations: [observation1, observation2] });
     });
 
@@ -172,7 +175,7 @@ describe.skip('Container', () => {
       expect(instance.getValue()).to.deep.equal({ observations: [] });
     });
 
-    it('should return the errors of its children which are data controls', () => {
+    it.only('should return the errors of its children which are data controls', () => {
       const metadataClone = Object.assign({}, metadata);
       const mandatoryControl = {
         id: '103',
@@ -257,7 +260,7 @@ describe.skip('Container', () => {
     });
   });
 
-  describe('with section', () => {
+  xdescribe('with section', () => {
     const metadataWithSection = {
       id: '100',
       uuid: 'fm1',

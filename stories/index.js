@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
 import Welcome from './Welcome';
 import { ObsMapper } from 'src/helpers/ObsMapper';
@@ -12,6 +12,7 @@ import { RadioButton } from 'src/components/RadioButton.jsx';
 import { NumericBox } from 'src/components/Button.jsx';
 import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
+import { ControlState, ControlRecord } from '../src/ControlState';
 
 
 const obsList = [
@@ -101,7 +102,7 @@ const form = {
           row: 0,
         },
       },
-      id: '1',
+      id: '3',
       concept: {
         name: 'Smoking History',
         uuid: 'c2a43174-c9db-4e54-8516-17372c83537f',
@@ -159,3 +160,25 @@ storiesOf('ObsControl', module)
     />
   ));
 
+storiesOf('Container',module)
+    .add('Sample Form', () => (
+        <Container metadata={form} observations={obsList} />
+    ));
+
+
+
+class DummyClass extends Component {
+    constructor() {
+        super();
+        console.log('control state', new ControlRecord({ formNamespace: 'abc' }));
+    }
+
+    render() {
+        return <div>blah</div>;
+    }
+}
+
+storiesOf('ControlState', module)
+.add('demo state', () =>
+    <DummyClass />
+);

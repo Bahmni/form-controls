@@ -10,7 +10,7 @@ export class ObsMapper {
 
   _hasNoValue() {
     const value = this.obs.getValue();
-    return value === '' || value === undefined;
+    return value === '' || value === undefined || value === null;
   }
 
   getValue() {

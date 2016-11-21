@@ -2,64 +2,87 @@ import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 import isEmpty from 'lodash/isEmpty';
-import {Obs} from "../helpers/Obs";
-import { List, Map } from 'immutable'
-import {ControlState} from "src/ControlState";
+import { List,Map } from 'immutable'
+import { BahmniRecord, ControlState, controlStateFactory} from "src/ControlState";
 
 export class Container extends Component {
   constructor(props) {
     super(props);
     this.childControls = {};
     const { observations, metadata } = this.props;
-    this.data = this.transformObs(observations,metadata);
-    this.state = { errors: [], data: this.data };
+    const data = controlStateFactory(metadata, observations);
+    this.state = { errors: [], data };
     this.storeChildRef = this.storeChildRef.bind(this);
     this.onValueChanged = this.onValueChanged.bind(this);
   }
-
-  onValueChanged(obs,errors){
-    console.log("The value of obs changed", obs);
-    const data = this.state.data;
-    this.setState({ data: data.setIn([ obs.formNamespace, 0], obs).setIn( [obs.formNamespace,1], errors)});
+  
+  componentDidMount() {
+    this.initialData = new ControlState(this.state.data.getRecords());
   }
+  
+  onValueChanged(obs,errors){
+    const data = this.state.data;
+    const bahmniRecord = data.getRecord(obs.formNamespace)
+      .set('obs', obs)
+      .set('errors', errors);
+    this.setState({ data: data.setRecord(bahmniRecord)});
+  }
+  // deprecated
+  // getValue() {
+  //   const errors = getErrorsFromChildControls(this.childControls);
+  //   const childObservations = getObsFromChildControls(this.childControls);
+  //   const observations = [].concat.apply([], childObservations).filter(obs => obs !== undefined);
+  //   const nonVoidedObs = observations.filter(obs => obs.voided !== true);
+  //
+  //   if (isEmpty(nonVoidedObs) || isEmpty(errors)) {
+  //     return { observations };
+  //   }
+  //
+  //   this.setState({ errors });
+  //   return { errors };
+  // }
 
   getValue() {
-    const errors = getErrorsFromChildControls(this.childControls);
-    const childObservations = getObsFromChildControls(this.childControls);
-    const observations = [].concat.apply([], childObservations).filter(obs => obs !== undefined);
-    const nonVoidedObs = observations.filter(obs => obs.voided !== true);
+    const records = this.state.data.getRecords();
+    const observations = records.filter((record) => {
+      return this._isValidObs(record.obs)
+    }).map((record) => {
+      return record.obs.toJS();
+    });
 
-    if (isEmpty(nonVoidedObs) || isEmpty(errors)) {
+    if (isEmpty(observations) || isEmpty(errors)) {
       return { observations };
     }
-
-    this.setState({ errors });
+    this.state.data =
+    this.setState({errors});
     return { errors };
   }
 
+  _isValidObs(obs) {
+    return this._hasValue(obs.getValue()) && !this._isNewVoidedObs(obs)
+  }
+
+  _hasValue(value) {
+    return !(value === '' || value === undefined || value === null);
+  }
+
+  _isNewVoidedObs(obs) {
+    return !obs.getUuid() && obs.isVoided();
+  }
+
+  //deprecated
   storeChildRef(ref) {
     if (ref) this.childControls[ref.props.id] = ref;
   }
 
-  transformObs(observations, metadata, formUuid){
-    const controlState = new ControlState();
-    //Needs to be moved to a separate mapper.
-    var data = new Map();
-    observations.forEach((observation) => (
-        data = data.set(observation.formNamespace, List.of(
-            new Obs({ concept: metadata.concept, formNamespace: observation.formNamespace//createFormNamespace(formUuid,metadata.id)
-              , uuid: observation.uuid,value: observation.value,observationDateTime : observation.observationDateTime,voided : observation.voided, comment: observation.comment})
-            ,[],true))
-    ));
-    return data;
+  getObsList(){
+    const records = this.state.data.getRecords();
+    return records.map( record => record.get('obs'));
   }
 
-  getObsList(){
-    const obsList = [];
-    this.state.data.map( entry => (
-        obsList.push(entry.get(0))
-    ));
-    return obsList;
+  getErrors() {
+    const records = this.state.data.getRecords();
+    return records.map((record) => record.get('errors'));
   }
 
   render() {
@@ -68,8 +91,9 @@ export class Container extends Component {
     const childProps = { errors: this.state.errors, formUuid, ref: this.storeChildRef, onValueChanged: this.onValueChanged };
     const groupedRowControls = getGroupedControls(controls, 'row');
     const obsList = this.getObsList();
+    const errorList = this.getErrors();
     return (
-      <div>{displayRowControls(groupedRowControls, obsList, childProps)}</div>
+      <div>{displayRowControls(groupedRowControls, obsList, errorList, childProps)}</div>
     );
   }
 }

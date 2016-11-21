@@ -1,16 +1,16 @@
 /* eslint-disable new-cap */
 import { Record } from 'immutable';
 
-const ImmutableObs = Record(
-  {
-    concept: undefined,
-    uuid: undefined,
-    value: undefined,
-    observationDateTime: undefined,
-    voided: false, comment: undefined,
-    formNamespace: undefined,
-  }
-);
+export const ImmutableObs = Record({
+  concept: undefined,
+  uuid: undefined,
+  value: undefined,
+  observationDateTime: undefined,
+  voided: false,
+  comment: undefined,
+  formNamespace: undefined,
+  groupMembers:[],
+});
 
 export class Obs extends ImmutableObs {
   getUuid() {
@@ -53,3 +53,10 @@ export class Obs extends ImmutableObs {
   }
 }
 /* eslint-disable new-cap */
+
+export function obsFromMetadata(formNamespace, metadata) {
+  return new Obs({
+    concept: metadata.concept,
+    formNamespace,
+  });
+}
