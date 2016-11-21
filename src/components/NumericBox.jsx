@@ -7,6 +7,8 @@ import isEmpty from 'lodash/isEmpty';
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
+    this.props = props;
+    this.props.onChange(undefined, this._getErrors(undefined));
     this.state = { hasErrors: this._hasErrors(this.props.errors) };
   }
 

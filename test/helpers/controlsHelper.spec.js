@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { getValidations } from 'src/helpers/controlsHelper';
+import { getValidations, hasError } from 'src/helpers/controlsHelper';
 import constants from 'src/constants';
 
 describe('ControlsHelper', () => {
@@ -37,6 +37,18 @@ describe('ControlsHelper', () => {
       const validations = getValidations({});
 
       expect(validations.length).to.equals(0);
+    });
+  });
+
+  describe('hasErrors', () => {
+    it('should return true if there is error with the control id', ()=> {
+      const errors = [
+        {controlId: 'c1'},
+        {controlId: 'c2'},
+      ];
+
+      expect(hasError(errors, 'c2')).to.be.true;
+      expect(hasError(errors, 'c4')).to.be.false;
     });
   });
 });
