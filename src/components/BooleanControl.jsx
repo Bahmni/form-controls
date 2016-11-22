@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import isEqual from 'lodash/isEqual';
 
 export class BooleanControl extends Component {
   constructor(props) {
@@ -9,7 +8,7 @@ export class BooleanControl extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (this.props.validate) {
+    if (this.props.value !== nextProps.value) {
       return true;
     }
     return false;
@@ -20,12 +19,11 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { displayType, errors, options, validations, validate } = this.props;
+    const { displayType, options, validations, validate } = this.props;
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
       const initialValue = this.props.value;
       const childProps = {
-        errors,
         value: initialValue,
         onValueChange: this.onValueChange,
         options,
@@ -40,9 +38,9 @@ export class BooleanControl extends Component {
 
 BooleanControl.propTypes = {
   displayType: PropTypes.string.isRequired,
-  errors: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
+  validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
 };

@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty';
 export class Button extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: props.value, hasErrors: this._hasErrors(this.props.errors) };
+    this.state = { value: props.value, hasErrors: false };
   }
 
 
@@ -21,6 +21,7 @@ export class Button extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.value !== nextProps.value ||
+        this.state.value !== nextState.value ||
       this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
@@ -30,7 +31,7 @@ export class Button extends Component {
   changeValue(valueSelected) {
     const value = this.state.value === valueSelected ? undefined : valueSelected;
     const errors = this._getErrors(value);
-    this.setState({ value });
+    this.setState({ value, hasErrors: this._hasErrors(errors) });
     this.props.onValueChange(value, errors);
   }
 
@@ -64,9 +65,9 @@ export class Button extends Component {
 }
 
 Button.propTypes = {
-  errors: PropTypes.array.isRequired,
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
+  validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
 };

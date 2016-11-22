@@ -8,12 +8,23 @@ import isEmpty from 'lodash/isEmpty';
 export class RadioButton extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: props.value };
+    this.state = { value: props.value, hasErrors: false };
   }
 
   componentWillReceiveProps(nextProps) {
-    const { errors } = nextProps;
-    this.setState({ hasErrors: this._hasErrors(errors) });
+    if (nextProps.validate) {
+      const errors = this._getErrors(nextProps.value);
+      this.setState({ hasErrors: this._hasErrors(errors) });
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.value !== nextProps.value ||
+      this.state.value !== nextState.value ||
+      this.state.hasErrors !== nextState.hasErrors) {
+      return true;
+    }
+    return false;
   }
 
   changeValue(value) {
@@ -56,9 +67,9 @@ export class RadioButton extends Component {
 }
 
 RadioButton.propTypes = {
-  errors: PropTypes.array.isRequired,
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
+  validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
 };

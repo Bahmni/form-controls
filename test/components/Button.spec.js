@@ -8,7 +8,7 @@ import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
-describe.skip('Button Component', () => {
+describe('Button Component', () => {
   const value = true;
   const options = [
     { name: 'Yes', value: true },
@@ -23,7 +23,7 @@ describe.skip('Button Component', () => {
 
   it('should render button component', () => {
     const wrapper = shallow(
-      <Button errors={[]} onValueChange={valueChangeSpy} options={options} validations={[]} />
+      <Button onValueChange={valueChangeSpy} options={options} validate={false} validations={[]} />
     );
     expect(wrapper).to.have.exactly(2).descendants('button');
 
@@ -39,9 +39,9 @@ describe.skip('Button Component', () => {
   it('should render button with default value', () => {
     const wrapper = shallow(
      <Button
-       errors={[]}
        onValueChange={valueChangeSpy}
        options={options}
+       validate={false}
        validations={[]}
        value={value}
      />
@@ -50,25 +50,12 @@ describe.skip('Button Component', () => {
     expect(wrapper.find('button').at(1)).to.have.className('fl');
   });
 
-  it('should render error class when control has error', () => {
-    const wrapper = shallow(
-      <Button
-        errors={[constants.validations.mandatory]}
-        onValueChange={valueChangeSpy}
-        options={options}
-        validations={[]}
-        value={undefined}
-      />
-    );
-    expect(wrapper).to.have.className('form-control-buttons form-builder-error');
-  });
-
   it('should change the value on click', () => {
     const wrapper = shallow(
       <Button
-        errors={[constants.validations.mandatory]}
         onValueChange={valueChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
         value={value}
       />
@@ -84,7 +71,7 @@ describe.skip('Button Component', () => {
 
   it('should change the value to undefined if double clicked', () => {
     const wrapper = shallow(
-      <Button errors={[]} onValueChange={valueChangeSpy} options={options} validations={[]} />
+      <Button onValueChange={valueChangeSpy} options={options} validate={false} validations={[]} />
     );
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(valueChangeSpy.withArgs(false, []));
@@ -97,9 +84,9 @@ describe.skip('Button Component', () => {
     const validations = [constants.validations.mandatory];
     const wrapper = shallow(
       <Button
-        errors={[]}
         onValueChange={valueChangeSpy}
         options={options}
+        validate={false}
         validations={validations}
       />
     );
@@ -110,16 +97,37 @@ describe.skip('Button Component', () => {
     expect(wrapper).to.have.className('form-control-buttons form-builder-error');
   });
 
-  it('should set state on change of props', () => {
+  it('should not reRender if value is same', () => {
     const wrapper = shallow(
       <Button
-        errors={[]}
         onValueChange={valueChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
+        value={value}
       />
     );
-    wrapper.setProps({ errors: [constants.validations.mandatory] });
+    expect(wrapper.find('button').at(0)).to.have.className('fl active');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
+
+    wrapper.setProps({ value: true });
+
+    expect(wrapper.find('button').at(0)).to.have.className('fl active');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
+  });
+
+  it('should validate Button when validate is set to true', () => {
+    const validations = [constants.validations.mandatory];
+    const wrapper = shallow(
+      <Button
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={validations}
+        value
+      />
+    );
+    wrapper.setProps({ validate: true, value: undefined });
     expect(wrapper).to.have.className('form-control-buttons form-builder-error');
   });
 });

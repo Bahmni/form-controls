@@ -8,7 +8,7 @@ import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
-describe.skip('RadioButton Component', () => {
+describe('RadioButton Component', () => {
   const value = true;
   const options = [
     { name: 'Yes', value: true },
@@ -23,7 +23,12 @@ describe.skip('RadioButton Component', () => {
 
   it('should render the radio component', () => {
     const wrapper = shallow(
-      <RadioButton errors={[]} onValueChange={valueChangeSpy} options={options} validations={[]} />
+      <RadioButton
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+      />
     );
     expect(wrapper).to.have.exactly(2).descendants('input');
 
@@ -41,9 +46,9 @@ describe.skip('RadioButton Component', () => {
   it('should render the radio button with selected value', () => {
     const wrapper = shallow(
       <RadioButton
-        errors={[]}
         onValueChange={valueChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
         value={value}
       />
@@ -52,38 +57,49 @@ describe.skip('RadioButton Component', () => {
     expect(wrapper.find('input').at(1).props().checked).to.eql(false);
   });
 
-  it('should render the radio button with error if hasErrors is true', () => {
-    const wrapper = shallow(
-      <RadioButton
-        errors={[]}
-        onValueChange={valueChangeSpy}
-        options={options}
-        validations={[]}
-        value={value}
-      />
-    );
-    wrapper.setProps({ errors: [constants.validations.mandatory] });
-    expect(wrapper).to.have.className('form-builder-error');
-  });
-
   it('should change the value on select', () => {
     const wrapper = shallow(
-      <RadioButton errors={[]} onValueChange={valueChangeSpy} options={options} validations={[]} />
+      <RadioButton
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+      />
     );
     wrapper.find('div').at(2).simulate('click');
     expect(wrapper.find('input').at(1).props().checked).to.eql(true);
   });
 
-  it('should set state on change of props', () => {
+  it('should render the radio button with error if hasErrors is true', () => {
     const wrapper = shallow(
       <RadioButton
-        errors={[]}
         onValueChange={valueChangeSpy}
         options={options}
-        validations={[]}
+        validate={false}
+        validations={[constants.validations.mandatory]}
+        value={value}
       />
     );
-    wrapper.setProps({ errors: [constants.validations.mandatory] });
+    wrapper.setProps({ validate: true, value: undefined });
     expect(wrapper).to.have.className('form-builder-error');
+  });
+
+  it('should not reRender if value is same', () => {
+    const wrapper = shallow(
+      <RadioButton
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+        value={value}
+      />
+    );
+    expect(wrapper.find('input').at(0).props().checked).to.eql(true);
+    expect(wrapper.find('input').at(1).props().checked).to.eql(false);
+
+    wrapper.setProps({ value: true });
+
+    expect(wrapper.find('input').at(0).props().checked).to.eql(true);
+    expect(wrapper.find('input').at(1).props().checked).to.eql(false);
   });
 });

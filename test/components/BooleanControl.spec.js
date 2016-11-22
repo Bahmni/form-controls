@@ -8,7 +8,7 @@ import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
-describe.skip('BooleanControl', () => {
+describe('BooleanControl', () => {
   const DummyControl = () => <input />;
 
   const options = [
@@ -37,9 +37,9 @@ describe.skip('BooleanControl', () => {
     const wrapper = shallow(
       <BooleanControl
         displayType={displayType}
-        errors={[]}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={validations}
       />
     );
@@ -47,7 +47,6 @@ describe.skip('BooleanControl', () => {
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(5);
 
-    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql([]);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(options);
   });
@@ -60,16 +59,15 @@ describe.skip('BooleanControl', () => {
     const wrapper = shallow(
       <BooleanControl
         displayType={displayType}
-        errors={[]}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
       />
     );
 
     sinon.assert.calledWith(spy, 'radio');
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql([]);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql([]);
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(options);
 
@@ -81,9 +79,9 @@ describe.skip('BooleanControl', () => {
     const wrapper = shallow(
       <BooleanControl
         displayType={displayType}
-        errors={[]}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
       />
     );
@@ -94,9 +92,9 @@ describe.skip('BooleanControl', () => {
     const wrapper = shallow(
       <BooleanControl
         displayType={displayType}
-        errors={[]}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
       />);
     const instance = wrapper.instance();
@@ -104,34 +102,34 @@ describe.skip('BooleanControl', () => {
     sinon.assert.calledOnce(onChangeSpy.withArgs(true, []));
   });
 
-  it('should set errors in state on change of props', () => {
+  it('should reRender on change of value in props', () => {
     const wrapper = shallow(
       <BooleanControl
         displayType={displayType}
-        errors={[]}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
+        value
       />);
-    const errors = [constants.validations.mandatory];
-    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql([]);
-    wrapper.setProps({ errors });
-
-    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql(errors);
+    expect(wrapper.find('DummyControl')).to.have.prop('value').to.deep.eql(true);
+    wrapper.setProps({ value: false });
+    expect(wrapper.find('DummyControl')).to.have.prop('value').to.deep.eql(false);
   });
 
-  it('should not set errors in state if props are same', () => {
+  it('should not reRender if value is not changed', () => {
     const wrapper = shallow(
       <BooleanControl
         displayType={displayType}
-        errors={[]}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
+        value
       />);
-    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql([]);
-    wrapper.setProps({ errors: [] });
-
-    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql([]);
+    expect(wrapper.find('DummyControl')).to.have.prop('value').to.deep.eql(true);
+    wrapper.setProps({ value: true });
+    expect(wrapper.find('DummyControl')).to.have.prop('value').to.deep.eql(true);
   });
+
 });
