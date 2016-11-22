@@ -38,8 +38,8 @@ export class NumericBox extends Component {
   }
 
   _getErrors(value) {
-    const validations = this.props.validations;
-    const controlDetails = { validations, value };
+    const validations = this.defaultValidations.concat(this.props.validations);
+    const controlDetails = { validations, value, params: this.props };
     return Validator.getErrors(controlDetails);
   }
 
@@ -56,6 +56,8 @@ export class NumericBox extends Component {
 }
 
 NumericBox.propTypes = {
+  maxNormal: PropTypes.string,
+  minNormal: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

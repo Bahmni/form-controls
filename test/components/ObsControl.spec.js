@@ -104,7 +104,8 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         validate={false}
       />);
-    expect(wrapper).to.be.blank();
+    expect(wrapper).to.have.exactly(1).descendants('div');
+    expect(wrapper.find('div').at(0).text()).to.eql('<UnSupportedComponent />');
   });
 
   it('should return the obsControl value', () => {

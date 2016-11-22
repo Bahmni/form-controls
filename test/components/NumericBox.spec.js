@@ -70,4 +70,15 @@ describe('NumericBox', () => {
     wrapper.setProps({ value: '98.6' });
     expect(wrapper.find('input')).to.have.value('98.6');
   });
+
+  it('should throw error when the value is not in correct range', () => {
+    const wrapper = shallow(
+        <NumericBox errors={[]} maxNormal="50" minNormal="20"
+          onChange={onChangeSpy} validations={validations}
+        />
+    );
+    wrapper.find('input').simulate('change', { target: { value: '50.32' } });
+    sinon.assert.calledOnce(onChangeSpy.withArgs('50.32', [{ errorType: validations[0] }]));
+    expect(wrapper.find('input')).to.have.className('form-builder-error');
+  });
 });

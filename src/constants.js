@@ -6,6 +6,7 @@ const Constants = {
   validations: {
     mandatory: 'mandatory',
     allowDecimal: 'allowDecimal',
+    allowRange: 'allowRange',
   },
 };
 

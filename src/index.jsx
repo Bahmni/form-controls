@@ -9,6 +9,7 @@ export { AutoComplete } from 'components/AutoComplete.jsx';
 export { BooleanControl } from 'components/BooleanControl.jsx';
 export { RadioButton } from 'components/RadioButton.jsx';
 export { Button } from 'components/Button.jsx';
+export { AbnormalObsControl } from 'components/AbnormalObsControl.jsx';
 
 //  -----------designer components------------------
 
@@ -23,5 +24,6 @@ export { ButtonDesigner } from 'components/designer/Button.jsx';
 export { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';
 export { Draggable } from 'components/Draggable.jsx';
 export { RowDesigner } from 'components/designer/Row.jsx';
+export { AbnormalObsControlDesigner } from 'components/designer/AbnormalObsControlDesigner.jsx';
 
 import '../styles/styles.scss';
