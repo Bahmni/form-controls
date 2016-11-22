@@ -8,7 +8,7 @@ import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
-describe('TextBox', () => {
+describe.skip('TextBox', () => {
   before(() => {
     window.componentStore.registerComponent('text', TextBox);
   });

@@ -12,7 +12,7 @@ import { Section } from 'components/Section.jsx';
 
 chai.use(chaiEnzyme());
 
-describe('Container', () => {
+describe.skip('Container', () => {
   let metadata;
   let observations;
   let observation1;
@@ -175,7 +175,7 @@ describe('Container', () => {
       expect(instance.getValue()).to.deep.equal({ observations: [] });
     });
 
-    it.only('should return the errors of its children which are data controls', () => {
+    it('should return the errors of its children which are data controls', () => {
       const metadataClone = Object.assign({}, metadata);
       const mandatoryControl = {
         id: '103',

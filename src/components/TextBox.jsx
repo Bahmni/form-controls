@@ -1,20 +1,23 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import 'src/helpers/componentStore';
-import { Validator } from 'src/helpers/Validator';
+import {Validator} from 'src/helpers/Validator';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 export class TextBox extends Component {
   constructor(props) {
     super(props);
-    this.props = props;
-    this.props.onChange(undefined, this._getErrors(undefined));
-    this.state = { hasErrors: this._hasErrors(this.props.errors) };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.validate) {
+      const errors = this._getErrors(this.props.value);
+      this.setState({ hasErrors: this._hasErrors(errors) });
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.value !== nextProps.value ||
-      this.props.errors !== nextProps.errors ||
       this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
@@ -27,7 +30,7 @@ export class TextBox extends Component {
 
   _getErrors(value) {
     const validations = this.props.validations;
-    const controlDetails = { validations, value };
+    const controlDetails = {validations, value};
     return Validator.getErrors(controlDetails);
   }
 
@@ -35,7 +38,7 @@ export class TextBox extends Component {
     let value = e.target.value;
     value = value && value.trim() !== '' ? value.trim() : undefined;
     const errors = this._getErrors(value);
-    this.setState({ hasErrors: this._hasErrors(errors) });
+    this.setState({hasErrors: this._hasErrors(errors)});
     this.props.onChange(value, errors);
   }
 

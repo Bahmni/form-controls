@@ -8,7 +8,7 @@ import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
-describe('BooleanControl', () => {
+describe.skip('BooleanControl', () => {
   const DummyControl = () => <input />;
 
   const options = [

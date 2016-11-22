@@ -2,8 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 import isEmpty from 'lodash/isEmpty';
-import { List,Map } from 'immutable'
-import { BahmniRecord, ControlState, controlStateFactory} from "src/ControlState";
+import { List, Map } from 'immutable';
+import { BahmniRecord, ControlState, controlStateFactory } from "src/ControlState";
 
 export class Container extends Component {
   constructor(props) {
@@ -15,11 +15,7 @@ export class Container extends Component {
     this.storeChildRef = this.storeChildRef.bind(this);
     this.onValueChanged = this.onValueChanged.bind(this);
   }
-  
-  componentDidMount() {
-    this.initialData = new ControlState(this.state.data.getRecords());
-  }
-  
+
   onValueChanged(obs,errors){
     const data = this.state.data;
     const bahmniRecord = data.getRecord(obs.formNamespace)
@@ -50,10 +46,11 @@ export class Container extends Component {
       return record.obs.toJS();
     });
 
+    const errors = this.getErrors();
+
     if (isEmpty(observations) || isEmpty(errors)) {
       return { observations };
     }
-    this.state.data =
     this.setState({errors});
     return { errors };
   }
@@ -82,18 +79,23 @@ export class Container extends Component {
 
   getErrors() {
     const records = this.state.data.getRecords();
-    return records.map((record) => record.get('errors'));
+    return records.map((record) => record.get('errors'))
+      .filter((error) => !isEmpty(error));
   }
 
   render() {
-    const { metadata: { controls, uuid: formUuid } } = this.props;
-
-    const childProps = { errors: this.state.errors, formUuid, ref: this.storeChildRef, onValueChanged: this.onValueChanged };
+    const { metadata: { controls, uuid: formUuid }, validate } = this.props;
+    const childProps = {
+      errors: this.state.errors,
+      formUuid,
+      ref: this.storeChildRef,
+      onValueChanged: this.onValueChanged,
+      validate,
+    };
     const groupedRowControls = getGroupedControls(controls, 'row');
     const obsList = this.getObsList();
-    const errorList = this.getErrors();
     return (
-      <div>{displayRowControls(groupedRowControls, obsList, errorList, childProps)}</div>
+      <div>{displayRowControls(groupedRowControls, obsList, childProps)}</div>
     );
   }
 }

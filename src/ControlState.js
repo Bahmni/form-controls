@@ -7,7 +7,7 @@ export const ControlRecord = new Record({
   formNamespace: '',
   obs: undefined,
   enabled: true,
-  errors: new List(),
+  errors: [],
   data: undefined
 });
 
@@ -59,7 +59,7 @@ export function controlStateFactory(metadata = {controls: []}, bahmniObservation
     if (index >= 0) {
       obs = new Obs(bahmniObservations[index]);
     } else {
-      obs = obsFromMetadata(formNamespace, metadata);
+      obs = obsFromMetadata(formNamespace, control);
     }
     return new ControlRecord({ formNamespace, obs, enabled: false });
   });

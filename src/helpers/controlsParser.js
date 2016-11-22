@@ -12,14 +12,6 @@ function getObsForControl(control, observations) {
   });
 }
 
-function getErrorForControl(control, errors) {
-  if (control.properties && control.properties.visualOnly) return observations;
-  return observations.find((obs) => {
-    const { controlId } = getFormNamespaceDetails(obs.formNamespace);
-    return controlId === control.id;
-  });
-}
-
 function createReactComponent(component, props) {
   return React.createElement(component, props);
 }
@@ -59,14 +51,13 @@ export function getGroupedControls(controls, property) {
   return sortGroupedControls(groupedControls);
 }
 
-export function displayRowControls(controls, observations, errors, childProps) {
+export function displayRowControls(controls, observations, childProps) {
   return map(controls, (rowControls, index) =>
     <Row
       controls={rowControls}
       id={index}
       key={index}
       observations={observations}
-      errors={ errors }
       {...childProps}
     />
   );

@@ -36,12 +36,12 @@ export default class Row extends Component {
   }
 
   render() {
-    const { controls, errors, formUuid, observations } = this.props;
+    const { controls, formUuid, observations, validate } = this.props;
     const childProps = {
-      errors,
       formUuid,
       ref: this.storeChildRef,
       onValueChanged: this.props.onValueChanged,
+      validate,
     };
     const groupedColumnControls = getGroupedControls(controls, 'column');
     return (

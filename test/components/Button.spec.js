@@ -8,7 +8,7 @@ import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
-describe('Button Component', () => {
+describe.skip('Button Component', () => {
   const value = true;
   const options = [
     { name: 'Yes', value: true },

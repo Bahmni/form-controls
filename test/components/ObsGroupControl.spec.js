@@ -26,7 +26,7 @@ DummyControl.propTypes = {
   formUuid: PropTypes.string,
 };
 
-describe('ObsGroupControl', () => {
+describe.skip('ObsGroupControl', () => {
   before(() => {
     window.componentStore.registerComponent('randomType', DummyControl);
   });

@@ -9,7 +9,7 @@ export class BooleanControl extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (this.props.value !== nextProps.value || !isEqual(this.props.errors, nextProps.errors)) {
+    if (this.props.validate) {
       return true;
     }
     return false;
@@ -20,7 +20,7 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { displayType, errors, options, validations } = this.props;
+    const { displayType, errors, options, validations, validate } = this.props;
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
       const initialValue = this.props.value;
@@ -29,6 +29,7 @@ export class BooleanControl extends Component {
         value: initialValue,
         onValueChange: this.onValueChange,
         options,
+        validate,
         validations,
       };
       return React.createElement(registeredComponent, childProps);

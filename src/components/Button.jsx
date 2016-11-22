@@ -11,15 +11,26 @@ export class Button extends Component {
     this.state = { value: props.value, hasErrors: this._hasErrors(this.props.errors) };
   }
 
+
   componentWillReceiveProps(nextProps) {
-    const { errors } = nextProps;
-    this.setState({ hasErrors: this._hasErrors(errors) });
+    if (nextProps.validate) {
+      const errors = this._getErrors(nextProps.value);
+      this.setState({ hasErrors: this._hasErrors(errors) });
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.value !== nextProps.value ||
+      this.state.hasErrors !== nextState.hasErrors) {
+      return true;
+    }
+    return false;
   }
 
   changeValue(valueSelected) {
     const value = this.state.value === valueSelected ? undefined : valueSelected;
     const errors = this._getErrors(value);
-    this.setState({ value, hasErrors: this._hasErrors(errors) });
+    this.setState({ value });
     this.props.onValueChange(value, errors);
   }
 

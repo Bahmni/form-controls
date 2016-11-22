@@ -27,7 +27,7 @@ DummyControl.propTypes = {
   formUuid: PropTypes.string,
 };
 
-describe('Row', () => {
+describe.skip('Row', () => {
   const controls = [
     {
       id: '100',

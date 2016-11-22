@@ -24,7 +24,7 @@ DummyControl.propTypes = {
   formUuid: PropTypes.string,
 };
 
-describe('Section', () => {
+describe.skip('Section', () => {
   before(() => {
     window.componentStore.registerComponent('randomType', DummyControl);
   });

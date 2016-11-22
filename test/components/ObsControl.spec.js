@@ -10,7 +10,7 @@ import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
-describe('ObsControl', () => {
+describe.skip('ObsControl', () => {
   const DummyControl = () => <input />;
 
   before(() => {

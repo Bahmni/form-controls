@@ -41,7 +41,7 @@ export class Obs extends ImmutableObs {
   }
 
   void() {
-    return this.set('voided', true);
+    return this.set('voided', true).set('value', undefined);
   }
 
   isVoided() {

@@ -8,7 +8,7 @@ import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
-describe('NumericBox', () => {
+describe.skip('NumericBox', () => {
   before(() => {
     window.componentStore.registerComponent('numeric', NumericBox);
   });

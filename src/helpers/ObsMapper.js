@@ -26,20 +26,25 @@ export class ObsMapper {
 
   setValue(value) {
     if (value !== '' && value !== undefined) {
-      return this.obs.setValue(value);
+      this.obs = this.obs.setValue(value);
+      return this.obs;
     }
-    return this.obs.void();
+    this.obs = this.obs.void();
+    return this.obs;
   }
 
   setComment(comment) {
-    return this.obs.setComment(comment);
+    this.obs = this.obs.setComment(comment);
+    return this.obs;
   }
 
   getComment() {
-    return this.obs.getComment();
+    this.obs = this.obs.getComment();
+    return this.obs;
   }
 
   equals(finalObs) {
-    return this.obs.equals(finalObs);
+    this.obs = this.obs.equals(finalObs);
+    return this.obs;
   }
 }

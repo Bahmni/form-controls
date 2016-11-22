@@ -2,28 +2,17 @@ import React, { Component, PropTypes } from 'react';
 import { Label } from 'components/Label.jsx';
 import 'src/helpers/componentStore';
 import find from 'lodash/find';
-import isEqual from 'lodash/isEqual';
 import { ObsMapper } from 'src/helpers/ObsMapper';
 import { Comment } from 'components/Comment.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
-import isEmpty from 'lodash/isEmpty';
 
 export class ObsControl extends Component {
 
   constructor(props) {
     super(props);
     this.mapper = new ObsMapper(props.obs);
-    this.state = { obs: props.obs, hasErrors: this._hasErrors(props.errors) };
+    this.state = { obs: props.obs };
     this.onChange = this.onChange.bind(this);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.obs !== nextProps.obs ||
-      !isEqual(this.props.errors, nextProps.errors) ||
-      this.state.hasErrors !== nextState.hasErrors) {
-      return true;
-    }
-    return false;
   }
 
   onChange(value, errors) {
@@ -31,20 +20,16 @@ export class ObsControl extends Component {
     this.props.onValueChanged(updatedObs, errors);
   }
 
-  _hasErrors(errors) {
-    return !isEmpty(errors);
-  }
-
   displayObsControl(registeredComponent) {
-    const { errors, metadata } = this.props;
+    const { metadata, validate } = this.props;
     const validations = getValidations(metadata.properties);
     return React.createElement(registeredComponent, {
       displayType: metadata.displayType,
-      errors,
       options: metadata.options,
       onChange: this.onChange,
-      value: this.mapper.getValue(),
+      validate,
       validations,
+      value: this.mapper.getValue(),
     });
   }
 

@@ -8,9 +8,7 @@ import isEmpty from 'lodash/isEmpty';
 export class RadioButton extends Component {
   constructor(props) {
     super(props);
-    this.props = props;
-    this.props.onValueChange(undefined, this._getErrors(undefined));
-    this.state = { value: props.value, hasErrors: this._hasErrors(this.props.errors) };
+    this.state = { value: props.value };
   }
 
   componentWillReceiveProps(nextProps) {

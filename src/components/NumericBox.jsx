@@ -8,13 +8,17 @@ export class NumericBox extends Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.props.onChange(undefined, this._getErrors(undefined));
-    this.state = { hasErrors: this._hasErrors(this.props.errors) };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.validate) {
+      const errors = this._getErrors(nextProps.value);
+      this.setState({ hasErrors: this._hasErrors(errors) });
+    }
+  }
+  
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.value !== nextProps.value ||
-      this.props.errors !== nextProps.errors ||
       this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
@@ -25,7 +29,6 @@ export class NumericBox extends Component {
   handleChange(e) {
     const value = e.target.value;
     const errors = this._getErrors(value);
-    this.setState({ hasErrors: this._hasErrors(errors) });
     this.props.onChange(value, errors);
   }
 
