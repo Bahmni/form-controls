@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
-    this.props = props;
+    this.state = { hasErrors: false };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -16,7 +16,7 @@ export class NumericBox extends Component {
       this.setState({ hasErrors: this._hasErrors(errors) });
     }
   }
-  
+
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.value !== nextProps.value ||
       this.state.hasErrors !== nextState.hasErrors) {
@@ -29,6 +29,7 @@ export class NumericBox extends Component {
   handleChange(e) {
     const value = e.target.value;
     const errors = this._getErrors(value);
+    this.setState({ hasErrors: this._hasErrors(errors) });
     this.props.onChange(value, errors);
   }
 
@@ -55,8 +56,8 @@ export class NumericBox extends Component {
 }
 
 NumericBox.propTypes = {
-  errors: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
+  validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,
 };

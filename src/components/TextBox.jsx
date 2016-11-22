@@ -1,17 +1,18 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import {Validator} from 'src/helpers/Validator';
+import { Validator } from 'src/helpers/Validator';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 export class TextBox extends Component {
   constructor(props) {
     super(props);
+    this.state = { hasErrors: false };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate) {
-      const errors = this._getErrors(this.props.value);
+      const errors = this._getErrors(nextProps.value);
       this.setState({ hasErrors: this._hasErrors(errors) });
     }
   }
@@ -30,7 +31,7 @@ export class TextBox extends Component {
 
   _getErrors(value) {
     const validations = this.props.validations;
-    const controlDetails = {validations, value};
+    const controlDetails = { validations, value };
     return Validator.getErrors(controlDetails);
   }
 
@@ -38,7 +39,7 @@ export class TextBox extends Component {
     let value = e.target.value;
     value = value && value.trim() !== '' ? value.trim() : undefined;
     const errors = this._getErrors(value);
-    this.setState({hasErrors: this._hasErrors(errors)});
+    this.setState({ hasErrors: this._hasErrors(errors) });
     this.props.onChange(value, errors);
   }
 
@@ -54,8 +55,8 @@ export class TextBox extends Component {
 }
 
 TextBox.propTypes = {
-  errors: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
+  validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,
 };

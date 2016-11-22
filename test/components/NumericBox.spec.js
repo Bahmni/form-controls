@@ -8,7 +8,7 @@ import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
-describe.skip('NumericBox', () => {
+describe('NumericBox', () => {
   before(() => {
     window.componentStore.registerComponent('numeric', NumericBox);
   });
@@ -23,7 +23,7 @@ describe.skip('NumericBox', () => {
 
   it('should render NumericBox', () => {
     const wrapper = shallow(
-      <NumericBox errors={[]} onChange={onChangeSpy} validations={[]} />
+      <NumericBox onChange={onChangeSpy} validate={false} validations={[]} />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input')).to.have.value(undefined);
@@ -32,7 +32,7 @@ describe.skip('NumericBox', () => {
 
   it('should render NumericBox with default value', () => {
     const wrapper = shallow(
-      <NumericBox errors={[]} onChange={onChangeSpy} validations={[]} value={'50'} />
+      <NumericBox onChange={onChangeSpy} validate={false} validations={[]} value={'50'} />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input')).to.have.value('50');
@@ -40,26 +40,34 @@ describe.skip('NumericBox', () => {
 
   it('should get user entered value of the NumericBox', () => {
     const wrapper = shallow(
-      <NumericBox errors={[]} onChange={onChangeSpy} validations={[]} value={'50'} />
+      <NumericBox onChange={onChangeSpy} validate={false} validations={[]} value={'50'} />
     );
     wrapper.find('input').simulate('change', { target: { value: '999' } });
     sinon.assert.calledOnce(onChangeSpy.withArgs('999', []));
   });
 
-  it('should render NumericBox with errors if error is present', () => {
-    const errors = [constants.validations.mandatory];
-    const wrapper = shallow(
-      <NumericBox errors={errors} onChange={onChangeSpy} validations={[]} />
-    );
-    expect(wrapper.find('input')).to.have.className('form-builder-error');
-  });
-
   it('should throw error on fail of validations', () => {
     const wrapper = shallow(
-      <NumericBox errors={[]} onChange={onChangeSpy} validations={validations} />
+      <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
     );
     wrapper.find('input').simulate('change', { target: { value: '50.32' } });
     sinon.assert.calledOnce(onChangeSpy.withArgs('50.32', [{ errorType: validations[0] }]));
     expect(wrapper.find('input')).to.have.className('form-builder-error');
+  });
+
+  it('should validate Numeric box when validate is set to true', () => {
+    const wrapper = shallow(
+      <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
+    );
+    wrapper.setProps({ validate: true, value: '98.6' });
+    expect(wrapper.find('input')).to.have.className('form-builder-error');
+  });
+
+  it('should render NumericBox on change of value', () =>{
+    const wrapper = shallow(
+      <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
+    );
+    wrapper.setProps({ value: '98.6' });
+    expect(wrapper.find('input')).to.have.value('98.6');
   });
 });
