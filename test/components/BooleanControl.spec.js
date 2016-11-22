@@ -131,5 +131,4 @@ describe('BooleanControl', () => {
     wrapper.setProps({ value: true });
     expect(wrapper.find('DummyControl')).to.have.prop('value').to.deep.eql(true);
   });
-
 });

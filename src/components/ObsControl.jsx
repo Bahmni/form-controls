@@ -71,7 +71,6 @@ export class ObsControl extends Component {
 }
 
 ObsControl.propTypes = {
-  errors: PropTypes.array.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,
@@ -85,6 +84,7 @@ ObsControl.propTypes = {
   }),
   obs: PropTypes.any.isRequired,
   onValueChanged: PropTypes.func.isRequired,
+  validate: PropTypes.bool.isRequired,
 };
 
 window.componentStore.registerComponent('obsControl', ObsControl);

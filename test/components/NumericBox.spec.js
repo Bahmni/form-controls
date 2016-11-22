@@ -63,7 +63,7 @@ describe('NumericBox', () => {
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
-  it('should render NumericBox on change of value', () =>{
+  it('should render NumericBox on change of value', () => {
     const wrapper = shallow(
       <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
     );

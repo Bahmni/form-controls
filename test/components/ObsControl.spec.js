@@ -7,10 +7,9 @@ import { ObsControl } from 'components/ObsControl.jsx';
 import { Obs } from 'src/helpers/Obs';
 import constants from 'src/constants';
 
-
 chai.use(chaiEnzyme());
 
-describe.skip('ObsControl', () => {
+describe('ObsControl', () => {
   const DummyControl = () => <input />;
 
   before(() => {
@@ -55,20 +54,19 @@ describe.skip('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        errors={[]}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />);
     expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(wrapper).to.have.exactly(1).descendants('input');
 
-    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql([]);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql([]);
   });
 
-  it('should render child control with error when present', () => {
+  it('should mark mandatory if mandatory property is true', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
@@ -76,18 +74,14 @@ describe.skip('ObsControl', () => {
       label,
       properties: { mandatory: true },
     };
-    const errors = [constants.validations.mandatory];
     const observation = new Obs(metadata);
-
     const wrapper = mount(
       <ObsControl
-        errors={[]}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />);
-    wrapper.setProps({ errors });
-    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql(errors);
     expect(wrapper.find('span').text()).to.eql('*');
     expect(wrapper.find('span')).to.have.className('form-builder-asterisk');
   });
@@ -105,10 +99,10 @@ describe.skip('ObsControl', () => {
 
     const wrapper = shallow(
       <ObsControl
-        errors={[]}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />);
     expect(wrapper).to.be.blank();
   });
@@ -125,10 +119,10 @@ describe.skip('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        errors={[]}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />
     );
     const instance = wrapper.instance();
@@ -149,10 +143,10 @@ describe.skip('ObsControl', () => {
 
     const wrapper = mount(
       <ObsControl
-        errors={[]}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />
     );
     const instance = wrapper.instance();
@@ -173,10 +167,10 @@ describe.skip('ObsControl', () => {
 
     const wrapper = mount(
       <ObsControl
-        errors={[]}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />
     );
 
@@ -196,35 +190,12 @@ describe.skip('ObsControl', () => {
 
     const wrapper = shallow(
       <ObsControl
-        errors={[]}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />
     );
     expect(wrapper).to.not.have.descendants('Comment');
-  });
-
-  it('should not render the obsControl if properties are not updated', () => {
-    const metadata = {
-      id: '100',
-      type: 'obsControl',
-      concept: getConcept('text'),
-      label,
-      properties,
-    };
-    const observation = new Obs(metadata);
-    const errors = [constants.validations.mandatory];
-
-    const wrapper = mount(
-      <ObsControl
-        errors={errors}
-        metadata={metadata}
-        obs={observation}
-        onValueChanged={onChangeSpy}
-      />
-    );
-    wrapper.setProps({ errors });
-    expect(wrapper.find('DummyControl')).to.have.prop('errors').to.deep.eql(errors);
   });
 });
