@@ -60,6 +60,40 @@ describe('Validator', () => {
       expect(errors).to.deep.eql([]);
     });
   });
+
+  describe('allowRange validation', () => {
+    const validations = [constants.validations.allowRange];
+
+    it('should get allowRange error when value is beyond the range', () => {
+      const params = { minNormal: 120, maxNormal: 122 };
+      const expectedErrors = [{ errorType: constants.validations.allowRange }];
+      const errors = Validator.getErrors({ validations, value: 123.12, params });
+      expect(errors).to.deep.eql(expectedErrors);
+    });
+
+    it('should get allowRange error when the value is below the minimum', () => {
+      const expectedErrors = [{ errorType: constants.validations.allowRange }];
+      const errors = Validator.getErrors({ validations, value: 115, params: { minNormal: 120 } });
+      expect(errors).to.deep.eql(expectedErrors);
+    });
+
+    it('should get allowRange error when the value is above the maximum', () => {
+      const expectedErrors = [{ errorType: constants.validations.allowRange }];
+      const errors = Validator.getErrors({ validations, value: 135, params: { maxNormal: 120 } });
+      expect(errors).to.deep.eql(expectedErrors);
+    });
+
+    it('should not get allowRange error when the value undefined', () => {
+      const errors = Validator.getErrors({ validations, value: undefined, params: {} });
+      expect(errors).to.deep.eql([]);
+    });
+
+    it('should not get allowRange error when no min and max are provided', () => {
+      const errors = Validator.getErrors({ validations, value: 500, params: {} });
+      expect(errors).to.deep.eql([]);
+    });
+  });
+
   it('should not give error when there are no validations', () => {
     const controlDetails = { validations: [], value: '' };
     const errors = Validator.getErrors(controlDetails);

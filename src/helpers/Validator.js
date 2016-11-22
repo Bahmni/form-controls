@@ -19,11 +19,26 @@ export class Validator {
     return { errorType: constants.validations.allowDecimal };
   }
 
+  static allowRange(value, params) {
+    const error = { errorType: constants.validations.allowRange };
+
+    if (isUndefined(value)) return undefined;
+
+    if ((params.minNormal && value < params.minNormal)) {
+      return error;
+    }
+    if ((params.maxNormal && value > params.maxNormal)) {
+      return error;
+    }
+
+    return undefined;
+  }
+
   static getErrors(controlDetails) {
-    const { validations, value } = controlDetails;
+    const { validations, value, params } = controlDetails;
     const errors = map(validations, (propertyName) => {
       const validator = get(this.propertyValidators, propertyName);
-      if (validator) return validator(value);
+      if (validator) return validator(value, params);
       return undefined;
     });
 
@@ -36,4 +51,6 @@ Validator.propertyValidators = {
     (obsVal) => Validator.mandatory(obsVal),
   [constants.validations.allowDecimal]:
       (obsVal) => Validator.allowDecimal(obsVal),
+  [constants.validations.allowRange]:
+      (obsVal, params) => Validator.allowRange(obsVal, params),
 };

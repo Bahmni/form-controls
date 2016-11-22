@@ -76,7 +76,7 @@ describe('BooleanControl', () => {
     window.componentStore.deRegisterComponent('radio');
   });
 
-  it('should return null when registered component not found', () => {
+  it('should return UnSupportedComponent when registered component not found', () => {
     displayType = 'random';
     const wrapper = shallow(
       <BooleanControl
@@ -87,7 +87,8 @@ describe('BooleanControl', () => {
         validations={[]}
       />
     );
-    expect(wrapper).to.be.blank();
+    expect(wrapper).to.have.exactly(1).descendants('div');
+    expect(wrapper.find('div').at(0).text()).to.eql('<UnSupportedComponent />');
   });
 
   it('should return the boolean control value', () => {

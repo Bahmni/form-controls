@@ -30,6 +30,11 @@ export class ObsGroupControl extends Component {
     this.mapper = new Mapper(obs);
     this.getValue = this.getValue.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(obs, errors) {
+
   }
 
   getValue() {
@@ -48,7 +53,7 @@ export class ObsGroupControl extends Component {
 
   render() {
     const { errors, formUuid, metadata: { controls, concept }, obs } = this.props;
-    const childProps = { errors, formUuid, ref: this.storeChildRef };
+    const childProps = { errors, formUuid, ref: this.storeChildRef, onValueChanged: this.onChange };
     const obsGroupMembers = (obs && obs.groupMembers) ? obs.groupMembers : [];
     const groupedRowControls = getGroupedControls(controls, 'row');
     return (

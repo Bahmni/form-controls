@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import isEqual from 'lodash/isEqual';
+import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 
 export class BooleanControl extends Component {
   constructor(props) {
@@ -33,7 +34,13 @@ export class BooleanControl extends Component {
       };
       return React.createElement(registeredComponent, childProps);
     }
-    return null;
+    return (
+        <div>
+          <UnSupportedComponent
+            message={ `The component with props displayType ${displayType} is not supported` }
+          />
+        </div>
+    );
   }
 }
 

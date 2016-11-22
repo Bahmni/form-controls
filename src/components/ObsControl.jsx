@@ -7,6 +7,7 @@ import { ObsMapper } from 'src/helpers/ObsMapper';
 import { Comment } from 'components/Comment.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
 import isEmpty from 'lodash/isEmpty';
+import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 
 export class ObsControl extends Component {
 
@@ -45,7 +46,23 @@ export class ObsControl extends Component {
       onChange: this.onChange,
       value: this.mapper.getValue(),
       validations,
+      minNormal: metadata.concept.lowNormal,
+      maxNormal: metadata.concept.hiNormal,
     });
+  }
+
+  displayLabel() {
+    const { properties, label } = this.props.metadata;
+    const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
+    if (!hideLabel) {
+      return (
+          <div>
+            <Label metadata={label} />
+            { this.markMandatory() }
+          </div>
+      );
+    }
+    return null;
   }
 
   markMandatory() {
@@ -69,19 +86,24 @@ export class ObsControl extends Component {
   }
 
   render() {
-    const { concept, label } = this.props.metadata;
+    const { concept } = this.props.metadata;
     const registeredComponent = window.componentStore.getRegisteredComponent(concept.datatype);
     if (registeredComponent) {
       return (
         <div>
-          <Label metadata={label} />
-          {this.markMandatory()}
+          {this.displayLabel()}
           {this.displayObsControl(registeredComponent)}
           {this.showComment()}
         </div>
       );
     }
-    return null;
+    return (
+        <div>
+          <UnSupportedComponent
+            message={ `The component with concept datatype ${concept.datatype} is not supported` }
+          />
+        </div>
+    );
   }
 }
 
