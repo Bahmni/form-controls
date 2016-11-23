@@ -9,7 +9,6 @@
     position: relative;
     box-sizing: border-box;
     .label-wrap{
-      width: 127px;
       float: left;
       width: 127px;
       margin-right: 10px;
@@ -40,9 +39,8 @@
       clear: both;
     }
     textarea{
-      overflow: hidden;
       word-wrap: break-word;
-      resize: horizontal;
+      resize: none;
       height: 35px;
       min-width: 197px;
       padding: 2px 10px;
