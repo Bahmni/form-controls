@@ -1,23 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { getControls, getGroupedControls } from 'src/helpers/controlsParser';
 import map from 'lodash/map';
-import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 
 export default class Row extends Component {
-  constructor(props) {
-    super(props);
-    this.childControls = {};
-    this.storeChildRef = this.storeChildRef.bind(this);
-  }
-
-  getValue() {
-    const observations = getObsFromChildControls(this.childControls);
-    return [].concat.apply([], observations).filter(obs => obs !== undefined);
-  }
-
-  getErrors() {
-    return getErrorsFromChildControls(this.childControls);
-  }
 
   getControlsByColumn(sortedColumnControls, observations, childProps) {
     return map(sortedColumnControls, (control, index) => {
@@ -31,18 +16,9 @@ export default class Row extends Component {
     });
   }
 
-  storeChildRef(ref) {
-    if (ref) this.childControls[ref.props.metadata.id] = ref;
-  }
-
   render() {
-    const { controls, formUuid, observations, validate } = this.props;
-    const childProps = {
-      formUuid,
-      ref: this.storeChildRef,
-      onValueChanged: this.props.onValueChanged,
-      validate,
-    };
+    const { controls, formUuid, observations, onValueChanged, validate } = this.props;
+    const childProps = { formUuid, onValueChanged, validate };
     const groupedColumnControls = getGroupedControls(controls, 'column');
     return (
       <div className="form-builder-row">
@@ -54,9 +30,9 @@ export default class Row extends Component {
 
 Row.propTypes = {
   controls: PropTypes.array.isRequired,
-  errors: PropTypes.array.isRequired,
   formUuid: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   observations: PropTypes.array.isRequired,
   onValueChanged: PropTypes.func.isRequired,
+  validate: PropTypes.bool.isRequired,
 };
