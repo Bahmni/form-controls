@@ -1,8 +1,9 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Section } from 'components/Section.jsx';
+import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
@@ -10,21 +11,15 @@ function getLocationProperties(row, column) {
   return { location: { row, column } };
 }
 
-class DummyControl extends Component {
-  getValue() {
-    return this.props.formUuid;
-  }
+const DummyControl = () => <input />;
 
-  render() {
-    return (<div>{ this.props.formUuid }</div>);
-  }
-}
+let onChangeSpy;
 
-DummyControl.propTypes = {
-  formUuid: PropTypes.string,
-};
+beforeEach(() => {
+  onChangeSpy = sinon.spy();
+});
 
-describe.skip('Section', () => {
+describe('Section', () => {
   before(() => {
     window.componentStore.registerComponent('randomType', DummyControl);
   });
@@ -65,20 +60,20 @@ describe.skip('Section', () => {
 
   describe('render', () => {
     it('should render section', () => {
-      const errors = [{ errorType: 'someErrorType' }];
       const wrapper = mount(
         <Section
-          errors={errors}
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}
+          onValueChanged={onChangeSpy}
+          validate={false}
         />);
 
       expect(wrapper.find('legend').text()).to.eql('Section Title');
       expect(wrapper).to.have.exactly(2).descendants('Row');
       expect(wrapper).to.have.exactly(3).descendants('DummyControl');
       expect(wrapper.find('Row').at(0).props().observations).to.eql([]);
-      expect(wrapper.find('DummyControl').at(0).props().errors).to.eql(errors);
+      expect(wrapper.find('DummyControl').at(0).props().validate).to.eql(false);
     });
 
     it('should render section control with observations', () => {
@@ -94,10 +89,11 @@ describe.skip('Section', () => {
       ];
       const wrapper = mount(
         <Section
-          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={observations}
+          onValueChanged={onChangeSpy}
+          validate={false}
         />);
 
       expect(wrapper.find('Row').at(0).props().observations).to.deep.eql(observations);
@@ -109,10 +105,11 @@ describe.skip('Section', () => {
       metadataClone.controls = [];
       const wrapper = shallow(
         <Section
-          errors={[]}
           formUuid={formUuid}
           metadata={metadataClone}
           obs={[]}
+          onValueChanged={onChangeSpy}
+          validate={false}
         />);
 
       expect(wrapper.find('legend').text()).to.eql('Section Title');
@@ -123,66 +120,30 @@ describe.skip('Section', () => {
       window.componentStore.deRegisterComponent('randomType');
       const wrapper = shallow(
         <Section
-          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}
+          onValueChanged={onChangeSpy}
+          validate={false}
         />);
 
       expect(wrapper).to.not.have.descendants('DummyControl');
       window.componentStore.registerComponent('randomType', DummyControl);
     });
-  });
 
-  describe('getValue', () => {
-    it('should return the observations from child Controls', () => {
+    it('should callback on value change in any of child controls', () => {
       const wrapper = mount(
         <Section
-          errors={[]}
           formUuid={formUuid}
           metadata={metadata}
           obs={[]}
+          onValueChanged={onChangeSpy}
+          validate={false}
         />);
-      const instance = wrapper.instance();
 
-      expect(instance.getValue()).to.deep.equal([formUuid, formUuid, formUuid]);
-    });
-
-    it('should return empty when there are no observations', () => {
-      const metadataClone = Object.assign({}, metadata);
-      metadataClone.controls = [];
-      const wrapper = mount(
-        <Section
-          errors={[]}
-          formUuid={formUuid}
-          metadata={metadataClone}
-          obs={[]}
-        />);
-      const instance = wrapper.instance();
-
-      expect(instance.getValue()).to.deep.equal([]);
-    });
-  });
-
-  describe('getError', () => {
-    it('should return errors from child controls', () => {
-      const wrapper = mount(
-        <Section
-          errors={[]}
-          formUuid={formUuid}
-          metadata={metadata}
-          obs={[]}
-        />);
-      const instance = wrapper.instance();
-      const error1 = { errorType: 'error1' };
-      const error2 = { errorType: 'error2' };
-      const error3 = { errorType: 'error3' };
-      instance.childControls = {
-        ref1: { getErrors: () => [error1, error2] },
-        ref2: { getErrors: () => [error3, error1, error2] },
-      };
-
-      expect(instance.getErrors()).to.deep.equal([error1, error2, error3, error1, error2]);
+      const onValueChange = wrapper.find('DummyControl').at(0).props().onValueChanged;
+      onValueChange();
+      sinon.assert.calledOnce(onChangeSpy);
     });
   });
 });
