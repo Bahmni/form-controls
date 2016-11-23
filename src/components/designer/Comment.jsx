@@ -8,8 +8,7 @@ export class CommentDesigner extends Component {
   render() {
     return (
       <div className="fr">
-        <button
-          className="comment-toggle fr">
+        <button className="comment-toggle fr">
             <i className="fa fa-file-o">
               <i className="fa fa-plus-circle" />
             </i>

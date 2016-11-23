@@ -141,7 +141,7 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should call onSelect function passed as prop', () => {
-      expect(wrapper.find('div')).to.have.prop('onClick');
+      expect(wrapper.find('.obs-wrap')).to.have.prop('onClick');
       wrapper.find('input').simulate('click');
       sinon.assert.calledOnce(onSelectSpy);
       sinon.assert.calledWith(onSelectSpy, sinon.match.any, metadata);

@@ -34,7 +34,8 @@ export class Comment extends Component {
     return (
       <div>
         <button
-          className={classNames('comment-toggle', { active: this.state.showCommentSection === true })}
+          className={classNames('comment-toggle',
+           { active: this.state.showCommentSection === true })}
           onClick={() => this.setState({ showCommentSection: !this.state.showCommentSection })}
         >
           <i className="fa fa-file-o">
