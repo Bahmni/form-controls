@@ -117,7 +117,7 @@ describe('ObsControl', () => {
     };
 
     const observation = new Obs(metadata);
-    const wrapper = mount(
+    const wrapper = shallow(
       <ObsControl
         metadata={metadata}
         obs={observation}
@@ -197,5 +197,29 @@ describe('ObsControl', () => {
       />
     );
     expect(wrapper).to.not.have.descendants('Comment');
+  });
+
+  it('should return the obsControl value with comment', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('text'),
+      label,
+      properties,
+    };
+
+    const observation = new Obs(metadata);
+    const wrapper = mount(
+      <ObsControl
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />
+    );
+    const instance = wrapper.instance();
+    instance.onChange(true, []);
+    instance.onCommentChange('');
+    sinon.assert.calledOnce(onChangeSpy.withArgs(observation.setValue(true), []));
   });
 });

@@ -13,11 +13,17 @@ export class ObsControl extends Component {
     this.mapper = new ObsMapper(props.obs);
     this.state = { obs: props.obs };
     this.onChange = this.onChange.bind(this);
+    this.onCommentChange = this.onCommentChange.bind(this);
   }
 
   onChange(value, errors) {
     const updatedObs = this.mapper.setValue(value);
     this.props.onValueChanged(updatedObs, errors);
+  }
+
+  onCommentChange(comment) {
+    const updatedObs = this.mapper.setComment(comment);
+    this.props.onValueChanged(updatedObs);
   }
 
   displayObsControl(registeredComponent) {
@@ -46,8 +52,9 @@ export class ObsControl extends Component {
     const { properties } = this.props.metadata;
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
+      const comment = this.mapper.getComment();
       return (
-        <Comment mapper={this.mapper} />
+        <Comment comment={comment} onCommentChange={this.onCommentChange} />
       );
     }
     return null;

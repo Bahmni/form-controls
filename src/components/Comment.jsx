@@ -9,18 +9,17 @@ export class Comment extends Component {
 
   handleChange(e) {
     const value = e.target.value.trim() !== '' ? e.target.value.trim() : undefined;
-    this.props.mapper.setComment(value);
+    this.props.onCommentChange(value);
   }
 
   showCommentSection() {
     if (this.state.showCommentSection) {
-      const comment = this.props.mapper.getComment();
       return (
         <div className="obs-comment-section-wrap">
           <div className="label-wrap"></div>
           <textarea
             className="obs-comment-section fr"
-            defaultValue={comment}
+            defaultValue={this.props.comment}
             maxLength="255"
             onChange={(e) => this.handleChange(e)}
             placeholder="Notes"
@@ -51,6 +50,7 @@ export class Comment extends Component {
 }
 
 Comment.propTypes = {
-  mapper: PropTypes.object.isRequired,
+  comment: PropTypes.string,
+  onCommentChange: PropTypes.func.isRequired,
 };
 

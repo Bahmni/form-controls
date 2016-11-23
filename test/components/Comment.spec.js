@@ -9,13 +9,10 @@ chai.use(chaiEnzyme());
 
 describe('Comment', () => {
   let wrapper;
-  const mapper = {
-    setComment: sinon.spy(),
-    getComment: sinon.stub(),
-  };
+  const onCommentChange = sinon.spy();
 
   beforeEach(() => {
-    wrapper = shallow(<Comment mapper={mapper} />);
+    wrapper = shallow(<Comment onCommentChange={onCommentChange} />);
   });
 
   it('should render add comment button', () => {
@@ -40,18 +37,17 @@ describe('Comment', () => {
   it('should set comment', () => {
     wrapper.find('button').simulate('click');
     wrapper.find('textarea').simulate('change', { target: { value: 'New Comment' } });
-    sinon.assert.calledOnce(mapper.setComment.withArgs('New Comment'));
+    sinon.assert.calledOnce(onCommentChange.withArgs('New Comment'));
   });
 
   it('should set comment with undefined if filled with empty spaces', () => {
     wrapper.find('button').simulate('click');
     wrapper.find('textarea').simulate('change', { target: { value: '   ' } });
-    sinon.assert.calledOnce(mapper.setComment.withArgs(undefined));
+    sinon.assert.calledOnce(onCommentChange.withArgs(undefined));
   });
 
   it('should render comment section with default value', () => {
-    mapper.getComment.returns('Some Comment');
-    wrapper = shallow(<Comment mapper={mapper} />);
+    wrapper = shallow(<Comment comment={'Some Comment'} onCommentChange={onCommentChange} />);
     wrapper.find('button').simulate('click');
     expect(wrapper.find('textarea').props().defaultValue).to.be.eql('Some Comment');
   });
