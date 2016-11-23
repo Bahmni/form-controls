@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-
+import classNames from 'classnames';
 export class Comment extends Component {
 
   constructor(props) {
@@ -16,13 +16,16 @@ export class Comment extends Component {
     if (this.state.showCommentSection) {
       const comment = this.props.mapper.getComment();
       return (
-        <textarea
-          className="obs-comment-section"
-          defaultValue={comment}
-          maxLength="255"
-          onChange={(e) => this.handleChange(e)}
-          placeholder="Notes"
-        />);
+        <div className="obs-comment-section-wrap">
+          <div className="label-wrap"></div>
+          <textarea
+            className="obs-comment-section fr"
+            defaultValue={comment}
+            maxLength="255"
+            onChange={(e) => this.handleChange(e)}
+            placeholder="Notes"
+          />
+        </div>);
     }
     return null;
   }
@@ -31,7 +34,7 @@ export class Comment extends Component {
     return (
       <div>
         <button
-          className="comment-toggle fr"
+          className={classNames('comment-toggle', { active: this.state.showCommentSection === true })}
           onClick={() => this.setState({ showCommentSection: !this.state.showCommentSection })}
         >
           <i className="fa fa-file-o">

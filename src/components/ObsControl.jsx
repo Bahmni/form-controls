@@ -59,8 +59,10 @@ export class ObsControl extends Component {
     if (registeredComponent) {
       return (
         <div>
-          <Label metadata={label} />
-          {this.markMandatory()}
+          <div className="label-wrap fl">
+            <Label metadata={label} />
+            {this.markMandatory()}
+          </div>
           {this.displayObsControl(registeredComponent)}
           {this.showComment()}
         </div>

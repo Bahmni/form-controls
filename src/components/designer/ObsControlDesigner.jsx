@@ -64,12 +64,14 @@ export class ObsControlDesigner extends Component {
     if (designerComponent) {
       return (
         <div onClick={ (event) => this.props.onSelect(event, metadata) }>
-          <LabelDesigner
-            metadata={ this.props.metadata.label }
-            onSelect={ (event) => this.props.onSelect(event, metadata) }
-            ref={ this.storeLabelRef }
-          />
-          {this.markMandatory()}
+          <div className="label-wrap fl">
+            <LabelDesigner
+              metadata={ this.props.metadata.label }
+              onSelect={ (event) => this.props.onSelect(event, metadata) }
+              ref={ this.storeLabelRef }
+            />
+            {this.markMandatory()}
+          </div>
           {this.displayObsControl(designerComponent)}
           {this.showComment()}
         </div>

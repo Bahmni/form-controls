@@ -2,20 +2,26 @@
   display: inline-block;
   button {
     margin: 0 2px 2px 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     text-align: center;
     height: 32px;
-    width: 78px;
+    width: auto;
     text-align: center;
+    padding-left: 25px;
+    padding-right: 25px;
     i.fa-ok {
       display: none;
+      padding-top: 0;
+      padding-bottom: 0;
+      font-size: 14px;
+      line-height: inherit;
     }
     &.active {
+      color: #457FAC;
+      padding-left: 3px;
+      background: #d8d8d8;
+      border-color: #d0d0d0;
       i.fa-ok {
-        display: block;
-        float: left;
+        display: inline-block;
       }
     }
   }
