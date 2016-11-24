@@ -21,13 +21,12 @@ export class Validator {
 
   static allowRange(value, params) {
     const error = { errorType: constants.validations.allowRange };
-
     if (isUndefined(value)) return undefined;
 
-    if ((params.minNormal && value < params.minNormal)) {
+    if ((params.minNormal && value < Number.parseInt(params.minNormal, 10))) {
       return error;
     }
-    if ((params.maxNormal && value > params.maxNormal)) {
+    if ((params.maxNormal && value > Number.parseInt(params.maxNormal, 10))) {
       return error;
     }
 

@@ -100,4 +100,27 @@ describe('Concept', () => {
       },
     });
   });
+
+  it('should retrieve the setMembers of a concept', () => {
+    const concept = new Concept(abnormalConcept);
+    const members = concept.getSetMembers();
+    expect(members.length).to.be.eql(2);
+    expect(members[0]).to.be.eql({
+      name: 'Pulse',
+      uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+      datatype: 'Numeric',
+      properties: {
+        allowDecimal: true,
+      },
+    });
+
+    expect(members[1]).to.be.eql({
+      name: 'Pulse Abnormal',
+      uuid: 'c36c7c98-3f10-11e4-adec-0800271c1b75',
+      datatype: 'Boolean',
+      properties: {
+        allowDecimal: null,
+      },
+    });
+  });
 });

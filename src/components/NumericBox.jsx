@@ -3,11 +3,13 @@ import 'src/helpers/componentStore';
 import { Validator } from 'src/helpers/Validator';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import constants from 'src/constants';
 
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
     this.state = { hasErrors: false };
+    this.defaultValidations = [constants.validations.allowRange];
   }
 
   componentWillReceiveProps(nextProps) {

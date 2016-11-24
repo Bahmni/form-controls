@@ -21,7 +21,7 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { displayType, errors, options, validations } = this.props;
+    const { displayType, validate, options, validations } = this.props;
     const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
       const initialValue = this.props.value;

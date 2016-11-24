@@ -30,9 +30,8 @@ export default class Row extends Component {
 
 Row.propTypes = {
   controls: PropTypes.array.isRequired,
-  formUuid: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
-  observations: PropTypes.array.isRequired,
+  observations: PropTypes.any.isRequired,
   onValueChanged: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
 };

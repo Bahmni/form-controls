@@ -24,11 +24,20 @@ export class Concept {
     return this._getConcept(this.concept);
   }
 
+  _getSetMembers(concept) {
+    if (concept && concept.set) {
+      return concept.setMembers.map(c => this._getConcept(c));
+    }
+    return undefined;
+  }
+
   _getConcept(concept) {
     return {
       name: concept.name.name,
       uuid: concept.uuid,
       datatype: concept.datatype.name,
+      set: concept.set,
+      setMembers: this._getSetMembers(concept),
       properties: {
         allowDecimal: concept.allowDecimal,
       },

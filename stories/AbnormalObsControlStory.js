@@ -45,8 +45,8 @@ const metadata = {
         uuid: 'pulseUuid',
         datatype: 'Numeric',
         conceptClass: 'Misc',
-        lowNormal: 60,
-        hiNormal: 120,
+        lowNormal: '60',
+        hiNormal: '120',
       },
     },
     {
@@ -95,6 +95,7 @@ storiesOf('Abnormal ObsControl', module)
       metadata={metadata}
       obs={ pulseDataObs }
       onValueChanged={(obs, errors) => console.log(obs, errors)}
+      validate= { false }
     />
   ));
 
