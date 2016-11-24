@@ -4,6 +4,7 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { AutoComplete } from '../../src/components/AutoComplete.jsx';
 import sinon from 'sinon';
+import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
@@ -23,9 +24,9 @@ describe('AutoComplete', () => {
   }];
 
   const options = [
-    { value: 'one', label: 'One' },
-    { value: 'two', label: 'Two' },
-    { value: 'three', label: 'Three' },
+    { name: 'one', value: 'One' },
+    { name: 'two', value: 'Two' },
+    { name: 'three', value: 'Three' },
   ];
 
   context('when component is asynchronous', () => {
@@ -33,7 +34,7 @@ describe('AutoComplete', () => {
       const wrapper = mount(<AutoComplete />);
       expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
       expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
-      expect(wrapper.find('Select').props().minimumInput).to.be.eql(3);
+      expect(wrapper.find('Select').props().minimumInput).to.be.eql(2);
       expect(wrapper.find('Select').props().disabled).to.be.eql(false);
     });
 
@@ -64,8 +65,8 @@ describe('AutoComplete', () => {
       const wrapper = mount(<AutoComplete asynchronous={false} options={options} />);
       expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
       expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
-      expect(wrapper.find('Select').props().minimumInput).to.be.eql(3);
-      expect(wrapper.find('Select').props().options).to.be.eql(options);
+      expect(wrapper.find('Select').props().minimumInput).to.be.eql(2);
+      expect(wrapper.find('Select').props().options).to.be.eql([]);
     });
 
     it('should render AutoComplete with default value', () => {
@@ -75,14 +76,16 @@ describe('AutoComplete', () => {
           options={options}
           value={[options[0]]}
         />);
-      expect(wrapper.find('Select').props().options).to.be.eql(options);
+      expect(wrapper.find('Select').props().options).to.be.eql([]);
       expect(wrapper.find('Select').props().value).to.be.eql(options[0]);
     });
 
     it('should return the selected value from the AutoComplete', () => {
+      const onSelectSpy = sinon.spy();
       const wrapper = mount(
         <AutoComplete
           asynchronous={false}
+          onValueChange={onSelectSpy}
           options={options}
         />);
 
@@ -93,16 +96,16 @@ describe('AutoComplete', () => {
     });
 
     it('should call onSelect method of props on change', () => {
-      const onSelectSpy = sinon.spy();
+      const onValueChange = sinon.spy();
       const wrapper = mount(
         <AutoComplete
           asynchronous={false}
-          onSelect={onSelectSpy}
+          onValueChange={onValueChange}
           options={options}
         />);
       const onChange = wrapper.find('Select').props().onChange;
       onChange(options[0]);
-      sinon.assert.calledOnce(onSelectSpy.withArgs(options[0]));
+      sinon.assert.calledOnce(onValueChange.withArgs(options[0], []));
     });
 
     it('should change value on change of props', () => {
@@ -126,6 +129,48 @@ describe('AutoComplete', () => {
           value={[options[0]]}
         />);
       expect(wrapper.find('Select').props().disabled).to.be.eql(true);
+    });
+
+    it('should run the validations for autoComplete', () => {
+      const onValueChange = sinon.spy();
+      const validations = [constants.validations.mandatory];
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          onValueChange={onValueChange}
+          options={options}
+          validations={validations}
+          value={[options[0]]}
+        />);
+
+      const onChange = wrapper.find('Select').props().onChange;
+      onChange(undefined);
+      sinon.assert.calledOnce(onValueChange.withArgs(undefined,
+        [{ errorType: constants.validations.mandatory }]));
+    });
+
+    it('should test onInputChange', () => {
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          options={options}
+          validations={[]}
+          value={[options[0]]}
+        />);
+      const instance = wrapper.instance();
+      expect(instance.state.options.length).to.eql(0);
+      expect(instance.state.noResultsText).to.eql('');
+
+      wrapper.find('input').simulate('change', { target: { value: 'aa' } });
+      expect(instance.state.options.length).to.eql(3);
+      expect(instance.state.noResultsText).to.eql('No Results Found');
+
+      wrapper.find('input').simulate('change', { target: { value: 'a' } });
+      expect(instance.state.options.length).to.eql(0);
+      expect(instance.state.noResultsText).to.eql('Type to search');
+
+      wrapper.find('input').simulate('change', { target: { value: 'akkk' } });
+      expect(instance.state.noResultsText).to.eql('No Results Found');
     });
   });
 });

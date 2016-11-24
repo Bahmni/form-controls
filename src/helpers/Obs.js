@@ -22,6 +22,9 @@ export class Obs extends ImmutableObs {
   }
 
   isDirty(value) {
+    if (typeof (this.get('value')) === 'object') {
+      return this.get('value').uuid !== value.uuid;
+    }
     return this.get('value') !== value;
   }
 
@@ -41,7 +44,7 @@ export class Obs extends ImmutableObs {
   }
 
   void() {
-    return this.set('voided', true).set('value', undefined);
+    return this.set('voided', true);
   }
 
   isVoided() {

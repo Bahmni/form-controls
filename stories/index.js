@@ -10,9 +10,12 @@ import { BooleanControl } from 'src/components/BooleanControl.jsx';
 import { Button } from 'src/components/Button.jsx';
 import { RadioButton } from 'src/components/RadioButton.jsx';
 import { NumericBox } from 'src/components/Button.jsx';
+import { CodedControl } from 'src/components/CodedControl.jsx';
+import { AutoComplete } from 'src/components/AutoComplete.jsx';
 import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
 import { ControlState, ControlRecord } from '../src/ControlState';
+import '../node_modules/react-select/dist/react-select.css';
 
 
 const obsList = [
@@ -88,7 +91,7 @@ const form = {
           value: false,
         },
       ],
-      displayType: 'radio',
+      displayType: 'button',
       type: 'obsControl',
       label: {
         type: 'label',
@@ -110,6 +113,41 @@ const form = {
         properties: {
           allowDecimal: null,
         },
+      },
+    },
+    {
+      displayType: 'autoComplete',
+      type: 'obsControl',
+      label: {
+        type: 'label',
+        value: 'Coded concept',
+      },
+      properties: {
+        mandatory: true,
+        notes: false,
+        autoComplete: true,
+        location: {
+          column: 0,
+          row: 0,
+        },
+      },
+      id: '5',
+      concept: {
+        name: 'Coded concept',
+        uuid: 'c2a43174-c990-4e54-8516-17372c83537f',
+        datatype: 'Coded',
+        answers: [
+          {
+            display: 'Answer1',
+            name: { name: 'Answer1' },
+            uuid: 'answer1uuid',
+          },
+          {
+            display: 'Answer2',
+            name: { name: 'Answer2' },
+            uuid: 'answer2uuid',
+          },
+        ],
       },
     },
   ],
@@ -155,7 +193,7 @@ storiesOf('ObsControl', module)
       errors={[]}
       formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
       metadata={form.controls[2]}
-      obs={new Obs({ concept: form.controls[2].concept })}
+      obs={ new Obs({ concept: form.controls[2].concept })}
       onValueChanged={(obs, errors) => console.log(obs, errors)}
     />
   ));
@@ -182,3 +220,18 @@ storiesOf('ControlState', module)
 .add('demo state', () =>
     <DummyClass />
 );
+
+storiesOf('ObsControl', module)
+  .add('Coded Obs Control', () => (
+    <ObsControl
+      errors={[]}
+      formUuid={'fbc5d897-6404-4cc1-90a3-47fde7a98026'}
+      metadata={form.controls[3]}
+      obs={new Obs({ concept: form.controls[3].concept, value:{
+         display: 'Answer1',
+         name: { name: 'Answer1' },
+         uuid: 'answer1uuid',
+      } })}
+      onValueChanged={(obs, errors) => console.log(obs, errors)}
+    />
+  ));

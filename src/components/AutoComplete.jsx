@@ -3,6 +3,10 @@ import Select from 'react-select';
 import { httpInterceptor } from 'src/helpers/httpInterceptor';
 import 'src/helpers/componentStore';
 import get from 'lodash/get';
+import { Validator } from 'src/helpers/Validator';
+import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
+
 
 export class AutoComplete extends Component {
   constructor(props) {
@@ -13,13 +17,24 @@ export class AutoComplete extends Component {
     this.getValue = this.getValue.bind(this);
     this.getOptions = this.getOptions.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
-    this.state = { value: this.getValueFromProps(props) };
+    this.state = {
+      value: this.getValueFromProps(props),
+      hasErrors: false,
+      options: [],
+      noResultsText: '',
+    };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ value: this.getValueFromProps(nextProps) });
+  }
+
+  componentWillUpdate(nextState) {
+    return !isEqual(this.state.options, nextState.options)
+      || this.state.hasErrors !== nextState.hasErrors;
   }
 
   getValueFromProps(props) {
@@ -49,9 +64,10 @@ export class AutoComplete extends Component {
   }
 
   handleChange(value) {
-    this.setState({ value });
-    if (this.props.onSelect) {
-      this.props.onSelect(value);
+    const errors = this._getErrors(value);
+    this.setState({ value, hasErrors: this._hasErrors(errors) });
+    if (this.props.onValueChange) {
+      this.props.onValueChange(value, errors);
     }
   }
 
@@ -65,9 +81,29 @@ export class AutoComplete extends Component {
     }
   }
 
+  _getErrors(value) {
+    const validations = this.props.validations;
+    const controlDetails = { validations, value };
+    return Validator.getErrors(controlDetails);
+  }
+
+  _hasErrors(errors) {
+    return !isEmpty(errors);
+  }
+
+  onInputChange(input) {
+    if (input.length >= this.props.minimumInput) {
+      this.setState({ options: this.props.options });
+      this.setState({ noResultsText: 'No Results Found' });
+      return;
+    }
+    this.setState({ noResultsText: 'Type to search' });
+    this.setState({ options: [] });
+  }
+
   render() {
     const { autofocus, disabled, labelKey, valueKey,
-                  asynchronous, options, multi, minimumInput } = this.props;
+                  asynchronous, multi, minimumInput } = this.props;
     const props = {
       autofocus,
       backspaceRemoves: false,
@@ -94,7 +130,10 @@ export class AutoComplete extends Component {
     }
     return (
       <div className="obs-control-select-wrapper">
-        <Select { ...props } options={ options } />
+        <Select { ...props }
+          noResultsText={this.state.noResultsText}
+          onInputChange={this.onInputChange}
+          options={ this.state.options } />
       </div>
     );
   }
@@ -107,23 +146,43 @@ AutoComplete.propTypes = {
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
   multi: PropTypes.bool,
-  onSelect: PropTypes.func,
+  onValueChange: PropTypes.func,
   options: PropTypes.array,
   optionsUrl: PropTypes.string,
-  value: PropTypes.array,
+  validations: PropTypes.array,
+  value: PropTypes.any,
   valueKey: PropTypes.string,
 };
 
 AutoComplete.defaultProps = {
   asynchronous: true,
-  autofocus: true,
+  autofocus: false,
   disabled: false,
   labelKey: 'display',
-  minimumInput: 3,
+  minimumInput: 2,
   multi: false,
   optionsUrl: '/openmrs/ws/rest/v1/concept?v=full&q=',
   valueKey: 'uuid',
 };
+
+const descriptor = {
+  control: AutoComplete,
+  designProperties: {
+    isTopLevelComponent: false,
+  },
+  metadata: {
+    attributes: [
+      {
+        name: 'properties',
+        dataType: 'complex',
+        attributes: [],
+      },
+    ],
+  },
+};
+
+
+window.componentStore.registerDesignerComponent('autoComplete', descriptor);
 
 window.componentStore.registerComponent('autoComplete', AutoComplete);
 

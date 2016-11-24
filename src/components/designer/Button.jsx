@@ -4,11 +4,11 @@ import map from 'lodash/map';
 
 export class ButtonDesigner extends Component {
   getJsonDefinition() {
-    return this.props.metadata;
+    return this.props.options;
   }
 
   displayButtons() {
-    return map(this.props.metadata.options, (option, index) =>
+    return map(this.props.options, (option, index) =>
       <button key={index}>{option.name}</button>
     );
   }
@@ -19,14 +19,7 @@ export class ButtonDesigner extends Component {
 }
 
 ButtonDesigner.propTypes = {
-  metadata: PropTypes.shape({
-    concept: PropTypes.object.isRequired,
-    displayType: PropTypes.string,
-    id: PropTypes.string.isRequired,
-    options: PropTypes.array.isRequired,
-    properties: PropTypes.object.isRequired,
-    type: PropTypes.string,
-  }),
+  options: PropTypes.array.isRequired,
 };
 
 const descriptor = {

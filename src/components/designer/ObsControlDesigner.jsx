@@ -103,6 +103,7 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
     name: concept.name.name,
     uuid: concept.uuid,
     datatype: concept.datatype.name,
+    answers: concept.answers,
     properties: {
       allowDecimal: concept.allowDecimal,
     },

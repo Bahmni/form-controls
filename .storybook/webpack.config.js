@@ -18,7 +18,7 @@ module.exports = {
     loaders: [
       // add your custom loaders.
       {
-        test: /\.scss$/,
+        test: /\.(scss|css)$/,
         loaders: ["style", "css", "sass"]
       }
     ],

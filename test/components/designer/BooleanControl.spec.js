@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
@@ -6,25 +6,12 @@ import { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';
 
 chai.use(chaiEnzyme());
 
-class DummyRadioControl extends Component {
-  getJsonDefinition() {
-    return { name: 'someDummyName' };
-  }
-
-  render() {
-    return <input />;
-  }
-}
-
-DummyRadioControl.propTypes = {
-  metadata: PropTypes.any,
-};
-
-
 describe('Boolean Control Designer', () => {
+
+  const DummyControl = () => <input />;
   let metadata;
   before(() => {
-    window.componentStore.registerDesignerComponent('button', { control: DummyRadioControl });
+    window.componentStore.registerDesignerComponent('button', { control: DummyControl });
   });
 
   after(() => {
@@ -50,32 +37,34 @@ describe('Boolean Control Designer', () => {
 
   it('should render Dummy Control with default options', () => {
     const wrapper = shallow(<BooleanControlDesigner metadata={metadata} />);
-    const expectedMetadata = Object.assign({}, { options, displayType: 'button' }, metadata);
 
-    expect(wrapper).to.have.exactly(1).descendants('DummyRadioControl');
-    expect(wrapper.find('DummyRadioControl').props().metadata).to.deep.eql(expectedMetadata);
+    expect(wrapper).to.have.exactly(1).descendants('DummyControl');
+    expect(wrapper.find('DummyControl').props().options).to.deep.eql(options);
   });
 
   it('should return null when registered component not found', () => {
-    metadata.displayType = 'somethingRandom';
+    window.componentStore.deRegisterDesignerComponent('button');
+
     const wrapper = shallow(<BooleanControlDesigner metadata={metadata} />);
     expect(wrapper).to.be.blank();
+
+    window.componentStore.registerDesignerComponent('button', { control: DummyControl });
   });
 
   it('should return the JSON Definition', () => {
+    const expectedMetadata = Object.assign({}, metadata, { options });
     const wrapper = mount(<BooleanControlDesigner metadata={metadata} />);
     const instance = wrapper.instance();
-    expect(instance.getJsonDefinition()).to.deep.eql({ name: 'someDummyName' });
+    expect(instance.getJsonDefinition()).to.deep.eql(expectedMetadata);
   });
 
-  it('should should override default options', () => {
+  it('should override default options', () => {
     metadata.options = [
       { name: 'Ha', value: 'Yes' },
       { name: 'Na', value: 'No' },
     ];
 
     const wrapper = shallow(<BooleanControlDesigner metadata={metadata} />);
-    const expectedMetadata = Object.assign({}, { options, displayType: 'button' }, metadata);
-    expect(wrapper.find('DummyRadioControl').props().metadata).to.deep.eql(expectedMetadata);
+    expect(wrapper.find('DummyControl').props().options).to.deep.eql(metadata.options);
   });
 });
