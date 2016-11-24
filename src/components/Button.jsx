@@ -4,13 +4,14 @@ import map from 'lodash/map';
 import classNames from 'classnames';
 import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 
 export class Button extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: props.value, hasErrors: false };
+    const value = props.value ? props.value.value : undefined;
+    this.state = { value, hasErrors: false };
   }
-
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate) {
@@ -20,9 +21,8 @@ export class Button extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.value !== nextProps.value ||
-        this.state.value !== nextState.value ||
-      this.state.hasErrors !== nextState.hasErrors) {
+    if (!isEqual(this.props.value, nextProps.value) ||
+      !isEqual(this.state.value, nextState.value)) {
       return true;
     }
     return false;
@@ -36,7 +36,7 @@ export class Button extends Component {
   }
 
   changeValue(valueSelected) {
-    const value = this.state.value === valueSelected ? undefined : valueSelected;
+    const value = this.state.value === valueSelected.value ? undefined : valueSelected.value;
     const errors = this._getErrors(value);
     this.setState({ value, hasErrors: this._hasErrors(errors) });
     this.props.onValueChange(value, errors);
@@ -57,7 +57,7 @@ export class Button extends Component {
       <button
         className={classNames('fl', { active: this.state.value === option.value })}
         key={index}
-        onClick={() => this.changeValue(option.value)}
+        onClick={() => this.changeValue(option)}
       >
         <i className="fa fa-ok"></i>{option.name}
       </button>

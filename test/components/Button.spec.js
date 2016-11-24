@@ -9,7 +9,7 @@ import constants from 'src/constants';
 chai.use(chaiEnzyme());
 
 describe('Button Component', () => {
-  const value = true;
+  const value = { name: 'yes', value: true };
   const options = [
     { name: 'Yes', value: true },
     { name: 'No', value: false },
@@ -110,7 +110,7 @@ describe('Button Component', () => {
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
     expect(wrapper.find('button').at(1)).to.have.className('fl');
 
-    wrapper.setProps({ value: true });
+    wrapper.setProps({ value: { name: 'yes', value: true } });
 
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
     expect(wrapper.find('button').at(1)).to.have.className('fl');

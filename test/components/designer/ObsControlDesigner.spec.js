@@ -44,6 +44,7 @@ describe('ObsControlDesigner', () => {
         datatype: 'someDatatype',
         uuid: 'someUuid',
         properties: { allowDecimal: false },
+        answers: undefined,
       },
       label: {
         type: 'label',

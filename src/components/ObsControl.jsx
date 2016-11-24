@@ -28,10 +28,11 @@ export class ObsControl extends Component {
 
   displayObsControl(registeredComponent) {
     const { metadata, validate } = this.props;
+    const options = metadata.options || metadata.concept.answers;
     const validations = getValidations(metadata.properties);
     return React.createElement(registeredComponent, {
-      displayType: metadata.displayType,
-      options: metadata.options,
+      properties: metadata.properties,
+      options,
       onChange: this.onChange,
       validate,
       validations,

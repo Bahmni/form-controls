@@ -64,6 +64,51 @@ describe('ObsControl', () => {
     expect(wrapper).to.have.exactly(1).descendants('input');
 
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql([]);
+    expect(wrapper.find('DummyControl')).not.to.have.prop('options');
+  });
+
+  it('should render child control with options when metadata has options', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Text'),
+      label,
+      properties,
+      options: [],
+    };
+
+    const observation = new Obs(metadata);
+    const wrapper = mount(
+      <ObsControl
+        errors={[]}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />);
+
+    expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql([]);
+  });
+
+  it('should render child control with options when concept has answers', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Text'),
+      label,
+      properties,
+    };
+    metadata.concept.answers = [];
+
+    const observation = new Obs(metadata);
+    const wrapper = mount(
+      <ObsControl
+        errors={[]}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+      />);
+
+    expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql([]);
   });
 
   it('should mark mandatory if mandatory property is true', () => {

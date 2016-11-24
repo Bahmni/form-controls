@@ -2,33 +2,18 @@ import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 
 export class BooleanControlDesigner extends Component {
-  constructor() {
-    super();
-    this.childControl = undefined;
-    this.storeChildRef = this.storeChildRef.bind(this);
-  }
-
   getJsonDefinition() {
-    return this.childControl.getJsonDefinition();
-  }
-
-  storeChildRef(ref) {
-    this.childControl = ref;
+    return this.updatedMetadata;
   }
 
   render() {
-    const defaultOptions = [
-      { name: 'Yes', value: true },
-      { name: 'No', value: false },
-    ];
-    const { metadata, metadata: { displayType = 'button' } } = this.props;
-    const metadataWithOptions =
-      Object.assign({}, { options: defaultOptions, displayType }, metadata);
-    const registeredComponent = window.componentStore.getDesignerComponent(displayType);
+    const defaultOptions = [{ name: 'Yes', value: true }, { name: 'No', value: false }];
+    const { metadata, metadata: { options = defaultOptions } } = this.props;
+    this.updatedMetadata = Object.assign({}, { options }, metadata);
+    const registeredComponent = window.componentStore.getDesignerComponent('button');
     if (registeredComponent) {
       return React.createElement(registeredComponent.control, {
-        metadata: metadataWithOptions,
-        ref: this.storeChildRef,
+        options,
       });
     }
     return null;
@@ -38,7 +23,6 @@ export class BooleanControlDesigner extends Component {
 BooleanControlDesigner.propTypes = {
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
-    displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     options: PropTypes.array,
     properties: PropTypes.object,

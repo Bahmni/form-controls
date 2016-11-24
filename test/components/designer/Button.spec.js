@@ -8,7 +8,6 @@ chai.use(chaiEnzyme());
 
 describe('Button Designer', () => {
   let wrapper;
-  let metadata;
 
   const options = [
     { name: 'Yes', value: true },
@@ -16,19 +15,7 @@ describe('Button Designer', () => {
   ];
 
   beforeEach(() => {
-    metadata = {
-      concept: {
-        name: 'Pulse',
-        uuid: 'someUuid',
-        datatype: 'boolean',
-      },
-      displayType: 'button',
-      type: 'obsControl',
-      id: 'someId',
-      options,
-      properties: {},
-    };
-    wrapper = shallow(<ButtonDesigner metadata={metadata} />);
+    wrapper = shallow(<ButtonDesigner options={options} />);
   });
 
   it('should render designer button', () => {
@@ -40,6 +27,6 @@ describe('Button Designer', () => {
 
   it('should return json definition', () => {
     const instance = wrapper.instance();
-    expect(instance.getJsonDefinition()).to.deep.eql(metadata);
+    expect(instance.getJsonDefinition()).to.deep.eql(options);
   });
 });
