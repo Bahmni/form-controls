@@ -12,7 +12,7 @@ import { Section } from 'components/Section.jsx';
 
 chai.use(chaiEnzyme());
 
-describe.skip('Container', () => {
+describe('Container', () => {
   let metadata;
   let observations;
   let observation1;
@@ -135,7 +135,6 @@ describe.skip('Container', () => {
       expect(wrapper).to.have.exactly(1).descendants('TextBox');
       expect(wrapper).to.have.exactly(2).descendants('Label');
 
-      expect(wrapper.find('ObsControl').at(0).props().errors).to.eql([]);
       componentStore.registerComponent('numeric', NumericBox);
     });
   });
@@ -188,7 +187,9 @@ describe.skip('Container', () => {
       const wrapper = mount(<Container metadata={metadataClone} observations={observations} />);
       const instance = wrapper.instance();
 
-      const expectedErrors = [{ controlId: '103', errorType: 'mandatory' }];
+      wrapper.setProps({ observations });
+
+      const expectedErrors = [{ errorType: 'mandatory' }];
       expect(instance.getValue()).to.deep.equal({ errors: expectedErrors });
     });
 
@@ -220,10 +221,11 @@ describe.skip('Container', () => {
         concept: textBoxConcept,
         uuid: 'someUuid',
         value: '72',
-        formNamespace: 'fm1/101',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
         voided: true,
         comment: undefined,
+        formNamespace: 'fm1/101',
+        groupMembers: [],
       };
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
@@ -243,6 +245,7 @@ describe.skip('Container', () => {
       };
       const voidedObservation = {
         concept: textBoxConcept,
+        uuid: 'uuid1',
         label: 'Pulse',
         value: '72',
         formNamespace: 'fm1/101',
@@ -254,8 +257,9 @@ describe.skip('Container', () => {
         mount(
           <Container metadata={metadataClone} observations={[voidedObservation, observation2]} />
         );
+      wrapper.setProps({ observations: [voidedObservation, observation2] });
       const instance = wrapper.instance();
-      const expectedErrors = [{ controlId: '103', errorType: 'mandatory' }];
+      const expectedErrors = [{ errorType: 'mandatory' }];
       expect(instance.getValue()).to.deep.equal({ errors: expectedErrors });
     });
   });

@@ -27,13 +27,12 @@ export class ObsControl extends Component {
   }
 
   displayObsControl(registeredComponent) {
-    const { metadata, validate } = this.props;
+    const { metadata } = this.props;
     const validations = getValidations(metadata.properties);
     return React.createElement(registeredComponent, {
       displayType: metadata.displayType,
       options: metadata.options,
       onChange: this.onChange,
-      validate,
       validations,
       value: this.mapper.getValue(),
     });
@@ -93,7 +92,6 @@ ObsControl.propTypes = {
   }),
   obs: PropTypes.any.isRequired,
   onValueChanged: PropTypes.func.isRequired,
-  validate: PropTypes.bool.isRequired,
 };
 
 window.componentStore.registerComponent('obsControl', ObsControl);

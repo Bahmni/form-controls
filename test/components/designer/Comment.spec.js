@@ -6,7 +6,7 @@ import { CommentDesigner } from 'components/designer/Comment.jsx';
 
 chai.use(chaiEnzyme());
 
-describe('CommentDesigner', () => {
+describe.skip('CommentDesigner', () => {
   let wrapper;
 
   beforeEach(() => {

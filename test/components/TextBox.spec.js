@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { TextBox } from 'src/components/TextBox.jsx';
@@ -21,7 +21,7 @@ describe('TextBox', () => {
 
   it('should render TextBox', () => {
     const wrapper = shallow(
-      <TextBox onChange={onChangeSpy} validate={false} validations={[]} />
+      <TextBox onChange={ onChangeSpy } validations={ [] } />
     );
     expect(wrapper).to.have.descendants('textarea');
     expect(wrapper.find('textarea').props().defaultValue).to.eql(undefined);
@@ -29,14 +29,14 @@ describe('TextBox', () => {
 
   it('should render TextBox with default value', () => {
     const wrapper = shallow(
-      <TextBox onChange={onChangeSpy} validate={false} validations={[]} value={'defaultText'} />
+      <TextBox onChange={ onChangeSpy } validations={ [] } value={'defaultText'} />
     );
     expect(wrapper.find('textarea').props().defaultValue).to.be.eql('defaultText');
   });
 
   it('should get user entered value of the text box', () => {
     const wrapper = shallow(
-      <TextBox onChange={onChangeSpy} validate={false} validations={[]} value={'defalutText'} />
+      <TextBox onChange={ onChangeSpy } validations={ [] } value={'defalutText'} />
     );
     wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
 
@@ -45,7 +45,7 @@ describe('TextBox', () => {
 
   it('should return undefined when value is empty string', () => {
     const wrapper = shallow(
-      <TextBox onChange={onChangeSpy} validate={false} validations={[]} />
+      <TextBox onChange={ onChangeSpy } validations={ [] } />
     );
     wrapper.find('textarea').simulate('change', { target: { value: '  ' } });
 
@@ -58,9 +58,8 @@ describe('TextBox', () => {
     const wrapper = shallow(
       <TextBox
         onChange={onChangeSpy}
-        validate={false}
         validations={validations}
-        value={'defalutText'}
+        value={'defaultText'}
       />
     );
     wrapper.find('textarea').simulate('change', { target: { value: undefined } });
@@ -68,18 +67,22 @@ describe('TextBox', () => {
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 
-  it('should render validate text box when validate is set to true', () => {
-    const validations = [constants.validations.mandatory];
+  it('should throw error on fail of validations during component update', () => {
+    const onChangeMockObj = { onChange: () => {}};
+    const onChangeMock = sinon.mock(onChangeMockObj);
 
-    const wrapper = shallow(
+    const validations = [constants.validations.mandatory];
+    onChangeMock.expects('onChange').once().withArgs(undefined, [{ errorType: validations[0] }]);
+
+    const wrapper = mount(
       <TextBox
-        onChange={onChangeSpy}
-        validate={false}
+        onChange={onChangeMockObj.onChange}
         validations={validations}
-        value={'defalutText'}
+        value={'defaultText'}
       />
     );
-    wrapper.setProps({ validate: true, value: undefined });
+    wrapper.setProps({ value: undefined });
+    onChangeMock.verify();
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 
@@ -87,7 +90,6 @@ describe('TextBox', () => {
     const wrapper = shallow(
       <TextBox
         onChange={onChangeSpy}
-        validate={false}
         validations={[]}
         value={'defalutText'}
       />

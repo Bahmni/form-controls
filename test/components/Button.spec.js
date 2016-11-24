@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Button } from 'components/Button.jsx';
@@ -23,7 +23,7 @@ describe('Button Component', () => {
 
   it('should render button component', () => {
     const wrapper = shallow(
-      <Button onValueChange={valueChangeSpy} options={options} validate={false} validations={[]} />
+      <Button onValueChange={valueChangeSpy} options={options} validations={[]} />
     );
     expect(wrapper).to.have.exactly(2).descendants('button');
 
@@ -41,7 +41,6 @@ describe('Button Component', () => {
      <Button
        onValueChange={valueChangeSpy}
        options={options}
-       validate={false}
        validations={[]}
        value={value}
      />
@@ -55,7 +54,6 @@ describe('Button Component', () => {
       <Button
         onValueChange={valueChangeSpy}
         options={options}
-        validate={false}
         validations={[]}
         value={value}
       />
@@ -71,7 +69,7 @@ describe('Button Component', () => {
 
   it('should change the value to undefined if double clicked', () => {
     const wrapper = shallow(
-      <Button onValueChange={valueChangeSpy} options={options} validate={false} validations={[]} />
+      <Button onValueChange={valueChangeSpy} options={options} validations={[]} />
     );
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(valueChangeSpy.withArgs(false, []));
@@ -86,7 +84,6 @@ describe('Button Component', () => {
       <Button
         onValueChange={valueChangeSpy}
         options={options}
-        validate={false}
         validations={validations}
       />
     );
@@ -102,7 +99,6 @@ describe('Button Component', () => {
       <Button
         onValueChange={valueChangeSpy}
         options={options}
-        validate={false}
         validations={[]}
         value={value}
       />
@@ -116,18 +112,23 @@ describe('Button Component', () => {
     expect(wrapper.find('button').at(1)).to.have.className('fl');
   });
 
-  it('should validate Button when validate is set to true', () => {
+  it('should validate Button when component updates', () => {
     const validations = [constants.validations.mandatory];
-    const wrapper = shallow(
+    const onChangeMockObj = { onValueChange: () => {} };
+    const onChangeMock = sinon.mock(onChangeMockObj);
+    onChangeMock.expects('onValueChange').once().withArgs(undefined, [{errorType: 'mandatory'}])
+    const wrapper = mount(
       <Button
-        onValueChange={valueChangeSpy}
+        onValueChange={onChangeMockObj.onValueChange}
         options={options}
-        validate={false}
         validations={validations}
         value
       />
     );
-    wrapper.setProps({ validate: true, value: undefined });
-    expect(wrapper).to.have.className('form-control-buttons form-builder-error');
+    wrapper.setState({ value: undefined, hasErrors: true });
+
+    onChangeMock.verify();
+    expect(wrapper).to.have.className('form-control-buttons');
+    expect(wrapper).to.have.className('form-builder-error');
   });
 });

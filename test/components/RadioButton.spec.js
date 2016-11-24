@@ -26,7 +26,6 @@ describe('RadioButton Component', () => {
       <RadioButton
         onValueChange={valueChangeSpy}
         options={options}
-        validate={false}
         validations={[]}
       />
     );
@@ -48,7 +47,6 @@ describe('RadioButton Component', () => {
       <RadioButton
         onValueChange={valueChangeSpy}
         options={options}
-        validate={false}
         validations={[]}
         value={value}
       />
@@ -62,7 +60,6 @@ describe('RadioButton Component', () => {
       <RadioButton
         onValueChange={valueChangeSpy}
         options={options}
-        validate={false}
         validations={[]}
       />
     );
@@ -75,12 +72,11 @@ describe('RadioButton Component', () => {
       <RadioButton
         onValueChange={valueChangeSpy}
         options={options}
-        validate={false}
         validations={[constants.validations.mandatory]}
         value={value}
       />
     );
-    wrapper.setProps({ validate: true, value: undefined });
+    wrapper.setProps({ value: undefined });
     expect(wrapper).to.have.className('form-builder-error');
   });
 
@@ -89,7 +85,6 @@ describe('RadioButton Component', () => {
       <RadioButton
         onValueChange={valueChangeSpy}
         options={options}
-        validate={false}
         validations={[]}
         value={value}
       />

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, {Component, PropTypes} from 'react';
 import 'src/helpers/componentStore';
 import map from 'lodash/map';
 import classNames from 'classnames';
@@ -12,10 +12,8 @@ export class RadioButton extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.validate) {
-      const errors = this._getErrors(nextProps.value);
-      this.setState({ hasErrors: this._hasErrors(errors) });
-    }
+    const errors = this._getErrors(nextProps.value);
+    this.setState({hasErrors: this._hasErrors(errors)});
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -26,6 +24,14 @@ export class RadioButton extends Component {
     }
     return false;
   }
+
+  componentDidUpdate() {
+    const errors = this._getErrors(this.state.value);
+    if (this._hasErrors(errors)) {
+      this.props.onValueChange(this.state.value, errors);
+    }
+  }
+
 
   changeValue(value) {
     const errors = this._getErrors(value);
@@ -69,7 +75,6 @@ export class RadioButton extends Component {
 RadioButton.propTypes = {
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
-  validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
 };

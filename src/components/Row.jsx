@@ -17,8 +17,12 @@ export default class Row extends Component {
   }
 
   render() {
-    const { controls, formUuid, observations, onValueChanged, validate } = this.props;
-    const childProps = { formUuid, onValueChanged, validate };
+    const { controls, formUuid, observations, onValueChanged } = this.props;
+    const childProps = {
+      formUuid,
+      ref: this.storeChildRef,
+      onValueChanged,
+    };
     const groupedColumnControls = getGroupedControls(controls, 'column');
     return (
       <div className="form-builder-row">

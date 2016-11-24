@@ -58,5 +58,6 @@ export function obsFromMetadata(formNamespace, metadata) {
   return new Obs({
     concept: metadata.concept,
     formNamespace,
+    voided: true,
   });
 }

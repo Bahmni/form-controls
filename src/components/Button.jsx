@@ -13,15 +13,19 @@ export class Button extends Component {
 
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.validate) {
-      const errors = this._getErrors(nextProps.value);
-      this.setState({ hasErrors: this._hasErrors(errors) });
+    const errors = this._getErrors(nextProps.value);
+    this.setState({hasErrors: this._hasErrors(errors)});
+  }
+
+  componentDidUpdate() {
+    const errors = this._getErrors(this.state.value);
+    if (this._hasErrors(errors)) {
+      this.props.onValueChange(this.state.value, errors);
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.value !== nextProps.value ||
-        this.state.value !== nextState.value ||
+    if (this.state.value !== nextState.value ||
       this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
@@ -67,7 +71,6 @@ export class Button extends Component {
 Button.propTypes = {
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
-  validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
 };

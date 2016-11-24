@@ -21,22 +21,8 @@ export class Container extends Component {
     const bahmniRecord = data.getRecord(obs.formNamespace)
       .set('obs', obs)
       .set('errors', errors);
-    this.setState({ data: data.setRecord(bahmniRecord)});
+    this.setState({ data: data.setRecord(bahmniRecord) });
   }
-  // deprecated
-  // getValue() {
-  //   const errors = getErrorsFromChildControls(this.childControls);
-  //   const childObservations = getObsFromChildControls(this.childControls);
-  //   const observations = [].concat.apply([], childObservations).filter(obs => obs !== undefined);
-  //   const nonVoidedObs = observations.filter(obs => obs.voided !== true);
-  //
-  //   if (isEmpty(nonVoidedObs) || isEmpty(errors)) {
-  //     return { observations };
-  //   }
-  //
-  //   this.setState({ errors });
-  //   return { errors };
-  // }
 
   getValue() {
     const records = this.state.data.getRecords();
@@ -47,20 +33,19 @@ export class Container extends Component {
     });
 
     const errors = this.getErrors();
-
-    if (isEmpty(observations) || isEmpty(errors)) {
+    if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
       return { observations };
     }
-    this.setState({errors});
+
     return { errors };
   }
 
-  _isValidObs(obs) {
-    return this._hasValue(obs.getValue()) && !this._isNewVoidedObs(obs)
+  areAllVoided(observations) {
+    return observations.every((obs) => obs.voided);
   }
 
-  _hasValue(value) {
-    return !(value === '' || value === undefined || value === null);
+  _isValidObs(obs) {
+    return !this._isNewVoidedObs(obs)
   }
 
   _isNewVoidedObs(obs) {
@@ -79,18 +64,16 @@ export class Container extends Component {
 
   getErrors() {
     const records = this.state.data.getRecords();
-    return records.map((record) => record.get('errors'))
-      .filter((error) => !isEmpty(error));
+    return [].concat(...records.map((record) => record.get('errors'))
+      .filter((error) => !isEmpty(error)));
   }
 
   render() {
-    const { metadata: { controls, uuid: formUuid }, validate } = this.props;
+    const { metadata: { controls, uuid: formUuid } } = this.props;
     const childProps = {
-      errors: this.state.errors,
       formUuid,
       ref: this.storeChildRef,
       onValueChanged: this.onValueChanged,
-      validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
     const obsList = this.getObsList();
