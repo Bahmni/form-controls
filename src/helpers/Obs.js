@@ -9,7 +9,7 @@ export const ImmutableObs = Record({
   voided: false,
   comment: undefined,
   formNamespace: undefined,
-  groupMembers:[],
+  groupMembers: [],
 });
 
 export class Obs extends ImmutableObs {

@@ -1,14 +1,13 @@
-import {List, Map, Record} from 'immutable'
-import {ObsMapper} from 'src/helpers/ObsMapper';
-import {Obs, ImmutableObs, obsFromMetadata} from 'src/helpers/Obs';
-import {createFormNamespace} from 'src/helpers/formNamespace'
+import { Map, Record } from 'immutable';
+import { Obs, obsFromMetadata } from 'src/helpers/Obs';
+import { createFormNamespace } from 'src/helpers/formNamespace';
 
 export const ControlRecord = new Record({
   formNamespace: '',
   obs: undefined,
   enabled: true,
   errors: [],
-  data: undefined
+  data: undefined,
 });
 
 export class ControlState {
@@ -39,22 +38,22 @@ export class ControlState {
 
   equals(otherControlState) {
     if (!otherControlState) { return false; }
-    if (otherControlState.length != this.data.length) { return false; }
-    this.data.every((record, i) => {
-      record.equals(otherControlState[i]);
-    });
+    if (otherControlState.length !== this.data.length) { return false; }
+    return this.data.every((record, i) =>
+      record.equals(otherControlState[i])
+    );
   }
 }
 
-export function controlStateFactory(metadata = {controls: []}, bahmniObservations = []) {
+export function controlStateFactory(metadata = { controls: [] }, bahmniObservations = []) {
   const formUuid = metadata.uuid;
-  //generate records from metadata
+  // generate records from metadata
   const records = metadata.controls.map((control) => {
     const formNamespace = createFormNamespace(formUuid, control.id);
-    const index = bahmniObservations.findIndex(observation => {
-      return observation.formNamespace === formNamespace
-    });
-    //if observation exists then load else create dummy observations
+    const index = bahmniObservations.findIndex(observation =>
+      observation.formNamespace === formNamespace
+    );
+    // if observation exists then load else create dummy observations
     let obs;
     if (index >= 0) {
       obs = new Obs(bahmniObservations[index]);

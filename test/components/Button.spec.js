@@ -116,7 +116,7 @@ describe('Button Component', () => {
     const validations = [constants.validations.mandatory];
     const onChangeMockObj = { onValueChange: () => {} };
     const onChangeMock = sinon.mock(onChangeMockObj);
-    onChangeMock.expects('onValueChange').once().withArgs(undefined, [{errorType: 'mandatory'}])
+    onChangeMock.expects('onValueChange').once().withArgs(undefined, [{ errorType: 'mandatory' }]);
     const wrapper = mount(
       <Button
         onValueChange={onChangeMockObj.onValueChange}

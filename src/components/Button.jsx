@@ -14,14 +14,7 @@ export class Button extends Component {
 
   componentWillReceiveProps(nextProps) {
     const errors = this._getErrors(nextProps.value);
-    this.setState({hasErrors: this._hasErrors(errors)});
-  }
-
-  componentDidUpdate() {
-    const errors = this._getErrors(this.state.value);
-    if (this._hasErrors(errors)) {
-      this.props.onValueChange(this.state.value, errors);
-    }
+    this.setState({ hasErrors: this._hasErrors(errors) });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -30,6 +23,13 @@ export class Button extends Component {
       return true;
     }
     return false;
+  }
+
+  componentDidUpdate() {
+    const errors = this._getErrors(this.state.value);
+    if (this._hasErrors(errors)) {
+      this.props.onValueChange(this.state.value, errors);
+    }
   }
 
   changeValue(valueSelected) {

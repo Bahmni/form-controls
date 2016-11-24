@@ -41,14 +41,14 @@ describe('ControlsHelper', () => {
   });
 
   describe('hasErrors', () => {
-    it('should return true if there is error with the control id', ()=> {
+    it('should return true if there is error with the control id', () => {
       const errors = [
-        {controlId: 'c1'},
-        {controlId: 'c2'},
+        { controlId: 'c1' },
+        { controlId: 'c2' },
       ];
 
-      expect(hasError(errors, 'c2')).to.be.true;
-      expect(hasError(errors, 'c4')).to.be.false;
+      expect(hasError(errors, 'c2')).to.equals(true);
+      expect(hasError(errors, 'c4')).to.equals(false);
     });
   });
 });

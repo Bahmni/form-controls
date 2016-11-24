@@ -68,7 +68,7 @@ describe('TextBox', () => {
   });
 
   it('should throw error on fail of validations during component update', () => {
-    const onChangeMockObj = { onChange: () => {}};
+    const onChangeMockObj = { onChange: () => {} };
     const onChangeMock = sinon.mock(onChangeMockObj);
 
     const validations = [constants.validations.mandatory];

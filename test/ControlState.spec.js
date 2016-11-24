@@ -1,7 +1,5 @@
-import {expect} from 'chai';
-import {Validator} from 'src/helpers/Validator';
-import {Obs} from "src/helpers/Obs";
-import { ControlState, ControlRecord, controlStateFactory } from "src/ControlState";
+import { expect } from 'chai';
+import { ControlState, ControlRecord, controlStateFactory } from 'src/ControlState';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 
 describe('Control State', () => {
@@ -90,9 +88,9 @@ describe('Control State', () => {
     ],
   };
 
-  const record1 = new ControlRecord({formNamespace: 'FID/CID1'});
-  const record2 = new ControlRecord({formNamespace: 'FID/CID2'});
-  const record3 = new ControlRecord({formNamespace: 'FID/CID3'});
+  const record1 = new ControlRecord({ formNamespace: 'FID/CID1' });
+  const record2 = new ControlRecord({ formNamespace: 'FID/CID2' });
+  const record3 = new ControlRecord({ formNamespace: 'FID/CID3' });
 
 
   it('should initialize with the given records', () => {
@@ -123,20 +121,20 @@ describe('Control State', () => {
     expect(fetchedRecord).to.be.deep.equal(record1);
   });
 
-  describe('controlStateFactory',() => {
+  describe('controlStateFactory', () => {
     it('should create control state with the metadata provided', () => {
       const controlState = controlStateFactory(form, []);
       const expectedRecords = controlState.getRecords();
 
       expect(expectedRecords).to.have.length(3);
 
-      const namespaces = form.controls.map((control) => {
-        return createFormNamespace(form.uuid, control.id);
-      });
+      const namespaces = form.controls.map((control) =>
+        createFormNamespace(form.uuid, control.id)
+      );
 
       expectedRecords.forEach((record) => {
         expect(namespaces).to.include(record.formNamespace);
-      })
+      });
     });
 
     it('should insert observations into the appropriate records', () => {

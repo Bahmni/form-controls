@@ -1,18 +1,18 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import {Validator} from 'src/helpers/Validator';
+import { Validator } from 'src/helpers/Validator';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 export class TextBox extends Component {
   constructor(props) {
     super(props);
-    this.state = {hasErrors: false};
+    this.state = { hasErrors: false };
   }
 
   componentWillReceiveProps(nextProps) {
     const errors = this._getErrors(nextProps.value);
-    this.setState({hasErrors: this._hasErrors(errors)});
+    this.setState({ hasErrors: this._hasErrors(errors) });
   }
 
   shouldComponentUpdate(nextProps, nextState) {

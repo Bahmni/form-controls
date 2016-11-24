@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
 import map from 'lodash/map';
 import classNames from 'classnames';
@@ -13,7 +13,7 @@ export class RadioButton extends Component {
 
   componentWillReceiveProps(nextProps) {
     const errors = this._getErrors(nextProps.value);
-    this.setState({hasErrors: this._hasErrors(errors)});
+    this.setState({ hasErrors: this._hasErrors(errors) });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
