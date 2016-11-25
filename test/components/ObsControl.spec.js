@@ -57,6 +57,7 @@ describe('ObsControl', () => {
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />);
     expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
@@ -79,6 +80,7 @@ describe('ObsControl', () => {
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />);
     expect(wrapper.find('span').text()).to.eql('*');
     expect(wrapper.find('span')).to.have.className('form-builder-asterisk');
@@ -100,6 +102,7 @@ describe('ObsControl', () => {
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />);
     expect(wrapper).to.be.blank();
   });
@@ -119,6 +122,7 @@ describe('ObsControl', () => {
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />
     );
     const instance = wrapper.instance();
@@ -142,6 +146,7 @@ describe('ObsControl', () => {
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />
     );
     const instance = wrapper.instance();
@@ -165,6 +170,7 @@ describe('ObsControl', () => {
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />
     );
 
@@ -187,6 +193,7 @@ describe('ObsControl', () => {
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
+        validate={false}
       />
     );
     expect(wrapper).to.not.have.descendants('Comment');

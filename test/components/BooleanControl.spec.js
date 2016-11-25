@@ -39,12 +39,13 @@ describe('BooleanControl', () => {
         displayType={displayType}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={validations}
       />
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(4);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(5);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(options);
@@ -60,6 +61,7 @@ describe('BooleanControl', () => {
         displayType={displayType}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
       />
     );
@@ -79,6 +81,7 @@ describe('BooleanControl', () => {
         displayType={displayType}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
       />
     );
@@ -91,6 +94,7 @@ describe('BooleanControl', () => {
         displayType={displayType}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
       />);
     const instance = wrapper.instance();
@@ -104,6 +108,7 @@ describe('BooleanControl', () => {
         displayType={displayType}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
         value
       />);
@@ -118,6 +123,7 @@ describe('BooleanControl', () => {
         displayType={displayType}
         onChange={onChangeSpy}
         options={options}
+        validate={false}
         validations={[]}
         value
       />);

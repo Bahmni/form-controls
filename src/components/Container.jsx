@@ -66,11 +66,13 @@ export class Container extends Component {
   }
 
   render() {
-    const { metadata: { controls, uuid: formUuid } } = this.props;
+    const { metadata: { controls, uuid: formUuid }, validate } = this.props;
     const childProps = {
+      errors: this.state.errors,
       formUuid,
       ref: this.storeChildRef,
       onValueChanged: this.onValueChanged,
+      validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
     const obsList = this.getObsList();
@@ -90,4 +92,5 @@ Container.propTypes = {
     uuid: PropTypes.string.isRequired,
   }),
   observations: PropTypes.array.isRequired,
+  validate: PropTypes.bool.isRequired,
 };

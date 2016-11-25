@@ -11,8 +11,10 @@ export class NumericBox extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const errors = this._getErrors(nextProps.value);
-    this.setState({ hasErrors: this._hasErrors(errors) });
+    if (nextProps.validate) {
+      const errors = this._getErrors(nextProps.value);
+      this.setState({ hasErrors: this._hasErrors(errors) });
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -23,12 +25,6 @@ export class NumericBox extends Component {
     return false;
   }
 
-  componentDidUpdate() {
-    const errors = this._getErrors(this.props.value);
-    if (this._hasErrors(errors)) {
-      this.props.onChange(this.props.value, errors);
-    }
-  }
 
   handleChange(e) {
     const value = e.target.value;
@@ -61,6 +57,7 @@ export class NumericBox extends Component {
 
 NumericBox.propTypes = {
   onChange: PropTypes.func.isRequired,
+  validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,
 };
