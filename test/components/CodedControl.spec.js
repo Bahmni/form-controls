@@ -69,7 +69,8 @@ describe('CodedControl', () => {
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
-    expect(wrapper.find('DummyControl')).to.have.prop('value').to.deep.eql({ name: 'Answer1', value: 'answer1uuid' });
+    expect(wrapper.find('DummyControl')).to.have.prop('value').
+        to.deep.eql({ name: 'Answer1', value: 'answer1uuid' });
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(
       [{ name: 'Answer1', value: 'answer1uuid' }, { name: 'Answer2', value: 'answer2uuid' }]);
   });

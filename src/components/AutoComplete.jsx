@@ -37,6 +37,16 @@ export class AutoComplete extends Component {
       || this.state.hasErrors !== nextState.hasErrors;
   }
 
+  onInputChange(input) {
+    if (input.length >= this.props.minimumInput) {
+      this.setState({ options: this.props.options });
+      this.setState({ noResultsText: 'No Results Found' });
+      return;
+    }
+    this.setState({ noResultsText: 'Type to search' });
+    this.setState({ options: [] });
+  }
+
   getValueFromProps(props) {
     if (props.multi) {
       return get(props, 'value');
@@ -91,15 +101,6 @@ export class AutoComplete extends Component {
     return !isEmpty(errors);
   }
 
-  onInputChange(input) {
-    if (input.length >= this.props.minimumInput) {
-      this.setState({ options: this.props.options });
-      this.setState({ noResultsText: 'No Results Found' });
-      return;
-    }
-    this.setState({ noResultsText: 'Type to search' });
-    this.setState({ options: [] });
-  }
 
   render() {
     const { autofocus, disabled, labelKey, valueKey,
@@ -133,7 +134,8 @@ export class AutoComplete extends Component {
         <Select { ...props }
           noResultsText={this.state.noResultsText}
           onInputChange={this.onInputChange}
-          options={ this.state.options } />
+          options={ this.state.options }
+        />
       </div>
     );
   }

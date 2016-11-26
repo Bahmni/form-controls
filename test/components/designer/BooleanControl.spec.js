@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
@@ -7,7 +7,6 @@ import { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';
 chai.use(chaiEnzyme());
 
 describe('Boolean Control Designer', () => {
-
   const DummyControl = () => <input />;
   let metadata;
   before(() => {

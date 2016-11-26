@@ -1,9 +1,6 @@
-import React, { Component } from 'react';
-export class CommentDesigner extends Component {
+import React, { PureComponent } from 'react';
 
-  constructor() {
-    super();
-  }
+export class CommentDesigner extends PureComponent { // PureComponent has been added because of eslint post test prefer-stateless-function error.
 
   render() {
     return (

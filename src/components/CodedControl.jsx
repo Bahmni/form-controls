@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import isEqual from 'lodash/isEqual';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import get from 'lodash/get';
