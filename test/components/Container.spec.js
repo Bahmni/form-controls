@@ -112,7 +112,7 @@ describe('Container', () => {
 
   describe('render', () => {
     it('should render form', () => {
-      const wrapper = mount(<Container metadata={metadata} observations={[]} />);
+      const wrapper = mount(<Container metadata={metadata} observations={[]} validate={false} />);
 
       expect(wrapper).to.have.exactly(3).descendants('Row');
       expect(wrapper).to.have.exactly(3).descendants('Label');
@@ -121,7 +121,7 @@ describe('Container', () => {
 
     it('should render form without controls when it is empty', () => {
       const meta = { id: '100', controls: [], uuid: 'uuid' };
-      const wrapper = shallow(<Container metadata={meta} observations={[]} />);
+      const wrapper = shallow(<Container metadata={meta} observations={[]} validate={false} />);
 
       expect(wrapper).to.be.blank();
     });
@@ -154,7 +154,7 @@ describe('Container', () => {
     });
 
     it('should return empty when there are no observations', () => {
-      const wrapper = mount(<Container metadata={metadata} observations={[]} />);
+      const wrapper = mount(<Container metadata={metadata} observations={[]} validate={false} />);
       const instance = wrapper.instance();
 
       expect(instance.getValue()).to.deep.equal({ observations: [] });
@@ -173,7 +173,7 @@ describe('Container', () => {
           formNamespace: 'fm1/999999',
         },
       ];
-      const wrapper = mount(<Container metadata={metadata} observations={obs} />);
+      const wrapper = mount(<Container metadata={metadata} observations={obs} validate={false} />);
       const instance = wrapper.instance();
 
       expect(instance.getValue()).to.deep.equal({ observations: [] });
@@ -244,7 +244,7 @@ describe('Container', () => {
       };
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
-        mount(<Container metadata={metadataClone} observations={[voidedObservation]} />);
+        mount(<Container metadata={metadataClone} observations={[voidedObservation]} validate={false} />);
       wrapper.find('input').at(0).simulate('change', { target: { value: undefined } });
       const instance = wrapper.instance();
 
@@ -271,7 +271,11 @@ describe('Container', () => {
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
         mount(
-          <Container metadata={metadataClone} observations={[voidedObservation, observation2]} />
+          <Container
+            metadata={metadataClone}
+            observations={[voidedObservation, observation2]}
+            validate={false}
+          />
         );
       const instance = wrapper.instance();
       wrapper.find('input').at(1).simulate('change', { target: { value: undefined } });
