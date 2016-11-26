@@ -12,7 +12,7 @@ import { Section } from 'components/Section.jsx';
 
 chai.use(chaiEnzyme());
 
-describe.skip('Container', () => {
+describe('Container', () => {
   let metadata;
   let observations;
   let observation1;
@@ -129,24 +129,28 @@ describe.skip('Container', () => {
     it('should render form with only the registered controls', () => {
       componentStore.deRegisterComponent('numeric');
 
-      const wrapper = mount(<Container metadata={metadata} observations={[]} />);
+      const wrapper = mount(<Container metadata={metadata} observations={[]} validate={false} />);
 
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
       expect(wrapper).to.have.exactly(1).descendants('TextBox');
       expect(wrapper).to.have.exactly(2).descendants('Label');
 
-      expect(wrapper.find('ObsControl').at(0).props().errors).to.eql([]);
+      expect(wrapper.find('ObsControl').at(0).props().validate).to.eql(false);
       componentStore.registerComponent('numeric', NumericBox);
     });
   });
 
   describe('getValue', () => {
     it('should return the observations of its children which are data controls', () => {
-      const wrapper = mount(<Container metadata={metadata} observations={observations} />);
+      const wrapper = mount(<
+        Container
+        metadata={metadata}
+        observations={observations}
+        validate={false}
+      />);
       const instance = wrapper.instance();
 
-      // expect(instance.getValue()).to.deep.equal({ observations: [observation1, observation2] });
-      expect(instance.getValue()).to.deep.equal({ observations: [observation1, observation2] });
+      expect(instance.getValue()).to.deep.equal({ observations });
     });
 
     it('should return empty when there are no observations', () => {
@@ -185,10 +189,17 @@ describe.skip('Container', () => {
         properties: { location: { row: 2, column: 1 }, mandatory: true },
       };
       metadataClone.controls.push(mandatoryControl);
-      const wrapper = mount(<Container metadata={metadataClone} observations={observations} />);
+      const wrapper = mount(<
+        Container
+        metadata={metadataClone}
+        observations={observations}
+        validate={false}
+      />);
+
+      wrapper.find('input').at(0).simulate('change', { target: { value: undefined } });
       const instance = wrapper.instance();
 
-      const expectedErrors = [{ controlId: '103', errorType: 'mandatory' }];
+      const expectedErrors = [{ errorType: 'mandatory' }];
       expect(instance.getValue()).to.deep.equal({ errors: expectedErrors });
     });
 
@@ -202,7 +213,12 @@ describe.skip('Container', () => {
         properties: { location: { row: 2, column: 1 }, mandatory: true },
       };
       metadataClone.controls.push(mandatoryControl);
-      const wrapper = mount(<Container metadata={metadataClone} observations={[]} />);
+      const wrapper = mount(<
+        Container
+        metadata={metadataClone}
+        observations={[]}
+        validate={false}
+      />);
       const instance = wrapper.instance();
       expect(instance.getValue()).to.deep.equal({ observations: [] });
     });
@@ -223,12 +239,15 @@ describe.skip('Container', () => {
         formNamespace: 'fm1/101',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
         voided: true,
+        groupMembers: [],
         comment: undefined,
       };
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
         mount(<Container metadata={metadataClone} observations={[voidedObservation]} />);
+      wrapper.find('input').at(0).simulate('change', { target: { value: undefined } });
       const instance = wrapper.instance();
+
       expect(instance.getValue()).to.deep.equal({ observations: [voidedObservation] });
     });
 
@@ -255,86 +274,10 @@ describe.skip('Container', () => {
           <Container metadata={metadataClone} observations={[voidedObservation, observation2]} />
         );
       const instance = wrapper.instance();
-      const expectedErrors = [{ controlId: '103', errorType: 'mandatory' }];
+      wrapper.find('input').at(1).simulate('change', { target: { value: undefined } });
+
+      const expectedErrors = [{ errorType: 'mandatory' }];
       expect(instance.getValue()).to.deep.equal({ errors: expectedErrors });
-    });
-  });
-
-  xdescribe('with section', () => {
-    const metadataWithSection = {
-      id: '100',
-      uuid: 'fm1',
-      name: 'Vitals',
-      controls: [
-        {
-          id: '300',
-          type: 'section',
-          value: 'someSectionLegend',
-          properties: {
-            visualOnly: true,
-            location: getLocationProperties(0, 0).location,
-          },
-          controls: [
-            {
-              id: '100',
-              type: 'label',
-              value: 'Pulse',
-              properties: getLocationProperties(0, 0),
-            },
-            {
-              id: '101',
-              type: 'obsControl',
-              concept: textBoxConcept,
-              label,
-              properties: getLocationProperties(1, 0),
-            },
-            {
-              id: '102',
-              type: 'obsControl',
-              concept: numericBoxConcept,
-              label,
-              properties: getLocationProperties(2, 0),
-            },
-          ],
-        },
-        {
-          id: '301',
-          type: 'obsControl',
-          displayType: 'numeric',
-          concept: numericBoxConcept,
-          label,
-          properties: getLocationProperties(1, 0),
-        },
-      ],
-    };
-
-    it('should render form with section and pass all observations to section', () => {
-      const wrapper = mount(
-        <Container
-          metadata={metadataWithSection}
-          observations={observations}
-        />);
-
-      expect(wrapper).to.have.exactly(1).descendants('Section');
-      expect(wrapper.find('Section')).to.have.prop('obs').deep.equal(observations);
-      expect(wrapper).to.have.exactly(3).descendants('ObsControl');
-    });
-
-    it('should return observations of all children', () => {
-      const observation3 = {
-        concept: numericBoxConcept,
-        formNamespace: 'fm1/301',
-        observationDateTime: '2016-09-08T10:10:38.000+0530',
-        uuid: undefined,
-        value: '98',
-        voided: false,
-        comment: undefined,
-      };
-      const obs = [observation1, observation2, observation3];
-      const wrapper = mount(<Container metadata={metadataWithSection} observations={obs} />);
-      const instance = wrapper.instance();
-      const expectedValue = { observations: [observation1, observation2, observation3] };
-      expect(instance.getValue()).to.deep.equal(expectedValue);
     });
   });
 });
