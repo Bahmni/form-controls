@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import find from 'lodash/find';
+import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 
 export class BooleanControl extends Component {
   constructor(props) {
@@ -19,15 +19,11 @@ export class BooleanControl extends Component {
     this.props.onChange(value, errors);
   }
 
-  _getValue(options, value) {
-    return find(options, ['value', value]);
-  }
-
   render() {
-    const { options, validations, validate } = this.props;
-    const registeredComponent = window.componentStore.getRegisteredComponent('button');
+    const { displayType, validate, options, validations } = this.props;
+    const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
-      const initialValue = this._getValue(options, this.props.value);
+      const initialValue = this.props.value;
       const childProps = {
         value: initialValue,
         onValueChange: this.onValueChange,
@@ -37,11 +33,18 @@ export class BooleanControl extends Component {
       };
       return React.createElement(registeredComponent, childProps);
     }
-    return null;
+    return (
+        <div>
+          <UnSupportedComponent
+            message={ `The component with props displayType ${displayType} is not supported` }
+          />
+        </div>
+    );
   }
 }
 
 BooleanControl.propTypes = {
+  displayType: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,

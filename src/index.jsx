@@ -25,5 +25,6 @@ export { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';
 export { Draggable } from 'components/Draggable.jsx';
 export { RowDesigner } from 'components/designer/Row.jsx';
 export { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
+export { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesigner.jsx';
 
 import '../styles/styles.scss';

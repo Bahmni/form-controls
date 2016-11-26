@@ -83,6 +83,7 @@ describe('ObsControl', () => {
         errors={[]}
         metadata={metadata}
         obs={observation}
+        validate={false}
         onValueChanged={onChangeSpy}
       />);
 
@@ -105,6 +106,7 @@ describe('ObsControl', () => {
         errors={[]}
         metadata={metadata}
         obs={observation}
+        validate={false}
         onValueChanged={onChangeSpy}
       />);
 

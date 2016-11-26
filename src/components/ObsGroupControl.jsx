@@ -1,77 +1,68 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
-import { createFormNamespace } from 'src/helpers/formNamespace';
-import { getErrorsFromChildControls, getObsFromChildControls } from 'src/helpers/controlsHelper';
 import isEmpty from 'lodash/isEmpty';
-
-class Mapper {
-  constructor(obs) {
-    this.obs = obs;
-    this.obs.groupMembers = [];
-  }
-
-  mapTo(groupMembers) {
-    const filteredMembers = groupMembers.filter(obs => obs !== undefined);
-    if (isEmpty(filteredMembers)) { return undefined; }
-    const voided = filteredMembers.every((obs) => obs.voided);
-    return Object.assign({}, this.obs, { groupMembers: filteredMembers }, { voided });
-  }
-}
+import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
+import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 
 export class ObsGroupControl extends Component {
 
   constructor(props) {
     super(props);
-    this.childControls = {};
-    const formNamespace = createFormNamespace(props.formUuid, props.metadata.id);
-    const concept = props.metadata.concept;
-    const obs = Object.assign({}, { concept }, props.obs, { formNamespace });
-    this.mapper = new Mapper(obs);
-    this.getValue = this.getValue.bind(this);
-    this.storeChildRef = this.storeChildRef.bind(this);
+    this.state = { obs: this.props.obs, hasErrors: false };
+    this.onChange = this.onChange.bind(this);
+    this.mapper = props.mapper || new ObsGroupMapper();
   }
 
-  getValue() {
-    const observations = getObsFromChildControls(this.childControls);
-    const groupMembers = [].concat.apply([], observations).filter(obs => obs !== undefined);
-    return this.mapper.mapTo(groupMembers);
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.obs !== nextProps.obs ||
+        this.state.hasErrors !== nextState.hasErrors) {
+      return true;
+    }
+    return false;
   }
 
-  getErrors() {
-    return getErrorsFromChildControls(this.childControls);
+  onChange(value, errors) {
+    const updatedObs = this.mapper.setValue(this.state.obs, value, errors);
+    this.setState({ obs: updatedObs });
+    this.props.onValueChanged(updatedObs, errors);
   }
 
-  storeChildRef(ref) {
-    if (ref) this.childControls[ref.props.id] = ref;
+  _hasErrors(errors) {
+    return !isEmpty(errors);
   }
 
   render() {
-    const { errors, formUuid, metadata: { controls, concept }, obs } = this.props;
-    const childProps = { errors, formUuid, ref: this.storeChildRef };
-    const obsGroupMembers = (obs && obs.groupMembers) ? obs.groupMembers : [];
-    const groupedRowControls = getGroupedControls(controls, 'row');
+    const { concept, validate, onValueChanged } = this.props;
+    const childProps = { validate, onValueChanged };
+    const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     return (
-      <fieldset className="form-builder-fieldset">
-        <legend>{concept.name}</legend>
-        <div className="obsGroup-controls">
-          {displayRowControls(groupedRowControls, obsGroupMembers, childProps)}
-        </div>
-      </fieldset>
+        <fieldset className="form-builder-fieldset">
+          <legend>{concept.name}</legend>
+          <div className="obsGroup-controls">
+            {displayRowControls(groupedRowControls, this.props.obs.groupMembers, childProps)}
+          </div>
+        </fieldset>
     );
   }
 }
 
 ObsGroupControl.propTypes = {
-  errors: PropTypes.array.isRequired,
-  formUuid: PropTypes.string.isRequired,
+  mapper: PropTypes.object,
   metadata: PropTypes.shape({
-    controls: PropTypes.array.isRequired,
-    id: PropTypes.string.isRequired,
     concept: PropTypes.object.isRequired,
+    displayType: PropTypes.string,
+    id: PropTypes.string.isRequired,
+    label: PropTypes.shape({
+      type: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }).isRequired,
     properties: PropTypes.object,
+    type: PropTypes.string.isRequired,
+    controls: PropTypes.array,
   }),
-  obs: PropTypes.object,
+  obs: PropTypes.any.isRequired,
+  onValueChanged: PropTypes.func.isRequired,
+  validate: PropTypes.bool.isRequired,
 };
 
 window.componentStore.registerComponent('obsGroupControl', ObsGroupControl);

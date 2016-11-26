@@ -16,12 +16,17 @@ describe('BooleanControl', () => {
     { name: 'No', value: false },
   ];
 
+  let displayType;
   before(() => {
     window.componentStore.registerComponent('button', DummyControl);
   });
 
   after(() => {
     window.componentStore.deRegisterComponent('button');
+  });
+
+  beforeEach(() => {
+    displayType = 'button';
   });
 
   const onChangeSpy = sinon.spy();
@@ -31,6 +36,7 @@ describe('BooleanControl', () => {
   it('should render Dummy Control of displayType button by default', () => {
     const wrapper = shallow(
       <BooleanControl
+        displayType={displayType}
         onChange={onChangeSpy}
         options={options}
         validate={false}
@@ -49,13 +55,14 @@ describe('BooleanControl', () => {
     window.componentStore.deRegisterComponent('button');
     const wrapper = shallow(
       <BooleanControl
+        displayType={displayType}
         onChange={onChangeSpy}
         options={options}
         validate={false}
         validations={[]}
       />
     );
-    expect(wrapper).to.be.blank();
+    expect(wrapper.find('div').at(0).text()).to.eql('<UnSupportedComponent />');
 
     window.componentStore.registerComponent('button', DummyControl);
   });
@@ -63,6 +70,7 @@ describe('BooleanControl', () => {
   it('should return the boolean control value', () => {
     const wrapper = shallow(
       <BooleanControl
+        displayType={displayType}
         onChange={onChangeSpy}
         options={options}
         validate={false}
@@ -76,6 +84,7 @@ describe('BooleanControl', () => {
   it('should reRender on change of value in props', () => {
     const wrapper = shallow(
       <BooleanControl
+        displayType={displayType}
         onChange={onChangeSpy}
         options={options}
         validate={false}
@@ -83,15 +92,16 @@ describe('BooleanControl', () => {
         value
       />);
     expect(wrapper.find('DummyControl')).to.have.prop('value')
-      .to.deep.eql({ name: 'Yes', value: true });
+      .to.deep.eql(true);
     wrapper.setProps({ value: false });
     expect(wrapper.find('DummyControl')).to.have.prop('value')
-      .to.deep.eql({ name: 'No', value: false });
+      .to.deep.eql(false);
   });
 
   it('should not reRender if value is not changed', () => {
     const wrapper = shallow(
       <BooleanControl
+        displayType={displayType}
         onChange={onChangeSpy}
         options={options}
         validate={false}
@@ -99,9 +109,9 @@ describe('BooleanControl', () => {
         value
       />);
     expect(wrapper.find('DummyControl')).to.have.prop('value')
-      .to.deep.eql({ name: 'Yes', value: true });
+      .to.deep.eql(true);
     wrapper.setProps({ value: true });
     expect(wrapper.find('DummyControl')).to.have.prop('value')
-      .to.deep.eql({ name: 'Yes', value: true });
+      .to.deep.eql(true);
   });
 });

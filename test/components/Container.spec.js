@@ -244,7 +244,9 @@ describe('Container', () => {
       };
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
-        mount(<Container metadata={metadataClone} observations={[voidedObservation]} validate={false} />);
+        mount(<Container metadata={metadataClone} observations={[voidedObservation]}
+          validate={false}
+        />);
       wrapper.find('input').at(0).simulate('change', { target: { value: undefined } });
       const instance = wrapper.instance();
 
