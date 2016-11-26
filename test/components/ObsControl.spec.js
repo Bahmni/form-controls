@@ -83,8 +83,8 @@ describe('ObsControl', () => {
         errors={[]}
         metadata={metadata}
         obs={observation}
-        validate={false}
         onValueChanged={onChangeSpy}
+        validate={false}
       />);
 
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql([]);
@@ -106,8 +106,8 @@ describe('ObsControl', () => {
         errors={[]}
         metadata={metadata}
         obs={observation}
-        validate={false}
         onValueChanged={onChangeSpy}
+        validate={false}
       />);
 
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql([]);

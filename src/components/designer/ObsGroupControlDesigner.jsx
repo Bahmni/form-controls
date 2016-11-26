@@ -5,7 +5,7 @@ import { ObsGroupMapper } from '../../mapper/ObsGroupMapper';
 import { Concept } from '../../helpers/Concept';
 import { Metadata } from '../../helpers/Metadata';
 import map from 'lodash/map';
-import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
+// import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 
 export class ObsGroupControlDesigner extends Component {
 
@@ -32,12 +32,7 @@ export class ObsGroupControlDesigner extends Component {
 
   getGrid() {
     return;
-    (<Grid
-      className="bahmni-grid"
-      controls={ formResourceControls || [] }
-      ref={ this.gridReference }
-      wrapper={ ControlWrapper }
-    />);
+    // (<Grid className="bahmni-grid" />);
   }
 
   render() {

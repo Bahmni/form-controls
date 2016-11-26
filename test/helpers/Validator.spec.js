@@ -60,6 +60,36 @@ describe('Validator', () => {
       expect(errors).to.deep.eql([]);
     });
   });
+
+  describe('allowRange validation', () => {
+    const validations = [constants.validations.allowRange];
+
+    it('should get allowRange error when value is lesser than minNormal', () => {
+      const params = { minNormal: 80, maxNormal: 120 };
+      const expectedErrors = [{ errorType: constants.validations.allowRange }];
+      const errors = Validator.getErrors({ params, validations, value: 78 });
+      expect(errors).to.deep.eql(expectedErrors);
+    });
+
+    it('should get allowRange error when value is higher than maxNormal', () => {
+      const params = { minNormal: 80, maxNormal: 120 };
+      const expectedErrors = [{ errorType: constants.validations.allowRange }];
+      const errors = Validator.getErrors({ params, validations, value: 130 });
+      expect(errors).to.deep.eql(expectedErrors);
+    });
+
+    it('should not get allowRange error when value is undefined', () => {
+      const errors = Validator.getErrors({ validations, value: undefined });
+      expect(errors).to.deep.eql([]);
+    });
+
+    it('should not get allowRange error when value satisfies the condition', () => {
+      const params = { minNormal: 80, maxNormal: 120 };
+      const errors = Validator.getErrors({ params, validations, value: 110 });
+      expect(errors).to.deep.eql([]);
+    });
+  });
+
   it('should not give error when there are no validations', () => {
     const controlDetails = { validations: [], value: '' };
     const errors = Validator.getErrors(controlDetails);

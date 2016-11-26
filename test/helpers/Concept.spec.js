@@ -72,6 +72,12 @@ describe('Concept', () => {
     });
   });
 
+  it('should return undefined if abnormal set member is not present', () => {
+    const concept = new Concept({ uuid: 'someUuid', name: { name: 'someName' } });
+    const abnormalSetMember = concept.getAbnormalSetMember();
+    expect(abnormalSetMember).to.be.eql(undefined);
+  });
+
   it('should retrieve first numeric set member', () => {
     const concept = new Concept(abnormalConcept);
     const numericSetMember = concept.findFirstNumericSetMember();
@@ -86,6 +92,12 @@ describe('Concept', () => {
         allowDecimal: true,
       },
     });
+  });
+
+  it('should return undefined if numeric set member is not present', () => {
+    const concept = new Concept({ uuid: 'someUuid', name: { name: 'someName' } });
+    const numericSetMember = concept.findFirstNumericSetMember();
+    expect(numericSetMember).to.be.eql(undefined);
   });
 
   it('should retrieve the setMembers of a concept', () => {

@@ -45,6 +45,12 @@ describe('Obs', () => {
     expect(obs.isDirty('abc')).to.be.eql(true);
   });
 
+  it('should return false if the obs value is same', () => {
+    const valueObj = { uuid: 'someUuid', value: 'someValue' };
+    const obs = new Obs({ uuid, value: valueObj });
+    expect(obs.isDirty(valueObj)).to.be.eql(false);
+  });
+
   it('should void an obs', () => {
     const obs = new Obs({ comment, formNamespace, uuid, value });
     const voidedObs = obs.void();

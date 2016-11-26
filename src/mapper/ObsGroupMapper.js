@@ -1,8 +1,5 @@
-import constants from 'src/constants';
-import find from 'lodash/find';
-
 export class ObsGroupMapper {
-  setValue(obsGroup, obs, errors) {
+  setValue(obsGroup, obs) {
     return obsGroup.addGroupMember(obs);
   }
 }
