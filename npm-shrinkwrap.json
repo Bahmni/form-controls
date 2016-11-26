@@ -27,16 +27,6 @@
       "from": "@kadira/storybook-channel@>=1.1.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/@kadira/storybook-channel/-/storybook-channel-1.1.0.tgz"
     },
-    "@kadira/storybook-channel-postmsg": {
-      "version": "1.1.0",
-      "from": "@kadira/storybook-channel-postmsg@>=1.1.0 <2.0.0",
-      "resolved": "https://registry.npmjs.org/@kadira/storybook-channel-postmsg/-/storybook-channel-postmsg-1.1.0.tgz"
-    },
-    "@kadira/storybook-ui": {
-      "version": "3.6.3",
-      "from": "@kadira/storybook-ui@>=3.6.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/@kadira/storybook-ui/-/storybook-ui-3.6.3.tgz"
-    },
     "abab": {
       "version": "1.0.3",
       "from": "abab@>=1.0.0 <2.0.0",
@@ -2109,6 +2099,11 @@
       "from": "fs-extra@>=0.26.4 <0.27.0",
       "resolved": "https://registry.npmjs.org/fs-extra/-/fs-extra-0.26.7.tgz"
     },
+    "fs-readdir-recursive": {
+      "version": "1.0.0",
+      "from": "fs-readdir-recursive@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/fs-readdir-recursive/-/fs-readdir-recursive-1.0.0.tgz"
+    },
     "fs.realpath": {
       "version": "1.0.0",
       "from": "fs.realpath@>=1.0.0 <2.0.0",
@@ -2731,6 +2726,11 @@
       "from": "function-bind@>=1.0.2 <2.0.0",
       "resolved": "https://registry.npmjs.org/function-bind/-/function-bind-1.1.0.tgz"
     },
+    "function.prototype.name": {
+      "version": "1.0.0",
+      "from": "function.prototype.name@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/function.prototype.name/-/function.prototype.name-1.0.0.tgz"
+    },
     "fuse.js": {
       "version": "2.5.0",
       "from": "fuse.js@>=2.2.0 <3.0.0",
@@ -3027,7 +3027,7 @@
     },
     "immutable": {
       "version": "3.8.1",
-      "from": "immutable@>=3.7.6 <4.0.0",
+      "from": "immutable@3.8.1",
       "resolved": "https://registry.npmjs.org/immutable/-/immutable-3.8.1.tgz"
     },
     "imurmurhash": {
@@ -5463,6 +5463,11 @@
       "from": "pluralize@>=1.2.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/pluralize/-/pluralize-1.2.1.tgz"
     },
+    "podda": {
+      "version": "1.2.2",
+      "from": "podda@>=1.2.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/podda/-/podda-1.2.2.tgz"
+    },
     "postcss": {
       "version": "5.2.4",
       "from": "postcss@>=5.0.6 <6.0.0",
@@ -5812,9 +5817,9 @@
       "resolved": "https://registry.npmjs.org/raw-body/-/raw-body-2.1.7.tgz"
     },
     "react-addons-test-utils": {
-      "version": "15.3.2",
-      "from": "react-addons-test-utils@>=15.2.1 <16.0.0",
-      "resolved": "https://registry.npmjs.org/react-addons-test-utils/-/react-addons-test-utils-15.3.2.tgz"
+      "version": "15.4.1",
+      "from": "react-addons-test-utils@>=15.4.0 <16.0.0",
+      "resolved": "https://registry.npmjs.org/react-addons-test-utils/-/react-addons-test-utils-15.4.1.tgz"
     },
     "react-docgen": {
       "version": "2.12.1",
@@ -5874,6 +5879,11 @@
       "version": "1.2.0",
       "from": "react-simple-di@>=1.2.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/react-simple-di/-/react-simple-di-1.2.0.tgz"
+    },
+    "react-stubber": {
+      "version": "1.0.0",
+      "from": "react-stubber@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/react-stubber/-/react-stubber-1.0.0.tgz"
     },
     "read-pkg": {
       "version": "1.1.0",
@@ -6176,6 +6186,18 @@
       "version": "1.0.0",
       "from": "shebang-regex@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/shebang-regex/-/shebang-regex-1.0.0.tgz"
+    },
+    "shelljs": {
+      "version": "0.7.5",
+      "from": "shelljs@>=0.7.4 <0.8.0",
+      "resolved": "https://registry.npmjs.org/shelljs/-/shelljs-0.7.5.tgz",
+      "dependencies": {
+        "glob": {
+          "version": "7.1.1",
+          "from": "glob@>=7.0.0 <8.0.0",
+          "resolved": "https://registry.npmjs.org/glob/-/glob-7.1.1.tgz"
+        }
+      }
     },
     "sigmund": {
       "version": "1.0.1",
