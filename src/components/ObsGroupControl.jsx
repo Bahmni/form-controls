@@ -32,7 +32,7 @@ export class ObsGroupControl extends Component {
   }
 
   render() {
-    const { concept, validate, onValueChanged } = this.props;
+    const { metadata: { concept }, validate, onValueChanged } = this.props;
     const childProps = { validate, onValueChanged };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     return (

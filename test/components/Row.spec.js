@@ -64,7 +64,6 @@ describe('Row', () => {
       const wrapper = mount(
         <Row
           controls={controls}
-          formUuid={formUuid}
           id={0}
           observations={[]}
           onValueChanged={onChangeSpy}
@@ -73,7 +72,6 @@ describe('Row', () => {
       );
 
       expect(wrapper).to.have.exactly(3).descendants('DummyControl');
-      expect(wrapper.find('.form-builder-column-1').text()).to.eql(formUuid);
       expect(wrapper.find('DummyControl').at(0)).to.have.prop('validate').to.eql(false);
     });
 
