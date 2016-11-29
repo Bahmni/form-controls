@@ -4,11 +4,17 @@ export class Comment extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { showCommentSection: false };
+    this.state = {
+      showCommentSection: false,
+      hasNote: props.comment && props.comment.length > 0,
+    };
   }
 
   handleChange(e) {
     const value = e.target.value.trim() !== '' ? e.target.value.trim() : undefined;
+    this.setState({
+      hasNote: value && value.length > 0,
+    });
     this.props.onCommentChange(value);
   }
 
@@ -34,7 +40,8 @@ export class Comment extends Component {
       <div>
         <button
           className={classNames('comment-toggle',
-           { active: this.state.showCommentSection === true })}
+            { active: this.state.showCommentSection === true,
+              'has-notes': this.state.hasNote === true })}
           onClick={() => this.setState({ showCommentSection: !this.state.showCommentSection })}
         >
           <i className="fa fa-file-o">
