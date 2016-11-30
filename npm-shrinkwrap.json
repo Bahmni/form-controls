@@ -1,6 +1,6 @@
 {
   "name": "bahmni-form-controls",
-  "version": "0.1.17",
+  "version": "0.1.18",
   "dependencies": {
     "@kadira/react-split-pane": {
       "version": "1.4.7",
