@@ -1,13 +1,14 @@
 .form-control-buttons {
   display: inline-block;
+  max-width: 223px;
   button {
     margin: 0 2px 2px 0;
     text-align: center;
     height: 32px;
     width: auto;
     text-align: center;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
     i.fa-ok {
       display: none;
       padding-top: 0;
@@ -23,6 +24,29 @@
       i.fa-ok {
         display: inline-block;
       }
+    }
+  }
+}
+
+.form-builder-canvas ,.form-builder-row{
+  .obs-control-select-wrapper {
+    width:197px !important;
+    display:inline-block !important;
+    box-sizing: border-box;
+  }
+  .Select-control {
+    height:25px;
+    .Select-placeholder ,.Select-value{
+      line-height: 24px;
+      max-width: initial;
+    }
+  }
+  .Select-input{
+    height:25px;
+    input{
+      padding:3px 0 !important;
+      margin-top: 0 !important;
+
     }
   }
 }
