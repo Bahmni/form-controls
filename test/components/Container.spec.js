@@ -9,6 +9,8 @@ import { TextBox } from 'components/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { ObsControl } from 'components/ObsControl.jsx';
 import { Section } from 'components/Section.jsx';
+import { Error } from 'src/Error';
+import constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
@@ -93,7 +95,7 @@ describe('Container', () => {
       value: '72',
       voided: false,
       comment: undefined,
-      groupMembers: [],
+      groupMembers: undefined,
     };
 
     observation2 = {
@@ -104,7 +106,7 @@ describe('Container', () => {
       value: '98',
       voided: false,
       comment: undefined,
-      groupMembers: [],
+      groupMembers: undefined,
     };
 
     observations = [observation1, observation2];
@@ -199,8 +201,8 @@ describe('Container', () => {
       wrapper.find('input').at(0).simulate('change', { target: { value: undefined } });
       const instance = wrapper.instance();
 
-      const expectedErrors = [{ errorType: 'mandatory' }];
-      expect(instance.getValue()).to.deep.equal({ errors: expectedErrors });
+      const mandatoryError = new Error({ message: constants.validations.mandatory });
+      expect(instance.getValue()).to.deep.eql({ errors: [mandatoryError] });
     });
 
     it('should not throw mandatory errors if there are no observations', () => {
@@ -239,7 +241,7 @@ describe('Container', () => {
         formNamespace: 'fm1/101',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
         voided: true,
-        groupMembers: [],
+        groupMembers: undefined,
         comment: undefined,
       };
       metadataClone.controls.push(mandatoryControl);
@@ -282,8 +284,8 @@ describe('Container', () => {
       const instance = wrapper.instance();
       wrapper.find('input').at(1).simulate('change', { target: { value: undefined } });
 
-      const expectedErrors = [{ errorType: 'mandatory' }];
-      expect(instance.getValue()).to.deep.equal({ errors: expectedErrors });
+      const mandatoryError = new Error({ message: constants.validations.mandatory });
+      expect(instance.getValue()).to.deep.equal({ errors: [mandatoryError] });
     });
   });
 });

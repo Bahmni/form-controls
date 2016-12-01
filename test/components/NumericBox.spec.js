@@ -5,6 +5,7 @@ import chai, { expect } from 'chai';
 import { NumericBox } from 'components/NumericBox.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
+import { Error } from 'src/Error';
 
 chai.use(chaiEnzyme());
 
@@ -50,8 +51,9 @@ describe('NumericBox', () => {
     const wrapper = shallow(
       <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
     );
+    const allowDecimalError = new Error({ message: validations[0] });
     wrapper.find('input').simulate('change', { target: { value: '50.32' } });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('50.32', [{ errorType: validations[0] }]));
+    sinon.assert.calledOnce(onChangeSpy.withArgs('50.32', [allowDecimalError]));
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
@@ -73,12 +75,15 @@ describe('NumericBox', () => {
 
   it('should throw error when the value is not in correct range', () => {
     const wrapper = shallow(
-        <NumericBox errors={[]} maxNormal="50" minNormal="20"
-          onChange={onChangeSpy} validations={validations}
+        <NumericBox maxNormal="50" minNormal="20"
+          onChange={onChangeSpy} validate={false} validations={validations}
         />
     );
-    wrapper.find('input').simulate('change', { target: { value: '50.32' } });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('50.32', [{ errorType: validations[0] }]));
-    expect(wrapper.find('input')).to.have.className('form-builder-error');
+    const allowRangeWarning = new Error({
+      type: constants.errorTypes.warning,
+      message: constants.validations.allowRange,
+    });
+    wrapper.find('input').simulate('change', { target: { value: '51' } });
+    sinon.assert.calledOnce(onChangeSpy.withArgs('51', [allowRangeWarning]));
   });
 });

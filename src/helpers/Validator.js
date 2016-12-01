@@ -2,6 +2,8 @@ import constants from 'src/constants';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import isUndefined from 'lodash/isUndefined';
+import { Error } from 'src/Error';
+
 
 export class Validator {
   static nonEmpty(value) {
@@ -11,16 +13,19 @@ export class Validator {
 
   static mandatory(obsValue) {
     if (this.nonEmpty(obsValue)) return undefined;
-    return { errorType: constants.validations.mandatory };
+    return new Error({ message: constants.validations.mandatory });
   }
 
   static allowDecimal(obsValue) {
     if (isUndefined(obsValue) || obsValue % 1 === 0) return undefined;
-    return { errorType: constants.validations.allowDecimal };
+    return new Error({ message: constants.validations.allowDecimal });
   }
 
   static allowRange(value, params) {
-    const error = { errorType: constants.validations.allowRange };
+    const error = new Error({
+      type: constants.errorTypes.warning,
+      message: constants.validations.allowRange,
+    });
     if (isUndefined(value)) return undefined;
 
     if ((params.minNormal && value < Number.parseInt(params.minNormal, 10))) {

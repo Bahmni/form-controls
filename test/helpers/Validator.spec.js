@@ -1,21 +1,21 @@
 import { expect } from 'chai';
 import { Validator } from 'src/helpers/Validator';
 import constants from 'src/constants';
+import { Error } from 'src/Error';
 
 describe('Validator', () => {
   describe('mandatory validation', () => {
     const validations = [constants.validations.mandatory];
+    const mandatoryValidationError = new Error({ message: validations[0] });
 
     it('should get mandatory validation error when value is undefined', () => {
-      const expectedErrors = [{ errorType: constants.validations.mandatory }];
       const errors = Validator.getErrors({ validations, value: undefined });
-      expect(errors).to.deep.eql(expectedErrors);
+      expect(errors[0]).to.deep.eql(mandatoryValidationError);
     });
 
     it('should get mandatory validation error when value is empty', () => {
-      const expectedErrors = [{ errorType: constants.validations.mandatory }];
       const errors = Validator.getErrors({ validations, value: '' });
-      expect(errors).to.deep.eql(expectedErrors);
+      expect(errors[0]).to.deep.eql(mandatoryValidationError);
     });
 
     it('should not give mandatory error when value is present', () => {
@@ -37,11 +37,11 @@ describe('Validator', () => {
 
   describe('allowDecimal validation', () => {
     const validations = [constants.validations.allowDecimal];
+    const allowDecimalError = new Error({ message: validations[0] });
 
     it('should get allowDecimal error when value has decimal value', () => {
-      const expectedErrors = [{ errorType: constants.validations.allowDecimal }];
       const errors = Validator.getErrors({ validations, value: 123.12 });
-      expect(errors).to.deep.eql(expectedErrors);
+      expect(errors[0]).to.deep.eql(allowDecimalError);
     });
 
     it('should not get allowDecimal error when value is undefined', () => {
@@ -63,19 +63,21 @@ describe('Validator', () => {
 
   describe('allowRange validation', () => {
     const validations = [constants.validations.allowRange];
+    const allowRangeWarning = new Error({
+      type: constants.errorTypes.warning,
+      message: validations[0],
+    });
 
     it('should get allowRange error when value is lesser than minNormal', () => {
       const params = { minNormal: 80, maxNormal: 120 };
-      const expectedErrors = [{ errorType: constants.validations.allowRange }];
       const errors = Validator.getErrors({ params, validations, value: 78 });
-      expect(errors).to.deep.eql(expectedErrors);
+      expect(errors[0]).to.deep.eql(allowRangeWarning);
     });
 
     it('should get allowRange error when value is higher than maxNormal', () => {
       const params = { minNormal: 80, maxNormal: 120 };
-      const expectedErrors = [{ errorType: constants.validations.allowRange }];
       const errors = Validator.getErrors({ params, validations, value: 130 });
-      expect(errors).to.deep.eql(expectedErrors);
+      expect(errors[0]).to.deep.eql(allowRangeWarning);
     });
 
     it('should not get allowRange error when value is undefined', () => {

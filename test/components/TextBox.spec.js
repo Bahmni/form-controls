@@ -5,6 +5,7 @@ import chai, { expect } from 'chai';
 import { TextBox } from 'src/components/TextBox.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
+import { Error } from 'src/Error';
 
 chai.use(chaiEnzyme());
 
@@ -63,8 +64,9 @@ describe('TextBox', () => {
         value={'defalutText'}
       />
     );
+    const mandatoryError = new Error({ message: validations[0] });
     wrapper.find('textarea').simulate('change', { target: { value: undefined } });
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [{ errorType: validations[0] }]));
+    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 

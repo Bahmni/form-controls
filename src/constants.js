@@ -8,6 +8,10 @@ const Constants = {
     allowDecimal: 'allowDecimal',
     allowRange: 'allowRange',
   },
+  errorTypes: {
+    warning: 'warning',
+    error: 'error',
+  },
 };
 
 export default Constants;

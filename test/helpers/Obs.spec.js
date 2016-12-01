@@ -79,7 +79,7 @@ describe('Obs', () => {
 
     expect(updatedObs).to.be.eql(obs);
   });
-  
+
   it('should return true when the obs belongs to a numeric concept', () => {
     const obs = new Obs({ concept: {
       name: 'Pulse',

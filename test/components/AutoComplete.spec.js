@@ -5,6 +5,7 @@ import chai, { expect } from 'chai';
 import { AutoComplete } from '../../src/components/AutoComplete.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
+import { Error } from 'src/Error';
 
 chai.use(chaiEnzyme());
 
@@ -145,8 +146,8 @@ describe('AutoComplete', () => {
 
       const onChange = wrapper.find('Select').props().onChange;
       onChange(undefined);
-      sinon.assert.calledOnce(onValueChange.withArgs(undefined,
-        [{ errorType: constants.validations.mandatory }]));
+      const mandatoryError = new Error({ message: constants.validations.mandatory });
+      sinon.assert.calledOnce(onValueChange.withArgs(undefined, [mandatoryError]));
     });
 
     it('should test onInputChange', () => {

@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import isEmpty from 'lodash/isEmpty';
 import { controlStateFactory } from 'src/ControlState';
+import constants from 'src/constants';
 
 export class Container extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ export class Container extends Component {
   getErrors() {
     const records = this.state.data.getRecords();
     return [].concat(...records.map((record) => record.get('errors'))
-      .filter((error) => !isEmpty(error)));
+      .filter((error) => !isEmpty(error.filter((err) => err.type === constants.errorTypes.error))));
   }
 
   // deprecated

@@ -3,19 +3,22 @@ import 'src/helpers/componentStore';
 import isEmpty from 'lodash/isEmpty';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
+import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
 
 export class ObsGroupControl extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { obs: this.props.obs, hasErrors: false };
+    this.state = { obs: props.obs, hasErrors: false };
     this.onChange = this.onChange.bind(this);
-    this.mapper = props.mapper || new ObsGroupMapper();
+    const isAbnormal = props.metadata.properties.isAbnormal;
+    this.mapper = isAbnormal ? new AbnormalObsGroupMapper() : new ObsGroupMapper();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.obs !== nextProps.obs ||
-        this.state.hasErrors !== nextState.hasErrors) {
+        this.state.hasErrors !== nextState.hasErrors ||
+        this.state.obs !== nextState.obs) {
       return true;
     }
     return false;
@@ -32,14 +35,14 @@ export class ObsGroupControl extends Component {
   }
 
   render() {
-    const { metadata: { concept }, validate, onValueChanged } = this.props;
-    const childProps = { validate, onValueChanged };
+    const { metadata: { concept }, validate } = this.props;
+    const childProps = { validate, onValueChanged: this.onChange };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     return (
         <fieldset className="form-builder-fieldset">
           <legend>{concept.name}</legend>
           <div className="obsGroup-controls">
-            {displayRowControls(groupedRowControls, this.props.obs.groupMembers, childProps)}
+            {displayRowControls(groupedRowControls, this.state.obs.groupMembers, childProps)}
           </div>
         </fieldset>
     );

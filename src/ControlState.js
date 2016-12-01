@@ -1,6 +1,7 @@
 import { Map, Record } from 'immutable';
 import { Obs, obsFromMetadata } from 'src/helpers/Obs';
 import { createFormNamespace } from 'src/helpers/formNamespace';
+import each from 'lodash/each';
 
 export const ControlRecord = new Record({
   formNamespace: '',
@@ -12,13 +13,12 @@ export const ControlRecord = new Record({
 
 export class ControlState {
   constructor(records) {
-    this.records = records;
     this.data = new Map();
-    this._initialize();
+    this._initialize(records);
   }
 
-  _initialize() {
-    this.records.forEach((record) => {
+  _initialize(records) {
+    records.forEach((record) => {
       this.data = this.data.setIn([record.formNamespace], record);
     });
   }
@@ -45,10 +45,8 @@ export class ControlState {
   }
 }
 
-export function controlStateFactory(metadata = { controls: [] }, bahmniObservations = []) {
-  const formUuid = metadata.uuid;
-  // generate records from metadata
-  const records = metadata.controls.map((control) => {
+function getRecords(controls, formUuid, bahmniObservations) {
+  return controls.map((control) => {
     const formNamespace = createFormNamespace(formUuid, control.id);
     const index = bahmniObservations.findIndex(observation =>
       observation.formNamespace === formNamespace
@@ -56,12 +54,21 @@ export function controlStateFactory(metadata = { controls: [] }, bahmniObservati
     // if observation exists then load else create dummy observations
     let obs;
     if (index >= 0) {
-      obs = new Obs(bahmniObservations[index]);
+      obs = new Obs(bahmniObservations[index]).removeGroupMembers();
     } else {
       obs = obsFromMetadata(formNamespace, control);
     }
+    if (control.controls && control.controls.length > 0) {
+      const groupMembers = index >= 0 ? bahmniObservations[index].groupMembers : bahmniObservations;
+      each(getRecords(control.controls, formUuid, groupMembers), (obsGroupMember) => {
+        obs = obs.addGroupMember(obsGroupMember.obs);
+      });
+    }
     return new ControlRecord({ formNamespace, obs, enabled: false });
   });
+}
 
+export function controlStateFactory(metadata = { controls: [] }, bahmniObservations = []) {
+  const records = getRecords(metadata.controls, metadata.uuid, bahmniObservations);
   return new ControlState(records);
 }

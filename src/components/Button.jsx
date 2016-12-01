@@ -14,9 +14,10 @@ export class Button extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.validate) {
+    if (nextProps.validate || !isEqual(this.props.value, nextProps.value)) {
       const errors = this._getErrors(nextProps.value);
-      this.setState({ hasErrors: this._hasErrors(errors) });
+      const value = nextProps.value ? nextProps.value.value : undefined;
+      this.setState({ value, hasErrors: this._hasErrors(errors) });
     }
   }
 

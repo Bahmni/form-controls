@@ -48,7 +48,7 @@ export class Obs extends ImmutableObs {
   }
 
   void() {
-    return this.set('voided', true);
+    return this.set('voided', true).set('value', undefined);
   }
 
   isVoided() {
@@ -79,8 +79,16 @@ export class Obs extends ImmutableObs {
     return this.get('groupMembers');
   }
 
+  removeGroupMembers() {
+    return this.set('groupMembers', undefined);
+  }
+
   isNumeric() {
-    if (this.get('concept') && this.get('concept').datatype === NUMERIC_DATATYPE) return true;
+    const concept = this.get('concept');
+    if (concept &&
+      (concept.datatype === NUMERIC_DATATYPE || concept.dataType === NUMERIC_DATATYPE)) {
+      return true;
+    }
 
     return false;
   }

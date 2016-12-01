@@ -8,14 +8,18 @@ import constants from 'src/constants';
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasErrors: false };
     this.defaultValidations = [constants.validations.allowRange];
+    const errors = this._getErrors(props.value) || [];
+    const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
+    this.state = { hasErrors: false, hasWarnings };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate) {
       const errors = this._getErrors(nextProps.value);
-      this.setState({ hasErrors: this._hasErrors(errors) });
+      const hasErrors = this._hasErrors(errors, constants.errorTypes.error);
+      const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
+      this.setState({ hasErrors, hasWarnings });
     }
   }
 
@@ -29,14 +33,17 @@ export class NumericBox extends Component {
 
 
   handleChange(e) {
-    const value = e.target.value;
+    let value = e.target.value;
+    value = value && value.trim() !== '' ? value.trim() : undefined;
     const errors = this._getErrors(value);
-    this.setState({ hasErrors: this._hasErrors(errors) });
+    const hasErrors = this._hasErrors(errors, constants.errorTypes.error);
+    const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
+    this.setState({ hasErrors, hasWarnings });
     this.props.onChange(value, errors);
   }
 
-  _hasErrors(errors) {
-    return !isEmpty(errors);
+  _hasErrors(errors, errorType) {
+    return !isEmpty(errors.filter((error) => error.type === errorType));
   }
 
   _getErrors(value) {

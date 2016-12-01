@@ -1,16 +1,17 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { AbnormalObsControl } from 'src/components/AbnormalObsControl.jsx';
+import { ObsGroupControl } from 'src/components/ObsGroupControl.jsx';
 import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
 import { NumericBox } from 'src/components/NumericBox.jsx';
 import { List } from 'immutable';
 
 const metadata = {
-  type: 'AbnormalObsGroupControl',
+  type: 'ObsGroupControl',
   concept: {
     name: 'Pulse Data',
-    uuid: 'pulsDataUuid',
+    uuid: 'c36af094-3f10-11e4-adec-0800271c1b75',
     datatype: 'N/A',
   },
   label: {
@@ -42,7 +43,7 @@ const metadata = {
       id: '6',
       concept: {
         name: 'Pulse',
-        uuid: 'pulseUuid',
+        uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
         datatype: 'Numeric',
         conceptClass: 'Misc',
         lowNormal: '60',
@@ -70,7 +71,7 @@ const metadata = {
       id: '7',
       concept: {
         name: 'Pulse Abnormal',
-        uuid: 'pulseAbnormalUuid',
+        uuid: 'c36c7c98-3f10-11e4-adec-0800271c1b75',
         datatype: 'Boolean',
         conceptClass: 'Abnormal',
       },
@@ -90,7 +91,7 @@ const pulseDataObs = new Obs({
 
 storiesOf('Abnormal ObsControl', module)
   .add('Basic View', () => (
-    <AbnormalObsControl
+    <ObsGroupControl
       errors={[]}
       metadata={metadata}
       obs={ pulseDataObs }

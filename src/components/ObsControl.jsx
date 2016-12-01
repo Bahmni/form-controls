@@ -12,9 +12,16 @@ export class ObsControl extends Component {
   constructor(props) {
     super(props);
     this.mapper = new ObsMapper(props.obs);
-    this.state = { obs: props.obs };
     this.onChange = this.onChange.bind(this);
     this.onCommentChange = this.onCommentChange.bind(this);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (this.props.obs !== nextProps.obs) {
+      this.mapper = new ObsMapper(nextProps.obs);
+      return true;
+    }
+    return false;
   }
 
   onChange(value, errors) {

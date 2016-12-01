@@ -3,13 +3,18 @@ import { getFormNamespaceDetails } from 'src/helpers/formNamespace';
 import Row from 'src/components/Row.jsx';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
+import isEmpty from 'lodash/isEmpty';
 
 function getObsForControl(control, observations) {
   if (control.properties && control.properties.visualOnly) return observations;
-  return observations.find((obs) => {
+  const filteredObs = observations.find((obs) => {
     const { controlId } = getFormNamespaceDetails(obs.formNamespace);
     return controlId === control.id;
   });
+  if (!filteredObs && !isEmpty(observations.groupMembers)) {
+    return getObsForControl(control, observations.groupMembers);
+  }
+  return filteredObs;
 }
 
 function createReactComponent(component, props) {
