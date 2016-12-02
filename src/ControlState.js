@@ -1,47 +1,39 @@
-import { Map, Record } from 'immutable';
+import { Map as ImmutableMap, Record } from 'immutable';
 import { Obs, obsFromMetadata } from 'src/helpers/Obs';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 import each from 'lodash/each';
 
 export const ControlRecord = new Record({
+  control: undefined,
   formNamespace: '',
-  obs: undefined,
-  enabled: true,
+  obs: undefined, enabled: true,
   errors: [],
   data: undefined,
 });
 
-export class ControlState {
-  constructor(records) {
-    this.data = new Map();
-    this._initialize(records);
-  }
+export const ImmutableControlState = new Record({
+  data: new ImmutableMap(),
+});
 
-  _initialize(records) {
+export class ControlState extends ImmutableControlState {
+  setRecords(records) {
+    const map = new Map();
     records.forEach((record) => {
-      this.data = this.data.setIn([record.formNamespace], record);
+      map.set(record.formNamespace, record);
     });
+    return this.set('data', new ImmutableMap(map));
   }
 
   setRecord(bahmniRecord) {
-    this.data = this.data.setIn([bahmniRecord.formNamespace], bahmniRecord);
-    return this;
+    return this.set('data', this.get('data').setIn([bahmniRecord.formNamespace], bahmniRecord));
   }
 
   getRecord(formNamespace) {
-    return this.data.get(formNamespace);
+    return this.get('data').get(formNamespace);
   }
 
   getRecords() {
-    return this.data.toArray();
-  }
-
-  equals(otherControlState) {
-    if (!otherControlState) { return false; }
-    if (otherControlState.length !== this.data.length) { return false; }
-    return this.data.every((record, i) =>
-      record.equals(otherControlState[i])
-    );
+    return this.get('data').toArray();
   }
 }
 
@@ -64,11 +56,11 @@ function getRecords(controls, formUuid, bahmniObservations) {
         obs = obs.addGroupMember(obsGroupMember.obs);
       });
     }
-    return new ControlRecord({ formNamespace, obs, enabled: false });
+    return new ControlRecord({ formNamespace, obs, control, enabled: false });
   });
 }
 
 export function controlStateFactory(metadata = { controls: [] }, bahmniObservations = []) {
   const records = getRecords(metadata.controls, metadata.uuid, bahmniObservations);
-  return new ControlState(records);
+  return new ControlState().setRecords(records);
 }

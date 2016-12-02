@@ -95,27 +95,23 @@ describe('Control State', () => {
 
   it('should initialize with the given records', () => {
     const records = [record1, record2];
-    const controlState = new ControlState(records);
+    const controlState = new ControlState().setRecords(records);
     const updatedState = controlState.getRecords();
-
     expect(updatedState).to.deep.equal(records);
   });
 
   it('should insert new record', () => {
     const records = [record1, record2];
-    const controlState = new ControlState(records);
+    const controlState = new ControlState().setRecords(records);
     const updatedState = controlState.getRecords();
 
     expect(updatedState).to.be.deep.equal(records);
-
-    controlState.setRecord(record3);
-
-    expect(controlState.getRecords()).to.deep.equal([record1, record2, record3]);
+    expect(controlState.setRecord(record3).getRecords()).to.deep.equal([record1, record2, record3]);
   });
 
   it('should fetch record based on the formNamespace', () => {
     const records = [record1, record2];
-    const controlState = new ControlState(records);
+    const controlState = new ControlState().setRecords(records);
     const fetchedRecord = controlState.getRecord('FID/CID1');
 
     expect(fetchedRecord).to.be.deep.equal(record1);

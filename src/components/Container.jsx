@@ -16,11 +16,11 @@ export class Container extends Component {
   }
 
   onValueChanged(obs, errors) {
-    const data = this.state.data;
-    const bahmniRecord = data.getRecord(obs.formNamespace)
+    const bahmniRecord = this.state.data.getRecord(obs.formNamespace)
       .set('obs', obs)
       .set('errors', errors);
-    this.setState({ data: data.setRecord(bahmniRecord) });
+    const data = this.state.data.setRecord(bahmniRecord);
+    this.setState({ data });
   }
 
   getValue() {
