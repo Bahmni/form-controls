@@ -168,11 +168,11 @@ storiesOf('Container', module)
 storiesOf('ObsControl', module)
   .add('Numeric Obs Control', () => (
     <ObsControl
-      errors={[]}
       formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
       metadata={form.controls[0]}
       obs={new Obs({ concept: form.controls[0].concept })}
       onValueChanged={(obs, errors) => console.log(obs, errors)}
+      validate
     />
   ));
 

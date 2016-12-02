@@ -9,9 +9,13 @@ export class NumericBox extends Component {
   constructor(props) {
     super(props);
     this.defaultValidations = [constants.validations.allowRange];
-    const errors = this._getErrors(props.value) || [];
+    const errors = this._getErrors(props.value);
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
     this.state = { hasErrors: false, hasWarnings };
+  }
+
+  componentDidMount() {
+    this.input.value = this.props.value;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -20,6 +24,9 @@ export class NumericBox extends Component {
       const hasErrors = this._hasErrors(errors, constants.errorTypes.error);
       const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
       this.setState({ hasErrors, hasWarnings });
+    }
+    if (this.props.value !== nextProps.value) {
+      this.input.value = nextProps.value;
     }
   }
 
@@ -31,6 +38,12 @@ export class NumericBox extends Component {
     return false;
   }
 
+  componentDidUpdate() {
+    const errors = this._getErrors(this.props.value);
+    if (this._hasErrors(errors, constants.errorTypes.error)) {
+      this.props.onChange(this.props.value, errors);
+    }
+  }
 
   handleChange(e) {
     let value = e.target.value;
@@ -56,8 +69,8 @@ export class NumericBox extends Component {
     return (
       <input
         className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
-        defaultValue={ this.props.value }
         onChange={ (e) => this.handleChange(e) }
+        ref={(elem) => { this.input = elem; }}
         type="number"
       />
     );

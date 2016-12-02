@@ -23,7 +23,8 @@ export class Button extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (!isEqual(this.props.value, nextProps.value) ||
-      !isEqual(this.state.value, nextState.value)) {
+      !isEqual(this.state.value, nextState.value) ||
+      this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
     return false;

@@ -147,7 +147,7 @@ describe('AutoComplete', () => {
       const onChange = wrapper.find('Select').props().onChange;
       onChange(undefined);
       const mandatoryError = new Error({ message: constants.validations.mandatory });
-      sinon.assert.calledOnce(onValueChange.withArgs(undefined, [mandatoryError]));
+      sinon.assert.calledTwice(onValueChange.withArgs(undefined, [mandatoryError]));
     });
 
     it('should test onInputChange', () => {

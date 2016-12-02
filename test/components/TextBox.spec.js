@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { TextBox } from 'src/components/TextBox.jsx';
@@ -18,7 +18,11 @@ describe('TextBox', () => {
     window.componentStore.deRegisterComponent('text');
   });
 
-  const onChangeSpy = sinon.spy();
+  let onChangeSpy;
+
+  beforeEach(() => {
+    onChangeSpy = sinon.spy();
+  });
 
   it('should render TextBox', () => {
     const wrapper = shallow(
@@ -73,7 +77,7 @@ describe('TextBox', () => {
   it('should throw error on fail of validations during component update', () => {
     const validations = [constants.validations.mandatory];
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <TextBox
         onChange={onChangeSpy}
         validate={false}
@@ -81,7 +85,9 @@ describe('TextBox', () => {
         value={'defalutText'}
       />
     );
+    const mandatoryError = new Error({ message: validations[0] });
     wrapper.setProps({ validate: true, value: undefined });
+    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 

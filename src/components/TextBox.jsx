@@ -25,6 +25,13 @@ export class TextBox extends Component {
     return false;
   }
 
+  componentDidUpdate() {
+    const errors = this._getErrors(this.props.value);
+    if (this._hasErrors(errors)) {
+      this.props.onChange(this.props.value, errors);
+    }
+  }
+
   _hasErrors(errors) {
     return !isEmpty(errors);
   }

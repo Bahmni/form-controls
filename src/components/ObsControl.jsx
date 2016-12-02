@@ -16,12 +16,10 @@ export class ObsControl extends Component {
     this.onCommentChange = this.onCommentChange.bind(this);
   }
 
-  shouldComponentUpdate(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.obs !== nextProps.obs) {
       this.mapper = new ObsMapper(nextProps.obs);
-      return true;
     }
-    return false;
   }
 
   onChange(value, errors) {
@@ -35,9 +33,9 @@ export class ObsControl extends Component {
   }
 
   displayObsControl(registeredComponent) {
-    const { metadata, validate } = this.props;
-    const options = metadata.options || metadata.concept.answers;
-    const validations = getValidations(metadata.properties);
+    const { metadata, metadata: { concept }, validate } = this.props;
+    const options = metadata.options || concept.answers;
+    const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
       properties: metadata.properties,
       options,

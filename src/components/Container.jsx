@@ -46,7 +46,8 @@ export class Container extends Component {
   getErrors() {
     const records = this.state.data.getRecords();
     return [].concat(...records.map((record) => record.get('errors'))
-      .filter((error) => !isEmpty(error.filter((err) => err.type === constants.errorTypes.error))));
+      .filter((error) =>
+      error && !isEmpty(error.filter((err) => err.type === constants.errorTypes.error))));
   }
 
   // deprecated

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { NumericBox } from 'components/NumericBox.jsx';
@@ -32,7 +32,7 @@ describe('NumericBox', () => {
 
 
   it('should render NumericBox with default value', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <NumericBox onChange={onChangeSpy} validate={false} validations={[]} value={'50'} />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
@@ -58,7 +58,7 @@ describe('NumericBox', () => {
   });
 
   it('should validate Numeric box when validate is set to true', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
     );
     wrapper.setProps({ validate: true, value: '98.6' });
@@ -66,7 +66,7 @@ describe('NumericBox', () => {
   });
 
   it('should render NumericBox on change of value', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
     );
     wrapper.setProps({ value: '98.6' });

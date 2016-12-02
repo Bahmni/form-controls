@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
+import classNames from 'classnames';
 
 
 export class AutoComplete extends Component {
@@ -29,12 +30,33 @@ export class AutoComplete extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ value: this.getValueFromProps(nextProps) });
+    const value = this.getValueFromProps(nextProps);
+    const errors = this._getErrors(value);
+    const hasErrors = this._hasErrors(errors);
+    this.setState({ value, hasErrors });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!isEqual(this.props.value, nextProps.value) ||
+      !isEqual(this.state.value, nextState.value) ||
+      this.state.hasErrors !== nextState.hasErrors ||
+      this.state.options !== nextState.options ||
+      this.state.noResultsText !== nextState.noResultsText) {
+      return true;
+    }
+    return false;
   }
 
   componentWillUpdate(nextState) {
     return !isEqual(this.state.options, nextState.options)
       || this.state.hasErrors !== nextState.hasErrors;
+  }
+
+  componentDidUpdate() {
+    const errors = this._getErrors(this.state.value);
+    if (this._hasErrors(errors)) {
+      this.props.onValueChange(this.state.value, errors);
+    }
   }
 
   onInputChange(input) {
@@ -116,10 +138,11 @@ export class AutoComplete extends Component {
       value: this.state.value,
       valueKey,
     };
-
+    const className =
+      classNames('obs-control-select-wrapper', { 'form-builder-error': this.state.hasErrors });
     if (asynchronous) {
       return (
-        <div className="obs-control-select-wrapper">
+        <div className={className}>
           <Select.Async
             { ...props }
             loadOptions={ this.getOptions }
@@ -130,7 +153,7 @@ export class AutoComplete extends Component {
       );
     }
     return (
-      <div className="obs-control-select-wrapper">
+      <div className={className}>
         <Select { ...props }
           noResultsText={this.state.noResultsText}
           onInputChange={this.onInputChange}

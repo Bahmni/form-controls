@@ -9,13 +9,6 @@ export class BooleanControl extends Component {
     this.onValueChange = this.onValueChange.bind(this);
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (this.props.value !== nextProps.value) {
-      return true;
-    }
-    return false;
-  }
-
   onValueChange(value, errors) {
     this.props.onChange(value, errors);
   }
