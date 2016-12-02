@@ -27,6 +27,7 @@ export class DropTarget extends Component {
     e.preventDefault();
     const context = JSON.parse(e.dataTransfer.getData('data'));
     this.processDrop(context);
+    e.stopPropagation();
   }
 
   notifyMove(e, context) {

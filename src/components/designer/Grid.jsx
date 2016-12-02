@@ -39,6 +39,7 @@ export class GridDesigner extends Component {
     for (let i = 0; i < rowCount; ++i) {
       rows.push(
         <RowDesigner
+          idGenerator={ this.props.idGenerator }
           key={i}
           onChange={this.changeHandler}
           ref={this.rowReference}
@@ -69,6 +70,7 @@ GridDesigner.propTypes = {
   controls: PropTypes.array.isRequired,
   minRows: PropTypes.number,
   wrapper: PropTypes.func.isRequired,
+  idGenerator: PropTypes.object.isRequired,
 };
 
 GridDesigner.defaultProps = {

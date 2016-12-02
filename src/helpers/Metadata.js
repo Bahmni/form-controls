@@ -1,23 +1,37 @@
-
 export class Metadata {
-  getMetadataForConcept(concept, type, childType) {
+  getMetadataForConcept(
+    concept
+    , idGenerator
+    , type = 'obsGroupControl'
+    , childType = 'obsControl'
+    , loc = {row: 0, column: 0}
+
+  ) {
     let controls = undefined;
     if (concept.set) {
+      let row = 0;
       controls = concept.setMembers.map(c => {
         if (c.set) {
-          return this.getMetadataForConcept(c, type);
+          return this.getMetadataForConcept(c, idGenerator, type);
         }
-        return this.getMetadataForConcept(c, childType);
+        return this.getMetadataForConcept(c, idGenerator, childType, undefined, {row: row++, column: loc.column});
       });
     }
 
-    return Object.assign({
+    const properties = {
+      location: loc,
+    };
+
+    return {
+      id: String(idGenerator.getId()),
       type,
       label: {
         type: 'label',
         value: concept.name,
       },
       concept,
-    }, { controls });
+      controls,
+      properties,
+    };
   }
 }
