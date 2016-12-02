@@ -10,6 +10,7 @@ export class Draggable extends Component {
 
   onDragEnd(context) {
     return (e) => {
+      e.stopPropagation();
       if (this.data.parentRef) {
         this.data.parentRef.notifyMove(e, context);
       }
@@ -20,6 +21,7 @@ export class Draggable extends Component {
     return (e) => {
       const modifiedContext = this.processDragStart(context);
       e.dataTransfer.setData('data', JSON.stringify(modifiedContext));
+      e.stopPropagation();
     };
   }
 

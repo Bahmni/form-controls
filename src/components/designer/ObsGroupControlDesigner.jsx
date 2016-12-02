@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { ObsControlDesigner } from 'components/designer/ObsControlDesigner.jsx';
 import 'src/helpers/componentStore';
 import { ObsGroupMapper } from '../../mapper/ObsGroupMapper';
+import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 import { Concept } from '../../helpers/Concept';
 import { Metadata } from '../../helpers/Metadata';
 import map from 'lodash/map';
@@ -13,21 +14,18 @@ export class ObsGroupControlDesigner extends Component {
     super(props);
     this.metadata = props.metadata;
     this.mapper = new ObsGroupMapper();
+    this.storeGridRef = this.storeGridRef.bind(this);
   }
 
   getJsonDefinition() {
-    return this.props.metadata;
+    const controls = this.gridRef.getControls();
+    return Object.assign({}, this.props.metadata, { controls });
   }
 
-  getControls(controls) {
-    return map(controls, (control, index) => {
-      if (control.type === 'obsControl') {
-        return (<ObsControlDesigner key={ index } metadata={control}
-          onSelect={this.props.onSelect}
-        />);
-      }
-      return this.getControls(control);
-    });
+  storeGridRef(ref) {
+    if (ref) {
+      this.gridRef = ref;
+    }
   }
 
   getGrid() {
@@ -41,7 +39,12 @@ export class ObsGroupControlDesigner extends Component {
       return (<fieldset className="form-builder-fieldset">
           <legend>{concept.name}</legend>
         <div className="obsGroup-controls">
-          {this.getControls(metadata.controls)}
+          <Grid
+            controls={ metadata.controls }
+            idGenerator={this.props.idGenerator}
+            ref={ this.storeGridRef }
+            wrapper={this.props.wrapper}
+          />
         </div>
       </fieldset>
       );
@@ -67,11 +70,11 @@ ObsGroupControlDesigner.propTypes = {
   onSelect: PropTypes.func.isRequired,
 };
 
-ObsGroupControlDesigner.injectConceptToMetadata = (metadata, concept) => {
+ObsGroupControlDesigner.injectConceptToMetadata = (metadata, concept, idGenerator) => {
   const conceptSet = new Concept(concept);
-  const updatedMetadata = new Metadata().getMetadataForConcept(conceptSet.getConcept(),
-      'obsGroupControl', metadata.id, 'obsControl');
-  return updatedMetadata;
+
+  return new Metadata().getMetadataForConcept(conceptSet.getConcept(), idGenerator,
+      'obsGroupControl', 'obsControl', metadata.properties.location);
 };
 
 const descriptor = {

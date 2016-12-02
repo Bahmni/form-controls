@@ -71,7 +71,14 @@ export class CellDesigner extends DropTarget {
     }
     return data.map((metadata, key) =>
       React.createElement(this.props.wrapper,
-        { key, metadata, parentRef: this, ref: this.storeChildRef }
+        {
+          key,
+          metadata,
+          parentRef: this,
+          ref: this.storeChildRef,
+          idGenerator: this.props.idGenerator,
+          wrapper: this.props.wrapper,
+        }
       )
     );
   }
@@ -120,6 +127,7 @@ CellDesigner.propTypes = {
   }).isRequired,
   onChange: PropTypes.func.isRequired,
   wrapper: PropTypes.func.isRequired,
+  idGenerator: PropTypes.object.isRequired,
 };
 
 const descriptor = {

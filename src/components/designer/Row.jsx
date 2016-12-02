@@ -40,6 +40,7 @@ export class RowDesigner extends Component {
           onChange={ this.changeHandler }
           ref={ this.cellReference }
           wrapper={ this.props.wrapper }
+          idGenerator={ this.props.idGenerator }
         />);
     }
     return cells;
@@ -66,6 +67,7 @@ RowDesigner.propTypes = {
   rowData: PropTypes.array.isRequired,
   rowPosition: PropTypes.number.isRequired,
   wrapper: PropTypes.func.isRequired,
+  idGenerator: PropTypes.object.isRequired,
 };
 
 RowDesigner.defaultProps = {
