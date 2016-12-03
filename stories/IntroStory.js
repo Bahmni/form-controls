@@ -1,22 +1,11 @@
-import React, { Component } from 'react';
-import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Welcome from './Welcome';
-import { ObsMapper } from 'src/helpers/ObsMapper';
-import { TextBox } from 'src/components/TextBox.jsx';
-import { Label } from 'src/components/Label.jsx';
+import React from 'react';
+import { storiesOf } from '@kadira/storybook';
+import StoryWrapper from './StoryWrapper';
 import { Container } from 'src/components/Container.jsx';
 import { ObsControl } from 'src/components/ObsControl.jsx';
-import { BooleanControl } from 'src/components/BooleanControl.jsx';
-import { Button } from 'src/components/Button.jsx';
-import { RadioButton } from 'src/components/RadioButton.jsx';
-import { NumericBox } from 'src/components/Button.jsx';
-import { CodedControl } from 'src/components/CodedControl.jsx';
-import { AutoComplete } from 'src/components/AutoComplete.jsx';
 import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
-import { ControlState, ControlRecord } from '../src/ControlState';
 import '../node_modules/react-select/dist/react-select.css';
-
 
 const obsList = [
   {
@@ -153,85 +142,71 @@ const form = {
   ],
 };
 
-storiesOf('Welcome', module)
-  .add('to Storybook', () => (
-    <Welcome showApp={linkTo('Button')} />
-  ));
-
-
-storiesOf('Container', module)
-  .add('Sample Form', () => (
-    <Container metadata={form} observations={obsList} />
-  ));
+storiesOf('Forms', module)
+    .add('Form1', () =>
+        <StoryWrapper json={form}>
+          <Container metadata={form} observations={obsList }
+            validate={ false }
+          />
+        </StoryWrapper>
+  );
 
 
 storiesOf('ObsControl', module)
   .add('Numeric Obs Control', () => (
-    <ObsControl
-      formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
-      metadata={form.controls[0]}
-      obs={new Obs({ concept: form.controls[0].concept })}
-      onValueChanged={(obs, errors) => console.log(obs, errors)}
-      validate
-    />
+      <StoryWrapper json={ form.controls[0] }>
+        <ObsControl
+          formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
+          metadata={form.controls[0]}
+          obs={new Obs({ concept: form.controls[0].concept })}
+          onValueChanged={() => {}}
+          validate={ false }
+        />
+      </StoryWrapper>
   ));
 
 storiesOf('ObsControl', module)
   .add('TextBox Obs Control', () => (
-    <ObsControl
-      errors={[]}
-      formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
-      metadata={form.controls[1]}
-      obs={new Obs({ concept: form.controls[1].concept })}
-      onValueChanged={(obs, errors) => console.log(obs, errors)}
-    />
+      <StoryWrapper json={form.controls[1]}>
+        <ObsControl
+          errors={[]}
+          formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
+          metadata={form.controls[1]}
+          obs={new Obs({ concept: form.controls[1].concept })}
+          onValueChanged={() => {}}
+          validate={ false }
+        />
+      </StoryWrapper>
   ));
 
 storiesOf('ObsControl', module)
   .add('Boolean Obs Control', () => (
+      <StoryWrapper json={form.controls[2]}>
     <ObsControl
       errors={[]}
       formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
       metadata={form.controls[2]}
       obs={ new Obs({ concept: form.controls[2].concept })}
-      onValueChanged={(obs, errors) => console.log(obs, errors)}
+      onValueChanged={() => {}}
+      validate={ false }
     />
+      </StoryWrapper>
   ));
-
-storiesOf('Container',module)
-    .add('Sample Form', () => (
-        <Container metadata={form} observations={obsList} />
-    ));
-
-
-
-class DummyClass extends Component {
-    constructor() {
-        super();
-        console.log('control state', new ControlRecord({ formNamespace: 'abc' }));
-    }
-
-    render() {
-        return <div>blah</div>;
-    }
-}
-
-storiesOf('ControlState', module)
-.add('demo state', () =>
-    <DummyClass />
-);
 
 storiesOf('ObsControl', module)
   .add('Coded Obs Control', () => (
-    <ObsControl
-      errors={[]}
-      formUuid={'fbc5d897-6404-4cc1-90a3-47fde7a98026'}
-      metadata={form.controls[3]}
-      obs={new Obs({ concept: form.controls[3].concept, value:{
-         display: 'Answer1',
-         name: { name: 'Answer1' },
-         uuid: 'answer1uuid',
-      } })}
-      onValueChanged={(obs, errors) => console.log(obs, errors)}
-    />
+      <StoryWrapper json={form.controls[3]}>
+          <ObsControl
+            errors={[]}
+            formUuid={'fbc5d897-6404-4cc1-90a3-47fde7a98026'}
+            metadata={form.controls[3]}
+            obs={new Obs({ concept: form.controls[3].concept, value: {
+              display: 'Answer1',
+              name: { name: 'Answer1' },
+              uuid: 'answer1uuid',
+            } })}
+            onValueChanged={() => {}}
+            validate={ false }
+          />
+      </StoryWrapper>
   ));

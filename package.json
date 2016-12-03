@@ -14,11 +14,13 @@
     "publish": "publish",
     "ci": "npm run clean && npm run build && npm run publish",
     "storybook": "start-storybook -p 6006",
+    "deploy-storybook": "storybook-to-ghpages",
     "build-storybook": "build-storybook"
   },
   "author": "bahmni@thoughtworks.com",
   "devDependencies": {
     "@kadira/storybook": "^2.21.0",
+    "@kadira/storybook-deployer": "^1.2.0",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.2",
@@ -61,6 +63,8 @@
     "react": "^15.4.1",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",
+    "react-json-tree": "^0.10.0",
+    "react-json-syntax-highlighter": "^0.1.15",
     "sass-loader": "^4.0.2",
     "sinon": "^2.0.0-pre.2",
     "style-loader": "^0.13.1",
