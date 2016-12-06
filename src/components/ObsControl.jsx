@@ -53,10 +53,7 @@ export class ObsControl extends Component {
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     if (!hideLabel) {
       return (
-          <div className="label-wrap fl">
             <Label metadata={label} />
-            { this.markMandatory() }
-          </div>
       );
     }
     return null;
@@ -89,7 +86,10 @@ export class ObsControl extends Component {
     if (registeredComponent) {
       return (
         <div>
-          {this.displayLabel()}
+          <div className="label-wrap fl">
+            {this.displayLabel()}
+            {this.markMandatory()}
+          </div>
           {this.displayObsControl(registeredComponent)}
           {this.showComment()}
         </div>

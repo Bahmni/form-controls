@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import isEmpty from 'lodash/isEmpty';
+import filter from 'lodash/filter';
 import { controlStateFactory } from 'src/ControlState';
 import constants from 'src/constants';
 
@@ -25,11 +26,7 @@ export class Container extends Component {
 
   getValue() {
     const records = this.state.data.getRecords();
-    const observations = records.filter((record) =>
-        this._isValidObs(record.obs)).map((record) =>
-          record.obs.toJS()
-        );
-
+    const observations = this._getObservations(records.map((record) => record.obs.toJS()));
     const errors = this.getErrors();
     if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
       return { observations };
@@ -50,13 +47,24 @@ export class Container extends Component {
       error && !isEmpty(error.filter((err) => err.type === constants.errorTypes.error))));
   }
 
+  /* eslint-disable no-param-reassign */
+  _getObservations(observations) {
+    return filter(observations, (obs) => {
+      if (!isEmpty(obs.groupMembers)) {
+        obs.groupMembers = this._getObservations(obs.groupMembers);
+      }
+      return this._isValidObs(obs);
+    });
+  }
+  /* eslint-disable no-param-reassign */
+
   // deprecated
   storeChildRef(ref) {
     if (ref) this.childControls[ref.props.id] = ref;
   }
 
   _isNewVoidedObs(obs) {
-    return !obs.getUuid() && obs.isVoided();
+    return !obs.uuid && obs.voided;
   }
 
   _isValidObs(obs) {

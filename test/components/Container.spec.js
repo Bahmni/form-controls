@@ -8,6 +8,7 @@ import { Label } from 'components/Label.jsx';
 import { TextBox } from 'components/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { ObsControl } from 'components/ObsControl.jsx';
+import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 import { Section } from 'components/Section.jsx';
 import { Error } from 'src/Error';
 import constants from 'src/constants';
@@ -25,6 +26,7 @@ describe('Container', () => {
     componentStore.registerComponent('text', TextBox);
     componentStore.registerComponent('numeric', NumericBox);
     componentStore.registerComponent('obsControl', ObsControl);
+    componentStore.registerComponent('obsGroupControl', ObsGroupControl);
     componentStore.registerComponent('section', Section);
   });
 
@@ -33,6 +35,7 @@ describe('Container', () => {
     componentStore.deRegisterComponent('text');
     componentStore.deRegisterComponent('numeric');
     componentStore.deRegisterComponent('obsControl');
+    componentStore.deRegisterComponent('obsGroupControl');
     componentStore.deRegisterComponent('section');
   });
 
@@ -286,6 +289,105 @@ describe('Container', () => {
 
       const mandatoryError = new Error({ message: constants.validations.mandatory });
       expect(instance.getValue()).to.deep.equal({ errors: [mandatoryError] });
+    });
+  });
+
+  describe('obsGroup', () => {
+    const obsGroupMetaData = {
+      id: 'formUuid',
+      uuid: 'formUuid',
+      controls: [{
+        type: 'obsGroupControl',
+        id: '2',
+        label: { type: 'label', value: 'New ObsGroup' },
+        concept: {
+          name: 'New ObsGroup',
+          uuid: 'f5bda4ed-c400-4304-8c7c-8c647c3cb429',
+          datatype: 'N/A',
+        },
+        controls: [{
+          type: 'obsControl',
+          id: '201',
+          concept: {
+            name: 'Pulse',
+            uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+            datatype: 'Numeric',
+          },
+          properties: { location: { column: 0, row: 0 } },
+          label: { type: 'label', value: 'Pulse' },
+        }, {
+          type: 'obsControl',
+          id: '202',
+          concept: {
+            name: 'History Notes',
+            uuid: 'c2a43174-c9db-4e54-8516-17372c83537f',
+            datatype: 'text',
+          },
+          properties: { location: { column: 0, row: 2 } },
+          label: { type: 'label', value: 'History Notes' },
+        }],
+        properties: { location: { column: 0, row: 1 } },
+      }],
+    };
+
+    it('should filter child obs which are not having value from obs group', () => {
+      const wrapper = mount(
+        <Container
+          metadata={obsGroupMetaData}
+          observations={[]}
+          validate={false}
+        />);
+
+      wrapper.find('input').simulate('change', { target: { value: '999' } });
+      const instance = wrapper.instance();
+
+      const updatedObs = instance.getValue();
+
+      expect(updatedObs.observations.length).to.be.eql(1);
+      expect(updatedObs.observations[0].groupMembers.length).to.be.eql(1);
+    });
+
+
+    it('should render with default obs', () => {
+      const obs = [
+        {
+          concept: {
+            name: 'New ObsGroup',
+            uuid: 'f5bda4ed-c400-4304-8c7c-8c647c3cb429',
+            datatype: 'N/A',
+          },
+          formNamespace: 'formUuid/2',
+          groupMembers: [
+            {
+              concept: {
+                name: 'Pulse',
+                uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+                datatype: 'Numeric',
+              },
+              value: '99',
+              formNamespace: 'formUuid/201',
+            },
+            {
+              concept: {
+                name: 'History Notes',
+                uuid: 'c2a43174-c9db-4e54-8516-17372c83537f',
+                datatype: 'text',
+              },
+              value: 'notes',
+              formNamespace: 'formUuid/202',
+            },
+          ],
+        },
+      ];
+      const wrapper = mount(
+        <Container
+          metadata={obsGroupMetaData}
+          observations={obs}
+          validate={false}
+        />);
+
+      expect(wrapper.find('input')).to.have.value('99');
+      expect(wrapper.find('textarea').props().defaultValue).to.be.eql('notes');
     });
   });
 });

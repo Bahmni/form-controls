@@ -18,7 +18,7 @@ export class ObsControlDesigner extends Component {
       return undefined;
     }
     const childJsonDefinition = this.childControl.getJsonDefinition();
-    const labelJsonDefinition = this.labelControl.getJsonDefinition();
+    const labelJsonDefinition = this.labelControl && this.labelControl.getJsonDefinition();
     return Object.assign({}, childJsonDefinition, { label: labelJsonDefinition });
   }
 
@@ -36,6 +36,22 @@ export class ObsControlDesigner extends Component {
       metadata,
       ref: this.storeChildRef,
     });
+  }
+
+  displayLabel() {
+    const { metadata, metadata: { properties, label } } = this.props;
+    const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
+    const labelMetadata = label || { type: 'label', value: metadata.concept.name };
+    if (!hideLabel) {
+      return (
+          <LabelDesigner
+            metadata={ labelMetadata }
+            onSelect={ (event) => this.props.onSelect(event, metadata) }
+            ref={ this.storeLabelRef }
+          />
+      );
+    }
+    return null;
   }
 
   markMandatory() {
@@ -65,11 +81,7 @@ export class ObsControlDesigner extends Component {
       return (
         <div className="obs-wrap" onClick={ (event) => this.props.onSelect(event, metadata) }>
           <div className="label-wrap fl">
-            <LabelDesigner
-              metadata={ this.props.metadata.label }
-              onSelect={ (event) => this.props.onSelect(event, metadata) }
-              ref={ this.storeLabelRef }
-            />
+            {this.displayLabel()}
             {this.markMandatory()}
           </div>
           {this.displayObsControl(designerComponent)}
@@ -156,6 +168,11 @@ const descriptor = {
           },
           {
             name: 'notes',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
+          {
+            name: 'hideLabel',
             dataType: 'boolean',
             defaultValue: false,
           },

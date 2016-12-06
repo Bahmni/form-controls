@@ -63,7 +63,7 @@ describe('ObsControl', () => {
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(wrapper).to.have.exactly(1).descendants('input');
 
-    expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql([]);
+    expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).not.to.have.prop('options');
   });
 
@@ -269,5 +269,84 @@ describe('ObsControl', () => {
     instance.onChange(true, []);
     instance.onCommentChange('');
     sinon.assert.calledOnce(onChangeSpy.withArgs(observation.setValue(true), []));
+  });
+
+  it('should display the label based on property', () => {
+    properties.hideLabel = true;
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Text'),
+      label,
+      properties,
+    };
+
+    const observation = new Obs(metadata);
+    const wrapper = mount(
+      <ObsControl
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+    expect(wrapper).to.have.exactly(1).not.to.have.descendants('Label');
+    expect(wrapper).to.have.exactly(1).descendants('DummyControl');
+    expect(wrapper).to.have.exactly(1).descendants('input');
+  });
+
+  it('should not rerender ObsControl if properties doesn`t change', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Text'),
+      label,
+      properties,
+    };
+    metadata.properties.hideLabel = false;
+
+    const observation = new Obs(metadata);
+    const wrapper = mount(
+      <ObsControl
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper).to.have.exactly(1).descendants('Label');
+
+    metadata.properties.hideLabel = true;
+    wrapper.setProps({ obs: observation });
+    wrapper.setProps({ metadata });
+
+    expect(wrapper).to.not.have.descendants('Label');
+  });
+
+  it('should render ObsControl on change of props', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Text'),
+      label,
+      properties,
+    };
+    metadata.properties.hideLabel = false;
+
+    const observation = new Obs(metadata);
+    const wrapper = mount(
+      <ObsControl
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
+    expect(wrapper.find('DummyControl').props()).to.have.property('value', undefined);
+
+    const updatedObs = observation.setValue('abc');
+    wrapper.setProps({ obs: updatedObs });
+
+    expect(wrapper.find('DummyControl').props()).to.have.property('value', 'abc');
   });
 });

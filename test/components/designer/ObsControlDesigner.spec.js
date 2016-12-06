@@ -178,5 +178,31 @@ describe('ObsControlDesigner', () => {
       wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
       expect(wrapper).to.not.have.descendants('CommentDesigner');
     });
+
+    it('should not render label if hideLabel is true', () => {
+      metadata = {
+        id: '123',
+        type: 'obsControl',
+        concept,
+        label,
+        properties: { notes: true, hideLabel: true },
+      };
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      expect(wrapper).to.not.have.descendants('LabelDesigner');
+    });
+
+    it('should construct label object when hideLabel is set to false', () => {
+      metadata = {
+        id: '123',
+        type: 'obsControl',
+        concept,
+        properties: { notes: true, hideLabel: false },
+      };
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      expect(wrapper).to.have.descendants('LabelDesigner');
+      expect(wrapper.find('LabelDesigner')).to.have.prop('onSelect');
+      wrapper.find('LabelDesigner').simulate('click');
+      sinon.assert.calledOnce(onSelectSpy);
+    });
   });
 });

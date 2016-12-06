@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import 'src/helpers/componentStore';
-import isEmpty from 'lodash/isEmpty';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
@@ -9,29 +8,16 @@ export class ObsGroupControl extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { obs: props.obs, hasErrors: false };
+    this.state = { obs: props.obs };
     this.onChange = this.onChange.bind(this);
     const isAbnormal = props.metadata.properties.isAbnormal;
     this.mapper = isAbnormal ? new AbnormalObsGroupMapper() : new ObsGroupMapper();
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.obs !== nextProps.obs ||
-        this.state.hasErrors !== nextState.hasErrors ||
-        this.state.obs !== nextState.obs) {
-      return true;
-    }
-    return false;
   }
 
   onChange(value, errors) {
     const updatedObs = this.mapper.setValue(this.state.obs, value, errors);
     this.setState({ obs: updatedObs });
     this.props.onValueChanged(updatedObs, errors);
-  }
-
-  _hasErrors(errors) {
-    return !isEmpty(errors);
   }
 
   render() {
@@ -50,7 +36,6 @@ export class ObsGroupControl extends Component {
 }
 
 ObsGroupControl.propTypes = {
-  mapper: PropTypes.object,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,
