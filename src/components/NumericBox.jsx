@@ -25,9 +25,6 @@ export class NumericBox extends Component {
       const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
       this.setState({ hasErrors, hasWarnings });
     }
-    if (this.props.value !== nextProps.value) {
-      this.input.value = nextProps.value;
-    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {

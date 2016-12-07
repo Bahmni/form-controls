@@ -65,14 +65,6 @@ describe('NumericBox', () => {
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
-  it('should render NumericBox on change of value', () => {
-    const wrapper = mount(
-      <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
-    );
-    wrapper.setProps({ value: '98.6' });
-    expect(wrapper.find('input')).to.have.value('98.6');
-  });
-
   it('should throw error when the value is not in correct range', () => {
     const wrapper = shallow(
         <NumericBox maxNormal="50" minNormal="20"
