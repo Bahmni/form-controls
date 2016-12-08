@@ -2,7 +2,7 @@
 /* Needs this to attach refs as they cannot be attached to stateless functions. */
 
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 
 export class Label extends Component {
   render() {
@@ -17,5 +17,5 @@ Label.propTypes = {
   }),
 };
 
-window.componentStore.registerComponent('label', Label);
+ComponentStore.registerComponent('label', Label);
 /* eslint-enable react/prefer-stateless-function */

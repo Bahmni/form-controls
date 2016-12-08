@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { LabelDesigner } from 'components/designer/Label.jsx';
 import { CommentDesigner } from 'components/designer/Comment.jsx';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 
 export class ObsControlDesigner extends Component {
@@ -77,7 +77,7 @@ export class ObsControlDesigner extends Component {
 
   render() {
     const { metadata, metadata: { concept } } = this.props;
-    const designerComponent = concept && window.componentStore.getDesignerComponent(concept.datatype); // eslint-disable-line max-len
+    const designerComponent = concept && ComponentStore.getDesignerComponent(concept.datatype);
     if (designerComponent) {
       return (
         <div className="obs-wrap" onClick={ (event) => this.props.onSelect(event, metadata) }>
@@ -196,4 +196,4 @@ const descriptor = {
   },
 };
 
-window.componentStore.registerDesignerComponent('obsControl', descriptor);
+ComponentStore.registerDesignerComponent('obsControl', descriptor);

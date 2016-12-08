@@ -5,6 +5,7 @@ import each from 'lodash/each';
 import isEmpty from 'lodash/isEmpty';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
+import ComponentStore from 'src/helpers/componentStore';
 
 const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
 const defaultCellControl = React.createElement(() => <div className="cell" ></div>);
@@ -155,4 +156,4 @@ const descriptor = {
   },
 };
 
-window.componentStore.registerDesignerComponent('cell', descriptor);
+ComponentStore.registerDesignerComponent('cell', descriptor);

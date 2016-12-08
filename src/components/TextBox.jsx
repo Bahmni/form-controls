@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import { Validator } from 'src/helpers/Validator';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
@@ -68,4 +68,4 @@ TextBox.propTypes = {
   value: PropTypes.string,
 };
 
-window.componentStore.registerComponent('text', TextBox);
+ComponentStore.registerComponent('text', TextBox);

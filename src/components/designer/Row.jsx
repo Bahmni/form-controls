@@ -4,6 +4,7 @@ import Constants from 'src/constants';
 import map from 'lodash/map';
 import groupBy from 'lodash/groupBy';
 import get from 'lodash/get';
+import ComponentStore from 'src/helpers/componentStore';
 
 export const rowWidth = Constants.Grid.defaultRowWidth;
 
@@ -96,4 +97,4 @@ const descriptor = {
   },
 };
 
-window.componentStore.registerDesignerComponent('row', descriptor);
+ComponentStore.registerDesignerComponent('row', descriptor);

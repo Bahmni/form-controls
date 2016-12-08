@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 
 export class UnSupportedComponent extends PureComponent {
   render() {
@@ -11,4 +11,4 @@ UnSupportedComponent.propTypes = {
   message: PropTypes.string.isRequired,
 };
 
-window.componentStore.registerComponent('unsupported', UnSupportedComponent);
+ComponentStore.registerComponent('unsupported', UnSupportedComponent);

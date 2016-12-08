@@ -4,6 +4,7 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Section } from 'components/Section.jsx';
 import sinon from 'sinon';
+import ComponentStore from 'src/helpers/componentStore';
 
 chai.use(chaiEnzyme());
 
@@ -21,11 +22,11 @@ beforeEach(() => {
 
 describe('Section', () => {
   before(() => {
-    window.componentStore.registerComponent('randomType', DummyControl);
+    ComponentStore.registerComponent('randomType', DummyControl);
   });
 
   after(() => {
-    window.componentStore.deRegisterComponent('randomType');
+    ComponentStore.deRegisterComponent('randomType');
   });
 
   const formUuid = 'someUuid';
@@ -117,7 +118,7 @@ describe('Section', () => {
     });
 
     it('should render section with only the registered controls', () => {
-      window.componentStore.deRegisterComponent('randomType');
+      ComponentStore.deRegisterComponent('randomType');
       const wrapper = shallow(
         <Section
           formUuid={formUuid}
@@ -128,7 +129,7 @@ describe('Section', () => {
         />);
 
       expect(wrapper).to.not.have.descendants('DummyControl');
-      window.componentStore.registerComponent('randomType', DummyControl);
+      ComponentStore.registerComponent('randomType', DummyControl);
     });
 
     it('should callback on value change in any of child controls', () => {

@@ -6,6 +6,7 @@ import sinon from 'sinon';
 import { ObsControl } from 'components/ObsControl.jsx';
 import { Obs } from 'src/helpers/Obs';
 import constants from 'src/constants';
+import ComponentStore from 'src/helpers/componentStore';
 
 chai.use(chaiEnzyme());
 
@@ -13,12 +14,12 @@ describe('ObsControl', () => {
   const DummyControl = () => <input />;
 
   before(() => {
-    window.componentStore.componentList = {};
-    window.componentStore.registerComponent('text', DummyControl);
+    ComponentStore.componentList = {};
+    ComponentStore.registerComponent('text', DummyControl);
   });
 
   after(() => {
-    window.componentStore.deRegisterComponent('text');
+    ComponentStore.deRegisterComponent('text');
   });
 
   function getConcept(datatype) {

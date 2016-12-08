@@ -5,6 +5,7 @@ import chai, { expect } from 'chai';
 import { BooleanControl } from 'components/BooleanControl.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
+import ComponentStore from 'src/helpers/componentStore';
 
 chai.use(chaiEnzyme());
 
@@ -17,11 +18,11 @@ describe('BooleanControl', () => {
   ];
 
   before(() => {
-    window.componentStore.registerComponent('button', DummyControl);
+    ComponentStore.registerComponent('button', DummyControl);
   });
 
   after(() => {
-    window.componentStore.deRegisterComponent('button');
+    ComponentStore.deRegisterComponent('button');
   });
 
   const onChangeSpy = sinon.spy();
@@ -46,7 +47,7 @@ describe('BooleanControl', () => {
   });
 
   it('should return null when registered component not found', () => {
-    window.componentStore.deRegisterComponent('button');
+    ComponentStore.deRegisterComponent('button');
     const wrapper = shallow(
       <BooleanControl
         onChange={onChangeSpy}
@@ -59,7 +60,7 @@ describe('BooleanControl', () => {
     expect(wrapper.find('div').at(0).text()).to.eql('<UnSupportedComponent />');
     expect(wrapper.find('div').at(0).text()).to.eql('<UnSupportedComponent />');
 
-    window.componentStore.registerComponent('button', DummyControl);
+    ComponentStore.registerComponent('button', DummyControl);
   });
 
   it('should return the boolean control value', () => {

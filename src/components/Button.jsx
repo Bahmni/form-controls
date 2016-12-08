@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import classNames from 'classnames';
 import { Validator } from 'src/helpers/Validator';
@@ -81,4 +81,4 @@ Button.propTypes = {
   value: PropTypes.any,
 };
 
-window.componentStore.registerComponent('button', Button);
+ComponentStore.registerComponent('button', Button);

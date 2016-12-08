@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 
 export class LabelDesigner extends Component {
   constructor(props) {
@@ -119,4 +119,4 @@ const descriptor = {
   },
 };
 
-window.componentStore.registerDesignerComponent('label', descriptor);
+ComponentStore.registerDesignerComponent('label', descriptor);

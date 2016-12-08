@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Select from 'react-select';
 import { httpInterceptor } from 'src/helpers/httpInterceptor';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import get from 'lodash/get';
 import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
@@ -207,7 +207,7 @@ const descriptor = {
 };
 
 
-window.componentStore.registerDesignerComponent('autoComplete', descriptor);
+ComponentStore.registerDesignerComponent('autoComplete', descriptor);
 
-window.componentStore.registerComponent('autoComplete', AutoComplete);
+ComponentStore.registerComponent('autoComplete', AutoComplete);
 

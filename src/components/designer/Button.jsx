@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 
 export class ButtonDesigner extends Component {
@@ -32,4 +32,4 @@ const descriptor = {
   },
 };
 
-window.componentStore.registerDesignerComponent('button', descriptor);
+ComponentStore.registerDesignerComponent('button', descriptor);

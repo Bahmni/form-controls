@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 
 export class TextBoxDesigner extends Component {
   getJsonDefinition() {
@@ -37,4 +37,4 @@ const descriptor = {
   },
 };
 
-window.componentStore.registerDesignerComponent('text', descriptor);
+ComponentStore.registerDesignerComponent('text', descriptor);

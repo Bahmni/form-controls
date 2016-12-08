@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 
 export class BooleanControlDesigner extends Component {
   getJsonDefinition() {
@@ -10,7 +10,7 @@ export class BooleanControlDesigner extends Component {
     const defaultOptions = [{ name: 'Yes', value: true }, { name: 'No', value: false }];
     const { metadata, metadata: { options = defaultOptions } } = this.props;
     this.updatedMetadata = Object.assign({}, { options }, metadata);
-    const registeredComponent = window.componentStore.getDesignerComponent('button');
+    const registeredComponent = ComponentStore.getDesignerComponent('button');
     if (registeredComponent) {
       return React.createElement(registeredComponent.control, {
         options,
@@ -47,4 +47,4 @@ const descriptor = {
 };
 
 
-window.componentStore.registerDesignerComponent('boolean', descriptor);
+ComponentStore.registerDesignerComponent('boolean', descriptor);

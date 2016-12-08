@@ -8,6 +8,7 @@ import { Obs } from 'src/helpers/Obs';
 import { List } from 'immutable';
 import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
+import ComponentStore from 'src/helpers/componentStore';
 
 
 chai.use(chaiEnzyme());
@@ -32,11 +33,11 @@ DummyControl.propTypes = {
 
 describe('ObsGroupControl', () => {
   before(() => {
-    window.componentStore.registerComponent('randomType', DummyControl);
+    ComponentStore.registerComponent('randomType', DummyControl);
   });
 
   after(() => {
-    window.componentStore.deRegisterComponent('randomType');
+    ComponentStore.deRegisterComponent('randomType');
   });
 
   const formUuid = 'someUuid';
@@ -98,7 +99,7 @@ describe('ObsGroupControl', () => {
 
 
     it('should render obsGroup control with only the registered controls', () => {
-      window.componentStore.deRegisterComponent('randomType');
+      ComponentStore.deRegisterComponent('randomType');
       const wrapper = mount(
         <ObsGroupControl
           formUuid={formUuid}
@@ -109,7 +110,7 @@ describe('ObsGroupControl', () => {
         />);
 
       expect(wrapper).to.not.have.descendants('DummyControl');
-      window.componentStore.registerComponent('randomType', DummyControl);
+      ComponentStore.registerComponent('randomType', DummyControl);
     });
 
     it('should invoke the corresponding mapper based on metadata property', () => {

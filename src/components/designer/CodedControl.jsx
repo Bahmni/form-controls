@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 
 export class CodedControlDesigner extends Component {
@@ -28,7 +28,7 @@ export class CodedControlDesigner extends Component {
   render() {
     const { metadata, metadata: { concept } } = this.props;
     const displayType = metadata.properties.autoComplete ? 'autoComplete' : 'button';
-    const registeredComponent = window.componentStore.getDesignerComponent(displayType);
+    const registeredComponent = ComponentStore.getDesignerComponent(displayType);
     if (registeredComponent) {
       return React.createElement(registeredComponent.control, {
         asynchronous: false,
@@ -75,4 +75,4 @@ const descriptor = {
 };
 
 
-window.componentStore.registerDesignerComponent('Coded', descriptor);
+ComponentStore.registerDesignerComponent('Coded', descriptor);

@@ -4,6 +4,7 @@ import Row from 'src/components/Row.jsx';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import isEmpty from 'lodash/isEmpty';
+import ComponentStore from 'src/helpers/componentStore';
 
 function getObsForControl(control, observations) {
   if (control.properties && control.properties.visualOnly) return observations;
@@ -23,7 +24,7 @@ function createReactComponent(component, props) {
 
 export function getControls(controls, observations, props) {
   return controls.map((control) => {
-    const registeredControl = window.componentStore.getRegisteredComponent(control.type);
+    const registeredControl = ComponentStore.getRegisteredComponent(control.type);
     if (registeredControl) {
       const obs = getObsForControl(control, observations);
       return createReactComponent(registeredControl, {

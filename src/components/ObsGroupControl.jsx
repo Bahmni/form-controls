@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
@@ -53,4 +53,4 @@ ObsGroupControl.propTypes = {
   validate: PropTypes.bool.isRequired,
 };
 
-window.componentStore.registerComponent('obsGroupControl', ObsGroupControl);
+ComponentStore.registerComponent('obsGroupControl', ObsGroupControl);

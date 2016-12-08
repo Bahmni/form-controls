@@ -10,14 +10,6 @@ import { Error } from 'src/Error';
 chai.use(chaiEnzyme());
 
 describe('TextBox', () => {
-  before(() => {
-    window.componentStore.registerComponent('text', TextBox);
-  });
-
-  after(() => {
-    window.componentStore.deRegisterComponent('text');
-  });
-
   let onChangeSpy;
 
   beforeEach(() => {

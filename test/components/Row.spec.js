@@ -4,7 +4,7 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import Row from 'components/Row.jsx';
 import sinon from 'sinon';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 
 chai.use(chaiEnzyme());
 
@@ -49,12 +49,12 @@ describe('Row', () => {
   const formUuid = 'someUuid';
 
   before(() => {
-    window.componentStore.componentList = {};
-    window.componentStore.registerComponent('randomType', DummyControl);
+    ComponentStore.componentList = {};
+    ComponentStore.registerComponent('randomType', DummyControl);
   });
 
   after(() => {
-    window.componentStore.deRegisterComponent('randomType');
+    ComponentStore.deRegisterComponent('randomType');
   });
 
   const onChangeSpy = sinon.spy();

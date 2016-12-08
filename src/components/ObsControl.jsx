@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Label } from 'components/Label.jsx';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import { ObsMapper } from 'src/helpers/ObsMapper';
 import { Comment } from 'components/Comment.jsx';
@@ -81,7 +81,7 @@ export class ObsControl extends Component {
 
   render() {
     const { concept } = this.props.metadata;
-    const registeredComponent = window.componentStore.getRegisteredComponent(concept.datatype);
+    const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
     if (registeredComponent) {
       return (
         <div>
@@ -121,4 +121,4 @@ ObsControl.propTypes = {
   validate: PropTypes.bool.isRequired,
 };
 
-window.componentStore.registerComponent('obsControl', ObsControl);
+ComponentStore.registerComponent('obsControl', ObsControl);

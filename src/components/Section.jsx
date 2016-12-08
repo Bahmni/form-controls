@@ -1,7 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 
 export class Section extends Component {
@@ -36,6 +36,6 @@ Section.propTypes = {
   validate: PropTypes.bool.isRequired,
 };
 
-window.componentStore.registerComponent('section', Section);
+ComponentStore.registerComponent('section', Section);
 /* eslint-disable react/prefer-stateless-function */
 

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import classNames from 'classnames';
 import { Validator } from 'src/helpers/Validator';
@@ -74,4 +74,4 @@ RadioButton.propTypes = {
   value: PropTypes.any,
 };
 
-window.componentStore.registerComponent('radio', RadioButton);
+ComponentStore.registerComponent('radio', RadioButton);

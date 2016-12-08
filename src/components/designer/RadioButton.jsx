@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 
 export class RadioButtonDesigner extends Component {
@@ -47,4 +47,4 @@ const descriptor = {
   },
 };
 
-window.componentStore.registerDesignerComponent('radio', descriptor);
+ComponentStore.registerDesignerComponent('radio', descriptor);

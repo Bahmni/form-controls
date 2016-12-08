@@ -5,6 +5,7 @@ import maxBy from 'lodash/maxBy';
 import groupBy from 'lodash/groupBy';
 import get from 'lodash/get';
 import constants from 'src/constants';
+import ComponentStore from 'src/helpers/componentStore';
 
 export class GridDesigner extends Component {
   constructor(props) {
@@ -92,4 +93,4 @@ const descriptor = {
   },
 };
 
-window.componentStore.registerDesignerComponent('grid', descriptor);
+ComponentStore.registerDesignerComponent('grid', descriptor);

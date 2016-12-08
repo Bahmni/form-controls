@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {ObsControlDesigner} from 'components/designer/ObsControlDesigner.jsx';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import {ObsGroupMapper} from '../../mapper/ObsGroupMapper';
 import {GridDesigner as Grid} from 'components/designer/Grid.jsx';
 import {Concept} from '../../helpers/Concept';
@@ -118,4 +118,4 @@ const descriptor = {
   },
 };
 
-window.componentStore.registerDesignerComponent('obsGroupControl', descriptor);
+ComponentStore.registerDesignerComponent('obsGroupControl', descriptor);

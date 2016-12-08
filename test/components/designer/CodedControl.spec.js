@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
+import ComponentStore from 'src/helpers/componentStore';
 
 chai.use(chaiEnzyme());
 
@@ -11,11 +12,11 @@ describe('Coded Control Designer', () => {
 
   let metadata;
   before(() => {
-    window.componentStore.registerDesignerComponent('button', { control: DummyControl });
+    ComponentStore.registerDesignerComponent('button', { control: DummyControl });
   });
 
   after(() => {
-    window.componentStore.deRegisterDesignerComponent('button');
+    ComponentStore.deRegisterDesignerComponent('button');
   });
 
 
@@ -51,11 +52,11 @@ describe('Coded Control Designer', () => {
   });
 
   it('should return null when registered component not found', () => {
-    window.componentStore.deRegisterDesignerComponent('button');
+    ComponentStore.deRegisterDesignerComponent('button');
 
     const wrapper = shallow(<CodedControlDesigner metadata={metadata} />);
     expect(wrapper).to.be.blank();
 
-    window.componentStore.registerDesignerComponent('button', { control: DummyControl });
+    ComponentStore.registerDesignerComponent('button', { control: DummyControl });
   });
 });

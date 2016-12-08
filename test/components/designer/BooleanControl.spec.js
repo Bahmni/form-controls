@@ -3,6 +3,7 @@ import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';
+import ComponentStore from 'src/helpers/componentStore';
 
 chai.use(chaiEnzyme());
 
@@ -10,11 +11,11 @@ describe('Boolean Control Designer', () => {
   const DummyControl = () => <input />;
   let metadata;
   before(() => {
-    window.componentStore.registerDesignerComponent('button', { control: DummyControl });
+    ComponentStore.registerDesignerComponent('button', { control: DummyControl });
   });
 
   after(() => {
-    window.componentStore.deRegisterDesignerComponent('button');
+    ComponentStore.deRegisterDesignerComponent('button');
   });
 
   const options = [
@@ -42,12 +43,12 @@ describe('Boolean Control Designer', () => {
   });
 
   it('should return null when registered component not found', () => {
-    window.componentStore.deRegisterDesignerComponent('button');
+    ComponentStore.deRegisterDesignerComponent('button');
 
     const wrapper = shallow(<BooleanControlDesigner metadata={metadata} />);
     expect(wrapper).to.be.blank();
 
-    window.componentStore.registerDesignerComponent('button', { control: DummyControl });
+    ComponentStore.registerDesignerComponent('button', { control: DummyControl });
   });
 
   it('should return the JSON Definition', () => {

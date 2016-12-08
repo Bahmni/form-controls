@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 
@@ -19,7 +19,7 @@ export class BooleanControl extends Component {
 
   render() {
     const { options, validations, validate } = this.props;
-    const registeredComponent = window.componentStore.getRegisteredComponent('button');
+    const registeredComponent = ComponentStore.getRegisteredComponent('button');
     if (registeredComponent) {
       const initialValue = this._getValue(options, this.props.value);
       const childProps = {
@@ -49,4 +49,4 @@ BooleanControl.propTypes = {
   value: PropTypes.any,
 };
 
-window.componentStore.registerComponent('boolean', BooleanControl);
+ComponentStore.registerComponent('boolean', BooleanControl);

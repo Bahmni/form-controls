@@ -10,14 +10,6 @@ import { Error } from 'src/Error';
 chai.use(chaiEnzyme());
 
 describe('NumericBox', () => {
-  before(() => {
-    window.componentStore.registerComponent('numeric', NumericBox);
-  });
-
-  after(() => {
-    window.componentStore.deRegisterComponent('numeric');
-  });
-
   const onChangeSpy = sinon.spy();
 
   const validations = [constants.validations.allowDecimal, constants.validations.mandatory];

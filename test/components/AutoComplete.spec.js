@@ -10,14 +10,6 @@ import { Error } from 'src/Error';
 chai.use(chaiEnzyme());
 
 describe('AutoComplete', () => {
-  before(() => {
-    window.componentStore.registerComponent('autoComplete', AutoComplete);
-  });
-
-  after(() => {
-    window.componentStore.deRegisterComponent('autoComplete');
-  });
-
   const concept = [{
     uuid: '70645842-be6a-4974-8d5f-45b52990e132',
     name: 'Pulse',

@@ -5,6 +5,7 @@ import chai, { expect } from 'chai';
 import { CodedControl } from 'components/CodedControl.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
+import ComponentStore from 'src/helpers/componentStore';
 
 chai.use(chaiEnzyme());
 
@@ -18,11 +19,11 @@ describe('CodedControl', () => {
 
   let onChangeSpy;
   before(() => {
-    window.componentStore.registerComponent('button', DummyControl);
+    ComponentStore.registerComponent('button', DummyControl);
   });
 
   after(() => {
-    window.componentStore.deRegisterComponent('button');
+    ComponentStore.deRegisterComponent('button');
   });
 
 
@@ -77,7 +78,7 @@ describe('CodedControl', () => {
 
 
   it('should return null when registered component not found', () => {
-    window.componentStore.deRegisterComponent('button');
+    ComponentStore.deRegisterComponent('button');
     const wrapper = shallow(
       <CodedControl
         onChange={onChangeSpy}
@@ -88,7 +89,7 @@ describe('CodedControl', () => {
       />
     );
     expect(wrapper).to.be.blank();
-    window.componentStore.registerComponent('button', DummyControl);
+    ComponentStore.registerComponent('button', DummyControl);
   });
 
   it('should return the boolean control value', () => {
@@ -106,7 +107,7 @@ describe('CodedControl', () => {
   });
 
   it('should return the autoComplete control value', () => {
-    window.componentStore.registerComponent('autoComplete', DummyControl);
+    ComponentStore.registerComponent('autoComplete', DummyControl);
     const wrapper = shallow(
       <CodedControl
         onChange={onChangeSpy}
@@ -120,7 +121,7 @@ describe('CodedControl', () => {
     const instance = wrapper.instance();
     instance.onValueChange('answer1uuid', []);
     sinon.assert.calledOnce(onChangeSpy.withArgs(options[0], []));
-    window.componentStore.deRegisterComponent('autoComplete');
+    ComponentStore.deRegisterComponent('autoComplete');
   });
 
   it('should validate in state on change of props', () => {

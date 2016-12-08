@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import 'src/helpers/componentStore';
+import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import get from 'lodash/get';
@@ -50,7 +50,7 @@ export class CodedControl extends Component {
   render() {
     const { properties } = this.props;
     const displayType = properties.autoComplete ? 'autoComplete' : 'button';
-    const registeredComponent = window.componentStore.getRegisteredComponent(displayType);
+    const registeredComponent = ComponentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
       const childProps = this._getChildProps(displayType);
       return React.createElement(registeredComponent, childProps);
@@ -68,4 +68,4 @@ CodedControl.propTypes = {
   value: PropTypes.any,
 };
 
-window.componentStore.registerComponent('Coded', CodedControl);
+ComponentStore.registerComponent('Coded', CodedControl);
