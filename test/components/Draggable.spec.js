@@ -11,6 +11,7 @@ describe('Draggable', () => {
     data: { value: 'contextValue' },
   };
   const eventData = {
+    stopPropagation(){},
     dataTransfer: {
       setData: (type, data) => ({ type, data }),
     },

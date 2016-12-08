@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Concept } from 'src/helpers/Concept';
 
-describe('Concept', () => {
+describe.skip('Concept', () => {
   const abnormalConcept = {
     uuid: 'c36af094-3f10-11e4-adec-0800271c1b75',
     display: 'Pulse Data',

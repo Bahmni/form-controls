@@ -63,8 +63,8 @@ export class ObsControlDesigner extends Component {
     const designerComponent = concept && window.componentStore.getDesignerComponent(concept.datatype); // eslint-disable-line max-len
     if (designerComponent) {
       return (
-        <div onClick={ (event) => this.props.onSelect(event, metadata) }>
-          <div className="label-wrap fl">
+        <div>
+          <div className="label-wrap fl" onClick={ (event) => this.props.onSelect(event, metadata) }>
             <LabelDesigner
               metadata={ this.props.metadata.label }
               onSelect={ (event) => this.props.onSelect(event, metadata) }

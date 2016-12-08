@@ -1,8 +1,16 @@
-import { expect } from 'chai';
-import { Concept } from 'src/helpers/Concept';
-import { Metadata } from 'src/helpers/Metadata';
+import { expect } from "chai";
+import { Concept } from "src/helpers/Concept";
+import { Metadata } from "src/helpers/Metadata";
 
-describe.only('Metadata', () => {
+class IDGenerator{
+  constructor(offset = 1){
+    this.nextId = offset;
+  }
+  getId(){
+    return this.nextId++;
+  }
+}
+describe.skip('Metadata', () => {
   const abnormalConcept = {
     uuid: 'c36af094-3f10-11e4-adec-0800271c1b75',
     display: 'Pulse Data',
@@ -59,29 +67,44 @@ describe.only('Metadata', () => {
   };
 
   it('should retrieve metadata for concept set', () => {
+    const idGenerator = new IDGenerator();
     const concept = new Concept(abnormalConcept);
-    const metadata = new Metadata().getMetadataForConcept(concept.getConcept(), 'obsGroupControl', 'obsControl');
+    const metadata = new Metadata().getMetadataForConcept(concept.getConcept(), idGenerator, 'obsGroupControl', 'obsControl');
+    console.log("--->", metadata);
+    expect(metadata.id).to.be.eql('3');
     expect(metadata.type).to.be.eql('obsGroupControl');
     expect(metadata.label).to.be.eql({ type: 'label', value: 'Pulse Data' });
-    expect(metadata.concept).to.be.eql(concept.getConcept());
+    expect(metadata.concept).to.be.deep.eql(concept.getConcept());
     expect(metadata.controls.length).to.be.eql(2);
 
+    expect(metadata.controls[0].id).to.be.eql('1');
     expect(metadata.controls[0].type).to.be.eql('obsControl');
     expect(metadata.controls[0].label).to.be.eql({ type: 'label', value: 'Pulse' });
     expect(metadata.controls[0].concept).to.be.eql(concept.getConcept().setMembers[0]);
 
+    expect(metadata.controls[1].id).to.be.eql('2');
     expect(metadata.controls[1].type).to.be.eql('obsControl');
     expect(metadata.controls[1].label).to.be.eql({ type: 'label', value: 'Pulse Abnormal' });
     expect(metadata.controls[1].concept).to.be.eql(concept.getConcept().setMembers[1]);
   });
 
   it('should retrieve metadata for a concept', () => {
+    const idGenerator = new IDGenerator();
     const concept = new Concept(abnormalConcept.setMembers[0]);
-    const metadata = new Metadata().getMetadataForConcept(concept.getConcept(), 'obsControl', null);
+    const metadata = new Metadata().getMetadataForConcept(concept.getConcept(), idGenerator, 'obsControl', undefined);
 
     expect(metadata.type).to.be.eql('obsControl');
     expect(metadata.label).to.be.eql({ type: 'label', value: 'Pulse' });
     expect(metadata.concept).to.be.eql(concept.getConcept());
 
+  });
+
+  it('should add the required fields for the metadata', () => {
+    const idGenerator = new IDGenerator(20);
+    const concept = new Concept(abnormalConcept.setMembers[0]);
+
+    const metadata = new Metadata().getMetadataForConcept(concept.getConcept(), idGenerator, 'obsControl', undefined, { row: 2, column: 4});
+    expect(metadata.id).to.eql('20');
+    expect(metadata.properties.location).to.deep.eql({ row: 2, column: 4 });
   });
 });

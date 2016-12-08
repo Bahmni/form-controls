@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
-import { ObsControlDesigner } from 'components/designer/ObsControlDesigner.jsx';
+import React, {Component, PropTypes} from 'react';
+import {ObsControlDesigner} from 'components/designer/ObsControlDesigner.jsx';
 import 'src/helpers/componentStore';
-import { ObsGroupMapper } from '../../mapper/ObsGroupMapper';
-import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
-import { Concept } from '../../helpers/Concept';
-import { Metadata } from '../../helpers/Metadata';
+import {ObsGroupMapper} from '../../mapper/ObsGroupMapper';
+import {GridDesigner as Grid} from 'components/designer/Grid.jsx';
+import {Concept} from '../../helpers/Concept';
+import {Metadata} from '../../helpers/Metadata';
 import map from 'lodash/map';
 
 export class ObsGroupControlDesigner extends Component {
@@ -17,8 +17,9 @@ export class ObsGroupControlDesigner extends Component {
   }
 
   getJsonDefinition() {
+    if(!this.gridRef) return undefined;
     const controls = this.gridRef.getControls();
-    return Object.assign({}, this.props.metadata, { controls });
+    return Object.assign({}, this.props.metadata, {controls});
   }
 
   storeGridRef(ref) {
@@ -30,17 +31,19 @@ export class ObsGroupControlDesigner extends Component {
   render() {
     const { metadata, metadata: { concept } } = this.props;
     if (concept) {
-      return (<fieldset className="form-builder-fieldset">
+      return (
+        <fieldset className="form-builder-fieldset" onClick={(event) => this.props.onSelect(event, metadata)}>
           <legend>{concept.name}</legend>
-        <div className="obsGroup-controls">
-          <Grid
-            controls={ metadata.controls }
-            idGenerator={this.props.idGenerator}
-            ref={ this.storeGridRef }
-            wrapper={this.props.wrapper}
-          />
-        </div>
-      </fieldset>
+          <div className="obsGroup-controls">
+            <Grid
+              minRows={0}
+              controls={ metadata.controls }
+              idGenerator={this.props.idGenerator}
+              ref={ this.storeGridRef }
+              wrapper={this.props.wrapper}
+            />
+          </div>
+        </fieldset>
       );
     }
     return <div onClick={ (event) => this.props.onSelect(event, metadata) }>Select Obs Source</div>;
@@ -66,8 +69,9 @@ ObsGroupControlDesigner.propTypes = {
 
 ObsGroupControlDesigner.injectConceptToMetadata = (metadata, concept, idGenerator) => {
   const conceptSet = new Concept(concept);
+  const location = metadata.properties && metadata.properties.location;
   return new Metadata().getMetadataForConcept(conceptSet.getConcept(), idGenerator,
-      'obsGroupControl', 'obsControl', metadata.properties.location);
+    'obsGroupControl', 'obsControl', location);
 };
 
 const descriptor = {
@@ -102,18 +106,7 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [
-          {
-            name: 'mandatory',
-            dataType: 'boolean',
-            defaultValue: false,
-          },
-          {
-            name: 'notes',
-            dataType: 'boolean',
-            defaultValue: false,
-          },
-        ],
+        attributes: [],
       },
     ],
   },
