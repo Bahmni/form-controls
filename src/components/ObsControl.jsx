@@ -43,8 +43,7 @@ export class ObsControl extends Component {
       validate,
       validations,
       value: this.mapper.getValue(),
-      minNormal: metadata.concept.lowNormal,
-      maxNormal: metadata.concept.hiNormal,
+      concept,
     });
   }
 

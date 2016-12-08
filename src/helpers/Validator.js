@@ -26,15 +26,28 @@ export class Validator {
       type: constants.errorTypes.warning,
       message: constants.validations.allowRange,
     });
+    if (isUndefined(params)) return undefined;
+    return Validator.rangeValidation(value, params.minNormal, params.maxNormal) ?
+      error : undefined;
+  }
+
+  static minMaxRange(value, params) {
+    const error = new Error({
+      type: constants.errorTypes.error,
+      message: constants.validations.minMaxRange,
+    });
+    if (isUndefined(params)) return undefined;
+    return Validator.rangeValidation(value, params.minAbsolute, params.maxAbsolute) ?
+      error : undefined;
+  }
+
+  static rangeValidation(value, minRange, maxRange) {
     if (isUndefined(value)) return undefined;
 
-    if ((params.minNormal && value < Number.parseInt(params.minNormal, 10))) {
-      return error;
+    if ((minRange && value < Number.parseInt(minRange, 10)) ||
+      (maxRange && value > Number.parseInt(maxRange, 10))) {
+      return true;
     }
-    if ((params.maxNormal && value > Number.parseInt(params.maxNormal, 10))) {
-      return error;
-    }
-
     return undefined;
   }
 
@@ -57,4 +70,6 @@ Validator.propertyValidators = {
       (obsVal) => Validator.allowDecimal(obsVal),
   [constants.validations.allowRange]:
       (obsVal, params) => Validator.allowRange(obsVal, params),
+  [constants.validations.minMaxRange]:
+    (obsVal, params) => Validator.minMaxRange(obsVal, params),
 };

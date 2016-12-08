@@ -7,6 +7,7 @@ const Constants = {
     mandatory: 'mandatory',
     allowDecimal: 'allowDecimal',
     allowRange: 'allowRange',
+    minMaxRange: 'minMaxRange',
   },
   errorTypes: {
     warning: 'warning',

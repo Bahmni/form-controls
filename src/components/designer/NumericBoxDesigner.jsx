@@ -7,18 +7,38 @@ export class NumericBoxDesigner extends Component {
   }
 
   render() {
-    return (<input type="number" />);
+    const concept = this.props.metadata.concept;
+    return (
+      <div>
+        <input type="number" />
+        <label>{NumericBoxDesigner.getRange(concept.lowNormal, concept.hiNormal)}</label>
+      </div>
+    );
   }
 }
 
 NumericBoxDesigner.propTypes = {
   metadata: PropTypes.shape({
-    concept: PropTypes.object.isRequired,
+    concept: PropTypes.shape({
+      hiNormal: PropTypes.string,
+      lowNormal: PropTypes.string,
+    }),
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     properties: PropTypes.object.isRequired,
     type: PropTypes.string,
   }),
+};
+
+NumericBoxDesigner.getRange = (lowNormal, hiNormal) => {
+  if (lowNormal && hiNormal) {
+    return `(${lowNormal}-${hiNormal})`;
+  } else if (lowNormal) {
+    return `(>${lowNormal})`;
+  } else if (hiNormal) {
+    return `(<${hiNormal})`;
+  }
+  return '';
 };
 
 const descriptor = {

@@ -23,8 +23,14 @@ describe('NumericBox', () => {
   const validations = [constants.validations.allowDecimal, constants.validations.mandatory];
 
   it('should render NumericBox', () => {
+    const concept = {};
     const wrapper = shallow(
-      <NumericBox onChange={onChangeSpy} validate={false} validations={[]} />
+      <NumericBox
+        concept={concept}
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input')).to.have.value(undefined);
@@ -32,24 +38,43 @@ describe('NumericBox', () => {
 
 
   it('should render NumericBox with default value', () => {
+    const concept = {};
     const wrapper = mount(
-      <NumericBox onChange={onChangeSpy} validate={false} validations={[]} value={'50'} />
+      <NumericBox
+        concept={concept}
+        onChange={onChangeSpy}
+        validate={false} validations={[]}
+        value={'50'}
+      />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input')).to.have.value('50');
   });
 
   it('should get user entered value of the NumericBox', () => {
-    const wrapper = shallow(
-      <NumericBox onChange={onChangeSpy} validate={false} validations={[]} value={'50'} />
+    const concept = {};
+    const wrapper = mount(
+      <NumericBox
+        concept={concept}
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+        value={'50'}
+      />
     );
     wrapper.find('input').simulate('change', { target: { value: '999' } });
     sinon.assert.calledOnce(onChangeSpy.withArgs('999', []));
   });
 
   it('should throw error on fail of validations', () => {
-    const wrapper = shallow(
-      <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
+    const concept = {};
+    const wrapper = mount(
+      <NumericBox
+        concept={concept}
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+      />
     );
     const allowDecimalError = new Error({ message: validations[0] });
     wrapper.find('input').simulate('change', { target: { value: '50.32' } });
@@ -58,17 +83,27 @@ describe('NumericBox', () => {
   });
 
   it('should validate Numeric box when validate is set to true', () => {
+    const concept = {};
     const wrapper = mount(
-      <NumericBox onChange={onChangeSpy} validate={false} validations={validations} />
+      <NumericBox
+        concept={concept}
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+      />
     );
     wrapper.setProps({ validate: true, value: '98.6' });
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
-  it('should throw error when the value is not in correct range', () => {
-    const wrapper = shallow(
-        <NumericBox maxNormal="50" minNormal="20"
-          onChange={onChangeSpy} validate={false} validations={validations}
+  it('should throw warning when the value is not in correct range', () => {
+    const concept = { hiNormal: '50', lowNormal: '20' };
+    const wrapper = mount(
+        <NumericBox
+          concept={concept}
+          onChange={onChangeSpy}
+          validate={false}
+          validations={validations}
         />
     );
     const allowRangeWarning = new Error({
@@ -77,5 +112,26 @@ describe('NumericBox', () => {
     });
     wrapper.find('input').simulate('change', { target: { value: '51' } });
     sinon.assert.calledOnce(onChangeSpy.withArgs('51', [allowRangeWarning]));
+  });
+
+  it('should throw error when the value is not in correct range and the ' +
+    'values for hiAbsolute and lowAbsolute is provided', () => {
+    const concept = { hiAbsolute: '50', lowAbsolute: '20' };
+    const wrapper = mount(
+      <NumericBox
+        concept={concept}
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+        value={'21'}
+      />
+    );
+    const allowRangeError = new Error({
+      type: constants.errorTypes.error,
+      message: constants.validations.minMaxRange,
+    });
+
+    wrapper.find('input').simulate('change', { target: { value: '51' } });
+    sinon.assert.calledOnce(onChangeSpy.withArgs('51', [allowRangeError]));
   });
 });

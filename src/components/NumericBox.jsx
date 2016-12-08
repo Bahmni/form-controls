@@ -4,12 +4,13 @@ import { Validator } from 'src/helpers/Validator';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import constants from 'src/constants';
+import { NumericBoxDesigner } from 'src/components/designer/NumericBoxDesigner.jsx';
 
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
-    this.defaultValidations = [constants.validations.allowRange];
-    const errors = this._getErrors(props.value);
+    this.defaultValidations = [constants.validations.allowRange, constants.validations.minMaxRange];
+    const errors = this._getErrors(props.value) || [];
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
     this.state = { hasErrors: false, hasWarnings };
   }
@@ -58,25 +59,37 @@ export class NumericBox extends Component {
 
   _getErrors(value) {
     const validations = this.defaultValidations.concat(this.props.validations);
-    const controlDetails = { validations, value, params: this.props };
+    const concept = this.props.concept || {};
+    const params = { minNormal: concept.lowNormal, maxNormal: concept.hiNormal,
+      minAbsolute: concept.lowAbsolute, maxAbsolute: concept.hiAbsolute };
+    const controlDetails = { validations, value, params };
     return Validator.getErrors(controlDetails);
   }
 
   render() {
+    const concept = this.props.concept || {};
     return (
-      <input
-        className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
-        onChange={ (e) => this.handleChange(e) }
-        ref={(elem) => { this.input = elem; }}
-        type="number"
-      />
+      <div>
+        <input
+          className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
+          defaultValue={ this.props.value }
+          onChange={ (e) => this.handleChange(e) }
+          ref={(elem) => { this.input = elem; }}
+          type="number"
+        />
+        <label>{NumericBoxDesigner.getRange(concept.lowNormal, concept.hiNormal)}</label>
+      </div>
     );
   }
 }
 
 NumericBox.propTypes = {
-  maxNormal: PropTypes.string,
-  minNormal: PropTypes.string,
+  concept: PropTypes.shape({
+    hiNormal: PropTypes.string,
+    lowNormal: PropTypes.string,
+    hiAbsolute: PropTypes.string,
+    lowAbsolute: PropTypes.string,
+  }).isRequired,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

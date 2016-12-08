@@ -35,6 +35,7 @@ export class ObsControlDesigner extends Component {
     return React.createElement(designerComponent.control, {
       metadata,
       ref: this.storeChildRef,
+
     });
   }
 
@@ -115,6 +116,11 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
     name: concept.name.name,
     uuid: concept.uuid,
     datatype: concept.datatype.name,
+    units: concept.units,
+    hiNormal: concept.hiNormal,
+    lowNormal: concept.lowNormal,
+    hiAbsolute: concept.hiAbsolute,
+    lowAbsolute: concept.lowAbsolute,
     answers: concept.answers,
     properties: {
       allowDecimal: concept.allowDecimal,
@@ -122,10 +128,18 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
   };
   const label = {
     type: 'label',
-    value: concept.name.name,
+    value: `${concept.name.name}${ObsControlDesigner.getUnits(concept)}`,
   };
 
   return Object.assign({}, metadata, { concept: filteredConcepts }, { label });
+};
+
+
+ObsControlDesigner.getUnits = (concept) => {
+  if (concept.units) {
+    return `(${concept.units})`;
+  }
+  return '';
 };
 
 const descriptor = {

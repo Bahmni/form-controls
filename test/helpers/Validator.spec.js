@@ -92,6 +92,37 @@ describe('Validator', () => {
     });
   });
 
+  describe('minMaxRange validation', () => {
+    const validations = [constants.validations.minMaxRange];
+    const allowRangeError = new Error({
+      type: constants.errorTypes.error,
+      message: validations[0],
+    });
+
+    it('should get minMaxRange error when value is lesser than minAbsolute', () => {
+      const params = { minAbsolute: 80, maxAbsolute: 120 };
+      const errors = Validator.getErrors({ params, validations, value: 78 });
+      expect(errors[0]).to.deep.eql(allowRangeError);
+    });
+
+    it('should get minMaxRange error when value is higher than maxAbsolute', () => {
+      const params = { minAbsolute: 80, maxAbsolute: 120 };
+      const errors = Validator.getErrors({ params, validations, value: 130 });
+      expect(errors[0]).to.deep.eql(allowRangeError);
+    });
+
+    it('should not get minMaxRange error when value is undefined', () => {
+      const errors = Validator.getErrors({ validations, value: undefined });
+      expect(errors).to.deep.eql([]);
+    });
+
+    it('should not get minMaxRange error when value satisfies the condition', () => {
+      const params = { minAbsolute: 80, maxAbsolute: 120 };
+      const errors = Validator.getErrors({ params, validations, value: 110 });
+      expect(errors).to.deep.eql([]);
+    });
+  });
+
   it('should not give error when there are no validations', () => {
     const controlDetails = { validations: [], value: '' };
     const errors = Validator.getErrors(controlDetails);

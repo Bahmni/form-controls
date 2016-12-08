@@ -45,6 +45,12 @@ describe('ObsControlDesigner', () => {
         uuid: 'someUuid',
         properties: { allowDecimal: false },
         answers: undefined,
+        units: undefined,
+        hiNormal: undefined,
+        lowNormal: undefined,
+        hiAbsolute: undefined,
+        lowAbsolute: undefined,
+
       },
       label: {
         type: 'label',
