@@ -10,6 +10,7 @@ describe('DropTarget', () => {
   const testContext = { type: 'testType', data: { id: '123' } };
   beforeEach(() => {
     eventData = {
+      stopPropagation(){},
       preventDefault: () => {
       },
       dataTransfer: {

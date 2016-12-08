@@ -1,12 +1,12 @@
+import {DescriptorParser as Descriptor} from './descriptorParser';
+
 export class Metadata {
   getMetadataForConcept(
     concept
     , idGenerator
     , type = 'obsGroupControl'
     , childType = 'obsControl'
-    , loc = {row: 0, column: 0}
-
-  ) {
+    , loc = {row: 0, column: 0}) {
     let controls = undefined;
     if (concept.set) {
       let row = 0;
@@ -21,18 +21,16 @@ export class Metadata {
     const properties = {
       location: loc,
     };
+    const descriptor = new Descriptor(window.componentStore.getDesignerComponent(type));
+    let metadata = descriptor.data().metadata;
+    metadata.properties = Object.assign({}, metadata.properties, properties);
 
-    return {
-      id: String(idGenerator.getId()),
-      type,
-      id: this._getNextId(previousId),
-      label: {
-        type: 'label',
-        value: concept.name,
-      },
-      concept,
-      controls,
-      properties,
-    };
+    return Object.assign({}, metadata,
+      {id: String(idGenerator.getId())},
+      {concept},
+      {controls},
+      {label: Object.assign({}, metadata.label, { value: concept.name })},
+      {properties: Object.assign({}, metadata.properties, properties)},
+    );
   }
 }
