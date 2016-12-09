@@ -4,7 +4,6 @@ import { ObsGroupMapper } from '../../mapper/ObsGroupMapper';
 import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 import { Concept } from '../../helpers/Concept';
 import { Metadata } from '../../helpers/Metadata';
-// import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 
 export class ObsGroupControlDesigner extends Component {
 

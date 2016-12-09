@@ -27,4 +27,10 @@ export { RowDesigner } from 'components/designer/Row.jsx';
 export { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
 export { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesigner.jsx';
 
+// -------------------------- helpers ---------------------
+
+export { IDGenerator } from 'src/helpers/idGenerator';
+export { DescriptorParser } from 'src/helpers/descriptorParser';
+
 import '../styles/styles.scss';
+
