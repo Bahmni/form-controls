@@ -270,4 +270,23 @@ describe('Cell', () => {
     cellDesigner.instance().processMove(metadataClone);
     expect(cellDesigner.text()).to.eql('TestComponent');
   });
+
+  it('should pass appropriate props to children', () => {
+    const idGenerator = new IDGenerator();
+    const cellDesigner = mount(
+      <CellDesigner
+        cellData={[metadata]}
+        idGenerator={idGenerator}
+        location={location}
+        onChange={() => {}}
+        wrapper={ TestComponent }
+      />
+    );
+
+    const child = cellDesigner.find('.gridCell').children().at(0);
+    expect(child.prop('idGenerator')).to.equal(idGenerator); // reference equality
+    expect(child.prop('wrapper')).to.eql(TestComponent);
+    expect(child.prop('metadata')).to.eql(metadata);
+    expect(child.prop('metadata')).to.eql(metadata);
+  });
 });

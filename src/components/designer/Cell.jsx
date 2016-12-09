@@ -74,10 +74,10 @@ export class CellDesigner extends DropTarget {
       React.createElement(this.props.wrapper,
         {
           key,
+          idGenerator: this.props.idGenerator,
           metadata,
           parentRef: this,
           ref: this.storeChildRef,
-          idGenerator: this.props.idGenerator,
           wrapper: this.props.wrapper,
         }
       )

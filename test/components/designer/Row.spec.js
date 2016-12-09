@@ -5,6 +5,7 @@ import chai, { expect } from 'chai';
 import { RowDesigner } from 'components/designer/Row.jsx';
 import Constants from 'src/constants';
 import sinon from 'sinon';
+import { IDGenerator } from 'src/helpers/idGenerator';
 
 
 chai.use(chaiEnzyme());
@@ -13,8 +14,12 @@ describe('Row', () => {
   const testComponent = () => <div>Test</div>;
 
   it('should render the default number of cells', () => {
+    const idGenerator = new IDGenerator();
+
     const rowDesigner = shallow(
-      <RowDesigner onChange={() => {}}
+      <RowDesigner
+        idGenerator={idGenerator}
+        onChange={() => {}}
         rowData={[]}
         rowPosition={0}
         wrapper={ testComponent }
@@ -26,9 +31,11 @@ describe('Row', () => {
   });
 
   it('should render specified number of cells', () => {
+    const idGenerator = new IDGenerator();
     const rowDesigner = shallow(
       <RowDesigner
         columns={2}
+        idGenerator={idGenerator}
         onChange={() => {}}
         rowData={[]}
         rowPosition={1}
@@ -41,12 +48,15 @@ describe('Row', () => {
   });
 
   it('should register onChange handler with the cell', () => {
+    const idGenerator = new IDGenerator();
     const onChange = { onChange: () => {} };
     const mockOnChange = sinon.mock(onChange);
     mockOnChange.expects('onChange').once();
 
     const rowDesigner = shallow(
-      <RowDesigner onChange={onChange.onChange}
+      <RowDesigner
+        idGenerator={idGenerator}
+        onChange={onChange.onChange}
         rowData={[]}
         rowPosition={0}
         wrapper={ testComponent }
@@ -60,5 +70,29 @@ describe('Row', () => {
     cell.props().onChange();
 
     mockOnChange.verify();
+  });
+
+  it('should pass appropriate props to children', () => {
+    const rowData = {
+      properties: {
+        location: { row: 0, column: 0 },
+      },
+    };
+    const idGenerator = new IDGenerator();
+    const rowDesigner = shallow(
+      <RowDesigner
+        idGenerator={idGenerator}
+        onChange={() => {}}
+        rowData={[rowData]}
+        rowPosition={0}
+        wrapper={ testComponent }
+      />);
+
+    const child = rowDesigner.find('CellDesigner').at(0);
+    expect(child.prop('idGenerator')).to.equal(idGenerator);
+    expect(child.prop('location')).to.eql({row: 0, column: 0});
+    expect(child.prop('cellData')).to.eql([rowData]);
+    expect(child.prop('wrapper')).to.eql(testComponent);
+    expect(child).to.have.prop('onChange');
   });
 });
