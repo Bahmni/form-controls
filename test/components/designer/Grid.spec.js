@@ -4,6 +4,7 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { GridDesigner } from 'components/designer/Grid.jsx';
 import constants from 'src/constants';
+import { IDGenerator } from 'src/helpers/idGenerator';
 
 chai.use(chaiEnzyme());
 
@@ -66,14 +67,14 @@ describe('GridDesigner', () => {
   ];
 
   it('should have min rows even if there are no controls', () => {
-    const grid = mount(<GridDesigner controls={[]} wrapper={ wrapper } />);
+    const grid = mount(<GridDesigner controls={[]} wrapper={ wrapper } idGenerator={new IDGenerator()} />);
     const children = grid.find('.grid').children();
 
     expect(children).to.have.length(constants.Grid.minRows);
   });
 
   it('should create rows based on existing controls', () => {
-    const grid = shallow(<GridDesigner controls={ formResourceControls } wrapper={ wrapper } />);
+    const grid = shallow(<GridDesigner controls={ formResourceControls } wrapper={ wrapper } idGenerator={new IDGenerator()} />);
     const children = grid.find('.grid').children();
     const dataRow = grid.find('.grid').childAt(0);
 
@@ -85,7 +86,7 @@ describe('GridDesigner', () => {
     const formControls = formResourceControls.slice(0);
     formControls[2].properties.location.row = 4;
 
-    const grid = shallow(<GridDesigner controls={ formControls } wrapper={ wrapper } />);
+    const grid = shallow(<GridDesigner controls={ formControls } wrapper={ wrapper } idGenerator={new IDGenerator()} />);
     const children = grid.find('.grid').children();
 
     expect(children).to.have.length(6);
@@ -96,14 +97,17 @@ describe('GridDesigner', () => {
   });
 
   it('should pass appropriate props to children', () => {
-    const formControls = formResourceControls.slice(0);
-    formControls[2].properties.location.row = 2;
-    const grid = shallow(<GridDesigner controls={ formControls } wrapper={ wrapper } />);
+    const idGenerator = new IDGenerator();
+    const formControls = formResourceControls.slice(0)[0];
+    const grid = shallow(<GridDesigner controls={ [formControls] } wrapper={ wrapper } idGenerator={idGenerator} />);
     const rows = grid.find('RowDesigner');
 
     expect(rows).to.have.length(4);
     expect(rows.at(0).prop('rowPosition')).to.eql(0);
-    expect(rows.at(1).prop('rowPosition')).to.eql(1);
+
+    expect(rows.at(0).prop('idGenerator')).to.eql(idGenerator);
+
+    expect(rows.at(1)).to.have.prop('onChange');
     expect(rows.at(2).prop('rowPosition')).to.eql(2);
   });
 });
