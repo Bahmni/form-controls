@@ -122,13 +122,13 @@ CellDesigner.dropLoc = {
 
 CellDesigner.propTypes = {
   cellData: PropTypes.array.isRequired,
+  idGenerator: PropTypes.object.isRequired,
   location: PropTypes.shape({
     column: PropTypes.number,
     row: PropTypes.number,
   }).isRequired,
   onChange: PropTypes.func.isRequired,
   wrapper: PropTypes.func.isRequired,
-  idGenerator: PropTypes.object.isRequired,
 };
 
 const descriptor = {

@@ -36,12 +36,12 @@ export class RowDesigner extends Component {
       cells.push(
         <CellDesigner
           cellData={ get(this.cellData, i, []) }
+          idGenerator={ this.props.idGenerator }
           key={i}
           location={{ column: i, row: this.props.rowPosition }}
           onChange={ this.changeHandler }
           ref={ this.cellReference }
           wrapper={ this.props.wrapper }
-          idGenerator={ this.props.idGenerator }
         />);
     }
     return cells;
@@ -64,11 +64,11 @@ export class RowDesigner extends Component {
 
 RowDesigner.propTypes = {
   columns: PropTypes.number,
+  idGenerator: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   rowData: PropTypes.array.isRequired,
   rowPosition: PropTypes.number.isRequired,
   wrapper: PropTypes.func.isRequired,
-  idGenerator: PropTypes.object.isRequired,
 };
 
 RowDesigner.defaultProps = {

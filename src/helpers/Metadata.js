@@ -1,12 +1,9 @@
-import {DescriptorParser as Descriptor} from './descriptorParser';
+import { DescriptorParser as Descriptor } from './descriptorParser';
+import ComponentStore from 'src/helpers/componentStore';
 
 export class Metadata {
-  getMetadataForConcept(
-    concept
-    , idGenerator
-    , type = 'obsGroupControl'
-    , childType = 'obsControl'
-    , loc = {row: 0, column: 0}) {
+  getMetadataForConcept(concept, idGenerator, type = 'obsGroupControl',
+                        childType = 'obsControl', loc = { row: 0, column: 0 }) {
     let controls = undefined;
     if (concept.set) {
       let row = 0;
@@ -14,23 +11,23 @@ export class Metadata {
         if (c.set) {
           return this.getMetadataForConcept(c, idGenerator, type);
         }
-        return this.getMetadataForConcept(c, idGenerator, childType, undefined, {row: row++, column: loc.column});
+        return this.getMetadataForConcept(c, idGenerator,
+          childType, undefined, { row: row++, column: loc.column });
       });
     }
 
     const properties = {
       location: loc,
     };
-    const descriptor = new Descriptor(window.componentStore.getDesignerComponent(type));
-    let metadata = descriptor.data().metadata;
+    const descriptor = new Descriptor(ComponentStore.getDesignerComponent(type));
+    const metadata = descriptor.data().metadata;
     metadata.properties = Object.assign({}, metadata.properties, properties);
 
     return Object.assign({}, metadata,
-      {id: String(idGenerator.getId())},
-      {concept},
-      {controls},
-      {label: Object.assign({}, metadata.label, { value: concept.name })},
-      {properties: Object.assign({}, metadata.properties, properties)},
-    );
+      { id: String(idGenerator.getId()) },
+      { concept },
+      { controls },
+      { label: Object.assign({}, metadata.label, { value: concept.name }) },
+      { properties: Object.assign({}, metadata.properties, properties) });
   }
 }

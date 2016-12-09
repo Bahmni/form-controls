@@ -69,9 +69,9 @@ export class GridDesigner extends Component {
 
 GridDesigner.propTypes = {
   controls: PropTypes.array.isRequired,
+  idGenerator: PropTypes.object.isRequired,
   minRows: PropTypes.number,
   wrapper: PropTypes.func.isRequired,
-  idGenerator: PropTypes.object.isRequired,
 };
 
 GridDesigner.defaultProps = {

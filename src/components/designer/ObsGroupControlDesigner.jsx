@@ -1,11 +1,9 @@
-import React, {Component, PropTypes} from 'react';
-import {ObsControlDesigner} from 'components/designer/ObsControlDesigner.jsx';
+import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
-import {ObsGroupMapper} from '../../mapper/ObsGroupMapper';
-import {GridDesigner as Grid} from 'components/designer/Grid.jsx';
-import {Concept} from '../../helpers/Concept';
-import {Metadata} from '../../helpers/Metadata';
-import map from 'lodash/map';
+import { ObsGroupMapper } from '../../mapper/ObsGroupMapper';
+import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
+import { Concept } from '../../helpers/Concept';
+import { Metadata } from '../../helpers/Metadata';
 // import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 
 export class ObsGroupControlDesigner extends Component {
@@ -18,9 +16,14 @@ export class ObsGroupControlDesigner extends Component {
   }
 
   getJsonDefinition() {
-    if(!this.gridRef) return undefined;
+    if (!this.gridRef) return undefined;
     const controls = this.gridRef.getControls();
-    return Object.assign({}, this.props.metadata, {controls});
+    return Object.assign({}, this.props.metadata, { controls });
+  }
+
+  getGrid() {
+    return;
+    // (<Grid className="bahmni-grid" />);
   }
 
   storeGridRef(ref) {
@@ -29,22 +32,20 @@ export class ObsGroupControlDesigner extends Component {
     }
   }
 
-  getGrid() {
-    return;
-    // (<Grid className="bahmni-grid" />);
-  }
-
   render() {
     const { metadata, metadata: { concept } } = this.props;
     if (concept) {
       return (
-        <fieldset className="form-builder-fieldset" onClick={(event) => this.props.onSelect(event, metadata)}>
+        <fieldset
+          className="form-builder-fieldset"
+          onClick={(event) => this.props.onSelect(event, metadata)}
+        >
           <legend>{concept.name}</legend>
           <div className="obsGroup-controls">
             <Grid
-              minRows={0}
               controls={ metadata.controls }
               idGenerator={this.props.idGenerator}
+              minRows={0}
               ref={ this.storeGridRef }
               wrapper={this.props.wrapper}
             />
@@ -57,6 +58,7 @@ export class ObsGroupControlDesigner extends Component {
 }
 
 ObsGroupControlDesigner.propTypes = {
+  idGenerator: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object,
     displayType: PropTypes.string,
@@ -71,6 +73,7 @@ ObsGroupControlDesigner.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
+  wrapper: PropTypes.func.isRequired,
 };
 
 ObsGroupControlDesigner.injectConceptToMetadata = (metadata, concept, idGenerator) => {

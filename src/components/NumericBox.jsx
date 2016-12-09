@@ -72,7 +72,6 @@ export class NumericBox extends Component {
       <div>
         <input
           className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
-          defaultValue={ this.props.value }
           onChange={ (e) => this.handleChange(e) }
           ref={(elem) => { this.input = elem; }}
           type="number"

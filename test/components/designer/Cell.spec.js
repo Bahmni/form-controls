@@ -1,26 +1,26 @@
 import React from 'react';
-import {shallow, mount} from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
-import chai, {expect} from 'chai';
+import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
-import {CellDesigner} from 'components/designer/Cell.jsx';
-import {IDGenerator} from 'src/helpers/idGenerator';
+import { CellDesigner } from 'components/designer/Cell.jsx';
+import { IDGenerator } from 'src/helpers/idGenerator';
 
 chai.use(chaiEnzyme());
 
 describe('Cell', () => {
   let eventData;
-  const metadata = {id: '123', properties: {}};
+  const metadata = { id: '123', properties: {} };
   const TestComponent = () => <div>TestComponent</div>;
 
   before(() => {
     eventData = {
-      stopPropagation(){
+      stopPropagation() {
       },
       preventDefault: () => {
       },
-      dataTransfer: {getData: () => JSON.stringify(metadata)},
+      dataTransfer: { getData: () => JSON.stringify(metadata) },
     };
     sinon.stub(React, 'cloneElement', e => e);
   });
@@ -95,7 +95,8 @@ describe('Cell', () => {
     expect(cellDesigner.text()).to.eql('TestComponent');
   });
 
-  it.skip('should render multiple copies of child component when components get dropped on it', () => {
+  it.skip('should render multiple copies of child ' +
+    'component when components get dropped on it', () => {
     const otherMetadata = {
       id: 999,
       properties: {
@@ -109,7 +110,7 @@ describe('Cell', () => {
     const otherEvent = {
       preventDefault: () => {
       },
-      dataTransfer: {getData: () => JSON.stringify(otherMetadata)},
+      dataTransfer: { getData: () => JSON.stringify(otherMetadata) },
     };
 
     const cellDesigner = mount(
@@ -153,11 +154,11 @@ describe('Cell', () => {
     const metadataClone = Object.assign({}, metadata, {
       id: '1234',
       properties: {
-        location: {row: 0, column: 1},
+        location: { row: 0, column: 1 },
       },
     });
     const eventDataClone = Object.assign({}, eventData, {
-      dataTransfer: {getData: () => JSON.stringify(metadataClone)},
+      dataTransfer: { getData: () => JSON.stringify(metadataClone) },
     });
 
     cell1.find('.gridCell').props().onDrop(eventDataClone);
@@ -180,7 +181,7 @@ describe('Cell', () => {
     const otherData = {
       preventDefault: () => {
       },
-      dataTransfer: {getData: () => JSON.stringify(otherMetadata)},
+      dataTransfer: { getData: () => JSON.stringify(otherMetadata) },
     };
     const cellDesigner = mount(
       <CellDesigner
@@ -213,17 +214,17 @@ describe('Cell', () => {
 
     cell.props().onDrop(eventData);
     const instance = cellDesigner.instance();
-    const expectedProperties = {properties: {location: {row: 1, column: 10}}};
+    const expectedProperties = { properties: { location: { row: 1, column: 10 } } };
     sinon.stub(instance, 'getCellDefinition', () => [expectedProperties]);
     const cellDefinition = instance.getCellDefinition();
     expect(cellDesigner.text()).to.eql('TestComponent');
-    expect(cellDefinition[0].properties.location).to.deep.eql({row: 1, column: 10});
+    expect(cellDefinition[0].properties.location).to.deep.eql({ row: 1, column: 10 });
   });
 
   it('should raise onChange event when a new control gets dropped', () => {
     const onChange = {
       onChange: () => {
-      }
+      },
     };
     const mockOnChange = sinon.mock(onChange);
     mockOnChange.expects('onChange').once();
@@ -258,11 +259,11 @@ describe('Cell', () => {
     );
     const metadataClone = Object.assign({}, metadata, {
       properties: {
-        location: {row: 0, column: 1},
+        location: { row: 0, column: 1 },
       },
     });
     const eventDataClone = Object.assign({}, eventData, {
-      dataTransfer: {getData: () => JSON.stringify(metadataClone)},
+      dataTransfer: { getData: () => JSON.stringify(metadataClone) },
     });
     const cell = cellDesigner.find('.gridCell');
     cell.props().onDrop(eventDataClone);

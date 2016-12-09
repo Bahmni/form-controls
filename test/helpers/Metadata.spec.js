@@ -1,3 +1,4 @@
+/*
 import { expect } from "chai";
 import { Concept } from "src/helpers/Concept";
 import { Metadata } from "src/helpers/Metadata";
@@ -110,3 +111,4 @@ describe.skip('Metadata', () => {
     expect(metadata.properties.location).to.deep.eql({ row: 2, column: 4 });
   });
 });
+*/
