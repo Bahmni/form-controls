@@ -67,14 +67,24 @@ describe('GridDesigner', () => {
   ];
 
   it('should have min rows even if there are no controls', () => {
-    const grid = mount(<GridDesigner controls={[]} wrapper={ wrapper } idGenerator={new IDGenerator()} />);
+    const grid = mount(
+      <GridDesigner
+        controls={[]}
+        idGenerator={new IDGenerator()}
+        wrapper={ wrapper }
+      />);
     const children = grid.find('.grid').children();
 
     expect(children).to.have.length(constants.Grid.minRows);
   });
 
   it('should create rows based on existing controls', () => {
-    const grid = shallow(<GridDesigner controls={ formResourceControls } wrapper={ wrapper } idGenerator={new IDGenerator()} />);
+    const grid = shallow(
+      <GridDesigner
+        controls={ formResourceControls }
+        idGenerator={new IDGenerator()}
+        wrapper={ wrapper }
+      />);
     const children = grid.find('.grid').children();
     const dataRow = grid.find('.grid').childAt(0);
 
@@ -86,7 +96,12 @@ describe('GridDesigner', () => {
     const formControls = formResourceControls.slice(0);
     formControls[2].properties.location.row = 4;
 
-    const grid = shallow(<GridDesigner controls={ formControls } wrapper={ wrapper } idGenerator={new IDGenerator()} />);
+    const grid = shallow(
+      <GridDesigner
+        controls={ formControls }
+        idGenerator={new IDGenerator()}
+        wrapper={ wrapper }
+      />);
     const children = grid.find('.grid').children();
 
     expect(children).to.have.length(6);
@@ -99,7 +114,12 @@ describe('GridDesigner', () => {
   it('should pass appropriate props to children', () => {
     const idGenerator = new IDGenerator();
     const formControls = formResourceControls.slice(0)[0];
-    const grid = shallow(<GridDesigner controls={ [formControls] } wrapper={ wrapper } idGenerator={idGenerator} />);
+    const grid = shallow(
+      <GridDesigner
+        controls={ [formControls] }
+        idGenerator={idGenerator}
+        wrapper={ wrapper }
+      />);
     const rows = grid.find('RowDesigner');
 
     expect(rows).to.have.length(4);

@@ -20,11 +20,6 @@ export class ObsGroupControlDesigner extends Component {
     return Object.assign({}, this.props.metadata, { controls });
   }
 
-  getGrid() {
-    return;
-    // (<Grid className="bahmni-grid" />);
-  }
-
   storeGridRef(ref) {
     if (ref) {
       this.gridRef = ref;

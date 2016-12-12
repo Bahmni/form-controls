@@ -90,7 +90,7 @@ describe('Row', () => {
 
     const child = rowDesigner.find('CellDesigner').at(0);
     expect(child.prop('idGenerator')).to.equal(idGenerator);
-    expect(child.prop('location')).to.eql({row: 0, column: 0});
+    expect(child.prop('location')).to.eql({ row: 0, column: 0 });
     expect(child.prop('cellData')).to.eql([rowData]);
     expect(child.prop('wrapper')).to.eql(testComponent);
     expect(child).to.have.prop('onChange');

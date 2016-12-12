@@ -95,40 +95,6 @@ describe('Cell', () => {
     expect(cellDesigner.text()).to.eql('TestComponent');
   });
 
-  it.skip('should render multiple copies of child ' +
-    'component when components get dropped on it', () => {
-    const otherMetadata = {
-      id: 999,
-      properties: {
-        location: {
-          row: 0,
-          column: 1,
-        },
-      },
-    };
-
-    const otherEvent = {
-      preventDefault: () => {
-      },
-      dataTransfer: { getData: () => JSON.stringify(otherMetadata) },
-    };
-
-    const cellDesigner = mount(
-      <CellDesigner
-        cellData={[]}
-        location={location}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
-
-    const cell = cellDesigner.find('.gridCell');
-    expect(cell).to.not.have.descendants('TestComponent');
-    cell.props().onDrop(eventData);
-    expect(cell).to.have.exactly(1).descendants('TestComponent');
-    cell.props().onDrop(otherEvent);
-    expect(cell).to.have.exactly(2).descendants('TestComponent');
-  });
 
   it('should remove the dropped component when moved to different cell', () => {
     const idGenerator = new IDGenerator();
@@ -165,38 +131,6 @@ describe('Cell', () => {
     cell2.instance().processMove(metadataClone);
     expect(cell1.find('.gridCell')).to.have.exactly(2).descendants('TestComponent');
     expect(cell2.find('.gridCell')).to.not.have.descendants('TestComponent');
-  });
-
-  it.skip('should remove only the dragged out component', () => {
-    const otherMetadata = {
-      id: 345,
-      properties: {
-        location: {
-          row: 0,
-          column: 0,
-        },
-      },
-    };
-
-    const otherData = {
-      preventDefault: () => {
-      },
-      dataTransfer: { getData: () => JSON.stringify(otherMetadata) },
-    };
-    const cellDesigner = mount(
-      <CellDesigner
-        cellData={[]}
-        location={location}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
-    const cell = cellDesigner.find('.gridCell');
-
-    cell.props().onDrop(eventData);
-    cell.props().onDrop(otherData);
-    cellDesigner.instance().processMove(metadata);
-    expect(cellDesigner.text()).to.eql('TestComponent');
   });
 
   it('should update the components location to that of cells when dropped', () => {
