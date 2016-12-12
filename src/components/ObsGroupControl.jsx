@@ -3,32 +3,52 @@ import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
+import { controlStateFactory, getErrors, getObsList } from 'src/ControlState';
+import each from 'lodash/each';
 
 export class ObsGroupControl extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { obs: props.obs };
+    const { formUuid, obs, metadata } = this.props;
+    const groupMembers = obs.getGroupMembers() || [];
+    const data = controlStateFactory(metadata, groupMembers, formUuid);
+    this.state = { obs: this._getObsGroup(obs, data), errors: [], data };
     this.onChange = this.onChange.bind(this);
     const isAbnormal = props.metadata.properties.isAbnormal;
     this.mapper = isAbnormal ? new AbnormalObsGroupMapper() : new ObsGroupMapper();
   }
 
-  onChange(value, errors) {
-    const updatedObs = this.mapper.setValue(this.state.obs, value, errors);
-    this.setState({ obs: updatedObs });
-    this.props.onValueChanged(updatedObs, errors);
+  onChange(obs, errors) {
+    const bahmniRecord = this.state.data.getRecord(obs.formNamespace)
+      .set('obs', obs)
+      .set('errors', errors);
+    const data = this.state.data.setRecord(bahmniRecord);
+    const updatedObs = this.mapper.setValue(this.state.obs, obs, errors);
+    const updatedErrors = getErrors(data.getRecords());
+    this.setState({ data, obs: updatedObs });
+    this.props.onValueChanged(updatedObs, updatedErrors);
+  }
+
+  _getObsGroup(obs, data) {
+    let observations = obs.removeGroupMembers();
+    each(data.getRecords(), (record) => {
+      observations = observations.addGroupMember(record.obs);
+    });
+    return observations;
   }
 
   render() {
-    const { metadata: { concept }, validate } = this.props;
-    const childProps = { validate, onValueChanged: this.onChange };
+    const { formUuid, metadata: { concept }, validate } = this.props;
+    const childProps = { formUuid, validate, onValueChanged: this.onChange };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
+    const records = this.state.data.getRecords();
+    const obsList = getObsList(records);
     return (
         <fieldset className="form-builder-fieldset">
           <legend>{concept.name}</legend>
           <div className="obsGroup-controls">
-            {displayRowControls(groupedRowControls, this.state.obs.groupMembers, childProps)}
+            {displayRowControls(groupedRowControls, obsList, childProps)}
           </div>
         </fieldset>
     );
@@ -36,6 +56,7 @@ export class ObsGroupControl extends Component {
 }
 
 ObsGroupControl.propTypes = {
+  formUuid: PropTypes.string.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,

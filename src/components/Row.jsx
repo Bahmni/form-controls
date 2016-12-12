@@ -17,8 +17,8 @@ export default class Row extends Component {
   }
 
   render() {
-    const { controls, observations, onValueChanged, validate } = this.props;
-    const childProps = { onValueChanged, validate };
+    const { controls, formUuid, observations, onValueChanged, validate } = this.props;
+    const childProps = { formUuid, onValueChanged, validate };
     const groupedColumnControls = getGroupedControls(controls, 'column');
     return (
       <div className="form-builder-row">
@@ -30,6 +30,7 @@ export default class Row extends Component {
 
 Row.propTypes = {
   controls: PropTypes.array.isRequired,
+  formUuid: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   observations: PropTypes.any.isRequired,
   onValueChanged: PropTypes.func.isRequired,

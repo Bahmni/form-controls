@@ -1,7 +1,8 @@
 import { Map as ImmutableMap, Record } from 'immutable';
 import { Obs, obsFromMetadata } from 'src/helpers/Obs';
 import { createFormNamespace } from 'src/helpers/formNamespace';
-import each from 'lodash/each';
+import isEmpty from 'lodash/isEmpty';
+import constants from 'src/constants';
 
 export const ControlRecord = new Record({
   control: undefined,
@@ -46,21 +47,26 @@ function getRecords(controls, formUuid, bahmniObservations) {
     // if observation exists then load else create dummy observations
     let obs;
     if (index >= 0) {
-      obs = new Obs(bahmniObservations[index]).removeGroupMembers();
+      obs = new Obs(bahmniObservations[index]);
     } else {
       obs = obsFromMetadata(formNamespace, control);
-    }
-    if (control.controls && control.controls.length > 0) {
-      const groupMembers = index >= 0 ? bahmniObservations[index].groupMembers : bahmniObservations;
-      each(getRecords(control.controls, formUuid, groupMembers), (obsGroupMember) => {
-        obs = obs.addGroupMember(obsGroupMember.obs);
-      });
     }
     return new ControlRecord({ formNamespace, obs, control, enabled: false });
   });
 }
 
-export function controlStateFactory(metadata = { controls: [] }, bahmniObservations = []) {
-  const records = getRecords(metadata.controls, metadata.uuid, bahmniObservations);
+export function controlStateFactory(metadata = { controls: [] }, bahmniObs = [], formUuid) {
+  const formId = formUuid || metadata.uuid;
+  const records = getRecords(metadata.controls, formId, bahmniObs);
   return new ControlState().setRecords(records);
+}
+
+export function getErrors(records) {
+  return [].concat(...records.map((record) => record.get('errors'))
+    .filter((error) =>
+    error && !isEmpty(error.filter((err) => err.type === constants.errorTypes.error))));
+}
+
+export function getObsList(records) {
+  return records.map(record => record.get('obs'));
 }

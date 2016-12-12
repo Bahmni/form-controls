@@ -5,7 +5,6 @@ import chai, { expect } from 'chai';
 import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 import sinon from 'sinon';
 import { Obs } from 'src/helpers/Obs';
-import { List } from 'immutable';
 import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import ComponentStore from 'src/helpers/componentStore';
@@ -40,7 +39,7 @@ describe('ObsGroupControl', () => {
     ComponentStore.deRegisterComponent('randomType');
   });
 
-  const formUuid = 'someUuid';
+  const formUuid = 'formUuid';
   const obsGroupConcept = {
     uuid: '70645842-be6a-4974-8d5f-45b52990e132',
     name: 'Pulse Data',
@@ -59,7 +58,7 @@ describe('ObsGroupControl', () => {
     controls: [
       {
         id: '100',
-        type: 'numeric',
+        type: 'randomType',
         properties: getLocationProperties(0, 1),
       },
       {
@@ -75,12 +74,10 @@ describe('ObsGroupControl', () => {
     ],
   };
   const onChangeSpy = sinon.spy();
-  const observation = {
-    groupMembers: [{
-      formNamespace: `${formUuid}/101`,
-      value: 'someValue',
-    }],
-  };
+  const observation = new Obs({
+    concept: obsGroupConcept,
+    groupMembers: [],
+  });
 
   describe('render', () => {
     it('should render obsGroup control with observations', () => {
@@ -93,8 +90,8 @@ describe('ObsGroupControl', () => {
           validate={false}
         />);
 
-      expect(wrapper.find('Row').at(0).props().observations).to.eql(observation.groupMembers);
       expect(wrapper.find('legend').text()).to.eql(obsGroupConcept.name);
+      expect(wrapper).to.have.exactly(3).descendants('DummyControl');
     });
 
 
@@ -129,43 +126,65 @@ describe('ObsGroupControl', () => {
     });
 
     it('should trigger onChange in obsGroup if its child obs has changed', () => {
-      const pulseAbnormalObs = new Obs({ concept: {
-        name: 'PulseAbnormal',
-        uuid: 'pulseAbnormalUuid',
-        datatype: 'Boolean',
-        conceptClass: 'Abnormal',
-      }, value: false, formNamespace: 'formUuid/5', uuid: 'childObs2Uuid' });
-
-      const pulseNumericObs = new Obs({ concept: {
+      const pulseNumericConcept = {
         name: 'Pulse',
         uuid: 'pulseUuid',
         datatype: 'Numeric',
         conceptClass: 'Misc',
-      }, value: 10, formNamespace: 'formUuid/6', uuid: 'childObs1Uuid' });
+      };
 
-      const pulseDataObs = new Obs({ concept: {
-        name: 'Pulse Data',
-        uuid: 'pulseDataUuid',
-        datatype: 'Misc',
-      },
-        groupMembers: List.of(pulseNumericObs, pulseAbnormalObs),
-        formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid' });
+      const metadataUpdated = {
+        id: '1',
+        type: 'obsGroupControl',
+        concept: obsGroupConcept,
+        properties: getLocationProperties(0, 0),
+        label: {
+          type: 'label',
+          value: 'label',
+        },
+        controls: [
+          {
+            id: '100',
+            type: 'randomType',
+            concept: pulseNumericConcept,
+            properties: getLocationProperties(0, 1),
+          },
+        ],
+      };
+
+      const pulseNumericObs = new Obs({
+        concept: pulseNumericConcept,
+        value: 10, formNamespace: 'formUuid/100', uuid: 'childObs1Uuid',
+      });
+
+      const pulseDataObs = new Obs({
+        concept: {
+          name: 'Pulse Data',
+          uuid: 'pulseDataUuid',
+          datatype: 'Misc',
+        },
+        groupMembers: [
+          {
+            concept: pulseNumericConcept,
+            value: 10, formNamespace: 'formUuid/100', uuid: 'childObs1Uuid',
+          }],
+        formNamespace: 'formUuid/1', uuid: 'pulseDataObsUuid',
+      });
 
       const wrapper = mount(
         <ObsGroupControl
           formUuid={formUuid}
-          metadata={metadata}
+          metadata={metadataUpdated}
           obs={pulseDataObs}
           onValueChanged={onChangeSpy}
           validate={false}
         />);
-
       const pulseNumericUpdated = pulseNumericObs.setValue(20);
       const instance = wrapper.instance();
       instance.onChange(pulseNumericUpdated, []);
-
+      const updatedObs = instance.mapper.setValue(instance.state.obs, pulseNumericUpdated, []);
       sinon.assert.calledOnce(
-        onChangeSpy.withArgs(instance.mapper.setValue(pulseDataObs, pulseNumericUpdated, []), []));
+        onChangeSpy.withArgs(updatedObs, []));
     });
 
     it('should have obsGroupMapper if metadata does not have isAbnormal property', () => {

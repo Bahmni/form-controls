@@ -64,6 +64,7 @@ describe('Row', () => {
       const wrapper = mount(
         <Row
           controls={controls}
+          formUuid={formUuid}
           id={0}
           observations={[]}
           onValueChanged={onChangeSpy}

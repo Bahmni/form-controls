@@ -2,8 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import isEmpty from 'lodash/isEmpty';
 import filter from 'lodash/filter';
-import { controlStateFactory } from 'src/ControlState';
-import constants from 'src/constants';
+import { controlStateFactory, getErrors, getObsList } from 'src/ControlState';
 
 export class Container extends Component {
   constructor(props) {
@@ -27,24 +26,12 @@ export class Container extends Component {
   getValue() {
     const records = this.state.data.getRecords();
     const observations = this._getObservations(records.map((record) => record.obs.toJS()));
-    const errors = this.getErrors();
+    const errors = getErrors(records);
     if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
       return { observations };
     }
 
     return { errors };
-  }
-
-  getObsList() {
-    const records = this.state.data.getRecords();
-    return records.map(record => record.get('obs'));
-  }
-
-  getErrors() {
-    const records = this.state.data.getRecords();
-    return [].concat(...records.map((record) => record.get('errors'))
-      .filter((error) =>
-      error && !isEmpty(error.filter((err) => err.type === constants.errorTypes.error))));
   }
 
   /* eslint-disable no-param-reassign */
@@ -85,7 +72,8 @@ export class Container extends Component {
       validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
-    const obsList = this.getObsList();
+    const records = this.state.data.getRecords();
+    const obsList = getObsList(records);
     return (
       <div>{displayRowControls(groupedRowControls, obsList, childProps)}</div>
     );
