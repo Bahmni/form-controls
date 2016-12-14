@@ -9,7 +9,6 @@ import { TextBox } from 'components/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { ObsControl } from 'components/ObsControl.jsx';
 import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
-import { Section } from 'components/Section.jsx';
 import { Error } from 'src/Error';
 import constants from 'src/constants';
 
@@ -27,7 +26,6 @@ describe('Container', () => {
     componentStore.registerComponent('numeric', NumericBox);
     componentStore.registerComponent('obsControl', ObsControl);
     componentStore.registerComponent('obsGroupControl', ObsGroupControl);
-    componentStore.registerComponent('section', Section);
   });
 
   after(() => {
@@ -36,7 +34,6 @@ describe('Container', () => {
     componentStore.deRegisterComponent('numeric');
     componentStore.deRegisterComponent('obsControl');
     componentStore.deRegisterComponent('obsGroupControl');
-    componentStore.deRegisterComponent('section');
   });
 
   function getLocationProperties(row, column) {

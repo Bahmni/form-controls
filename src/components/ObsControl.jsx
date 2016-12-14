@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Label } from 'components/Label.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
-import { ObsMapper } from 'src/mapper/ObsMapper';
 import { Comment } from 'components/Comment.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
@@ -11,7 +10,6 @@ export class ObsControl extends Component {
 
   constructor(props) {
     super(props);
-    this.mapper = new ObsMapper();
     this.state = { obs: props.obs };
     this.onChange = this.onChange.bind(this);
     this.onCommentChange = this.onCommentChange.bind(this);
@@ -24,19 +22,19 @@ export class ObsControl extends Component {
   }
 
   onChange(value, errors) {
-    const updatedObs = this.mapper.setValue(this.state.obs, value);
+    const updatedObs = this.props.mapper.setValue(this.state.obs, value);
     this.setState({ obs: updatedObs });
     this.props.onValueChanged(updatedObs, errors);
   }
 
   onCommentChange(comment) {
-    const updatedObs = this.mapper.setComment(this.state.obs, comment);
+    const updatedObs = this.props.mapper.setComment(this.state.obs, comment);
     this.setState({ obs: updatedObs });
     this.props.onValueChanged(updatedObs);
   }
 
   displayObsControl(registeredComponent) {
-    const { metadata, metadata: { concept }, validate } = this.props;
+    const { mapper, metadata, metadata: { concept }, validate } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
@@ -45,7 +43,7 @@ export class ObsControl extends Component {
       onChange: this.onChange,
       validate,
       validations,
-      value: this.mapper.getValue(this.state.obs),
+      value: mapper.getValue(this.state.obs),
       concept,
     });
   }
@@ -71,10 +69,10 @@ export class ObsControl extends Component {
   }
 
   showComment() {
-    const { properties } = this.props.metadata;
+    const { mapper, metadata: { properties } } = this.props;
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
-      const comment = this.mapper.getComment(this.state.obs);
+      const comment = mapper.getComment(this.state.obs);
       return (
         <Comment comment={comment} onCommentChange={this.onCommentChange} />
       );
@@ -108,6 +106,7 @@ export class ObsControl extends Component {
 }
 
 ObsControl.propTypes = {
+  mapper: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,

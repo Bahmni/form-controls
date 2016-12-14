@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
-import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
-import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
-import { controlStateFactory, getErrors, getObsList } from 'src/ControlState';
+import { controlStateFactory, getErrors } from 'src/ControlState';
 import each from 'lodash/each';
 
 export class ObsGroupControl extends Component {
@@ -15,8 +13,6 @@ export class ObsGroupControl extends Component {
     const data = controlStateFactory(metadata, groupMembers, formUuid);
     this.state = { obs: this._getObsGroup(obs, data), errors: [], data };
     this.onChange = this.onChange.bind(this);
-    const isAbnormal = props.metadata.properties.isAbnormal;
-    this.mapper = isAbnormal ? new AbnormalObsGroupMapper() : new ObsGroupMapper();
   }
 
   onChange(obs, errors) {
@@ -24,7 +20,7 @@ export class ObsGroupControl extends Component {
       .set('obs', obs)
       .set('errors', errors);
     const data = this.state.data.setRecord(bahmniRecord);
-    const updatedObs = this.mapper.setValue(this.state.obs, obs, errors);
+    const updatedObs = this.props.mapper.setValue(this.state.obs, obs, errors);
     const updatedErrors = getErrors(data.getRecords());
     this.setState({ data, obs: updatedObs });
     this.props.onValueChanged(updatedObs, updatedErrors);
@@ -43,12 +39,11 @@ export class ObsGroupControl extends Component {
     const childProps = { formUuid, validate, onValueChanged: this.onChange };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const records = this.state.data.getRecords();
-    const obsList = getObsList(records);
     return (
         <fieldset className="form-builder-fieldset">
           <legend>{concept.name}</legend>
           <div className="obsGroup-controls">
-            {displayRowControls(groupedRowControls, obsList, childProps)}
+            {displayRowControls(groupedRowControls, records, childProps)}
           </div>
         </fieldset>
     );
@@ -57,6 +52,7 @@ export class ObsGroupControl extends Component {
 
 ObsGroupControl.propTypes = {
   formUuid: PropTypes.string.isRequired,
+  mapper: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,

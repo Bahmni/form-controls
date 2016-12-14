@@ -3,6 +3,7 @@ import { Obs, obsFromMetadata } from 'src/helpers/Obs';
 import { createFormNamespace } from 'src/helpers/formNamespace';
 import isEmpty from 'lodash/isEmpty';
 import constants from 'src/constants';
+import MapperStore from 'src/helpers/MapperStore';
 
 export const ControlRecord = new Record({
   control: undefined,
@@ -10,6 +11,7 @@ export const ControlRecord = new Record({
   obs: undefined, enabled: true,
   errors: [],
   data: undefined,
+  mapper: undefined,
 });
 
 export const ImmutableControlState = new Record({
@@ -40,6 +42,7 @@ export class ControlState extends ImmutableControlState {
 
 function getRecords(controls, formUuid, bahmniObservations) {
   return controls.map((control) => {
+    const mapper = MapperStore.getMapper(control);
     const formNamespace = createFormNamespace(formUuid, control.id);
     const index = bahmniObservations.findIndex(observation =>
       observation.formNamespace === formNamespace
@@ -51,7 +54,7 @@ function getRecords(controls, formUuid, bahmniObservations) {
     } else {
       obs = obsFromMetadata(formNamespace, control);
     }
-    return new ControlRecord({ formNamespace, obs, control, enabled: false });
+    return new ControlRecord({ formNamespace, obs, mapper, control, enabled: false });
   });
 }
 
@@ -65,8 +68,4 @@ export function getErrors(records) {
   return [].concat(...records.map((record) => record.get('errors'))
     .filter((error) =>
     error && !isEmpty(error.filter((err) => err.type === constants.errorTypes.error))));
-}
-
-export function getObsList(records) {
-  return records.map(record => record.get('obs'));
 }

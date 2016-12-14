@@ -7,6 +7,7 @@ import { ObsControl } from 'components/ObsControl.jsx';
 import { Obs } from 'src/helpers/Obs';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';
+import { ObsMapper } from 'src/mapper/ObsMapper';
 
 chai.use(chaiEnzyme());
 
@@ -43,6 +44,8 @@ describe('ObsControl', () => {
     onChangeSpy = sinon.spy();
   });
 
+  const mapper = new ObsMapper();
+
   it('should render dummyControl', () => {
     const metadata = {
       id: '100',
@@ -55,6 +58,7 @@ describe('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -81,7 +85,7 @@ describe('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        errors={[]}
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -104,7 +108,7 @@ describe('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        errors={[]}
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -125,6 +129,7 @@ describe('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -147,6 +152,7 @@ describe('ObsControl', () => {
 
     const wrapper = shallow(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -168,6 +174,7 @@ describe('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = shallow(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -192,6 +199,7 @@ describe('ObsControl', () => {
 
     const wrapper = mount(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -216,6 +224,7 @@ describe('ObsControl', () => {
 
     const wrapper = mount(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -239,6 +248,7 @@ describe('ObsControl', () => {
 
     const wrapper = shallow(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -260,6 +270,7 @@ describe('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -285,6 +296,7 @@ describe('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -308,6 +320,7 @@ describe('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}
@@ -336,6 +349,7 @@ describe('ObsControl', () => {
     const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
+        mapper={mapper}
         metadata={metadata}
         obs={observation}
         onValueChanged={onChangeSpy}

@@ -5,7 +5,6 @@ import chai, { expect } from 'chai';
 import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 import sinon from 'sinon';
 import { Obs } from 'src/helpers/Obs';
-import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import ComponentStore from 'src/helpers/componentStore';
 
@@ -79,11 +78,14 @@ describe('ObsGroupControl', () => {
     groupMembers: [],
   });
 
+  const obsGroupMapper = new ObsGroupMapper();
+
   describe('render', () => {
     it('should render obsGroup control with observations', () => {
       const wrapper = mount(
         <ObsGroupControl
           formUuid={formUuid}
+          mapper={obsGroupMapper}
           metadata={metadata}
           obs={observation}
           onValueChanged={onChangeSpy}
@@ -100,6 +102,7 @@ describe('ObsGroupControl', () => {
       const wrapper = mount(
         <ObsGroupControl
           formUuid={formUuid}
+          mapper={obsGroupMapper}
           metadata={metadata}
           obs={observation}
           onValueChanged={onChangeSpy}
@@ -110,20 +113,6 @@ describe('ObsGroupControl', () => {
       ComponentStore.registerComponent('randomType', DummyControl);
     });
 
-    it('should invoke the corresponding mapper based on metadata property', () => {
-      metadata.properties.isAbnormal = true;
-      const wrapper = mount(
-        <ObsGroupControl
-          formUuid={formUuid}
-          metadata={metadata}
-          obs={observation}
-          onValueChanged={onChangeSpy}
-          validate={false}
-        />);
-
-      const instance = wrapper.instance();
-      expect(instance.mapper instanceof AbnormalObsGroupMapper).to.deep.equal(true);
-    });
 
     it('should trigger onChange in obsGroup if its child obs has changed', () => {
       const pulseNumericConcept = {
@@ -174,6 +163,7 @@ describe('ObsGroupControl', () => {
       const wrapper = mount(
         <ObsGroupControl
           formUuid={formUuid}
+          mapper={obsGroupMapper}
           metadata={metadataUpdated}
           obs={pulseDataObs}
           onValueChanged={onChangeSpy}
@@ -182,24 +172,10 @@ describe('ObsGroupControl', () => {
       const pulseNumericUpdated = pulseNumericObs.setValue(20);
       const instance = wrapper.instance();
       instance.onChange(pulseNumericUpdated, []);
-      const updatedObs = instance.mapper.setValue(instance.state.obs, pulseNumericUpdated, []);
+      const updatedObs = wrapper.props()
+        .mapper.setValue(instance.state.obs, pulseNumericUpdated, []);
       sinon.assert.calledOnce(
         onChangeSpy.withArgs(updatedObs, []));
-    });
-
-    it('should have obsGroupMapper if metadata does not have isAbnormal property', () => {
-      metadata.properties.isAbnormal = false;
-      const wrapper = mount(
-        <ObsGroupControl
-          formUuid={formUuid}
-          metadata={metadata}
-          obs={observation}
-          onValueChanged={onChangeSpy}
-          validate={false}
-        />);
-
-      const instance = wrapper.instance();
-      expect(instance.mapper instanceof ObsGroupMapper).to.deep.equal(true);
     });
   });
 });

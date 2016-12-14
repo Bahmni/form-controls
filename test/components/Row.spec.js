@@ -5,6 +5,8 @@ import chai, { expect } from 'chai';
 import Row from 'components/Row.jsx';
 import sinon from 'sinon';
 import ComponentStore from 'src/helpers/componentStore';
+import { ObsMapper } from '../../src/mapper/ObsMapper';
+import { Obs } from '../../src/helpers/Obs';
 
 chai.use(chaiEnzyme());
 
@@ -45,8 +47,13 @@ describe('Row', () => {
       properties: getLocationProperties(0, 3),
     },
   ];
-
   const formUuid = 'someUuid';
+
+  const records = controls.map((control) => ({
+    obs: new Obs({ formNamespace: `${formUuid}/${control.id}` }),
+    mapper: new ObsMapper(),
+  }));
+
 
   before(() => {
     ComponentStore.componentList = {};
@@ -66,13 +73,13 @@ describe('Row', () => {
           controls={controls}
           formUuid={formUuid}
           id={0}
-          observations={[]}
           onValueChanged={onChangeSpy}
+          records={records}
           validate={false}
         />
       );
-
       expect(wrapper).to.have.exactly(3).descendants('DummyControl');
+
       expect(wrapper.find('DummyControl').at(0)).to.have.prop('validate').to.eql(false);
     });
 
@@ -82,8 +89,8 @@ describe('Row', () => {
           controls={[]}
           formUuid={formUuid}
           id={0}
-          observations={[]}
           onValueChanged={onChangeSpy}
+          records={records}
           validate={false}
         />
       );

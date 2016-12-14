@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
 import isEmpty from 'lodash/isEmpty';
 import filter from 'lodash/filter';
-import { controlStateFactory, getErrors, getObsList } from 'src/ControlState';
+import { controlStateFactory, getErrors } from 'src/ControlState';
 
 export class Container extends Component {
   constructor(props) {
@@ -73,9 +73,8 @@ export class Container extends Component {
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
     const records = this.state.data.getRecords();
-    const obsList = getObsList(records);
     return (
-      <div>{displayRowControls(groupedRowControls, obsList, childProps)}</div>
+      <div>{displayRowControls(groupedRowControls, records, childProps)}</div>
     );
   }
 }

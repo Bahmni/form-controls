@@ -3,34 +3,30 @@ import { getFormNamespaceDetails } from 'src/helpers/formNamespace';
 import Row from 'src/components/Row.jsx';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
-import isEmpty from 'lodash/isEmpty';
 import ComponentStore from 'src/helpers/componentStore';
 
-function getObsForControl(control, observations) {
-  if (control.properties && control.properties.visualOnly) return observations;
-  const filteredObs = observations.find((obs) => {
-    const { controlId } = getFormNamespaceDetails(obs.formNamespace);
+function getRecordForControl(control, records) {
+  const filteredRecord = records.find((record) => {
+    const { controlId } = getFormNamespaceDetails(record.obs.formNamespace);
     return controlId === control.id;
   });
-  if (!filteredObs && !isEmpty(observations.groupMembers)) {
-    return getObsForControl(control, observations.groupMembers);
-  }
-  return filteredObs;
+  return filteredRecord;
 }
 
 function createReactComponent(component, props) {
   return React.createElement(component, props);
 }
 
-export function getControls(controls, observations, props) {
+export function getControls(controls, records, props) {
   return controls.map((control) => {
     const registeredControl = ComponentStore.getRegisteredComponent(control.type);
     if (registeredControl) {
-      const obs = getObsForControl(control, observations);
+      const record = getRecordForControl(control, records);
       return createReactComponent(registeredControl, {
         key: control.id,
         metadata: control,
-        obs,
+        obs: record.obs,
+        mapper: record.mapper,
         ...props,
       });
     }
@@ -57,13 +53,13 @@ export function getGroupedControls(controls, property) {
   return sortGroupedControls(groupedControls);
 }
 
-export function displayRowControls(controls, observations, childProps) {
+export function displayRowControls(controls, records, childProps) {
   return map(controls, (rowControls, index) =>
     <Row
       controls={rowControls}
       id={index}
       key={index}
-      observations={observations}
+      records={records}
       {...childProps}
     />
   );

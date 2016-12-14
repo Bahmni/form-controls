@@ -3,6 +3,7 @@ import { storiesOf } from '@kadira/storybook';
 import StoryWrapper from './StoryWrapper';
 import { Container } from 'src/components/Container.jsx';
 import { ObsControl } from 'src/components/ObsControl.jsx';
+import { ObsMapper } from '/src/mapper/ObsMapper';
 import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
 import '../node_modules/react-select/dist/react-select.css';
@@ -157,6 +158,7 @@ storiesOf('ObsControl', module)
       <StoryWrapper json={ form.controls[0] }>
         <ObsControl
           formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
+          mapper = { new ObsMapper() }
           metadata={form.controls[0]}
           obs={new Obs({ concept: form.controls[0].concept })}
           onValueChanged={() => {}}
@@ -171,6 +173,7 @@ storiesOf('ObsControl', module)
         <ObsControl
           errors={[]}
           formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
+          mapper = { new ObsMapper() }
           metadata={form.controls[1]}
           obs={new Obs({ concept: form.controls[1].concept })}
           onValueChanged={() => {}}
@@ -185,6 +188,7 @@ storiesOf('ObsControl', module)
     <ObsControl
       errors={[]}
       formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
+      mapper = { new ObsMapper() }
       metadata={form.controls[2]}
       obs={ new Obs({ concept: form.controls[2].concept })}
       onValueChanged={() => {}}
@@ -199,6 +203,7 @@ storiesOf('ObsControl', module)
           <ObsControl
             errors={[]}
             formUuid={'fbc5d897-6404-4cc1-90a3-47fde7a98026'}
+            mapper = { new ObsMapper() }
             metadata={form.controls[3]}
             obs={new Obs({ concept: form.controls[3].concept, value: {
               display: 'Answer1',
