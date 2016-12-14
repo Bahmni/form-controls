@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Label } from 'components/Label.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
-import { ObsMapper } from 'src/helpers/ObsMapper';
+import { ObsMapper } from 'src/mapper/ObsMapper';
 import { Comment } from 'components/Comment.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
@@ -11,24 +11,27 @@ export class ObsControl extends Component {
 
   constructor(props) {
     super(props);
-    this.mapper = new ObsMapper(props.obs);
+    this.mapper = new ObsMapper();
+    this.state = { obs: props.obs };
     this.onChange = this.onChange.bind(this);
     this.onCommentChange = this.onCommentChange.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.obs !== nextProps.obs) {
-      this.mapper = new ObsMapper(nextProps.obs);
+      this.setState({ obs: nextProps.obs });
     }
   }
 
   onChange(value, errors) {
-    const updatedObs = this.mapper.setValue(value);
+    const updatedObs = this.mapper.setValue(this.state.obs, value);
+    this.setState({ obs: updatedObs });
     this.props.onValueChanged(updatedObs, errors);
   }
 
   onCommentChange(comment) {
-    const updatedObs = this.mapper.setComment(comment);
+    const updatedObs = this.mapper.setComment(this.state.obs, comment);
+    this.setState({ obs: updatedObs });
     this.props.onValueChanged(updatedObs);
   }
 
@@ -42,7 +45,7 @@ export class ObsControl extends Component {
       onChange: this.onChange,
       validate,
       validations,
-      value: this.mapper.getValue(),
+      value: this.mapper.getValue(this.state.obs),
       concept,
     });
   }
@@ -71,7 +74,7 @@ export class ObsControl extends Component {
     const { properties } = this.props.metadata;
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
-      const comment = this.mapper.getComment();
+      const comment = this.mapper.getComment(this.state.obs);
       return (
         <Comment comment={comment} onCommentChange={this.onCommentChange} />
       );
