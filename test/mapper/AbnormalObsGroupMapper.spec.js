@@ -34,7 +34,7 @@ describe('AbnormalObsGroupMapper', () => {
     expect(true).to.be.eql(pulseDataObsUpdated.getAbnormalChildObs().getValue());
   });
 
-  it.skip('should update abnormal observation when numeric observation is in valid range', () => {
+  it('should update abnormal observation when numeric observation is in valid range', () => {
     const pulseDataObsUpdated = mapper.setValue(pulseDataObs, pulseNumericObs, []);
     expect(false).to.be.eql(pulseDataObsUpdated.getAbnormalChildObs().getValue());
   });
@@ -65,7 +65,7 @@ describe('AbnormalObsGroupMapper', () => {
     expect(true).to.be.eql(voidedNumericObs.isVoided());
   });
 
-  it.skip('should explicitly update abnormal observation if numeric obs has value', () => {
+  it('should explicitly update abnormal observation if numeric obs has value', () => {
     let pulseDataObsUpdated = mapper.setValue(pulseDataObs, pulseNumericObs, []);
     expect(false).to.be.eql(pulseDataObsUpdated.getAbnormalChildObs().getValue());
 

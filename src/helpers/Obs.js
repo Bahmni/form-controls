@@ -35,7 +35,6 @@ export class Obs extends ImmutableObs {
   }
 
   setValue(value) {
-    if (!value) return this.void();
     if (this.isDirty(value)) {
       return this.set('observationDateTime', null).set('value', value).set('voided', false);
     }
