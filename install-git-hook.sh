@@ -4,6 +4,13 @@
 
 echo "#!/bin/bash
 
+read local_ref local_sha remote_ref remote_sha
+
+if [ \${remote_ref} != 'refs/heads/master' ]
+then
+    exit 0
+fi
+
 git log --pretty=format:\"%s\" | head -n 1 | grep 'Bumped to version .*'
 
 if [ \$? == 0 ]
