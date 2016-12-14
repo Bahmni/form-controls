@@ -1,4 +1,10 @@
+import { createObsFromControl } from 'src/helpers/Obs';
+
 export class ObsGroupMapper {
+  getInitialObject(formUuid, control, bahmniObservations) {
+    return createObsFromControl(formUuid, control, bahmniObservations);
+  }
+
   setValue(obsGroup, obs) {
     let updatedObsGroup = obsGroup.addGroupMember(obs);
 

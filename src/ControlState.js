@@ -1,6 +1,4 @@
 import { Map as ImmutableMap, Record } from 'immutable';
-import { Obs, obsFromMetadata } from 'src/helpers/Obs';
-import { createFormNamespace } from 'src/helpers/formNamespace';
 import isEmpty from 'lodash/isEmpty';
 import constants from 'src/constants';
 import MapperStore from 'src/helpers/MapperStore';
@@ -43,18 +41,9 @@ export class ControlState extends ImmutableControlState {
 function getRecords(controls, formUuid, bahmniObservations) {
   return controls.map((control) => {
     const mapper = MapperStore.getMapper(control);
-    const formNamespace = createFormNamespace(formUuid, control.id);
-    const index = bahmniObservations.findIndex(observation =>
-      observation.formNamespace === formNamespace
-    );
-    // if observation exists then load else create dummy observations
-    let obs;
-    if (index >= 0) {
-      obs = new Obs(bahmniObservations[index]);
-    } else {
-      obs = obsFromMetadata(formNamespace, control);
-    }
-    return new ControlRecord({ formNamespace, obs, mapper, control, enabled: false });
+    const obs = mapper.getInitialObject(formUuid, control, bahmniObservations);
+    return new ControlRecord({ formNamespace: obs.formNamespace,
+      obs, mapper, control, enabled: false });
   });
 }
 

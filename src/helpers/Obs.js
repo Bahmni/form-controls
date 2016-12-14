@@ -1,5 +1,7 @@
 /* eslint-disable new-cap */
 import { Record, List } from 'immutable';
+import { createFormNamespace } from 'src/helpers/formNamespace';
+
 
 export const ImmutableObs = Record({
   concept: undefined,
@@ -106,4 +108,16 @@ export function obsFromMetadata(formNamespace, metadata) {
     formNamespace,
     voided: true,
   });
+}
+
+export function createObsFromControl(formUuid, control, bahmniObservations) {
+  const formNamespace = createFormNamespace(formUuid, control.id);
+  const index = bahmniObservations.findIndex(observation =>
+    observation.formNamespace === formNamespace
+  );
+
+  if (index >= 0) {
+    return new Obs(bahmniObservations[index]);
+  }
+  return obsFromMetadata(formNamespace, control);
 }

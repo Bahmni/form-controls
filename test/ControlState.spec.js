@@ -144,6 +144,7 @@ describe('Control State', () => {
       const namespace2 = createFormNamespace(form.uuid, form.controls[2].id);
 
       expect(records).to.have.length(3);
+
       expect(controlState.getRecord(obs1.formNamespace).obs.uuid).to.deep.equal(obs1.uuid);
       expect(controlState.getRecord(namespace1).obs.formNamespace).to.equal(namespace1);
       expect(controlState.getRecord(namespace2).obs.formNamespace).to.equal(namespace2);

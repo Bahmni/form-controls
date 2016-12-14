@@ -1,4 +1,10 @@
+import { createObsFromControl } from 'src/helpers/Obs';
+
 export class ObsMapper {
+
+  getInitialObject(formUuid, control, bahmniObservations) {
+    return createObsFromControl(formUuid, control, bahmniObservations);
+  }
 
   _isNewVoidedObs(obs) {
     return !obs.getUuid() && obs.isVoided();

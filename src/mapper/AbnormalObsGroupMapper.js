@@ -1,7 +1,13 @@
 import constants from 'src/constants';
 import find from 'lodash/find';
+import { createObsFromControl } from 'src/helpers/Obs';
+
 
 export class AbnormalObsGroupMapper {
+  getInitialObject(formUuid, control, bahmniObservations) {
+    return createObsFromControl(formUuid, control, bahmniObservations);
+  }
+
   setValue(obsGroup, obs, errors) {
     let updatedObsGroup = obsGroup.addGroupMember(obs);
     const abnormalChildObs = updatedObsGroup.getAbnormalChildObs();
