@@ -61,12 +61,16 @@ describe('Concept', () => {
   it('should retrieve abnormal set member', () => {
     const concept = new Concept(abnormalConcept);
     const abnormalSetMember = concept.getAbnormalSetMember();
-    expect(abnormalSetMember).to.be.eql({
+    expect(abnormalSetMember).to.deep.eql({
       uuid: 'c36c7c98-3f10-11e4-adec-0800271c1b75',
       name: 'Pulse Abnormal',
       datatype: 'Boolean',
-      set: undefined,
-      setMembers: undefined,
+      units: undefined,
+      hiNormal: undefined,
+      lowNormal: undefined,
+      hiAbsolute: undefined,
+      lowAbsolute: undefined,
+      answers: undefined,
       properties: {
         allowDecimal: null,
       },
@@ -87,8 +91,12 @@ describe('Concept', () => {
       name: 'Pulse',
       uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
       datatype: 'Numeric',
-      set: undefined,
-      setMembers: undefined,
+      units: undefined,
+      hiNormal: undefined,
+      lowNormal: undefined,
+      hiAbsolute: undefined,
+      lowAbsolute: undefined,
+      answers: undefined,
       properties: {
         allowDecimal: true,
       },
@@ -109,8 +117,12 @@ describe('Concept', () => {
       name: 'Pulse',
       uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
       datatype: 'Numeric',
-      set: undefined,
-      setMembers: undefined,
+      units: concept.units,
+      hiNormal: concept.hiNormal,
+      lowNormal: concept.lowNormal,
+      hiAbsolute: concept.hiAbsolute,
+      lowAbsolute: concept.lowAbsolute,
+      answers: concept.answers,
       properties: {
         allowDecimal: true,
       },
@@ -120,8 +132,12 @@ describe('Concept', () => {
       uuid: 'c36c7c98-3f10-11e4-adec-0800271c1b75',
       name: 'Pulse Abnormal',
       datatype: 'Boolean',
-      set: undefined,
-      setMembers: undefined,
+      units: concept.units,
+      hiNormal: concept.hiNormal,
+      lowNormal: concept.lowNormal,
+      hiAbsolute: concept.hiAbsolute,
+      lowAbsolute: concept.lowAbsolute,
+      answers: concept.answers,
       properties: {
         allowDecimal: null,
       },
