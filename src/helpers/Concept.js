@@ -51,19 +51,18 @@ export class Concept {
         set: concept.set,
         setMembers: this._getSetMembers(concept),
       };
-    } else {
-      return {
-        units: concept.units,
-        hiNormal: concept.hiNormal,
-        lowNormal: concept.lowNormal,
-        hiAbsolute: concept.hiAbsolute,
-        lowAbsolute: concept.lowAbsolute,
-        answers: concept.answers,
-        properties: {
-          allowDecimal: concept.allowDecimal,
-        },
-      }
     }
+    return {
+      units: concept.units,
+      hiNormal: concept.hiNormal,
+      lowNormal: concept.lowNormal,
+      hiAbsolute: concept.hiAbsolute,
+      lowAbsolute: concept.lowAbsolute,
+      answers: concept.answers,
+      properties: {
+        allowDecimal: concept.allowDecimal,
+      },
+    };
   }
 
 }

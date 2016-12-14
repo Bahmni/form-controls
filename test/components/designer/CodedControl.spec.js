@@ -29,7 +29,9 @@ describe('Coded Control Designer', () => {
         name: 'Pulse',
         datatype: 'Coded',
         answers: [{
-          display: 'answer1',
+          name: {
+            display: 'answer1',
+          },
           uuid: 'uuid',
         }],
       },

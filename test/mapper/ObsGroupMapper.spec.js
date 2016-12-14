@@ -14,6 +14,7 @@ describe('ObsGroupMapper', () => {
     value: undefined,
     formNamespace: 'formUuid/5',
     uuid: 'booleanUuid',
+    voided: true,
   });
   const numericObs = new Obs({ concept: {
     name: 'Pulse',

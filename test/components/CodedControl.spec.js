@@ -13,8 +13,8 @@ describe('CodedControl', () => {
   const DummyControl = () => <input />;
 
   const options = [
-    { display: 'Answer1', uuid: 'answer1uuid' },
-    { display: 'Answer2', uuid: 'answer2uuid' },
+    { name: { display: 'Answer1' }, uuid: 'answer1uuid' },
+    { name: { display: 'Answer2' }, uuid: 'answer2uuid' },
   ];
 
   let onChangeSpy;
@@ -72,6 +72,7 @@ describe('CodedControl', () => {
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
     expect(wrapper.find('DummyControl')).to.have.prop('value').
         to.deep.eql({ name: 'Answer1', value: 'answer1uuid' });
+
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(
       [{ name: 'Answer1', value: 'answer1uuid' }, { name: 'Answer2', value: 'answer2uuid' }]);
   });

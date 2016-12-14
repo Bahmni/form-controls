@@ -51,7 +51,6 @@ describe('ObsGroupControlDesigner', () => {
         uuid: 'someUuid',
         set: true,
         setMembers: [],
-        properties: { allowDecimal: false },
       },
       label: {
         type: 'label',
