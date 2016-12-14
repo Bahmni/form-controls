@@ -1,4 +1,3 @@
-
 export class Concept {
   constructor(concept) {
     this.concept = concept;
@@ -32,16 +31,39 @@ export class Concept {
   }
 
   _getConcept(concept) {
-    return {
-      name: concept.name.name,
+    return Object.assign({}, {
+      name: `${concept.name.name}${this.getUnits(concept)}`,
       uuid: concept.uuid,
       datatype: concept.datatype.name,
-      set: concept.set,
-      setMembers: this._getSetMembers(concept),
-      properties: {
-        allowDecimal: concept.allowDecimal,
-      },
-    };
+    }, this._getConceptProperties(concept));
+  }
+
+  getUnits(concept) {
+    if (concept.units) {
+      return `(${concept.units})`;
+    }
+    return '';
+  }
+
+  _getConceptProperties(concept) {
+    if (concept.set) {
+      return {
+        set: concept.set,
+        setMembers: this._getSetMembers(concept),
+      };
+    } else {
+      return {
+        units: concept.units,
+        hiNormal: concept.hiNormal,
+        lowNormal: concept.lowNormal,
+        hiAbsolute: concept.hiAbsolute,
+        lowAbsolute: concept.lowAbsolute,
+        answers: concept.answers,
+        properties: {
+          allowDecimal: concept.allowDecimal,
+        },
+      }
+    }
   }
 
 }
