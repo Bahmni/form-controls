@@ -43,7 +43,7 @@ describe('ObsGroupControlDesigner', () => {
     };
 
     const expectedMetadata = {
-      id: '1',
+      id: 'someId',
       type: 'obsGroupControl',
       concept: {
         name: 'someName',
@@ -154,9 +154,9 @@ describe('ObsGroupControlDesigner', () => {
       componentStore.deRegisterDesignerComponent('text'); // eslint-disable-line no-undef
     });
 
-    it('should render a fieldset with the appropriate legend', () => {
+    it('should render a fieldset with the appropriate label', () => {
       expect(wrapper).to.have.descendants('fieldset');
-      expect(wrapper.find('legend')).to.have.text('dummyPulse');
+      expect(wrapper.find('LabelDesigner').prop('metadata').value).to.deep.eql('dummyPulse');
     });
 
     it('should render a grid with appropriate props', () => {

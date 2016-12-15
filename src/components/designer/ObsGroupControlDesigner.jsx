@@ -4,6 +4,7 @@ import { ObsGroupMapper } from '../../mapper/ObsGroupMapper';
 import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 import { Concept } from '../../helpers/Concept';
 import { Metadata } from '../../helpers/Metadata';
+import { LabelDesigner } from 'components/designer/Label.jsx';
 
 export class ObsGroupControlDesigner extends Component {
 
@@ -12,12 +13,14 @@ export class ObsGroupControlDesigner extends Component {
     this.metadata = props.metadata;
     this.mapper = new ObsGroupMapper();
     this.storeGridRef = this.storeGridRef.bind(this);
+    this.storeLabelRef = this.storeLabelRef.bind(this);
   }
 
   getJsonDefinition() {
     if (!this.gridRef) return undefined;
     const controls = this.gridRef.getControls();
-    return Object.assign({}, this.props.metadata, { controls });
+    const labelJsonDefinition = this.labelControl && this.labelControl.getJsonDefinition();
+    return Object.assign({}, this.props.metadata, { controls }, { label: labelJsonDefinition });
   }
 
   storeGridRef(ref) {
@@ -25,6 +28,23 @@ export class ObsGroupControlDesigner extends Component {
       this.gridRef = ref;
     }
   }
+
+  storeLabelRef(ref) {
+    this.labelControl = ref;
+  }
+
+  displayLabel() {
+    const { metadata, metadata: { label } } = this.props;
+    const labelMetadata = label || { type: 'label', value: metadata.concept.name };
+    return (
+      <LabelDesigner
+        metadata={ labelMetadata }
+        onSelect={ (event) => this.props.onSelect(event, metadata) }
+        ref={ this.storeLabelRef }
+      />
+    );
+  }
+
 
   render() {
     const { metadata, metadata: { concept } } = this.props;
@@ -34,7 +54,7 @@ export class ObsGroupControlDesigner extends Component {
           className="form-builder-fieldset"
           onClick={(event) => this.props.onSelect(event, metadata)}
         >
-          <legend>{concept.name}</legend>
+          {this.displayLabel()}
           <div className="obsGroup-controls">
             <Grid
               controls={ metadata.controls }
@@ -74,7 +94,7 @@ ObsGroupControlDesigner.injectConceptToMetadata = (metadata, concept, idGenerato
   const conceptSet = new Concept(concept);
   const location = metadata.properties && metadata.properties.location;
   return new Metadata().getMetadataForConcept(conceptSet.getConcept(), idGenerator,
-    'obsGroupControl', 'obsControl', location);
+    'obsGroupControl', 'obsControl', location, metadata.id);
 };
 
 const descriptor = {

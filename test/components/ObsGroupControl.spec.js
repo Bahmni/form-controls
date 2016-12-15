@@ -92,7 +92,7 @@ describe('ObsGroupControl', () => {
           validate={false}
         />);
 
-      expect(wrapper.find('legend').text()).to.eql(obsGroupConcept.name);
+      expect(wrapper.find('legend').text()).to.eql(metadata.label.value);
       expect(wrapper).to.have.exactly(3).descendants('DummyControl');
     });
 

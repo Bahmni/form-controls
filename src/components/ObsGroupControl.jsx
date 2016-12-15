@@ -35,13 +35,13 @@ export class ObsGroupControl extends Component {
   }
 
   render() {
-    const { formUuid, metadata: { concept }, validate } = this.props;
+    const { formUuid, metadata: { label }, validate } = this.props;
     const childProps = { formUuid, validate, onValueChanged: this.onChange };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const records = this.state.data.getRecords();
     return (
         <fieldset className="form-builder-fieldset">
-          <legend>{concept.name}</legend>
+          <legend>{label.value}</legend>
           <div className="obsGroup-controls">
             {displayRowControls(groupedRowControls, records, childProps)}
           </div>

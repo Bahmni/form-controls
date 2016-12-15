@@ -3,7 +3,7 @@ import ComponentStore from 'src/helpers/componentStore';
 
 export class Metadata {
   getMetadataForConcept(concept, idGenerator, type = 'obsGroupControl',
-                        childType = 'obsControl', loc = { row: 0, column: 0 }) {
+                        childType = 'obsControl', loc = { row: 0, column: 0 }, id) {
     let controls = undefined;
     if (concept.set) {
       let row = 0;
@@ -24,7 +24,7 @@ export class Metadata {
     metadata.properties = Object.assign({}, metadata.properties, properties);
 
     return Object.assign({}, metadata,
-      { id: String(idGenerator.getId()) },
+      { id: id || String(idGenerator.getId()) },
       { concept },
       { controls },
       { label: Object.assign({}, metadata.label, { value: concept.name }) },
