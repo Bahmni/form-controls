@@ -70,6 +70,7 @@ export class NumericBox extends Component {
   }
 
   render() {
+    const { lowNormal, hiNormal } = this.props;
     return (
       <div>
         <input
@@ -78,7 +79,7 @@ export class NumericBox extends Component {
           ref={(elem) => { this.input = elem; }}
           type="number"
         />
-        <label>{NumericBoxDesigner.getRange(this.props.lowNormal, this.props.hiNormal)}</label>
+        <label>{NumericBoxDesigner.getRange(lowNormal, hiNormal)}</label>
       </div>
     );
   }

@@ -42,14 +42,18 @@ describe('NumericBoxDesigner', () => {
         name: 'Pulse',
         uuid: 'someUuid',
       },
-      hiNormal,
-      lowNormal,
       displayType: 'numeric',
       type: 'obsControl',
       id: 'someId',
       properties: {},
     };
-    const numericBox = shallow(<NumericBoxDesigner metadata={metadata} />);
+    const numericBox = shallow(
+      <NumericBoxDesigner
+        hiNormal={hiNormal}
+        lowNormal={lowNormal}
+        metadata={metadata}
+      />
+    );
     expect(numericBox.find('label')).to.have.text(`(${lowNormal}-${hiNormal})`);
   });
 

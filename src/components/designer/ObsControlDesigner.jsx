@@ -40,12 +40,12 @@ export class ObsControlDesigner extends Component {
   }
 
   _numericContext(metadata) {
+    const { concept } = metadata;
     return {
-      units: metadata.units,
-      hiNormal: metadata.hiNormal,
-      lowNormal: metadata.lowNormal,
-      hiAbsolute: metadata.hiAbsolute,
-      lowAbsolute: metadata.lowAbsolute,
+      hiNormal: concept.hiNormal,
+      lowNormal: concept.lowNormal,
+      hiAbsolute: concept.hiAbsolute,
+      lowAbsolute: concept.lowAbsolute,
     };
   }
 

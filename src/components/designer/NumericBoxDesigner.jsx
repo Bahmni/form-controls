@@ -7,23 +7,22 @@ export class NumericBoxDesigner extends Component {
   }
 
   render() {
-    const metadata = this.props.metadata;
+    const { lowNormal, hiNormal } = this.props;
     return (
       <div>
         <input type="number" />
-        <label>{NumericBoxDesigner.getRange(metadata.lowNormal, metadata.hiNormal)}</label>
+        <label>{NumericBoxDesigner.getRange(lowNormal, hiNormal)}</label>
       </div>
     );
   }
 }
 
 NumericBoxDesigner.propTypes = {
+  hiAbsolute: PropTypes.number,
+  hiNormal: PropTypes.number,
+  lowAbsolute: PropTypes.number,
+  lowNormal: PropTypes.number,
   metadata: PropTypes.shape({
-    hiNormal: PropTypes.number,
-    lowNormal: PropTypes.number,
-    hiAbsolute: PropTypes.number,
-    lowAbsolute: PropTypes.number,
-    units: PropTypes.string,
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     properties: PropTypes.object.isRequired,
