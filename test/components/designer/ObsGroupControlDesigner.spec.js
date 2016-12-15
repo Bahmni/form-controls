@@ -56,7 +56,10 @@ describe('ObsGroupControlDesigner', () => {
         type: 'label',
         value: someConcept.name.name,
       },
-      properties: { location: { row: 0, column: 0 } },
+      properties: {
+        abnormal: false,
+        location: { row: 0, column: 0 },
+      },
       controls: [],
     };
     const metadataWithConcept = ObsGroupControlDesigner.injectConceptToMetadata(
