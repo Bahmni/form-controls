@@ -89,10 +89,10 @@ describe('NumericBox', () => {
   });
 
   it('should throw warning when the value is not in correct range', () => {
-    const concept = { hiNormal: '50', lowNormal: '20' };
+    const numericContext = { hiNormal: 50, lowNormal: 20 };
     const wrapper = mount(
         <NumericBox
-          concept={concept}
+          {...numericContext}
           onChange={onChangeSpy}
           validate={false}
           validations={validations}
@@ -108,10 +108,10 @@ describe('NumericBox', () => {
 
   it('should throw error when the value is not in correct range and the ' +
     'values for hiAbsolute and lowAbsolute is provided', () => {
-    const concept = { hiAbsolute: '50', lowAbsolute: '20' };
+    const numericContext = { hiAbsolute: 50, lowAbsolute: 20 };
     const wrapper = mount(
       <NumericBox
-        concept={concept}
+        {...numericContext}
         onChange={onChangeSpy}
         validate={false}
         validations={validations}

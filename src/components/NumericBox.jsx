@@ -59,15 +59,17 @@ export class NumericBox extends Component {
 
   _getErrors(value) {
     const validations = this.defaultValidations.concat(this.props.validations);
-    const concept = this.props.concept || {};
-    const params = { minNormal: concept.lowNormal, maxNormal: concept.hiNormal,
-      minAbsolute: concept.lowAbsolute, maxAbsolute: concept.hiAbsolute };
+    const params = {
+      minNormal: this.props.lowNormal,
+      maxNormal: this.props.hiNormal,
+      minAbsolute: this.props.lowAbsolute,
+      maxAbsolute: this.props.hiAbsolute,
+    };
     const controlDetails = { validations, value, params };
     return Validator.getErrors(controlDetails);
   }
 
   render() {
-    const concept = this.props.concept || {};
     return (
       <div>
         <input
@@ -76,19 +78,17 @@ export class NumericBox extends Component {
           ref={(elem) => { this.input = elem; }}
           type="number"
         />
-        <label>{NumericBoxDesigner.getRange(concept.lowNormal, concept.hiNormal)}</label>
+        <label>{NumericBoxDesigner.getRange(this.props.lowNormal, this.props.hiNormal)}</label>
       </div>
     );
   }
 }
 
 NumericBox.propTypes = {
-  concept: PropTypes.shape({
-    hiNormal: PropTypes.string,
-    lowNormal: PropTypes.string,
-    hiAbsolute: PropTypes.string,
-    lowAbsolute: PropTypes.string,
-  }).isRequired,
+  hiAbsolute: PropTypes.number,
+  hiNormal: PropTypes.number,
+  lowAbsolute: PropTypes.number,
+  lowNormal: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

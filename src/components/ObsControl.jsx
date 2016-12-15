@@ -44,8 +44,18 @@ export class ObsControl extends Component {
       validate,
       validations,
       value: mapper.getValue(this.state.obs),
-      concept,
+      ...this._numericContext(metadata),
     });
+  }
+
+  _numericContext(metadata) {
+    return {
+      units: metadata.units,
+      hiNormal: metadata.hiNormal,
+      lowNormal: metadata.lowNormal,
+      hiAbsolute: metadata.hiAbsolute,
+      lowAbsolute: metadata.lowAbsolute,
+    };
   }
 
   displayLabel() {

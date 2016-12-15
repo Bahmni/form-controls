@@ -35,8 +35,18 @@ export class ObsControlDesigner extends Component {
     return React.createElement(designerComponent.control, {
       metadata,
       ref: this.storeChildRef,
-
+      ...this._numericContext(metadata),
     });
+  }
+
+  _numericContext(metadata) {
+    return {
+      units: metadata.units,
+      hiNormal: metadata.hiNormal,
+      lowNormal: metadata.lowNormal,
+      hiAbsolute: metadata.hiAbsolute,
+      lowAbsolute: metadata.lowAbsolute,
+    };
   }
 
   displayLabel() {
@@ -116,11 +126,6 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
     name: concept.name.name,
     uuid: concept.uuid,
     datatype: concept.datatype.name,
-    units: concept.units,
-    hiNormal: concept.hiNormal,
-    lowNormal: concept.lowNormal,
-    hiAbsolute: concept.hiAbsolute,
-    lowAbsolute: concept.lowAbsolute,
     answers: concept.answers,
     properties: {
       allowDecimal: concept.allowDecimal,
@@ -131,7 +136,20 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
     value: `${concept.name.name}${ObsControlDesigner.getUnits(concept)}`,
   };
 
-  return Object.assign({}, metadata, { concept: filteredConcepts }, { label });
+  const numericContext = {
+    units: concept.units,
+    hiNormal: concept.hiNormal,
+    lowNormal: concept.lowNormal,
+    hiAbsolute: concept.hiAbsolute,
+    lowAbsolute: concept.lowAbsolute,
+  };
+  return Object.assign(
+    {},
+    metadata,
+    { concept: filteredConcepts },
+    { label },
+    { ...numericContext }
+  );
 };
 
 
