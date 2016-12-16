@@ -122,33 +122,30 @@ ObsControlDesigner.propTypes = {
 };
 
 ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
-  const filteredConcepts = {
+  const filteredConcept = {
     name: concept.name.name,
     uuid: concept.uuid,
     datatype: concept.datatype.name,
     answers: concept.answers,
+    units: concept.units,
+    hiNormal: concept.hiNormal,
+    lowNormal: concept.lowNormal,
+    hiAbsolute: concept.hiAbsolute,
+    lowAbsolute: concept.lowAbsolute,
     properties: {
       allowDecimal: concept.allowDecimal,
     },
   };
   const label = {
     type: 'label',
-    value: `${concept.name.name}${ObsControlDesigner.getUnits(concept)}`,
+    value: `${filteredConcept.name}${ObsControlDesigner.getUnits(filteredConcept)}`,
   };
 
-  const numericContext = {
-    units: concept.units,
-    hiNormal: concept.hiNormal,
-    lowNormal: concept.lowNormal,
-    hiAbsolute: concept.hiAbsolute,
-    lowAbsolute: concept.lowAbsolute,
-  };
   return Object.assign(
     {},
     metadata,
-    { concept: filteredConcepts },
-    { label },
-    { ...numericContext }
+    { concept: filteredConcept },
+    { label }
   );
 };
 
