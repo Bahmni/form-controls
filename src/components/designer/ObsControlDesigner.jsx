@@ -3,6 +3,7 @@ import { LabelDesigner } from 'components/designer/Label.jsx';
 import { CommentDesigner } from 'components/designer/Comment.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
+import isEmpty from 'lodash/isEmpty';
 
 export class ObsControlDesigner extends Component {
 
@@ -74,6 +75,20 @@ export class ObsControlDesigner extends Component {
     return null;
   }
 
+  showHelperText() {
+    const { concept } = this.props.metadata;
+    const description = concept.description && !isEmpty(concept.description) ? concept.description[0].display : undefined;
+    if (description) {
+      return (
+        <div>
+          <div>Hello</div>
+          <span class="hint">{description}</span>
+        </div>
+      );
+    }
+    return null;
+  }
+
   showComment() {
     const { properties } = this.props.metadata;
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
@@ -94,6 +109,7 @@ export class ObsControlDesigner extends Component {
           <div className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
+            {this.showHelperText()}
           </div>
           {this.displayObsControl(designerComponent)}
           {this.showComment()}
@@ -125,6 +141,7 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
   const filteredConcept = {
     name: concept.name.name,
     uuid: concept.uuid,
+    description: concept.descriptions,
     datatype: concept.datatype.name,
     answers: concept.answers,
     units: concept.units,
