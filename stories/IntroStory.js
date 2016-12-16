@@ -3,7 +3,7 @@ import { storiesOf } from '@kadira/storybook';
 import StoryWrapper from './StoryWrapper';
 import { Container } from 'src/components/Container.jsx';
 import { ObsControl } from 'src/components/ObsControl.jsx';
-import { ObsMapper } from '/src/mapper/ObsMapper';
+import { ObsMapper } from 'src/mapper/ObsMapper';
 import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
 import '../node_modules/react-select/dist/react-select.css';
