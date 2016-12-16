@@ -5,6 +5,7 @@ import find from 'lodash/find';
 import { Comment } from 'components/Comment.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
+import isEmpty from 'lodash/isEmpty';
 
 export class ObsControl extends Component {
 
@@ -78,6 +79,19 @@ export class ObsControl extends Component {
     return null;
   }
 
+  showHelperText() {
+    const { description } = this.props.metadata.concept;
+    if (description) {
+      return (
+        <div>
+          <div>Hello</div>
+          <span class="hint">{description}</span>
+        </div>
+      );
+    }
+    return null;
+  }
+
   showComment() {
     const { mapper, metadata: { properties } } = this.props;
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
@@ -99,6 +113,7 @@ export class ObsControl extends Component {
           <div className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
+            {this.showHelperText()}
           </div>
           {this.displayObsControl(registeredComponent)}
           {this.showComment()}
