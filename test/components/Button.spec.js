@@ -9,7 +9,7 @@ import constants from 'src/constants';
 chai.use(chaiEnzyme());
 
 describe('Button Component', () => {
-  const value = { name: 'yes', value: true };
+  const value = { name: 'Yes', value: true };
   const options = [
     { name: 'Yes', value: true },
     { name: 'No', value: false },
@@ -66,7 +66,7 @@ describe('Button Component', () => {
     wrapper.find('button').at(1).simulate('click');
     expect(wrapper.find('button').at(0)).to.have.className('fl');
     expect(wrapper.find('button').at(1)).to.have.className('fl active');
-    sinon.assert.calledOnce(valueChangeSpy.withArgs(false, []));
+    sinon.assert.calledOnce(valueChangeSpy.withArgs(options[1], []));
   });
 
   it('should change the value to undefined if double clicked', () => {
@@ -74,7 +74,7 @@ describe('Button Component', () => {
       <Button onValueChange={valueChangeSpy} options={options} validate={false} validations={[]} />
     );
     wrapper.find('button').at(1).simulate('click');
-    sinon.assert.calledOnce(valueChangeSpy.withArgs(false, []));
+    sinon.assert.calledOnce(valueChangeSpy.withArgs(options[1], []));
 
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(valueChangeSpy.withArgs(undefined, []));
@@ -110,7 +110,7 @@ describe('Button Component', () => {
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
     expect(wrapper.find('button').at(1)).to.have.className('fl');
 
-    wrapper.setProps({ value: { name: 'yes', value: true } });
+    wrapper.setProps({ value: { name: 'Yes', value: true } });
 
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
     expect(wrapper.find('button').at(1)).to.have.className('fl');
@@ -133,5 +133,29 @@ describe('Button Component', () => {
     wrapper.setProps({ validate: true, value: undefined });
     expect(wrapper).to.have.className('form-control-buttons');
     expect(wrapper).to.have.className('form-builder-error');
+  });
+
+  it('should reRender on change of value', () => {
+    const wrapper = shallow(
+      <Button
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+        value={value}
+      />
+    );
+    expect(wrapper.find('button').at(0)).to.have.className('fl active');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
+
+    wrapper.setProps({ value: undefined });
+
+    expect(wrapper.find('button').at(0)).to.have.className('fl');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
+
+    wrapper.setProps({ value: { name: 'No', value: false } });
+
+    expect(wrapper.find('button').at(0)).to.have.className('fl');
+    expect(wrapper.find('button').at(1)).to.have.className('fl active');
   });
 });

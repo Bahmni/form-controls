@@ -106,7 +106,6 @@ const form = {
       },
     },
     {
-      displayType: 'autoComplete',
       type: 'obsControl',
       label: {
         type: 'label',
@@ -115,7 +114,7 @@ const form = {
       properties: {
         mandatory: true,
         notes: false,
-        autoComplete: true,
+        autoComplete: false,
         location: {
           column: 0,
           row: 0,
@@ -129,12 +128,12 @@ const form = {
         answers: [
           {
             display: 'Answer1',
-            name: { name: 'Answer1' },
+            name: 'Answer1',
             uuid: 'answer1uuid',
           },
           {
             display: 'Answer2',
-            name: { name: 'Answer2' },
+            name: 'Answer2',
             uuid: 'answer2uuid',
           },
         ],
@@ -171,7 +170,6 @@ storiesOf('ObsControl', module)
   .add('TextBox Obs Control', () => (
       <StoryWrapper json={form.controls[1]}>
         <ObsControl
-          errors={[]}
           formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
           mapper = { new ObsMapper() }
           metadata={form.controls[1]}
@@ -186,7 +184,6 @@ storiesOf('ObsControl', module)
   .add('Boolean Obs Control', () => (
       <StoryWrapper json={form.controls[2]}>
     <ObsControl
-      errors={[]}
       formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
       mapper = { new ObsMapper() }
       metadata={form.controls[2]}
@@ -201,8 +198,6 @@ storiesOf('ObsControl', module)
   .add('Coded Obs Control', () => (
       <StoryWrapper json={form.controls[3]}>
           <ObsControl
-            errors={[]}
-            formUuid={'fbc5d897-6404-4cc1-90a3-47fde7a98026'}
             mapper = { new ObsMapper() }
             metadata={form.controls[3]}
             obs={new Obs({ concept: form.controls[3].concept, value: {

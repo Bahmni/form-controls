@@ -32,12 +32,12 @@ describe('AutoComplete', () => {
     });
 
     it('should render asynchronous AutoComplete with default value', () => {
-      const wrapper = mount(<AutoComplete value={concept} />);
+      const wrapper = mount(<AutoComplete value={concept[0]} />);
       expect(wrapper.find('Select').props().value).to.be.eql(concept[0]);
     });
 
     it('should return the default value of the AutoComplete if there is no change', () => {
-      const wrapper = mount(<AutoComplete value={concept} />);
+      const wrapper = mount(<AutoComplete value={concept[0]} />);
       expect(wrapper.find('Select').props().value).to.be.eql(concept[0]);
 
       const instance = wrapper.instance();
@@ -67,7 +67,7 @@ describe('AutoComplete', () => {
         <AutoComplete
           asynchronous={false}
           options={options}
-          value={[options[0]]}
+          value={options[0]}
         />);
       expect(wrapper.find('Select').props().options).to.be.eql([]);
       expect(wrapper.find('Select').props().value).to.be.eql(options[0]);
@@ -106,9 +106,9 @@ describe('AutoComplete', () => {
         <AutoComplete
           asynchronous={false}
           options={options}
-          value={[options[0]]}
+          value={options[0]}
         />);
-      wrapper.setProps({ value: [options[1]] });
+      wrapper.setProps({ value: options[1] });
       const instance = wrapper.instance();
       expect(instance.getValue()).to.eql([options[1]]);
     });
@@ -119,7 +119,7 @@ describe('AutoComplete', () => {
           asynchronous={false}
           disabled
           options={options}
-          value={[options[0]]}
+          value={options[0]}
         />);
       expect(wrapper.find('Select').props().disabled).to.be.eql(true);
     });
@@ -133,7 +133,7 @@ describe('AutoComplete', () => {
           onValueChange={onValueChange}
           options={options}
           validations={validations}
-          value={[options[0]]}
+          value={options[0]}
         />);
 
       const onChange = wrapper.find('Select').props().onChange;
@@ -148,7 +148,7 @@ describe('AutoComplete', () => {
           asynchronous={false}
           options={options}
           validations={[]}
-          value={[options[0]]}
+          value={options[0]}
         />);
       const instance = wrapper.instance();
       expect(instance.state.options.length).to.eql(0);

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import find from 'lodash/find';
-import get from 'lodash/get';
+import each from 'lodash/each';
 
 export class CodedControl extends Component {
   constructor(props) {
@@ -11,13 +11,25 @@ export class CodedControl extends Component {
   }
 
   onValueChange(value, errors) {
-    const updatedValue = get(value, 'value') || value;
-    const valueObj = this._getValueObject(updatedValue);
-    this.props.onChange(valueObj, errors);
+    const updatedValue = this._getUpdatedValue(value);
+    this.props.onChange(updatedValue, errors);
   }
 
-  _getValueObject(value) {
-    return find(this.props.options, { uuid: value });
+  _getUpdatedValue(value) {
+    const multiSelect = this.props.properties.multiSelect;
+    if (value) {
+      const updatedValue = multiSelect ? value : [value];
+      return this._getOptionsFromValues(updatedValue, multiSelect);
+    }
+    return undefined;
+  }
+
+  _getOptionsFromValues(values, multiSelect) {
+    const options = [];
+    each(values, (value) => {
+      options.push(find(this.props.options, ['uuid', value.value]));
+    });
+    return multiSelect ? options : options[0];
   }
 
   _getOptionsRepresentation(options) {
@@ -28,21 +40,29 @@ export class CodedControl extends Component {
     return optionsRepresentation;
   }
 
+  _getValue(value, multiSelect) {
+    if (value) {
+      const updatedValue = multiSelect ? value : [value];
+      const options = this._getOptionsRepresentation(updatedValue, multiSelect);
+      return multiSelect ? options : options[0];
+    }
+    return undefined;
+  }
+
   _getChildProps(displayType) {
-    const { validate, validations } = this.props;
-    const initialValue = this.props.value ?
-      this._getOptionsRepresentation([this.props.value]) : [];
+    const { value, validate, validations, properties: { multiSelect } } = this.props;
     const props = {
-      value: initialValue[0],
+      value: this._getValue(value, multiSelect),
       onValueChange: this.onValueChange,
-      options: this._getOptionsRepresentation(this.props.options),
+      options: this._getOptionsRepresentation(this.props.options, multiSelect),
       validate,
       validations,
     };
     if (displayType === 'autoComplete') {
       props.asynchronous = false;
       props.labelKey = 'name';
-      props.value = initialValue;
+      props.valueKey = 'value';
+      props.multi = multiSelect;
     }
     return props;
   }

@@ -36,7 +36,7 @@ export class Container extends Component {
 
   /* eslint-disable no-param-reassign */
   _getObservations(observations) {
-    return filter(observations, (obs) => {
+    return filter([].concat(...observations), (obs) => {
       if (!isEmpty(obs.groupMembers)) {
         obs.groupMembers = this._getObservations(obs.groupMembers);
       }

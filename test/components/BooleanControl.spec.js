@@ -72,7 +72,7 @@ describe('BooleanControl', () => {
         validations={[]}
       />);
     const instance = wrapper.instance();
-    instance.onValueChange(true, []);
+    instance.onValueChange(options[0], []);
     sinon.assert.calledOnce(onChangeSpy.withArgs(true, []));
   });
 
@@ -106,5 +106,18 @@ describe('BooleanControl', () => {
     wrapper.setProps({ value: true });
     expect(wrapper.find('DummyControl')).to.have.prop('value')
       .to.deep.eql({ name: 'Yes', value: true });
+  });
+
+  it('should return undefined if no value is selected', () => {
+    const wrapper = shallow(
+      <BooleanControl
+        onChange={onChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+      />);
+    const instance = wrapper.instance();
+    instance.onValueChange(undefined, []);
+    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
   });
 });

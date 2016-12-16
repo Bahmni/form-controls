@@ -15,6 +15,17 @@ describe('CodedControl', () => {
   const options = [
     { name: { display: 'Answer1' }, uuid: 'answer1uuid' },
     { name: { display: 'Answer2' }, uuid: 'answer2uuid' },
+    { name: { display: 'Answer3' }, uuid: 'answer3uuid' },
+    { name: { display: 'Answer4' }, uuid: 'answer4uuid' },
+    { name: { display: 'Answer5' }, uuid: 'answer5uuid' },
+  ];
+
+  const expectedOptions = [
+    { name: 'Answer1', value: 'answer1uuid' },
+    { name: 'Answer2', value: 'answer2uuid' },
+    { name: 'Answer3', value: 'answer3uuid' },
+    { name: 'Answer4', value: 'answer4uuid' },
+    { name: 'Answer5', value: 'answer5uuid' },
   ];
 
   let onChangeSpy;
@@ -49,8 +60,7 @@ describe('CodedControl', () => {
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
-    expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(
-      [{ name: 'Answer1', value: 'answer1uuid' }, { name: 'Answer2', value: 'answer2uuid' }]);
+    expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(expectedOptions);
   });
 
   it('should render Dummy Control with default value', () => {
@@ -72,9 +82,6 @@ describe('CodedControl', () => {
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
     expect(wrapper.find('DummyControl')).to.have.prop('value').
         to.deep.eql({ name: 'Answer1', value: 'answer1uuid' });
-
-    expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(
-      [{ name: 'Answer1', value: 'answer1uuid' }, { name: 'Answer2', value: 'answer2uuid' }]);
   });
 
 
@@ -93,7 +100,7 @@ describe('CodedControl', () => {
     ComponentStore.registerComponent('button', DummyControl);
   });
 
-  it('should return the boolean control value', () => {
+  it('should return the coded button control value', () => {
     const wrapper = shallow(
       <CodedControl
         onChange={onChangeSpy}
@@ -103,7 +110,7 @@ describe('CodedControl', () => {
         validations={[]}
       />);
     const instance = wrapper.instance();
-    instance.onValueChange('answer1uuid', []);
+    instance.onValueChange({ value: 'answer1uuid' }, []);
     sinon.assert.calledOnce(onChangeSpy.withArgs(options[0], []));
   });
 
@@ -120,7 +127,7 @@ describe('CodedControl', () => {
     expect(wrapper.find('DummyControl')).to.have.prop('asynchronous').to.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('labelKey').to.eql('name');
     const instance = wrapper.instance();
-    instance.onValueChange('answer1uuid', []);
+    instance.onValueChange({ value: 'answer1uuid' }, []);
     sinon.assert.calledOnce(onChangeSpy.withArgs(options[0], []));
     ComponentStore.deRegisterComponent('autoComplete');
   });
@@ -153,5 +160,60 @@ describe('CodedControl', () => {
     wrapper.setProps({ validate: true });
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(true);
+  });
+
+  it('should render multiselect coded control with default values', () => {
+    ComponentStore.registerComponent('autoComplete', DummyControl);
+    const wrapper = shallow(
+      <CodedControl
+        onChange={onChangeSpy}
+        options={options}
+        properties={{ autoComplete: true, multiSelect: true }}
+        validate={false}
+        validations={validations}
+        value={[options[0], options[1]]}
+      />
+    );
+
+    expect(wrapper).to.have.exactly(1).descendants('DummyControl');
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(9);
+
+    expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
+    expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
+    expect(wrapper.find('DummyControl')).to.have.prop('value').
+    to.deep.eql([expectedOptions[0], expectedOptions[1]]);
+
+    expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(expectedOptions);
+    ComponentStore.deRegisterComponent('autoComplete');
+  });
+
+  it('should return multiselect values from coded control', () => {
+    ComponentStore.registerComponent('autoComplete', DummyControl);
+    const wrapper = shallow(
+      <CodedControl
+        onChange={onChangeSpy}
+        options={options}
+        properties={{ autoComplete: true, multiSelect: true }}
+        validate={false}
+        validations={[]}
+      />);
+    const instance = wrapper.instance();
+    instance.onValueChange([expectedOptions[0], expectedOptions[2]], []);
+    sinon.assert.calledOnce(onChangeSpy.withArgs([options[0], options[2]], []));
+    ComponentStore.deRegisterComponent('autoComplete');
+  });
+
+  it('should return undefined if no value is selected', () => {
+    const wrapper = shallow(
+      <CodedControl
+        onChange={onChangeSpy}
+        options={options}
+        properties={{}}
+        validate={false}
+        validations={[]}
+      />);
+    const instance = wrapper.instance();
+    instance.onValueChange(undefined, []);
+    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
   });
 });

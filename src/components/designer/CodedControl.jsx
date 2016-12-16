@@ -68,6 +68,11 @@ const descriptor = {
             dataType: 'boolean',
             defaultValue: false,
           },
+          {
+            name: 'multiSelect',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
         ],
       },
     ],

@@ -1,16 +1,11 @@
 import React from 'react';
-import { getFormNamespaceDetails } from 'src/helpers/formNamespace';
 import Row from 'src/components/Row.jsx';
 import groupBy from 'lodash/groupBy';
 import map from 'lodash/map';
 import ComponentStore from 'src/helpers/componentStore';
 
 function getRecordForControl(control, records) {
-  const filteredRecord = records.find((record) => {
-    const { controlId } = getFormNamespaceDetails(record.obs.formNamespace);
-    return controlId === control.id;
-  });
-  return filteredRecord;
+  return records.find((record) => record.control.id === control.id);
 }
 
 function createReactComponent(component, props) {

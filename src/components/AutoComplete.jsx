@@ -14,7 +14,6 @@ export class AutoComplete extends Component {
     super(props);
     this.optionsUrl = props.optionsUrl;
     this.childRef = undefined;
-    this.getValueFromProps = this.getValueFromProps.bind(this);
     this.getValue = this.getValue.bind(this);
     this.getOptions = this.getOptions.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -22,7 +21,7 @@ export class AutoComplete extends Component {
     this.handleFocus = this.handleFocus.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
     this.state = {
-      value: this.getValueFromProps(props),
+      value: get(props, 'value'),
       hasErrors: false,
       options: [],
       noResultsText: '',
@@ -30,7 +29,7 @@ export class AutoComplete extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const value = this.getValueFromProps(nextProps);
+    const value = get(nextProps, 'value');
     const errors = this._getErrors(value);
     const hasErrors = this._hasErrors(errors);
     this.setState({ value, hasErrors });
@@ -67,13 +66,6 @@ export class AutoComplete extends Component {
     }
     this.setState({ noResultsText: 'Type to search' });
     this.setState({ options: [] });
-  }
-
-  getValueFromProps(props) {
-    if (props.multi) {
-      return get(props, 'value');
-    }
-    return get(props, 'value[0]');
   }
 
   getOptions(input) {

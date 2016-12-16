@@ -50,6 +50,7 @@ describe('Row', () => {
   const formUuid = 'someUuid';
 
   const records = controls.map((control) => ({
+    control,
     obs: new Obs({ formNamespace: `${formUuid}/${control.id}` }),
     mapper: new ObsMapper(),
   }));

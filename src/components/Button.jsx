@@ -4,6 +4,7 @@ import map from 'lodash/map';
 import classNames from 'classnames';
 import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
+import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
 
 export class Button extends Component {
@@ -41,7 +42,8 @@ export class Button extends Component {
     const value = this.state.value === valueSelected.value ? undefined : valueSelected.value;
     const errors = this._getErrors(value);
     this.setState({ value, hasErrors: this._hasErrors(errors) });
-    this.props.onValueChange(value, errors);
+    const updatedValue = find(this.props.options, ['value', value]);
+    this.props.onValueChange(updatedValue, errors);
   }
 
   _hasErrors(errors) {

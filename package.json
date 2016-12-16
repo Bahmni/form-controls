@@ -11,7 +11,7 @@
     "test:watch": "karma start --autoWatch=true --singleRun=false",
     "posttest": "eslint --ext .js --ext .jsx ./src ./test",
     "eslintFix": "eslint --ext .js --ext .jsx ./src ./test --fix",
-    "publish": "publish",
+    "publish": "publish || true",
     "ci": "npm run clean && npm run build && npm run publish",
     "storybook": "start-storybook -p 6006",
     "deploy-storybook": "storybook-to-ghpages",
