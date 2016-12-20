@@ -53,6 +53,7 @@ export class Concept {
       };
     }
     return {
+      description: concept.descriptions,
       units: concept.units,
       hiNormal: concept.hiNormal,
       lowNormal: concept.lowNormal,

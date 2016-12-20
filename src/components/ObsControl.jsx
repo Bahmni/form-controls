@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
 import { Label } from 'components/Label.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
@@ -80,12 +81,21 @@ export class ObsControl extends Component {
   }
 
   showHelperText() {
-    const { description } = this.props.metadata.concept;
+    const { concept } = this.props.metadata;
+    const showHintButton = this.state && this.state.showHintButton;
+    const description = concept.description && !isEmpty(concept.description) ?
+      concept.description[0].display : undefined;
     if (description) {
       return (
-        <div>
-          <div>Hello</div>
-          <span class="hint">{description}</span>
+        <div className={classNames('concept-tooltip-wrap',
+           { active: showHintButton === true }) }>
+          <i className="fa fa-question-circle concept-tooltip-trigger"
+            onClick={() => this.setState({ showHintButton: !showHintButton })}
+          ></i>
+          <div className="concept-tooltip-description">
+            <i className="fa fa-caret-down"></i>
+            <span className="details hint">{description}</span>
+          </div>
         </div>
       );
     }

@@ -41,6 +41,7 @@ describe('ObsControlDesigner', () => {
       type: 'obsControl',
       concept: {
         name: 'someName',
+        description: undefined,
         datatype: 'someDatatype',
         uuid: 'someUuid',
         properties: { allowDecimal: false },
@@ -208,6 +209,38 @@ describe('ObsControlDesigner', () => {
       expect(wrapper.find('LabelDesigner')).to.have.prop('onSelect');
       wrapper.find('LabelDesigner').simulate('click');
       sinon.assert.calledOnce(onSelectSpy);
+    });
+  });
+
+  context('when concept has description', () => {
+    const conceptWithDesc = Object.assign({}, concept);
+    conceptWithDesc.description = [{ display: 'concept description' }];
+    const label = {
+      type: 'label',
+      value: concept.name,
+      properties: {},
+    };
+    beforeEach(() => {
+      metadata = {
+        id: '123',
+        type: 'obsControl',
+        concept: conceptWithDesc,
+        label,
+        properties,
+      };
+
+      const textBoxDescriptor = { control: DummyControl };
+      componentStore.registerDesignerComponent('text', textBoxDescriptor); // eslint-disable-line no-undef
+      onSelectSpy = sinon.spy();
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+    });
+
+    after(() => {
+      componentStore.deRegisterDesignerComponent('text'); // eslint-disable-line no-undef
+    });
+
+    it('should show help tooltip if concept description is present', () => {
+      expect(wrapper.find('.concept-tooltip-trigger')).to.have.prop('onClick');
     });
   });
 });

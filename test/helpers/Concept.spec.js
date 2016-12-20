@@ -64,6 +64,7 @@ describe('Concept', () => {
     expect(abnormalSetMember).to.deep.eql({
       uuid: 'c36c7c98-3f10-11e4-adec-0800271c1b75',
       name: 'Pulse Abnormal',
+      description: undefined,
       datatype: 'Boolean',
       units: undefined,
       hiNormal: undefined,
@@ -90,6 +91,7 @@ describe('Concept', () => {
     expect(numericSetMember).to.be.eql({
       name: 'Pulse',
       uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+      description: undefined,
       datatype: 'Numeric',
       units: undefined,
       hiNormal: undefined,
@@ -116,6 +118,7 @@ describe('Concept', () => {
     expect(_concept.setMembers[0]).to.be.eql({
       name: 'Pulse',
       uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+      description: undefined,
       datatype: 'Numeric',
       units: undefined,
       hiNormal: undefined,
@@ -131,6 +134,7 @@ describe('Concept', () => {
     expect(_concept.setMembers[1]).to.be.eql({
       uuid: 'c36c7c98-3f10-11e4-adec-0800271c1b75',
       name: 'Pulse Abnormal',
+      description: undefined,
       datatype: 'Boolean',
       units: undefined,
       hiNormal: undefined,
