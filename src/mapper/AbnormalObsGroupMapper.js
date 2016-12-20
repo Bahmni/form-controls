@@ -39,4 +39,8 @@ export class AbnormalObsGroupMapper {
 
     return updatedObsGroup;
   }
+
+  getObject(obsGroup) {
+    return obsGroup.toJS();
+  }
 }

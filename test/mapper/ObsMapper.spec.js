@@ -2,6 +2,8 @@ import { ObsMapper } from 'src/mapper/ObsMapper';
 import sinon from 'sinon';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
+import { Obs } from 'src/helpers/Obs';
+
 chai.use(chaiEnzyme());
 
 describe('ObsMapper', () => {
@@ -107,5 +109,17 @@ describe('ObsMapper', () => {
     obs.getComment.returns('New Comment');
     const mapper = new ObsMapper();
     expect(mapper.getComment(obs)).to.eql('New Comment');
+  });
+
+  describe('getObject', () => {
+    it('should return final object', () => {
+      const mapper = new ObsMapper();
+      const observation = { value: '72', concept: { name: 'someName' } };
+      const updatedObs = new Obs(observation);
+
+      expect(mapper.getObject(updatedObs).value).to.deep.eql(observation.value);
+      expect(mapper.getObject(updatedObs).concept).to.deep.eql(observation.concept);
+      expect(mapper.getObject(updatedObs).uuid).to.deep.eql(undefined);
+    });
   });
 });

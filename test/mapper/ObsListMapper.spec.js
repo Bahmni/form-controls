@@ -3,6 +3,7 @@ import sinon from 'sinon';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { List } from 'immutable';
+import { ObsList } from 'src/helpers/ObsList';
 
 chai.use(chaiEnzyme());
 
@@ -34,23 +35,23 @@ describe('ObsListMapper', () => {
       expect(mapper.obs).to.eql(undefined);
 
       const initialObject = mapper.getInitialObject(formUuid, control, []);
-      expect(initialObject.size).to.eql(0);
-      expect(mapper.obs.concept).to.eql(concept);
-      expect(mapper.obs.formNamespace).to.eql(formNamespace);
+      expect(initialObject.getObsList().size).to.eql(0);
+      expect(initialObject.getObs().concept).to.eql(concept);
+      expect(initialObject.formNamespace).to.eql(formNamespace);
     });
 
     it('should return initial object with default values', () => {
       const observations = [getObs('uuid1', '72'), getObs('uuid2', 'notes')];
       const initialObject = mapper.getInitialObject(formUuid, control, observations);
-      expect(initialObject.size).to.eql(2);
-      expect(mapper.obs.concept).to.eql(concept);
-      expect(mapper.obs.formNamespace).to.eql(`${formUuid}/${control.id}`);
+      expect(initialObject.getObsList().size).to.eql(2);
+      expect(initialObject.getObs().concept).to.eql(concept);
+      expect(initialObject.formNamespace).to.eql(formNamespace);
     });
   });
 
   context('getValue', () => {
     it('should return undefined if obslist is empty', () => {
-      expect(mapper.getValue(new List())).to.eql(undefined);
+      expect(mapper.getValue(new ObsList())).to.eql(undefined);
     });
 
     it('should return value when obsList having obs without value', () => {
@@ -59,10 +60,10 @@ describe('ObsListMapper', () => {
 
       let obsList = new List();
       obsList = obsList.push(obs);
-      expect(mapper.getValue(obsList)).to.deep.eql(undefined);
+      expect(mapper.getValue(new ObsList({ obsList }))).to.deep.eql(undefined);
 
       obs.getValue.returns(null);
-      expect(mapper.getValue(obsList)).to.deep.eql(undefined);
+      expect(mapper.getValue(new ObsList({ obsList }))).to.deep.eql(undefined);
     });
 
     it('should return value when obsList having obs with value and is voided', () => {
@@ -71,7 +72,7 @@ describe('ObsListMapper', () => {
 
       let obsList = new List();
       obsList = obsList.push(obs);
-      expect(mapper.getValue(obsList)).to.deep.eql(undefined);
+      expect(mapper.getValue(new ObsList({ obsList }))).to.deep.eql(undefined);
     });
 
     it('should return value when obsList having obs with value', () => {
@@ -80,32 +81,31 @@ describe('ObsListMapper', () => {
 
       let obsList = new List();
       obsList = obsList.push(obs);
-      expect(mapper.getValue(obsList)).to.deep.eql([concept]);
+      expect(mapper.getValue(new ObsList({ obsList }))).to.deep.eql([concept]);
     });
   });
 
   context('setValue', () => {
     it('should return empty list when no values are set', () => {
       const obsList = new List();
-      expect(mapper.setValue(obsList, undefined).size).to.eql(0);
+      expect(mapper.setValue(new ObsList({ obsList }), undefined).getObsList().size).to.eql(0);
     });
 
     it('should return updated obslist when values are set', () => {
       obs.setValue.returns(concept);
-      mapper.obs = obs;
       const obsList = new List();
-      const updatedList = mapper.setValue(obsList, [concept]);
-      expect(updatedList.size).to.eql(1);
-      expect(updatedList.get(0)).to.eql(concept);
+      const updatedList = mapper.setValue(new ObsList({ obs, obsList }), [concept]);
+      expect(updatedList.getObsList().size).to.eql(1);
+      expect(updatedList.getObsList().get(0)).to.eql(concept);
     });
 
     it('should return updated obslist when same values are set', () => {
       let obsList = new List();
       const observation = { value: { uuid: 'someId' } };
       obsList = obsList.push(observation);
-      const updatedList = mapper.setValue(obsList, [{ uuid: 'someId' }]);
-      expect(updatedList.size).to.eql(1);
-      expect(updatedList.get(0)).to.eql(observation);
+      const updatedList = mapper.setValue(new ObsList({ obsList }), [{ uuid: 'someId' }]);
+      expect(updatedList.getObsList().size).to.eql(1);
+      expect(updatedList.getObsList().get(0)).to.eql(observation);
     });
 
     it('should return updated obslist when obs is voided', () => {
@@ -114,17 +114,28 @@ describe('ObsListMapper', () => {
       obs.void.returns(voidedObs);
       let obsList = new List();
       obsList = obsList.push(obs);
-      const updatedList = mapper.setValue(obsList, undefined);
-      expect(updatedList.size).to.eql(1);
-      expect(updatedList.get(0)).to.eql(voidedObs);
+      const updatedList = mapper.setValue(new ObsList({ obsList }), undefined);
+      expect(updatedList.getObsList().size).to.eql(1);
+      expect(updatedList.getObsList().get(0)).to.eql(voidedObs);
     });
 
     it('should return empty list when value is selected and deselected', () => {
       obs.getUuid.returns(undefined);
       let obsList = new List();
       obsList = obsList.push(obs);
-      const updatedList = mapper.setValue(obsList, undefined);
-      expect(updatedList.size).to.eql(0);
+      const updatedList = mapper.setValue(new ObsList({ obsList }), undefined);
+      expect(updatedList.getObsList().size).to.eql(0);
+    });
+  });
+
+  context('getObject', () => {
+    it('should return final object', () => {
+      let observationList = new List();
+      observationList = observationList.push(obs);
+      const obsList = new ObsList({ obsList: observationList });
+
+      expect(mapper.getObject(obsList).length).to.eql(1);
+      expect(mapper.getObject(obsList)).to.eql([obs]);
     });
   });
 });

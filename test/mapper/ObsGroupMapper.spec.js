@@ -98,4 +98,12 @@ describe('ObsGroupMapper', () => {
 
     expect(obsGroupUpdated.isVoided()).to.be.eql(false);
   });
+
+  it('should return final object', () => {
+    const observationGroup = mapper.getObject(obsGroup);
+    expect(observationGroup.groupMembers.length).to.eql(2);
+    expect(observationGroup.formNamespace).to.eql('formUuid/4');
+    expect(observationGroup.groupMembers[0].value).to.eql(10);
+    expect(observationGroup.groupMembers[1].value).to.eql(undefined);
+  });
 });

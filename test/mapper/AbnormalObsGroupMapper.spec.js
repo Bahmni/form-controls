@@ -1,25 +1,26 @@
 import { expect } from 'chai';
-import { Obs } from 'src/helpers/Obs';
 import { List } from 'immutable';
 import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
 import constants from 'src/constants';
+import * as Obs from 'src/helpers/Obs';
+import sinon from 'sinon';
 
 describe('AbnormalObsGroupMapper', () => {
-  const pulseAbnormalObs = new Obs({ concept: {
+  const pulseAbnormalObs = new Obs.Obs({ concept: {
     name: 'PulseAbnormal',
     uuid: 'pulseAbnormalUuid',
     datatype: 'Boolean',
     conceptClass: 'Abnormal',
   }, value: false, formNamespace: 'formUuid/5', uuid: 'childObs2Uuid' });
 
-  const pulseNumericObs = new Obs({ concept: {
+  const pulseNumericObs = new Obs.Obs({ concept: {
     name: 'Pulse',
     uuid: 'pulseUuid',
     datatype: 'Numeric',
     conceptClass: 'Misc',
   }, value: 10, formNamespace: 'formUuid/6', uuid: 'childObs1Uuid' });
 
-  const pulseDataObs = new Obs({ concept: {
+  const pulseDataObs = new Obs.Obs({ concept: {
     name: 'Pulse Data',
     uuid: 'pulseDataUuid',
     datatype: 'Misc',
@@ -50,7 +51,7 @@ describe('AbnormalObsGroupMapper', () => {
   it('should void obsGroup and numericObs if just abnormalObs has value', () => {
     const pulseAbnormalUpdated = pulseAbnormalObs.setValue(true);
     const pulseNumericUpdated = pulseNumericObs.setValue(undefined).void();
-    const pulseDataObsUpdated = new Obs({ concept: {
+    const pulseDataObsUpdated = new Obs.Obs({ concept: {
       name: 'Pulse Data',
       uuid: 'pulseDataUuid',
       datatype: 'Misc',
@@ -83,5 +84,20 @@ describe('AbnormalObsGroupMapper', () => {
     pulseDataObsGroup = mapper.setValue(pulseDataObsGroup, pulseAbnormalUpdated, []);
 
     expect(pulseDataObsGroup.isVoided()).to.be.eql(true);
+  });
+
+  it('should return final object', () => {
+    const observationGroup = mapper.getObject(pulseDataObs);
+    expect(observationGroup.groupMembers.length).to.eql(2);
+    expect(observationGroup.formNamespace).to.eql('formUuid/4');
+    expect(observationGroup.groupMembers[0].value).to.eql(10);
+    expect(observationGroup.groupMembers[1].value).to.eql(false);
+  });
+
+  it('should return initial object', () => {
+    const obs = { name: 'someName', uuid: 'someUuid', groupMembers: [] };
+    const createObsStub = sinon.stub(Obs, 'createObsFromControl');
+    createObsStub.withArgs('someUuid', { id: 1 }, []).returns(obs);
+    expect(mapper.getInitialObject('someUuid', { id: 1 }, [])).to.deep.eql(obs);
   });
 });

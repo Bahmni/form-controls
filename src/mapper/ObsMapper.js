@@ -40,4 +40,8 @@ export class ObsMapper {
   getComment(obs) {
     return obs.getComment();
   }
+
+  getObject(obs) {
+    return obs.toJS();
+  }
 }

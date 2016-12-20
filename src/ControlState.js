@@ -10,6 +10,9 @@ export const ControlRecord = new Record({
   errors: [],
   data: undefined,
   mapper: undefined,
+  getObject() {
+    return this.mapper.getObject(this.obs);
+  },
 });
 
 export const ImmutableControlState = new Record({

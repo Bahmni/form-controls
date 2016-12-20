@@ -29,4 +29,8 @@ export class ObsGroupMapper {
       return !obs.voided;
     });
   }
+
+  getObject(obsGroup) {
+    return obsGroup.toJS();
+  }
 }
