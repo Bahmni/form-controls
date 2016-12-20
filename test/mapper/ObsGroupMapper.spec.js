@@ -40,15 +40,16 @@ describe('ObsGroupMapper', () => {
   });
 
   it('should void obsGroup if child obs are not having any value', () => {
-    const numericObsUpdated = numericObs.setValue(undefined);
+    const numericObsUpdated = numericObs.void();
+    const booleanObsUpdated = booleanObs.void();
     const obsGroupWithOutValue = new Obs({ concept: {
       name: 'Pulse Data',
       uuid: 'pulseDataUuid',
       datatype: 'Misc',
     },
-      groupMembers: List.of(numericObsUpdated, booleanObs),
+      groupMembers: List.of(numericObsUpdated, booleanObsUpdated),
       formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid' });
-    const obsGroupUpdated = mapper.setValue(obsGroupWithOutValue, booleanObs);
+    const obsGroupUpdated = mapper.setValue(obsGroupWithOutValue, booleanObsUpdated);
 
     expect(obsGroupUpdated.isVoided()).to.be.eql(true);
   });
@@ -75,5 +76,26 @@ describe('ObsGroupMapper', () => {
     expect(obsGroupUpdated.isVoided()).to.be.eql(false);
     expect(obsGroupUpdated.getGroupMembers().get(0).getValue()).to.be.eql(20);
     expect(obsGroupUpdated.getGroupMembers().get(1).getValue()).to.be.eql(undefined);
+  });
+
+  it('should not void parent obs if the obs inside another child obs has a value', () => {
+    const numericObsUpdated = new Obs({ concept: {
+      name: 'Numeric Obs',
+      uuid: 'numericDataUuid',
+      datatype: 'Misc',
+    },
+      groupMembers: List.of(numericObs),
+      formNamespace: 'numericFormUuid/4', uuid: 'numericDataObsUuid' });
+    const booleanObsUpdated = booleanObs.void();
+    const obsGroupWithChildVoided = new Obs({ concept: {
+      name: 'Pulse Data',
+      uuid: 'pulseDataUuid',
+      datatype: 'Misc',
+    },
+      groupMembers: List.of(numericObsUpdated, booleanObsUpdated),
+      formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid' });
+    const obsGroupUpdated = mapper.setValue(obsGroupWithChildVoided, numericObsUpdated);
+
+    expect(obsGroupUpdated.isVoided()).to.be.eql(false);
   });
 });
