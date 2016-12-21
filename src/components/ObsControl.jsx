@@ -91,7 +91,7 @@ export class ObsControl extends Component {
            { active: showHintButton === true }) }>
           <i className="fa fa-question-circle concept-tooltip-trigger"
             onClick={() => this.setState({ showHintButton: !showHintButton })}
-          ></i>
+          />
           <div className="concept-tooltip-description">
             <i className="fa fa-caret-down"></i>
             <span className="details hint">{description}</span>

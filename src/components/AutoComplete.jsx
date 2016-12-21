@@ -82,7 +82,7 @@ export class AutoComplete extends Component {
 
   getValue() {
     if (this.state.value) {
-      return this.props.multi ? this.state.value : [this.state.value];
+      return this.props.multiSelect ? this.state.value : [this.state.value];
     }
     return [];
   }
@@ -118,14 +118,14 @@ export class AutoComplete extends Component {
 
   render() {
     const { autofocus, disabled, labelKey, valueKey,
-                  asynchronous, multi, minimumInput } = this.props;
+                  asynchronous, multiSelect, minimumInput } = this.props;
     const props = {
       autofocus,
       backspaceRemoves: false,
       disabled,
       labelKey,
       minimumInput,
-      multi,
+      multi: multiSelect,
       onChange: this.handleChange,
       value: this.state.value,
       valueKey,
@@ -162,7 +162,7 @@ AutoComplete.propTypes = {
   disabled: PropTypes.bool,
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
-  multi: PropTypes.bool,
+  multiSelect: PropTypes.bool,
   onValueChange: PropTypes.func,
   options: PropTypes.array,
   optionsUrl: PropTypes.string,
@@ -177,7 +177,7 @@ AutoComplete.defaultProps = {
   disabled: false,
   labelKey: 'display',
   minimumInput: 2,
-  multi: false,
+  multiSelect: false,
   optionsUrl: '/openmrs/ws/rest/v1/concept?v=full&q=',
   valueKey: 'uuid',
 };

@@ -57,12 +57,12 @@ export class CodedControl extends Component {
       options: this._getOptionsRepresentation(this.props.options, multiSelect),
       validate,
       validations,
+      multiSelect,
     };
     if (displayType === 'autoComplete') {
       props.asynchronous = false;
       props.labelKey = 'name';
       props.valueKey = 'value';
-      props.multi = multiSelect;
     }
     return props;
   }

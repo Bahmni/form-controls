@@ -4,27 +4,26 @@ import map from 'lodash/map';
 import classNames from 'classnames';
 import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
-import find from 'lodash/find';
 import isEqual from 'lodash/isEqual';
+import clone from 'lodash/clone';
+import find from 'lodash/find';
+import filter from 'lodash/filter';
 
 export class Button extends Component {
   constructor(props) {
     super(props);
-    const value = props.value ? props.value.value : undefined;
-    this.state = { value, hasErrors: false };
+    this.state = { hasErrors: false };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate || !isEqual(this.props.value, nextProps.value)) {
       const errors = this._getErrors(nextProps.value);
-      const value = nextProps.value ? nextProps.value.value : undefined;
-      this.setState({ value, hasErrors: this._hasErrors(errors) });
+      this.setState({ hasErrors: this._hasErrors(errors) });
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     if (!isEqual(this.props.value, nextProps.value) ||
-      !isEqual(this.state.value, nextState.value) ||
       this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
@@ -32,18 +31,33 @@ export class Button extends Component {
   }
 
   componentDidUpdate() {
-    const errors = this._getErrors(this.state.value);
+    const errors = this._getErrors(this.props.value);
     if (this._hasErrors(errors)) {
-      this.props.onValueChange(this.state.value, errors);
+      this.props.onValueChange(this.props.value, errors);
     }
   }
 
   changeValue(valueSelected) {
-    const value = this.state.value === valueSelected.value ? undefined : valueSelected.value;
+    const value = this._getValue(valueSelected);
     const errors = this._getErrors(value);
-    this.setState({ value, hasErrors: this._hasErrors(errors) });
-    const updatedValue = find(this.props.options, ['value', value]);
-    this.props.onValueChange(updatedValue, errors);
+    this.setState({ hasErrors: this._hasErrors(errors) });
+    this.props.onValueChange(value, errors);
+  }
+
+  _getValue(valueSelected) {
+    const { multiSelect } = this.props;
+    let value = this._getValueFromProps() || [];
+    if (this._isActive(valueSelected)) {
+      if (multiSelect) {
+        value = filter(value, (val) => val.value !== valueSelected.value);
+      } else {
+        value = [];
+      }
+    } else {
+      value = multiSelect ? clone(value) : [];
+      value.push(valueSelected);
+    }
+    return multiSelect ? value : value[0];
   }
 
   _hasErrors(errors) {
@@ -56,10 +70,22 @@ export class Button extends Component {
     return Validator.getErrors(controlDetails);
   }
 
+  _isActive(option) {
+    return find(this._getValueFromProps(), (value) => option.value === value.value);
+  }
+
+  _getValueFromProps() {
+    const { multiSelect, value } = this.props;
+    if (value) {
+      return multiSelect ? value : [value];
+    }
+    return undefined;
+  }
+
   displayButtons() {
     return map(this.props.options, (option, index) =>
       <button
-        className={classNames('fl', { active: this.state.value === option.value })}
+        className={classNames('fl', { active: this._isActive(option) })}
         key={index}
         onClick={() => this.changeValue(option)}
       >
@@ -76,6 +102,7 @@ export class Button extends Component {
 }
 
 Button.propTypes = {
+  multiSelect: PropTypes.bool,
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,

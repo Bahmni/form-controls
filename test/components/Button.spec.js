@@ -64,9 +64,11 @@ describe('Button Component', () => {
     expect(wrapper.find('button').at(1)).to.have.className('fl');
 
     wrapper.find('button').at(1).simulate('click');
+    sinon.assert.calledOnce(valueChangeSpy.withArgs(options[1], []));
+
+    wrapper.setProps({ value: options[1] });
     expect(wrapper.find('button').at(0)).to.have.className('fl');
     expect(wrapper.find('button').at(1)).to.have.className('fl active');
-    sinon.assert.calledOnce(valueChangeSpy.withArgs(options[1], []));
   });
 
   it('should change the value to undefined if double clicked', () => {
@@ -75,6 +77,8 @@ describe('Button Component', () => {
     );
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(valueChangeSpy.withArgs(options[1], []));
+
+    wrapper.setProps({ value: options[1] });
 
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(valueChangeSpy.withArgs(undefined, []));
@@ -92,6 +96,8 @@ describe('Button Component', () => {
     );
     wrapper.find('button').at(1).simulate('click');
     expect(wrapper).to.have.className('form-control-buttons');
+
+    wrapper.setProps({ value: options[1] });
 
     wrapper.find('button').at(1).simulate('click');
     expect(wrapper).to.have.className('form-control-buttons form-builder-error');
@@ -157,5 +163,60 @@ describe('Button Component', () => {
 
     expect(wrapper.find('button').at(0)).to.have.className('fl');
     expect(wrapper.find('button').at(1)).to.have.className('fl active');
+  });
+
+  it('should render button with multiple values', () => {
+    const wrapper = shallow(
+      <Button
+        multiSelect
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+        value={options}
+      />
+    );
+    expect(wrapper.find('button').at(0)).to.have.className('fl active');
+    expect(wrapper.find('button').at(1)).to.have.className('fl active');
+  });
+
+  it('should change the value on click for multiselect', () => {
+    const wrapper = shallow(
+      <Button
+        multiSelect
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+        value={undefined}
+      />
+    );
+    expect(wrapper.find('button').at(0)).to.have.className('fl');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
+
+    wrapper.find('button').at(1).simulate('click');
+    sinon.assert.calledOnce(valueChangeSpy.withArgs([options[1]], []));
+
+    wrapper.setProps({ value: [options[1]] });
+    expect(wrapper.find('button').at(0)).to.have.className('fl');
+    expect(wrapper.find('button').at(1)).to.have.className('fl active');
+  });
+
+  it('should return empty array when chosen value is deselected', () => {
+    const wrapper = shallow(
+      <Button
+        multiSelect
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+        value={[options[0]]}
+      />
+    );
+    expect(wrapper.find('button').at(0)).to.have.className('fl active');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
+
+    wrapper.find('button').at(0).simulate('click');
+    sinon.assert.calledOnce(valueChangeSpy.withArgs([], []));
   });
 });
