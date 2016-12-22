@@ -87,7 +87,7 @@ export class ObsControl extends Component {
       concept.description[0].display : undefined;
     if (description) {
       return (
-        <div className={classNames('concept-tooltip-wrap',
+        <div className={classNames('concept-tooltip-wrap fr',
            { active: showHintButton === true }) }>
           <i className="fa fa-question-circle concept-tooltip-trigger"
             onClick={() => this.setState({ showHintButton: !showHintButton })}
