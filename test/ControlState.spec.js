@@ -1,10 +1,12 @@
 import { expect } from 'chai';
 import { ControlState, ControlRecord, controlStateFactory } from 'src/ControlState';
-import { createFormNamespace } from 'src/helpers/formNamespace';
+import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 
 describe('Control State', () => {
   const form = {
-    id: 'fbc5d897-64e4-4cc1-90a3-47fde7a98026',
+    id: 1,
+    name: 'Vitals',
+    version: '1',
     uuid: 'fbc5d897-64e4-4cc1-90a3-47fde7a98026',
     controls: [
       {
@@ -88,9 +90,9 @@ describe('Control State', () => {
     ],
   };
 
-  const record1 = new ControlRecord({ formNamespace: 'FID/CID1' });
-  const record2 = new ControlRecord({ formNamespace: 'FID/CID2' });
-  const record3 = new ControlRecord({ formNamespace: 'FID/CID3' });
+  const record1 = new ControlRecord({ formFieldPath: 'FID.1/CID1' });
+  const record2 = new ControlRecord({ formFieldPath: 'FID.1/CID2' });
+  const record3 = new ControlRecord({ formFieldPath: 'FID.1/CID3' });
 
 
   it('should initialize with the given records', () => {
@@ -112,7 +114,7 @@ describe('Control State', () => {
   it('should fetch record based on the formNamespace', () => {
     const records = [record1, record2];
     const controlState = new ControlState().setRecords(records);
-    const fetchedRecord = controlState.getRecord('FID/CID1');
+    const fetchedRecord = controlState.getRecord('FID.1/CID1');
 
     expect(fetchedRecord).to.be.deep.equal(record1);
   });
@@ -125,29 +127,36 @@ describe('Control State', () => {
       expect(expectedRecords).to.have.length(3);
 
       const namespaces = form.controls.map((control) =>
-        createFormNamespace(form.uuid, control.id)
+        createFormNamespaceAndPath(form.name, form.version, control.id).formFieldPath
       );
 
       expectedRecords.forEach((record) => {
-        expect(namespaces).to.include(record.formNamespace);
+        expect(namespaces).to.include(record.formFieldPath);
       });
     });
 
+
     it('should insert observations into the appropriate records', () => {
+      const formNamespaceAndPath =
+        createFormNamespaceAndPath(form.name, form.version, form.controls[1].id);
       const obs1 = {
         uuid: 'obs1',
-        formNamespace: createFormNamespace(form.uuid, form.controls[1].id),
+        formNamespace: formNamespaceAndPath.formNamespace,
+        formFieldPath: formNamespaceAndPath.formFieldPath,
       };
       const controlState = controlStateFactory(form, [obs1]);
       const records = controlState.getRecords();
-      const namespace1 = createFormNamespace(form.uuid, form.controls[0].id);
-      const namespace2 = createFormNamespace(form.uuid, form.controls[2].id);
+      const { formFieldPath: formFieldPath1 } =
+        createFormNamespaceAndPath(form.name, form.version, form.controls[0].id);
+      const { formFieldPath: formFieldPath2 } =
+        createFormNamespaceAndPath(form.name, form.version, form.controls[2].id);
 
       expect(records).to.have.length(3);
 
-      expect(controlState.getRecord(obs1.formNamespace).obs.uuid).to.deep.equal(obs1.uuid);
-      expect(controlState.getRecord(namespace1).obs.formNamespace).to.equal(namespace1);
-      expect(controlState.getRecord(namespace2).obs.formNamespace).to.equal(namespace2);
+
+      expect(controlState.getRecord(obs1.formFieldPath).obs.uuid).to.deep.equal(obs1.uuid);
+      expect(controlState.getRecord(formFieldPath1).obs.formFieldPath).to.equal(formFieldPath1);
+      expect(controlState.getRecord(formFieldPath2).obs.formFieldPath).to.equal(formFieldPath2);
     });
   });
 });

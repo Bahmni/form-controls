@@ -38,7 +38,8 @@ describe('ObsGroupControl', () => {
     ComponentStore.deRegisterComponent('randomType');
   });
 
-  const formUuid = 'formUuid';
+  const formName = 'formName';
+  const formVersion = '1';
   const obsGroupConcept = {
     uuid: '70645842-be6a-4974-8d5f-45b52990e132',
     name: 'Pulse Data',
@@ -84,7 +85,8 @@ describe('ObsGroupControl', () => {
     it('should render obsGroup control with observations', () => {
       const wrapper = mount(
         <ObsGroupControl
-          formUuid={formUuid}
+          formName={formName}
+          formVersion={formVersion}
           mapper={obsGroupMapper}
           metadata={metadata}
           obs={observation}
@@ -101,7 +103,8 @@ describe('ObsGroupControl', () => {
       ComponentStore.deRegisterComponent('randomType');
       const wrapper = mount(
         <ObsGroupControl
-          formUuid={formUuid}
+          formName={formName}
+          formVersion={formVersion}
           mapper={obsGroupMapper}
           metadata={metadata}
           obs={observation}
@@ -143,7 +146,7 @@ describe('ObsGroupControl', () => {
 
       const pulseNumericObs = new Obs({
         concept: pulseNumericConcept,
-        value: 10, formNamespace: 'formUuid/100', uuid: 'childObs1Uuid',
+        value: 10, formFieldPath: 'formName.1/100-0', uuid: 'childObs1Uuid',
       });
 
       const pulseDataObs = new Obs({
@@ -155,14 +158,15 @@ describe('ObsGroupControl', () => {
         groupMembers: [
           {
             concept: pulseNumericConcept,
-            value: 10, formNamespace: 'formUuid/100', uuid: 'childObs1Uuid',
+            value: 10, formFieldPath: 'formName.1/100-0', uuid: 'childObs1Uuid',
           }],
-        formNamespace: 'formUuid/1', uuid: 'pulseDataObsUuid',
+        formFieldPath: 'formName.1/1-0', uuid: 'pulseDataObsUuid',
       });
 
       const wrapper = mount(
         <ObsGroupControl
-          formUuid={formUuid}
+          formName={formName}
+          formVersion={formVersion}
           mapper={obsGroupMapper}
           metadata={metadataUpdated}
           obs={pulseDataObs}

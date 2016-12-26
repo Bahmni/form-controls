@@ -47,11 +47,12 @@ describe('Row', () => {
       properties: getLocationProperties(0, 3),
     },
   ];
-  const formUuid = 'someUuid';
+  const formName = 'formName';
+  const formVersion = '1';
 
   const records = controls.map((control) => ({
     control,
-    obs: new Obs({ formNamespace: `${formUuid}/${control.id}` }),
+    obs: new Obs({ formFieldPath: `${formName}.${formVersion}/${control.id}` }),
     mapper: new ObsMapper(),
   }));
 
@@ -72,7 +73,8 @@ describe('Row', () => {
       const wrapper = mount(
         <Row
           controls={controls}
-          formUuid={formUuid}
+          formName={formName}
+          formVersion={formVersion}
           id={0}
           onValueChanged={onChangeSpy}
           records={records}
@@ -88,7 +90,8 @@ describe('Row', () => {
       const wrapper = shallow(
         <Row
           controls={[]}
-          formUuid={formUuid}
+          formName={formName}
+          formVersion={formVersion}
           id={0}
           onValueChanged={onChangeSpy}
           records={records}

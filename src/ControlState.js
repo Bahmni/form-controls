@@ -5,7 +5,7 @@ import MapperStore from 'src/helpers/MapperStore';
 
 export const ControlRecord = new Record({
   control: undefined,
-  formNamespace: '',
+  formFieldPath: '',
   obs: undefined, enabled: true,
   errors: [],
   data: undefined,
@@ -23,17 +23,17 @@ export class ControlState extends ImmutableControlState {
   setRecords(records) {
     const map = new Map();
     records.forEach((record) => {
-      map.set(record.formNamespace, record);
+      map.set(record.formFieldPath, record);
     });
     return this.set('data', new ImmutableMap(map));
   }
 
   setRecord(bahmniRecord) {
-    return this.set('data', this.get('data').setIn([bahmniRecord.formNamespace], bahmniRecord));
+    return this.set('data', this.get('data').setIn([bahmniRecord.formFieldPath], bahmniRecord));
   }
 
-  getRecord(formNamespace) {
-    return this.get('data').get(formNamespace);
+  getRecord(formFieldPath) {
+    return this.get('data').get(formFieldPath);
   }
 
   getRecords() {
@@ -41,18 +41,19 @@ export class ControlState extends ImmutableControlState {
   }
 }
 
-function getRecords(controls, formUuid, bahmniObservations) {
+function getRecords(controls, formName, formVersion, bahmniObservations) {
   return controls.map((control) => {
     const mapper = MapperStore.getMapper(control);
-    const obs = mapper.getInitialObject(formUuid, control, bahmniObservations);
-    return new ControlRecord({ formNamespace: obs.formNamespace,
+    const obs = mapper.getInitialObject(formName, formVersion, control, bahmniObservations);
+    return new ControlRecord({ formFieldPath: obs.formFieldPath,
       obs, mapper, control, enabled: false });
   });
 }
 
-export function controlStateFactory(metadata = { controls: [] }, bahmniObs = [], formUuid) {
-  const formId = formUuid || metadata.uuid;
-  const records = getRecords(metadata.controls, formId, bahmniObs);
+export function controlStateFactory(metadata, bahmniObs, formName, formVersion) {
+  const name = formName || metadata.name;
+  const version = formVersion || metadata.version;
+  const records = getRecords(metadata.controls, name, version, bahmniObs);
   return new ControlState().setRecords(records);
 }
 

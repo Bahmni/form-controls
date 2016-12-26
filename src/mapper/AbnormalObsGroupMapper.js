@@ -4,8 +4,8 @@ import { createObsFromControl } from 'src/helpers/Obs';
 
 
 export class AbnormalObsGroupMapper {
-  getInitialObject(formUuid, control, bahmniObservations) {
-    return createObsFromControl(formUuid, control, bahmniObservations);
+  getInitialObject(formName, formVersion, control, bahmniObservations) {
+    return createObsFromControl(formName, formVersion, control, bahmniObservations);
   }
 
   setValue(obsGroup, obs, errors) {

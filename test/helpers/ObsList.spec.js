@@ -9,40 +9,40 @@ describe('ObsList', () => {
     dataType: 'Text',
   };
 
-  const formNamespace = 'formUuid/1';
+  const formFieldPath = 'formName.1/1-0';
 
   it('should create a default obsList', () => {
     const obsList = new ObsList();
     expect(obsList).to.have.property('obsList');
     expect(obsList.obsList.size).to.eql(0);
-    expect(obsList).to.have.property('formNamespace').and.equal(undefined);
+    expect(obsList).to.have.property('formFieldPath').and.equal(undefined);
     expect(obsList).to.have.property('obs').and.equal(undefined);
   });
 
   it('should create the obs with default values', () => {
-    const obs = { concept, formNamespace };
+    const obs = { concept, formFieldPath };
     const observationList = List.of(obs);
-    const obsList = new ObsList({ formNamespace, obs, obsList: observationList });
+    const obsList = new ObsList({ formFieldPath, obs, obsList: observationList });
 
     expect(obsList).to.have.property('obsList');
-    expect(obsList).to.have.property('formNamespace').and.equal(formNamespace);
+    expect(obsList).to.have.property('formFieldPath').and.equal(formFieldPath);
     expect(obsList).to.have.property('obs').and.equal(obs);
     expect(obsList.obsList.size).to.eql(1);
   });
 
   it('should test all getters of obs', () => {
-    const obs = { concept, formNamespace };
+    const obs = { concept, formFieldPath };
     const observationList = List.of(obs);
-    const obsList = new ObsList({ formNamespace, obs, obsList: observationList });
+    const obsList = new ObsList({ formFieldPath, obs, obsList: observationList });
 
     expect(obsList.getObs()).to.deep.eql(obs);
     expect(obsList.getObsList()).to.deep.eql(observationList);
   });
 
   it('should set obsList', () => {
-    const obs = { concept, formNamespace };
+    const obs = { concept, formFieldPath };
     const observationList = List.of(obs);
-    const obsList = new ObsList({ formNamespace, obs });
+    const obsList = new ObsList({ formFieldPath, obs });
 
     const updatedObsList = obsList.setObsList(observationList);
     expect(updatedObsList.getObsList()).to.deep.eql(observationList);

@@ -60,9 +60,10 @@ describe('Container', () => {
 
   beforeEach(() => {
     metadata = {
-      id: '100',
+      id: 100,
       uuid: 'fm1',
       name: 'Vitals',
+      version: '1',
       controls: [
         {
           id: '200',
@@ -89,7 +90,8 @@ describe('Container', () => {
 
     observation1 = {
       concept: textBoxConcept,
-      formNamespace: 'fm1/101',
+      formNamespace: 'Bahmni',
+      formFieldPath: 'Vitals.1/101-0',
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       uuid: undefined,
       value: '72',
@@ -100,7 +102,8 @@ describe('Container', () => {
 
     observation2 = {
       concept: numericBoxConcept,
-      formNamespace: 'fm1/102',
+      formNamespace: 'Bahmni',
+      formFieldPath: 'Vitals.1/102-0',
       observationDateTime: '2016-09-08T10:10:38.000+0530',
       uuid: undefined,
       value: '98',
@@ -122,7 +125,7 @@ describe('Container', () => {
     });
 
     it('should render form without controls when it is empty', () => {
-      const meta = { id: '100', controls: [], uuid: 'uuid' };
+      const meta = { id: 100, name: 'Vitals', controls: [], uuid: 'uuid', version: '1' };
       const wrapper = shallow(<Container metadata={meta} observations={[]} validate={false} />);
 
       expect(wrapper).to.be.blank();
@@ -172,7 +175,7 @@ describe('Container', () => {
           },
           label: 'Pulse',
           value: '72',
-          formNamespace: 'fm1/999999',
+          formFieldPath: 'fm1/999999',
         },
       ];
       const wrapper = mount(<Container metadata={metadata} observations={obs} validate={false} />);
@@ -238,7 +241,8 @@ describe('Container', () => {
         concept: textBoxConcept,
         uuid: 'someUuid',
         value: '72',
-        formNamespace: 'fm1/101',
+        formNamespace: 'Bahmni',
+        formFieldPath: 'Vitals.1/101-0',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
         voided: true,
         groupMembers: undefined,
@@ -268,7 +272,7 @@ describe('Container', () => {
         concept: textBoxConcept,
         label: 'Pulse',
         value: '72',
-        formNamespace: 'fm1/101',
+        formFieldPath: 'fm1/101',
         observationDateTime: '2016-09-08T10:10:38.000+0530',
         voided: true,
       };
@@ -291,8 +295,10 @@ describe('Container', () => {
 
   describe('obsGroup', () => {
     const obsGroupMetaData = {
-      id: 'formUuid',
+      id: 1,
       uuid: 'formUuid',
+      name: 'Vitals',
+      version: '1',
       controls: [{
         type: 'obsGroupControl',
         id: '2',
@@ -353,7 +359,7 @@ describe('Container', () => {
             uuid: 'f5bda4ed-c400-4304-8c7c-8c647c3cb429',
             datatype: 'N/A',
           },
-          formNamespace: 'formUuid/2',
+          formFieldPath: 'Vitals.1/2-0',
           groupMembers: [
             {
               concept: {
@@ -362,7 +368,7 @@ describe('Container', () => {
                 datatype: 'Numeric',
               },
               value: '99',
-              formNamespace: 'formUuid/201',
+              formFieldPath: 'Vitals.1/201-0',
             },
             {
               concept: {
@@ -371,7 +377,7 @@ describe('Container', () => {
                 datatype: 'text',
               },
               value: 'notes',
-              formNamespace: 'formUuid/202',
+              formFieldPath: 'Vitals.1/202-0',
             },
           ],
         },

@@ -4,8 +4,10 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { List } from 'immutable';
 import { ObsList } from 'src/helpers/ObsList';
+import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 
 chai.use(chaiEnzyme());
+
 
 describe('ObsListMapper', () => {
   const obs = {
@@ -16,10 +18,12 @@ describe('ObsListMapper', () => {
     isVoided: sinon.stub(),
   };
 
-  const formUuid = 'someUuid';
+  const formName = 'someName';
+  const formVersion = '1';
   const concept = { name: 'someConcept', uuid: 'uuid' };
   const control = { id: 1, concept };
-  const formNamespace = `${formUuid}/${control.id}`;
+  const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id);
+  const { formFieldPath } = formNamespaceAndPath;
   let mapper;
 
   beforeEach(() => {
@@ -27,25 +31,25 @@ describe('ObsListMapper', () => {
   });
 
   function getObs(uuid, value) {
-    return { formNamespace, uuid, concept, value };
+    return { formFieldPath, uuid, concept, value };
   }
 
   context('getInitialObject', () => {
     it('should return initial object when obs has no value', () => {
       expect(mapper.obs).to.eql(undefined);
 
-      const initialObject = mapper.getInitialObject(formUuid, control, []);
+      const initialObject = mapper.getInitialObject(formName, formVersion, control, []);
       expect(initialObject.getObsList().size).to.eql(0);
       expect(initialObject.getObs().concept).to.eql(concept);
-      expect(initialObject.formNamespace).to.eql(formNamespace);
+      expect(initialObject.formFieldPath).to.eql(formFieldPath);
     });
 
     it('should return initial object with default values', () => {
       const observations = [getObs('uuid1', '72'), getObs('uuid2', 'notes')];
-      const initialObject = mapper.getInitialObject(formUuid, control, observations);
+      const initialObject = mapper.getInitialObject(formName, formVersion, control, observations);
       expect(initialObject.getObsList().size).to.eql(2);
       expect(initialObject.getObs().concept).to.eql(concept);
-      expect(initialObject.formNamespace).to.eql(formNamespace);
+      expect(initialObject.formFieldPath).to.eql(formFieldPath);
     });
   });
 

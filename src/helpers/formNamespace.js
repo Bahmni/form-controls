@@ -1,10 +1,8 @@
-export function createFormNamespace(formUuid, controlId) {
-  return `${formUuid}/${controlId}`;
-}
+import Constants from 'src/constants';
 
-export function getFormNamespaceDetails(formNamespace) {
-  const tokens = formNamespace.split('/');
-  const formUuid = tokens[0];
-  const controlId = tokens[1];
-  return { controlId, formUuid };
+export function createFormNamespaceAndPath(formName, formVersion, controlId) {
+  return {
+    formNamespace: `${Constants.bahmni}`,
+    formFieldPath: `${formName}.${formVersion}/${controlId}-0`,
+  };
 }

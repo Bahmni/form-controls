@@ -4,22 +4,23 @@ import filter from 'lodash/filter';
 import each from 'lodash/each';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
-import { createFormNamespace } from 'src/helpers/formNamespace';
+import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 import { obsFromMetadata } from 'src/helpers/Obs';
 import { ObsList } from 'src/helpers/ObsList';
 
 export class ObsListMapper {
 
-  getInitialObject(formUuid, control, bahmniObservations) {
-    const formNamespace = createFormNamespace(formUuid, control.id);
-    const obs = obsFromMetadata(formNamespace, control);
+  getInitialObject(formName, formVersion, control, bahmniObservations) {
+    const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id);
+    const obs = obsFromMetadata(formNamespaceAndPath, control);
+    const { formFieldPath } = formNamespaceAndPath;
     const filteredObs = filter(bahmniObservations,
-      (observation) => observation.formNamespace === formNamespace);
+      (observation) => observation.formFieldPath === formFieldPath);
     let obsList = new List();
     each(filteredObs, (observation) => {
-      obsList = obsList.push(createObsFromControl(formUuid, control, [observation]));
+      obsList = obsList.push(createObsFromControl(formName, formVersion, control, [observation]));
     });
-    return new ObsList({ obsList, formNamespace, obs });
+    return new ObsList({ obsList, formFieldPath, obs });
   }
 
   _hasNoValue(obs) {

@@ -16,7 +16,7 @@ export class Container extends Component {
   }
 
   onValueChanged(obs, errors) {
-    const bahmniRecord = this.state.data.getRecord(obs.formNamespace)
+    const bahmniRecord = this.state.data.getRecord(obs.formFieldPath)
       .set('obs', obs)
       .set('errors', errors);
     const data = this.state.data.setRecord(bahmniRecord);
@@ -63,10 +63,11 @@ export class Container extends Component {
   }
 
   render() {
-    const { metadata: { controls, uuid: formUuid }, validate } = this.props;
+    const { metadata: { controls, name: formName, version: formVersion }, validate } = this.props;
     const childProps = {
       errors: this.state.errors,
-      formUuid,
+      formName,
+      formVersion,
       ref: this.storeChildRef,
       onValueChanged: this.onValueChanged,
       validate,
@@ -85,8 +86,10 @@ Container.propTypes = {
       React.PropTypes.shape({
         type: PropTypes.string.isRequired,
       })).isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     uuid: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    version: PropTypes.string.isRequired,
   }),
   observations: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,

@@ -2,7 +2,7 @@
 import { Record, List } from 'immutable';
 
 export const ImmutableObsList = Record({
-  formNamespace: undefined,
+  formFieldPath: undefined,
   obs: undefined,
   obsList: new List(),
 });

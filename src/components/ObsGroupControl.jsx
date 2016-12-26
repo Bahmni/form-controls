@@ -8,15 +8,15 @@ export class ObsGroupControl extends Component {
 
   constructor(props) {
     super(props);
-    const { formUuid, obs, metadata } = this.props;
+    const { formName, formVersion, obs, metadata } = this.props;
     const groupMembers = obs.getGroupMembers() || [];
-    const data = controlStateFactory(metadata, groupMembers, formUuid);
+    const data = controlStateFactory(metadata, groupMembers, formName, formVersion);
     this.state = { obs: this._getObsGroup(obs, data), errors: [], data };
     this.onChange = this.onChange.bind(this);
   }
 
   onChange(obs, errors) {
-    const bahmniRecord = this.state.data.getRecord(obs.formNamespace)
+    const bahmniRecord = this.state.data.getRecord(obs.formFieldPath)
       .set('obs', obs)
       .set('errors', errors);
     const data = this.state.data.setRecord(bahmniRecord);
@@ -35,8 +35,8 @@ export class ObsGroupControl extends Component {
   }
 
   render() {
-    const { formUuid, metadata: { label }, validate } = this.props;
-    const childProps = { formUuid, validate, onValueChanged: this.onChange };
+    const { formName, formVersion, metadata: { label }, validate } = this.props;
+    const childProps = { formName, formVersion, validate, onValueChanged: this.onChange };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const records = this.state.data.getRecords();
     return (
@@ -51,7 +51,8 @@ export class ObsGroupControl extends Component {
 }
 
 ObsGroupControl.propTypes = {
-  formUuid: PropTypes.string.isRequired,
+  formName: PropTypes.string.isRequired,
+  formVersion: PropTypes.string.isRequired,
   mapper: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,

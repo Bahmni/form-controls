@@ -13,6 +13,7 @@ const Constants = {
     warning: 'warning',
     error: 'error',
   },
+  bahmni: 'Bahmni',
 };
 
 export default Constants;
