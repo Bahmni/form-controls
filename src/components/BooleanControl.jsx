@@ -6,10 +6,10 @@ import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 export class BooleanControl extends Component {
   constructor(props) {
     super(props);
-    this.onValueChange = this.onValueChange.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  onValueChange(value, errors) {
+  onChange(value, errors) {
     const updatedValue = value ? value.value : undefined;
     this.props.onChange(updatedValue, errors);
   }
@@ -25,7 +25,7 @@ export class BooleanControl extends Component {
       const initialValue = this._getValue(options, this.props.value);
       const childProps = {
         value: initialValue,
-        onValueChange: this.onValueChange,
+        onChange: this.onChange,
         options,
         validate,
         validations,

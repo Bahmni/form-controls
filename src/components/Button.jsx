@@ -1,47 +1,20 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import classNames from 'classnames';
-import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
 import clone from 'lodash/clone';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
+import { BahmniInputComponent } from './BahmniInputComponent.jsx';
 
-export class Button extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasErrors: false };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.validate || !isEqual(this.props.value, nextProps.value)) {
-      const errors = this._getErrors(nextProps.value);
-      this.setState({ hasErrors: this._hasErrors(errors) });
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (!isEqual(this.props.value, nextProps.value) ||
-      this.state.hasErrors !== nextState.hasErrors) {
-      return true;
-    }
-    return false;
-  }
-
-  componentDidUpdate() {
-    const errors = this._getErrors(this.props.value);
-    if (this._hasErrors(errors)) {
-      this.props.onValueChange(this.props.value, errors);
-    }
-  }
+export class Button extends BahmniInputComponent {
 
   changeValue(valueSelected) {
     const value = this._getValue(valueSelected);
     const errors = this._getErrors(value);
     this.setState({ hasErrors: this._hasErrors(errors) });
-    this.props.onValueChange(value, errors);
+    this.props.onChange(value, errors);
   }
 
   _getValue(valueSelected) {
@@ -58,16 +31,6 @@ export class Button extends Component {
       value.push(valueSelected);
     }
     return multiSelect ? value : value[0];
-  }
-
-  _hasErrors(errors) {
-    return !isEmpty(errors);
-  }
-
-  _getErrors(value) {
-    const validations = this.props.validations;
-    const controlDetails = { validations, value };
-    return Validator.getErrors(controlDetails);
   }
 
   _isActive(option) {
@@ -103,7 +66,7 @@ export class Button extends Component {
 
 Button.propTypes = {
   multiSelect: PropTypes.bool,
-  onValueChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

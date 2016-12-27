@@ -53,7 +53,7 @@ describe('Button Component', () => {
   it('should change the value on click', () => {
     const wrapper = shallow(
       <Button
-        onValueChange={valueChangeSpy}
+        onChange={valueChangeSpy}
         options={options}
         validate={false}
         validations={[]}
@@ -73,7 +73,7 @@ describe('Button Component', () => {
 
   it('should change the value to undefined if double clicked', () => {
     const wrapper = shallow(
-      <Button onValueChange={valueChangeSpy} options={options} validate={false} validations={[]} />
+      <Button onChange={valueChangeSpy} options={options} validate={false} validations={[]} />
     );
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(valueChangeSpy.withArgs(options[1], []));
@@ -88,7 +88,7 @@ describe('Button Component', () => {
     const validations = [constants.validations.mandatory];
     const wrapper = shallow(
       <Button
-        onValueChange={valueChangeSpy}
+        onChange={valueChangeSpy}
         options={options}
         validate={false}
         validations={validations}
@@ -106,7 +106,7 @@ describe('Button Component', () => {
   it('should not reRender if value is same', () => {
     const wrapper = shallow(
       <Button
-        onValueChange={valueChangeSpy}
+        onChange={valueChangeSpy}
         options={options}
         validate={false}
         validations={[]}
@@ -124,12 +124,12 @@ describe('Button Component', () => {
 
   it('should validate Button when validate is set to true', () => {
     const validations = [constants.validations.mandatory];
-    const onChangeMockObj = { onValueChange: () => {} };
+    const onChangeMockObj = { onChange: () => {} };
     const onChangeMock = sinon.mock(onChangeMockObj);
-    onChangeMock.expects('onValueChange').once().withArgs(undefined, [{ errorType: 'mandatory' }]);
+    onChangeMock.expects('onChange').once().withArgs(undefined, [{ errorType: 'mandatory' }]);
     const wrapper = mount(
       <Button
-        onValueChange={valueChangeSpy}
+        onChange={valueChangeSpy}
         options={options}
         validate={false}
         validations={validations}
@@ -144,7 +144,7 @@ describe('Button Component', () => {
   it('should reRender on change of value', () => {
     const wrapper = shallow(
       <Button
-        onValueChange={valueChangeSpy}
+        onChange={valueChangeSpy}
         options={options}
         validate={false}
         validations={[]}
@@ -169,7 +169,7 @@ describe('Button Component', () => {
     const wrapper = shallow(
       <Button
         multiSelect
-        onValueChange={valueChangeSpy}
+        onChange={valueChangeSpy}
         options={options}
         validate={false}
         validations={[]}
@@ -184,7 +184,7 @@ describe('Button Component', () => {
     const wrapper = shallow(
       <Button
         multiSelect
-        onValueChange={valueChangeSpy}
+        onChange={valueChangeSpy}
         options={options}
         validate={false}
         validations={[]}
@@ -206,7 +206,7 @@ describe('Button Component', () => {
     const wrapper = shallow(
       <Button
         multiSelect
-        onValueChange={valueChangeSpy}
+        onChange={valueChangeSpy}
         options={options}
         validate={false}
         validations={[]}

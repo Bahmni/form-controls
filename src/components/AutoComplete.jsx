@@ -54,7 +54,7 @@ export class AutoComplete extends Component {
   componentDidUpdate() {
     const errors = this._getErrors(this.state.value);
     if (this._hasErrors(errors)) {
-      this.props.onValueChange(this.state.value, errors);
+      this.props.onChange(this.state.value, errors);
     }
   }
 
@@ -90,8 +90,8 @@ export class AutoComplete extends Component {
   handleChange(value) {
     const errors = this._getErrors(value);
     this.setState({ value, hasErrors: this._hasErrors(errors) });
-    if (this.props.onValueChange) {
-      this.props.onValueChange(value, errors);
+    if (this.props.onChange) {
+      this.props.onChange(value, errors);
     }
   }
 
@@ -163,7 +163,7 @@ AutoComplete.propTypes = {
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
   multiSelect: PropTypes.bool,
-  onValueChange: PropTypes.func,
+  onChange: PropTypes.func,
   options: PropTypes.array,
   optionsUrl: PropTypes.string,
   validations: PropTypes.array,

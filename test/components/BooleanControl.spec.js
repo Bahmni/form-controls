@@ -72,7 +72,7 @@ describe('BooleanControl', () => {
         validations={[]}
       />);
     const instance = wrapper.instance();
-    instance.onValueChange(options[0], []);
+    instance.onChange(options[0], []);
     sinon.assert.calledOnce(onChangeSpy.withArgs(true, []));
   });
 
@@ -117,7 +117,7 @@ describe('BooleanControl', () => {
         validations={[]}
       />);
     const instance = wrapper.instance();
-    instance.onValueChange(undefined, []);
+    instance.onChange(undefined, []);
     sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
   });
 });

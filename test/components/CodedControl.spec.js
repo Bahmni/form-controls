@@ -110,7 +110,7 @@ describe('CodedControl', () => {
         validations={[]}
       />);
     const instance = wrapper.instance();
-    instance.onValueChange({ value: 'answer1uuid' }, []);
+    instance.onChange({ value: 'answer1uuid' }, []);
     sinon.assert.calledOnce(onChangeSpy.withArgs(options[0], []));
   });
 
@@ -127,7 +127,7 @@ describe('CodedControl', () => {
     expect(wrapper.find('DummyControl')).to.have.prop('asynchronous').to.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('labelKey').to.eql('name');
     const instance = wrapper.instance();
-    instance.onValueChange({ value: 'answer1uuid' }, []);
+    instance.onChange({ value: 'answer1uuid' }, []);
     sinon.assert.calledOnce(onChangeSpy.withArgs(options[0], []));
     ComponentStore.deRegisterComponent('autoComplete');
   });
@@ -198,7 +198,7 @@ describe('CodedControl', () => {
         validations={[]}
       />);
     const instance = wrapper.instance();
-    instance.onValueChange([expectedOptions[0], expectedOptions[2]], []);
+    instance.onChange([expectedOptions[0], expectedOptions[2]], []);
     sinon.assert.calledOnce(onChangeSpy.withArgs([options[0], options[2]], []));
     ComponentStore.deRegisterComponent('autoComplete');
   });
@@ -213,7 +213,7 @@ describe('CodedControl', () => {
         validations={[]}
       />);
     const instance = wrapper.instance();
-    instance.onValueChange(undefined, []);
+    instance.onChange(undefined, []);
     sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
   });
 });

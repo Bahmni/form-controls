@@ -66,7 +66,7 @@ describe('TextBox', () => {
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 
-  it('should throw error on fail of validations during component update', () => {
+  it.only('should throw error on fail of validations during component update', () => {
     const validations = [constants.validations.mandatory];
 
     const wrapper = mount(

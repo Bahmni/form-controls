@@ -53,7 +53,7 @@ export class CodedControl extends Component {
     const { value, validate, validations, properties: { multiSelect } } = this.props;
     const props = {
       value: this._getValue(value, multiSelect),
-      onValueChange: this.onValueChange,
+      onChange: this.onValueChange,
       options: this._getOptionsRepresentation(this.props.options, multiSelect),
       validate,
       validations,

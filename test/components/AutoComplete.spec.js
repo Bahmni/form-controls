@@ -78,7 +78,7 @@ describe('AutoComplete', () => {
       const wrapper = mount(
         <AutoComplete
           asynchronous={false}
-          onValueChange={onSelectSpy}
+          onChange={onSelectSpy}
           options={options}
         />);
 
@@ -93,7 +93,7 @@ describe('AutoComplete', () => {
       const wrapper = mount(
         <AutoComplete
           asynchronous={false}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           options={options}
         />);
       const onChange = wrapper.find('Select').props().onChange;
@@ -130,7 +130,7 @@ describe('AutoComplete', () => {
       const wrapper = mount(
         <AutoComplete
           asynchronous={false}
-          onValueChange={onValueChange}
+          onChange={onValueChange}
           options={options}
           validations={validations}
           value={options[0]}

@@ -1,46 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import classNames from 'classnames';
-import { Validator } from 'src/helpers/Validator';
-import isEmpty from 'lodash/isEmpty';
+import { BahmniInputComponent } from './BahmniInputComponent.jsx';
 
-export class RadioButton extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: props.value, hasErrors: false };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.validate) {
-      const errors = this._getErrors(nextProps.value);
-      this.setState({ hasErrors: this._hasErrors(errors) });
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.value !== nextProps.value ||
-      this.state.value !== nextState.value ||
-      this.state.hasErrors !== nextState.hasErrors) {
-      return true;
-    }
-    return false;
-  }
+export class RadioButton extends BahmniInputComponent {
 
   changeValue(value) {
     const errors = this._getErrors(value);
     this.setState({ value, hasErrors: this._hasErrors(errors) });
-    this.props.onValueChange(value, errors);
-  }
-
-  _hasErrors(errors) {
-    return !isEmpty(errors);
-  }
-
-  _getErrors(value) {
-    const validations = this.props.validations;
-    const controlDetails = { validations, value };
-    return Validator.getErrors(controlDetails);
+    this.props.onChange(value, errors);
   }
 
   displayRadioButtons() {
@@ -67,7 +36,7 @@ export class RadioButton extends Component {
 }
 
 RadioButton.propTypes = {
-  onValueChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

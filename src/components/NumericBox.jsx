@@ -1,18 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import { Validator } from 'src/helpers/Validator';
 import classNames from 'classnames';
-import isEmpty from 'lodash/isEmpty';
 import constants from 'src/constants';
 import { NumericBoxDesigner } from 'src/components/designer/NumericBoxDesigner.jsx';
+import { BahmniInputComponent } from './BahmniInputComponent.jsx';
 
-export class NumericBox extends Component {
+export class NumericBox extends BahmniInputComponent {
   constructor(props) {
     super(props);
     this.defaultValidations = [constants.validations.allowRange, constants.validations.minMaxRange];
     const errors = this._getErrors(props.value) || [];
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
-    this.state = { hasErrors: false, hasWarnings };
+    this.state.hasWarnings = hasWarnings;
   }
 
   componentDidMount() {
@@ -20,26 +20,11 @@ export class NumericBox extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    super.componentWillReceiveProps(nextProps);
     if (nextProps.validate) {
       const errors = this._getErrors(nextProps.value);
-      const hasErrors = this._hasErrors(errors, constants.errorTypes.error);
       const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
-      this.setState({ hasErrors, hasWarnings });
-    }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.value !== nextProps.value ||
-      this.state.hasErrors !== nextState.hasErrors) {
-      return true;
-    }
-    return false;
-  }
-
-  componentDidUpdate() {
-    const errors = this._getErrors(this.props.value);
-    if (this._hasErrors(errors, constants.errorTypes.error)) {
-      this.props.onChange(this.props.value, errors);
+      this.setState({ hasWarnings });
     }
   }
 
@@ -51,10 +36,6 @@ export class NumericBox extends Component {
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
     this.setState({ hasErrors, hasWarnings });
     this.props.onChange(value, errors);
-  }
-
-  _hasErrors(errors, errorType) {
-    return !isEmpty(errors.filter((error) => error.type === errorType));
   }
 
   _getErrors(value) {
