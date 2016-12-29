@@ -25,9 +25,18 @@ export class CodedControlDesigner extends Component {
     return optionsRepresentation;
   }
 
+  _getDisplayType(properties) {
+    if (properties.autoComplete) {
+      return 'autoComplete';
+    } else if (properties.dropDown) {
+      return 'dropDown';
+    }
+    return 'button';
+  }
+
   render() {
     const { metadata, metadata: { concept } } = this.props;
-    const displayType = metadata.properties.autoComplete ? 'autoComplete' : 'button';
+    const displayType = this._getDisplayType(metadata.properties);
     const registeredComponent = ComponentStore.getDesignerComponent(displayType);
     if (registeredComponent) {
       return React.createElement(registeredComponent.control, {
@@ -73,11 +82,15 @@ const descriptor = {
             dataType: 'boolean',
             defaultValue: false,
           },
+          {
+            name: 'dropDown',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
         ],
       },
     ],
   },
 };
-
 
 ComponentStore.registerDesignerComponent('Coded', descriptor);

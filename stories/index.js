@@ -12,6 +12,7 @@ import { RadioButton } from 'src/components/RadioButton.jsx';
 import { NumericBox } from 'src/components/Button.jsx';
 import { CodedControl } from 'src/components/CodedControl.jsx';
 import { AutoComplete } from 'src/components/AutoComplete.jsx';
+import { DropDown } from 'src/components/DropDown.jsx';
 import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
 import { ControlState, ControlRecord } from '../src/ControlState';
