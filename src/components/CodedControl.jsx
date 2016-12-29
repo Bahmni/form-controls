@@ -59,7 +59,7 @@ export class CodedControl extends Component {
       validations,
       multiSelect,
     };
-    if (displayType === 'autoComplete') {
+    if (displayType === 'autoComplete' || displayType === 'dropDown') {
       props.asynchronous = false;
       props.labelKey = 'name';
       props.valueKey = 'value';
@@ -67,9 +67,18 @@ export class CodedControl extends Component {
     return props;
   }
 
+  _getDisplayType(properties) {
+    if (properties.autoComplete) {
+      return 'autoComplete';
+    } else if (properties.dropDown) {
+      return 'dropDown';
+    }
+    return 'button';
+  }
+
   render() {
     const { properties } = this.props;
-    const displayType = properties.autoComplete ? 'autoComplete' : 'button';
+    const displayType = this._getDisplayType(properties);
     const registeredComponent = ComponentStore.getRegisteredComponent(displayType);
     if (registeredComponent) {
       const childProps = this._getChildProps(displayType);

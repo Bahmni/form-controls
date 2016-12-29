@@ -5,6 +5,7 @@ export { TextBox } from 'components/TextBox.jsx';
 export { NumericBox } from 'components/NumericBox.jsx';
 export { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 export { AutoComplete } from 'components/AutoComplete.jsx';
+export { DropDown } from 'components/DropDown.jsx';
 export { BooleanControl } from 'components/BooleanControl.jsx';
 export { RadioButton } from 'components/RadioButton.jsx';
 export { Button } from 'components/Button.jsx';
