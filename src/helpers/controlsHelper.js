@@ -6,5 +6,8 @@ export function getValidations(properties, conceptProperties) {
   if (conceptProperties && conceptProperties.allowDecimal === false) {
     validations.push(constants.validations.allowDecimal);
   }
+  if (properties && properties.allowFutureDates === false) {
+    validations.push(constants.validations.allowFutureDates);
+  }
   return validations;
 }

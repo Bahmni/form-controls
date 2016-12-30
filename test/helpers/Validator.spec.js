@@ -123,6 +123,34 @@ describe('Validator', () => {
     });
   });
 
+  describe('allowFutureDates validation', () => {
+    const validations = [constants.validations.allowFutureDates];
+    const allowFutureDatesError = new Error({
+      message: validations[0],
+    });
+
+    it('should give error if date is in future', () => {
+      const date = new Date();
+      const changedDate = new Date(date.setDate(date.getDate() + 10));
+      const futureDate = changedDate.toISOString().split('T')[0];
+      const errors = Validator.getErrors({ validations, value: futureDate });
+      expect(errors).to.deep.eql([allowFutureDatesError]);
+    });
+
+    it('should not give error if date is in past', () => {
+      const date = new Date();
+      const changedDate = new Date(date.setDate(date.getDate() - 10));
+      const pastDate = changedDate.toISOString().split('T')[0];
+      const errors = Validator.getErrors({ validations, value: pastDate });
+      expect(errors).to.deep.eql([]);
+    });
+
+    it('should not give error if the date value is undefined', () => {
+      const errors = Validator.getErrors({ validations, value: undefined });
+      expect(errors).to.deep.eql([]);
+    });
+  });
+
   it('should not give error when there are no validations', () => {
     const controlDetails = { validations: [], value: '' };
     const errors = Validator.getErrors(controlDetails);

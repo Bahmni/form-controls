@@ -9,6 +9,7 @@ export { BooleanControl } from 'components/BooleanControl.jsx';
 export { RadioButton } from 'components/RadioButton.jsx';
 export { Button } from 'components/Button.jsx';
 export { CodedControl } from 'components/CodedControl.jsx';
+export { Date } from 'components/Date.jsx';
 
 //  -----------designer components------------------
 
@@ -25,6 +26,7 @@ export { Draggable } from 'components/Draggable.jsx';
 export { RowDesigner } from 'components/designer/Row.jsx';
 export { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
 export { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesigner.jsx';
+export { DateDesigner } from 'components/designer/Date.jsx';
 
 // -------------------------- helpers ---------------------
 

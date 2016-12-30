@@ -8,6 +8,7 @@ const Constants = {
     allowDecimal: 'allowDecimal',
     allowRange: 'allowRange',
     minMaxRange: 'minMaxRange',
+    allowFutureDates: 'allowFutureDates',
   },
   errorTypes: {
     warning: 'warning',

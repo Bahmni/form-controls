@@ -51,6 +51,14 @@ export class Validator {
     return undefined;
   }
 
+  static allowFutureDates(obsValue) {
+    if (isUndefined(obsValue)) return undefined;
+    if (Date.now() < new Date(obsValue).getTime()) {
+      return new Error({ message: constants.validations.allowFutureDates });
+    }
+    return undefined;
+  }
+
   static getErrors(controlDetails) {
     const { validations, value, params } = controlDetails;
     const errors = map(validations, (propertyName) => {
@@ -72,4 +80,6 @@ Validator.propertyValidators = {
       (obsVal, params) => Validator.allowRange(obsVal, params),
   [constants.validations.minMaxRange]:
     (obsVal, params) => Validator.minMaxRange(obsVal, params),
+  [constants.validations.allowFutureDates]:
+    (obsValue) => Validator.allowFutureDates(obsValue),
 };
