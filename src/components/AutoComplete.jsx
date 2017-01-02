@@ -28,6 +28,12 @@ export class AutoComplete extends Component {
     };
   }
 
+  componentWillMount() {
+    if (!this.props.asynchronous && this.props.minimumInput === 0) {
+      this.setState({ options: this.props.options });
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const value = get(nextProps, 'value');
     const errors = this._getErrors(value);
@@ -118,7 +124,7 @@ export class AutoComplete extends Component {
 
   render() {
     const { autofocus, disabled, labelKey, valueKey,
-                  asynchronous, multiSelect, minimumInput } = this.props;
+                  asynchronous, multiSelect, minimumInput, searchable } = this.props;
     const props = {
       autofocus,
       backspaceRemoves: false,
@@ -129,6 +135,7 @@ export class AutoComplete extends Component {
       onChange: this.handleChange,
       value: this.state.value,
       valueKey,
+      searchable,
     };
     const className =
       classNames('obs-control-select-wrapper', { 'form-builder-error': this.state.hasErrors });
@@ -166,6 +173,7 @@ AutoComplete.propTypes = {
   onValueChange: PropTypes.func,
   options: PropTypes.array,
   optionsUrl: PropTypes.string,
+  searchable: PropTypes.bool,
   validations: PropTypes.array,
   value: PropTypes.any,
   valueKey: PropTypes.string,
@@ -180,6 +188,7 @@ AutoComplete.defaultProps = {
   multiSelect: false,
   optionsUrl: '/openmrs/ws/rest/v1/concept?v=full&q=',
   valueKey: 'uuid',
+  searchable: true,
 };
 
 const descriptor = {
