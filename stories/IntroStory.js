@@ -7,6 +7,8 @@ import { ObsMapper } from 'src/mapper/ObsMapper';
 import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
 import '../node_modules/react-select/dist/react-select.css';
+import { AutoComplete } from 'src/components/AutoComplete.jsx';
+import { DropDown } from 'src/components/DropDown.jsx';
 
 const obsList = [
   {
@@ -115,6 +117,7 @@ const form = {
         mandatory: true,
         notes: false,
         autoComplete: false,
+        dropDown: true,
         location: {
           column: 0,
           row: 0,
@@ -200,11 +203,7 @@ storiesOf('ObsControl', module)
           <ObsControl
             mapper = { new ObsMapper() }
             metadata={form.controls[3]}
-            obs={new Obs({ concept: form.controls[3].concept, value: {
-              display: 'Answer1',
-              name: { name: 'Answer1' },
-              uuid: 'answer1uuid',
-            } })}
+            obs={new Obs({ concept: form.controls[3].concept })}
             onValueChanged={() => {}}
             validate={ false }
           />
