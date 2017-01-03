@@ -9,6 +9,7 @@ const Constants = {
     allowRange: 'allowRange',
     minMaxRange: 'minMaxRange',
     allowFutureDates: 'allowFutureDates',
+    dateTimeError: 'dateTimeError',
   },
   errorTypes: {
     warning: 'warning',

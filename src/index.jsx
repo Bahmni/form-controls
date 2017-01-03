@@ -10,6 +10,7 @@ export { RadioButton } from 'components/RadioButton.jsx';
 export { Button } from 'components/Button.jsx';
 export { CodedControl } from 'components/CodedControl.jsx';
 export { Date } from 'components/Date.jsx';
+export { DateTime } from 'components/DateTime.jsx';
 
 //  -----------designer components------------------
 
@@ -27,6 +28,7 @@ export { RowDesigner } from 'components/designer/Row.jsx';
 export { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
 export { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesigner.jsx';
 export { DateDesigner } from 'components/designer/Date.jsx';
+export { DateTimeDesigner } from 'components/designer/DateTime.jsx';
 
 // -------------------------- helpers ---------------------
 

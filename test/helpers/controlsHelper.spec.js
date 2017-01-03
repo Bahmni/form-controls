@@ -22,6 +22,14 @@ describe('ControlsHelper', () => {
       expect(validations[0]).to.equals(constants.validations.mandatory);
     });
 
+    it('get allowFutureDates validations from properties', () => {
+      const props = { allowFutureDates: false };
+      const validations = getValidations(props, undefined);
+
+      expect(validations.length).to.equals(1);
+      expect(validations[0]).to.equals(constants.validations.allowFutureDates);
+    });
+
     it('get allowDecimal validations from properties', () => {
       let conceptProperties = { allowDecimal: false };
       let validations = getValidations({}, conceptProperties);

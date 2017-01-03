@@ -8,6 +8,7 @@ import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
 import '../node_modules/react-select/dist/react-select.css';
 import { Date } from 'src/components/Date.jsx';
+import { DateTime } from 'src/components/DateTime.jsx';
 
 const obsList = [
   {
@@ -162,6 +163,28 @@ const form = {
         datatype: 'Date',
       },
     },
+    {
+      type: 'obsControl',
+      label: {
+        id: 'systolic',
+        type: 'label',
+        value: 'Systolic',
+      },
+      properties: {
+        mandatory: true,
+        allowDecimal: false,
+        location: {
+          column: 0,
+          row: 0,
+        },
+      },
+      id: '7',
+      concept: {
+        name: 'Systolic',
+        uuid: 'c36e9c8b-3f10-11e4-adec-0800271c1b75',
+        datatype: 'DateTime',
+      },
+    },
   ],
 };
 
@@ -241,6 +264,19 @@ storiesOf('ObsControl', module)
         mapper = { new ObsMapper() }
         metadata={form.controls[4]}
         obs={new Obs({ concept: form.controls[4].concept, value: '1999-03-03' })}
+        onValueChanged={() => {}}
+        validate={ false }
+      />
+    </StoryWrapper>
+  ));
+
+storiesOf('ObsControl', module)
+  .add('DateTime Obs Control', () => (
+    <StoryWrapper json={form.controls[5]}>
+      <ObsControl
+        mapper = { new ObsMapper() }
+        metadata={form.controls[5]}
+        obs={new Obs({ concept: form.controls[5].concept, value: '2016-12-31 14:21' })}
         onValueChanged={() => {}}
         validate={ false }
       />
