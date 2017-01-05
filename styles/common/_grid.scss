@@ -2,13 +2,12 @@
   display: inline-block;
   max-width: 223px;
   button {
-    margin: 0 2px 2px 0;
+    margin: 0 2px 4px 0;
     text-align: center;
-    height: 32px;
     width: auto;
-    text-align: center;
     padding-left: 15px;
     padding-right: 15px;
+    line-height: 1em !important;
     i.fa-ok {
       display: none;
       padding-top: 0;
