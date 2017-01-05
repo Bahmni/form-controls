@@ -16,7 +16,8 @@
     "storybook": "start-storybook -p 6006",
     "deploy-storybook": "storybook-to-ghpages",
     "build-storybook": "build-storybook",
-    "bump-up": "npm version patch -m 'Bumped to version %s'"
+    "bump-up": "npm version patch -m 'Bumped to version %s'",
+    "watch": "webpack --watch"
   },
   "author": "bahmni@thoughtworks.com",
   "devDependencies": {
