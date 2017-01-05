@@ -1,20 +1,31 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
+import find from 'lodash/find';
 
 export class BooleanControlDesigner extends Component {
   getJsonDefinition() {
     return this.updatedMetadata;
   }
 
+  getOptions() {
+    const { properties, concept } = this.props.metadata;
+    const toggleSelect = find(properties, (value, key) => (key === 'toggleSelect' && value));
+    if (toggleSelect) {
+      return [{ name: concept.name, value: true }];
+    }
+    return [{ name: 'yes', value: true }, { name: 'No', value: false }];
+  }
+
   render() {
-    const defaultOptions = [{ name: 'Yes', value: true }, { name: 'No', value: false }];
-    const { metadata, metadata: { options = defaultOptions } } = this.props;
-    this.updatedMetadata = Object.assign({}, { options }, metadata);
+    const options = this.getOptions();
+    this.updatedMetadata = Object.assign({}, this.props.metadata);
+    this.updatedMetadata.options = options;
     const registeredComponent = ComponentStore.getDesignerComponent('button');
     if (registeredComponent) {
       return React.createElement(registeredComponent.control, {
         options,
-      });
+      }
+      );
     }
     return null;
   }
@@ -40,7 +51,13 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [],
+        attributes: [
+          {
+            name: 'toggleSelect',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
+        ],
       },
     ],
   },
