@@ -187,6 +187,41 @@ const form = {
         datatype: 'DateTime',
       },
     },
+    {
+      type: 'obsControl',
+      label: {
+        type: 'label',
+        value: 'Coded concept',
+      },
+      properties: {
+        mandatory: true,
+        notes: false,
+        autoComplete: false,
+        dropDown: true,
+        location: {
+          column: 0,
+          row: 0,
+        },
+      },
+      id: '8',
+      concept: {
+        name: 'Coded concept',
+        uuid: 'c2a43174-c990-4e54-8516-17372c83537f',
+        datatype: 'Coded',
+        answers: [
+          {
+            display: 'Answer1',
+            name: 'Answer1',
+            uuid: 'answer1uuid',
+          },
+          {
+            display: 'Answer2',
+            name: 'Answer2',
+            uuid: 'answer2uuid',
+          },
+        ],
+      },
+    },
   ],
 };
 
@@ -275,6 +310,19 @@ storiesOf('ObsControl', module)
         mapper = { new ObsMapper() }
         metadata={form.controls[5]}
         obs={new Obs({ concept: form.controls[5].concept, value: '2016-12-31 14:21' })}
+        onValueChanged={() => {}}
+        validate={ false }
+      />
+    </StoryWrapper>
+  ));
+
+storiesOf('ObsControl', module)
+  .add('Coded Obs Control DropDown', () => (
+    <StoryWrapper json={form.controls[6]}>
+      <ObsControl
+        mapper = { new ObsMapper() }
+        metadata={form.controls[6]}
+        obs={new Obs({ concept: form.controls[6].concept })}
         onValueChanged={() => {}}
         validate={ false }
       />
