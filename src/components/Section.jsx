@@ -19,19 +19,10 @@ export class Section extends Component {
       .set('obs', obs)
       .set('errors', errors);
     const data = this.state.data.setRecord(bahmniRecord);
-    const updatedObs = this.props.mapper.setValue(this.state.obs, obs, errors);
-    console.log(updatedObs);
+    const updatedObs = this.props.mapper.setValue(this.state.obs, obs);
     const updatedErrors = getErrors(data.getRecords());
     this.setState({ data, obs: updatedObs });
     this.props.onValueChanged(updatedObs, updatedErrors);
-  }
-
-  _getObsGroup(obs, data) {
-    let observations = obs.removeGroupMembers();
-    each(data.getRecords(), (record) => {
-      observations = observations.addGroupMember(record.obs);
-    });
-    return observations;
   }
 
   render() {
