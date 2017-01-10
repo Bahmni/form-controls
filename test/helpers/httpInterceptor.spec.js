@@ -14,7 +14,7 @@ describe('httpInterceptor', () => {
     it('should return response when status is 200', (done) => {
       fetchMock.mock('/someUrl', { data: { id: 1 } });
       httpInterceptor.get('/someUrl')
-        .then(res => {
+        .then((res) => {
           expect(fetchMock.calls().matched.length).to.eql(1);
           expect(res.data.id).to.eql(1);
           done();
@@ -25,7 +25,7 @@ describe('httpInterceptor', () => {
       fetchMock.mock('/someUrl', 404);
       httpInterceptor.get('/someUrl')
         .then(() => {})
-        .catch(err => {
+        .catch((err) => {
           expect(err.response.status).to.eql(404);
           done();
         });

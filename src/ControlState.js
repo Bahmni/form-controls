@@ -92,10 +92,16 @@ function getRecords(controls, formName, formVersion, bahmniObservations) {
     const obsArray = mapper.getInitialObject(formName, formVersion, control, bahmniObservations);
 
     return obsArray.map(obs => new ControlRecord({ formFieldPath: obs.formFieldPath,
-      obs, mapper, control, enabled: false, showAddMore: true }));
+      obs,
+      mapper,
+      control,
+      enabled: false,
+      showAddMore: true }));
   });
 
+  /* eslint-disable prefer-spread */
   return [].concat.apply([], records);
+  /* eslint-disable prefer-spread */
 }
 
 export function controlStateFactory(metadata, bahmniObs, formName, formVersion) {
@@ -106,7 +112,7 @@ export function controlStateFactory(metadata, bahmniObs, formName, formVersion) 
 }
 
 export function getErrors(records) {
-  return [].concat(...records.map((record) => record.get('errors'))
-    .filter((error) =>
-    error && !isEmpty(error.filter((err) => err.type === constants.errorTypes.error))));
+  return [].concat(...records.map(record => record.get('errors'))
+    .filter(error =>
+    error && !isEmpty(error.filter(err => err.type === constants.errorTypes.error))));
 }

@@ -67,19 +67,19 @@ export class Validator {
       return undefined;
     });
 
-    return errors.filter((error) => error !== undefined);
+    return errors.filter(error => error !== undefined);
   }
 }
 
 Validator.propertyValidators = {
   [constants.validations.mandatory]:
-    (obsVal) => Validator.mandatory(obsVal),
+    obsVal => Validator.mandatory(obsVal),
   [constants.validations.allowDecimal]:
-      (obsVal) => Validator.allowDecimal(obsVal),
+      obsVal => Validator.allowDecimal(obsVal),
   [constants.validations.allowRange]:
       (obsVal, params) => Validator.allowRange(obsVal, params),
   [constants.validations.minMaxRange]:
     (obsVal, params) => Validator.minMaxRange(obsVal, params),
   [constants.validations.allowFutureDates]:
-    (obsValue) => Validator.allowFutureDates(obsValue),
+    obsValue => Validator.allowFutureDates(obsValue),
 };

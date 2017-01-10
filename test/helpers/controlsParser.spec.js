@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-import { groupControlsByLocation, sortGroupedControls } from 'src/helpers/controlsParser';
-import { setupAddRemoveButtonsForAddMore } from 'src/helpers/controlsParser';
+import { groupControlsByLocation, sortGroupedControls,
+  setupAddRemoveButtonsForAddMore } from 'src/helpers/controlsParser';
 import { ControlRecord } from 'src/ControlState';
 
 describe('ControlsParser', () => {

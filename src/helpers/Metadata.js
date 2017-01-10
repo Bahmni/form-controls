@@ -1,13 +1,13 @@
-import { DescriptorParser as Descriptor } from './descriptorParser';
 import ComponentStore from 'src/helpers/componentStore';
+import { DescriptorParser as Descriptor } from './descriptorParser';
 
 export class Metadata {
   getMetadataForConcept(concept, idGenerator, type = 'obsGroupControl',
-                        childType = 'obsControl', loc = { row: 0, column: 0 }, id) {
-    let controls = undefined;
+    childType = 'obsControl', loc = { row: 0, column: 0 }, id) {
+    let controls;
     if (concept.set) {
       let row = 0;
-      controls = concept.setMembers.map(c => {
+      controls = concept.setMembers.map((c) => {
         if (c.set) {
           return this.getMetadataForConcept(c, idGenerator, type);
         }

@@ -146,7 +146,9 @@ describe('ObsGroupControl', () => {
 
       const pulseNumericObs = new Obs({
         concept: pulseNumericConcept,
-        value: 10, formFieldPath: 'formName.1/100-0', uuid: 'childObs1Uuid',
+        value: 10,
+        formFieldPath: 'formName.1/100-0',
+        uuid: 'childObs1Uuid',
       });
 
       const pulseDataObs = new Obs({
@@ -158,9 +160,12 @@ describe('ObsGroupControl', () => {
         groupMembers: [
           {
             concept: pulseNumericConcept,
-            value: 10, formFieldPath: 'formName.1/100-0', uuid: 'childObs1Uuid',
+            value: 10,
+            formFieldPath: 'formName.1/100-0',
+            uuid: 'childObs1Uuid',
           }],
-        formFieldPath: 'formName.1/1-0', uuid: 'pulseDataObsUuid',
+        formFieldPath: 'formName.1/1-0',
+        uuid: 'pulseDataObsUuid',
       });
 
       const wrapper = mount(

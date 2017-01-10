@@ -59,17 +59,17 @@ export class LabelDesigner extends Component {
     if (this.state.isEditable) {
       return (
         <input
-          defaultValue={ this.state.value }
+          defaultValue={this.state.value}
           onBlur={this.onBlur}
           onKeyUp={this.onEnterKey}
-          ref={ this.storeComponentRef }
+          ref={this.storeComponentRef}
           type="text"
         />
       );
     }
     return (
       <label
-        onDoubleClick={ this.onDoubleClick }
+        onDoubleClick={this.onDoubleClick}
       >
         { this.state.value }
       </label>);

@@ -20,7 +20,10 @@ describe('ObsGroupMapper', () => {
     uuid: 'pulseUuid',
     datatype: 'Numeric',
     conceptClass: 'Misc',
-  }, value: 10, formNamespace: 'formUuid/6', uuid: 'childObs1Uuid' });
+  },
+    value: 10,
+    formNamespace: 'formUuid/6',
+    uuid: 'childObs1Uuid' });
 
   const obsGroup = new Obs({ concept: {
     name: 'Pulse Data',
@@ -28,7 +31,8 @@ describe('ObsGroupMapper', () => {
     datatype: 'Misc',
   },
     groupMembers: List.of(numericObs, booleanObs),
-    formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid' });
+    formNamespace: 'formUuid/4',
+    uuid: 'pulseDataObsUuid' });
 
   const mapper = new ObsGroupMapper();
 
@@ -48,7 +52,8 @@ describe('ObsGroupMapper', () => {
       datatype: 'Misc',
     },
       groupMembers: List.of(numericObsUpdated, booleanObsUpdated),
-      formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid' });
+      formNamespace: 'formUuid/4',
+      uuid: 'pulseDataObsUuid' });
     const obsGroupUpdated = mapper.setValue(obsGroupWithOutValue, booleanObsUpdated);
 
     expect(obsGroupUpdated.isVoided()).to.be.eql(true);
@@ -63,7 +68,8 @@ describe('ObsGroupMapper', () => {
       datatype: 'Misc',
     },
       groupMembers: List.of(numericObsUpdated, booleanObsUpdated),
-      formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid' });
+      formNamespace: 'formUuid/4',
+      uuid: 'pulseDataObsUuid' });
     const obsGroupUpdated = mapper.setValue(obsGroupWithChildVoided, numericObsUpdated);
 
     expect(obsGroupUpdated.isVoided()).to.be.eql(true);
@@ -85,7 +91,8 @@ describe('ObsGroupMapper', () => {
       datatype: 'Misc',
     },
       groupMembers: List.of(numericObs),
-      formNamespace: 'numericFormUuid/4', uuid: 'numericDataObsUuid' });
+      formNamespace: 'numericFormUuid/4',
+      uuid: 'numericDataObsUuid' });
     const booleanObsUpdated = booleanObs.void();
     const obsGroupWithChildVoided = new Obs({ concept: {
       name: 'Pulse Data',
@@ -93,7 +100,8 @@ describe('ObsGroupMapper', () => {
       datatype: 'Misc',
     },
       groupMembers: List.of(numericObsUpdated, booleanObsUpdated),
-      formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid' });
+      formNamespace: 'formUuid/4',
+      uuid: 'pulseDataObsUuid' });
     const obsGroupUpdated = mapper.setValue(obsGroupWithChildVoided, numericObsUpdated);
 
     expect(obsGroupUpdated.isVoided()).to.be.eql(false);

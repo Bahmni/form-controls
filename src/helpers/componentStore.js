@@ -41,4 +41,4 @@ class ComponentStore {
   }
 }
 
-export default (new ComponentStore);
+export default (new ComponentStore());

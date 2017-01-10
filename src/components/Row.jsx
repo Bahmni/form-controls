@@ -5,7 +5,7 @@ import map from 'lodash/map';
 export default class Row extends Component {
 
   getControlsByColumn(sortedColumnControls, records, childProps) {
-    return map(sortedColumnControls, control => {
+    return map(sortedColumnControls, (control) => {
       const column = control[0].properties.location.column;
       const className = `form-builder-column form-builder-column-${column}`;
       const controls = getControls(control, records, childProps);

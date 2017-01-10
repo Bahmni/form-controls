@@ -76,7 +76,7 @@ export class ObsControl extends Component {
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     if (!hideLabel) {
       return (
-            <Label metadata={label} />
+        <Label metadata={label} />
       );
     }
     return null;
@@ -98,13 +98,16 @@ export class ObsControl extends Component {
       concept.description[0].display : undefined;
     if (description) {
       return (
-        <div className={classNames('concept-tooltip-wrap fr',
-           { active: showHintButton === true }) }>
-          <i className="fa fa-question-circle concept-tooltip-trigger"
+        <div
+          className={classNames('concept-tooltip-wrap fr',
+           { active: showHintButton === true })}
+        >
+          <i
+            className="fa fa-question-circle concept-tooltip-trigger"
             onClick={() => this.setState({ showHintButton: !showHintButton })}
           />
           <div className="concept-tooltip-description">
-            <i className="fa fa-caret-down"></i>
+            <i className="fa fa-caret-down" />
             <span className="details hint">{description}</span>
           </div>
         </div>
@@ -130,9 +133,10 @@ export class ObsControl extends Component {
     const isAddMoreEnabled = find(properties, (value, key) => (key === 'addMore' && value));
     if (isAddMoreEnabled) {
       return (
-              <AddMore canAdd={ this.props.showAddMore } canRemove={ this.props.showRemove }
-                onAdd={this.onAddControl} onRemove={this.onRemoveControl}
-              />
+        <AddMore
+          canAdd={this.props.showAddMore} canRemove={this.props.showRemove}
+          onAdd={this.onAddControl} onRemove={this.onRemoveControl}
+        />
       );
     }
     return null;
@@ -156,11 +160,11 @@ export class ObsControl extends Component {
       );
     }
     return (
-        <div>
-          <UnSupportedComponent
-            message={ `The component with concept datatype ${concept.datatype} is not supported` }
-          />
-        </div>
+      <div>
+        <UnSupportedComponent
+          message={`The component with concept datatype ${concept.datatype} is not supported`}
+        />
+      </div>
     );
   }
 }

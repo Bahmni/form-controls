@@ -38,13 +38,13 @@ describe('Button Component', () => {
 
   it('should render button with default value', () => {
     const wrapper = shallow(
-     <Button
-       onValueChange={valueChangeSpy}
-       options={options}
-       validate={false}
-       validations={[]}
-       value={value}
-     />
+      <Button
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+        value={value}
+      />
     );
     expect(wrapper.find('button').at(0)).to.have.className('fl active');
     expect(wrapper.find('button').at(1)).to.have.className('fl');

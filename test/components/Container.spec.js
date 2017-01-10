@@ -147,8 +147,7 @@ describe('Container', () => {
 
   describe('getValue', () => {
     it('should return the observations of its children which are data controls', () => {
-      const wrapper = mount(<
-        Container
+      const wrapper = mount(<Container
         metadata={metadata}
         observations={observations}
         validate={false}
@@ -194,8 +193,7 @@ describe('Container', () => {
         properties: { location: { row: 2, column: 1 }, mandatory: true },
       };
       metadataClone.controls.push(mandatoryControl);
-      const wrapper = mount(<
-        Container
+      const wrapper = mount(<Container
         metadata={metadataClone}
         observations={observations}
         validate={false}
@@ -218,8 +216,7 @@ describe('Container', () => {
         properties: { location: { row: 2, column: 1 }, mandatory: true },
       };
       metadataClone.controls.push(mandatoryControl);
-      const wrapper = mount(<
-        Container
+      const wrapper = mount(<Container
         metadata={metadataClone}
         observations={[]}
         validate={false}
@@ -250,7 +247,8 @@ describe('Container', () => {
       };
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
-        mount(<Container metadata={metadataClone} observations={[voidedObservation]}
+        mount(<Container
+          metadata={metadataClone} observations={[voidedObservation]}
           validate={false}
         />);
       wrapper.find('input').at(0).simulate('change', { target: { value: undefined } });
@@ -444,7 +442,8 @@ describe('Container', () => {
     });
 
     it('should render multiple observations filled using AddMore', () => {
-      const wrapper = mount(<Container metadata={metadata2}
+      const wrapper = mount(<Container
+        metadata={metadata2}
         observations={[obs1, obs2]}
         validate={false}
       />);
@@ -463,7 +462,8 @@ describe('Container', () => {
     });
 
     it('should render empty control if Add button is clicked', () => {
-      const wrapper = mount(<Container metadata={metadata2}
+      const wrapper = mount(<Container
+        metadata={metadata2}
         observations={[]}
         validate={false}
       />);
@@ -482,7 +482,8 @@ describe('Container', () => {
     });
 
     it('should remove control if Remove button is clicked', () => {
-      const wrapper = mount(<Container metadata={metadata2}
+      const wrapper = mount(<Container
+        metadata={metadata2}
         observations={[obs1, obs2]}
         validate={false}
       />);
@@ -503,7 +504,8 @@ describe('Container', () => {
     it('should remove control having saved obs if Remove button is clicked', () => {
       obs1.uuid = 'uuid1';
       obs2.uuid = 'uuid2';
-      const wrapper = mount(<Container metadata={metadata2}
+      const wrapper = mount(<Container
+        metadata={metadata2}
         observations={[obs1, obs2]}
         validate={false}
       />);

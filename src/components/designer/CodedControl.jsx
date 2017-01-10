@@ -19,7 +19,7 @@ export class CodedControlDesigner extends Component {
 
   _getOptionsRepresentation(options) {
     const optionsRepresentation = [];
-    map(options, (option) =>
+    map(options, option =>
       optionsRepresentation.push({ name: option.name.display, value: option.uuid })
     );
     return optionsRepresentation;

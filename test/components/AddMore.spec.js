@@ -2,8 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { AddMore } from '../../src/components/AddMore.jsx';
 import sinon from 'sinon';
+import { AddMore } from '../../src/components/AddMore.jsx';
 
 chai.use(chaiEnzyme());
 
@@ -11,7 +11,8 @@ describe('AddMore', () => {
   it('should render both add and remove buttons with proper call backs', () => {
     const onAddSpy = sinon.spy();
     const onRemoveSpy = sinon.spy();
-    const wrapper = mount(<AddMore canAdd canRemove
+    const wrapper = mount(<AddMore
+      canAdd canRemove
       onAdd={onAddSpy} onRemove={onRemoveSpy}
     />);
 
@@ -24,7 +25,8 @@ describe('AddMore', () => {
   it('should not render add button when canAdd is false', () => {
     const onAddSpy = sinon.spy();
     const onRemoveSpy = sinon.spy();
-    const wrapper = mount(<AddMore canAdd={false}
+    const wrapper = mount(<AddMore
+      canAdd={false}
       canRemove onAdd={onAddSpy} onRemove={onRemoveSpy}
     />);
 
@@ -35,7 +37,8 @@ describe('AddMore', () => {
   it('should not render remove button when canRemove is false', () => {
     const onAddSpy = sinon.spy();
     const onRemoveSpy = sinon.spy();
-    const wrapper = mount(<AddMore canAdd canRemove={false}
+    const wrapper = mount(<AddMore
+      canAdd canRemove={false}
       onAdd={onAddSpy} onRemove={onRemoveSpy}
     />);
 
@@ -46,7 +49,8 @@ describe('AddMore', () => {
   it('should call correct callbacks on button clicks', () => {
     const onAddSpy = sinon.spy();
     const onRemoveSpy = sinon.spy();
-    const wrapper = mount(<AddMore canAdd canRemove
+    const wrapper = mount(<AddMore
+      canAdd canRemove
       onAdd={onAddSpy} onRemove={onRemoveSpy}
     />);
 

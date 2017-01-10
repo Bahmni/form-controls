@@ -33,11 +33,11 @@ export class BooleanControl extends Component {
       return React.createElement(registeredComponent, childProps);
     }
     return (
-        <div>
-          <UnSupportedComponent
-            message={ 'Button component is not supported' }
-          />
-        </div>
+      <div>
+        <UnSupportedComponent
+          message={'Button component is not supported'}
+        />
+      </div>
     );
   }
 }

@@ -71,7 +71,7 @@ describe('GridDesigner', () => {
       <GridDesigner
         controls={[]}
         idGenerator={new IDGenerator()}
-        wrapper={ wrapper }
+        wrapper={wrapper}
       />);
     const children = grid.find('.grid').children();
 
@@ -81,9 +81,9 @@ describe('GridDesigner', () => {
   it('should create rows based on existing controls', () => {
     const grid = shallow(
       <GridDesigner
-        controls={ formResourceControls }
+        controls={formResourceControls}
         idGenerator={new IDGenerator()}
-        wrapper={ wrapper }
+        wrapper={wrapper}
       />);
     const children = grid.find('.grid').children();
     const dataRow = grid.find('.grid').childAt(0);
@@ -98,9 +98,9 @@ describe('GridDesigner', () => {
 
     const grid = shallow(
       <GridDesigner
-        controls={ formControls }
+        controls={formControls}
         idGenerator={new IDGenerator()}
-        wrapper={ wrapper }
+        wrapper={wrapper}
       />);
     const children = grid.find('.grid').children();
 
@@ -116,9 +116,9 @@ describe('GridDesigner', () => {
     const formControls = formResourceControls.slice(0)[0];
     const grid = shallow(
       <GridDesigner
-        controls={ [formControls] }
+        controls={[formControls]}
         idGenerator={idGenerator}
-        wrapper={ wrapper }
+        wrapper={wrapper}
       />);
     const rows = grid.find('RowDesigner');
 

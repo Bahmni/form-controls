@@ -99,7 +99,9 @@ describe('Obs', () => {
       uuid: 'pulseUuid',
       datatype: 'Numeric',
     },
-      formNamespace, uuid, value });
+      formNamespace,
+      uuid,
+      value });
 
     expect(obs.getGroupMembers()).to.be.eql(undefined);
 
@@ -119,7 +121,9 @@ describe('Obs', () => {
       datatype: 'Numeric',
     },
       groupMembers: List.of(childObs),
-      formNamespace, uuid, value });
+      formNamespace,
+      uuid,
+      value });
 
     expect(obs.getGroupMembers().size).to.be.eql(1);
     const obsUpdated = obs.addGroupMember(childObs);
@@ -131,7 +135,9 @@ describe('Obs', () => {
       name: 'Pulse',
       uuid: 'pulseUuid',
       datatype: 'Numeric',
-    }, formNamespace: 'formUuid/5', uuid: 'test' });
+    },
+      formNamespace: 'formUuid/5',
+      uuid: 'test' });
 
     const parentObs = new Obs({ concept: {
       name: 'Pulse Data',
@@ -139,7 +145,9 @@ describe('Obs', () => {
       datatype: 'Misc',
     },
       groupMembers: List.of(childObs),
-      formNamespace, uuid, value });
+      formNamespace,
+      uuid,
+      value });
 
     const childObsUpdated = childObs.setValue('72');
     const parentObsUpdated = parentObs.addGroupMember(childObsUpdated);
@@ -153,14 +161,18 @@ describe('Obs', () => {
       uuid: 'pulseAbnormalUuid',
       datatype: 'Boolean',
       conceptClass: 'Abnormal',
-    }, formNamespace: 'formUuid/5', uuid: 'childObs2Uuid' });
+    },
+      formNamespace: 'formUuid/5',
+      uuid: 'childObs2Uuid' });
 
     const pulseNumericObs = new Obs({ concept: {
       name: 'Pulse',
       uuid: 'pulseUuid',
       datatype: 'Numeric',
       conceptClass: 'Misc',
-    }, formNamespace: 'formUuid/6', uuid: 'childObs1Uuid' });
+    },
+      formNamespace: 'formUuid/6',
+      uuid: 'childObs1Uuid' });
 
     const pulseDataObs = new Obs({ concept: {
       name: 'Pulse Data',
@@ -168,7 +180,9 @@ describe('Obs', () => {
       datatype: 'Misc',
     },
       groupMembers: List.of(pulseNumericObs, pulseAbnormalObs),
-      formNamespace, uuid, value });
+      formNamespace,
+      uuid,
+      value });
 
     const abnormalChildObs = pulseDataObs.getAbnormalChildObs();
     expect(pulseAbnormalObs).to.be.eql(abnormalChildObs);

@@ -126,7 +126,7 @@ describe('Control State', () => {
 
       expect(expectedRecords).to.have.length(3);
 
-      const namespaces = form.controls.map((control) =>
+      const namespaces = form.controls.map(control =>
         createFormNamespaceAndPath(form.name, form.version, control.id).formFieldPath
       );
 

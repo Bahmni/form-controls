@@ -80,8 +80,8 @@ describe('CodedControl', () => {
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
-    expect(wrapper.find('DummyControl')).to.have.prop('value').
-        to.deep.eql({ name: 'Answer1', value: 'answer1uuid' });
+    expect(wrapper.find('DummyControl')).to.have.prop('value')
+        .to.deep.eql({ name: 'Answer1', value: 'answer1uuid' });
   });
 
 
@@ -180,8 +180,8 @@ describe('CodedControl', () => {
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
-    expect(wrapper.find('DummyControl')).to.have.prop('value').
-    to.deep.eql([expectedOptions[0], expectedOptions[1]]);
+    expect(wrapper.find('DummyControl')).to.have.prop('value')
+    .to.deep.eql([expectedOptions[0], expectedOptions[1]]);
 
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(expectedOptions);
     ComponentStore.deRegisterComponent('autoComplete');

@@ -6,11 +6,12 @@ export class DropDown extends PureComponent {
 
   render() {
     return (
-        <AutoComplete {...this.props}
-          asynchronous={false}
-          minimumInput={0}
-          searchable={this.props.searchable}
-        />
+      <AutoComplete
+        {...this.props}
+        asynchronous={false}
+        minimumInput={0}
+        searchable={this.props.searchable}
+      />
     );
   }
 }

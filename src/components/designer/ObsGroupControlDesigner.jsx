@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
-import { ObsGroupMapper } from '../../mapper/ObsGroupMapper';
 import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
+import { LabelDesigner } from 'components/designer/Label.jsx';
+import { ObsGroupMapper } from '../../mapper/ObsGroupMapper';
 import { Concept } from '../../helpers/Concept';
 import { Metadata } from '../../helpers/Metadata';
-import { LabelDesigner } from 'components/designer/Label.jsx';
 
 export class ObsGroupControlDesigner extends Component {
 
@@ -38,9 +38,9 @@ export class ObsGroupControlDesigner extends Component {
     const labelMetadata = label || { type: 'label', value: metadata.concept.name };
     return (
       <LabelDesigner
-        metadata={ labelMetadata }
-        onSelect={ (event) => this.props.onSelect(event, metadata) }
-        ref={ this.storeLabelRef }
+        metadata={labelMetadata}
+        onSelect={event => this.props.onSelect(event, metadata)}
+        ref={this.storeLabelRef}
       />
     );
   }
@@ -52,22 +52,22 @@ export class ObsGroupControlDesigner extends Component {
       return (
         <fieldset
           className="form-builder-fieldset"
-          onClick={(event) => this.props.onSelect(event, metadata)}
+          onClick={event => this.props.onSelect(event, metadata)}
         >
           {this.displayLabel()}
           <div className="obsGroup-controls">
             <Grid
-              controls={ metadata.controls }
+              controls={metadata.controls}
               idGenerator={this.props.idGenerator}
               minRows={0}
-              ref={ this.storeGridRef }
+              ref={this.storeGridRef}
               wrapper={this.props.wrapper}
             />
           </div>
         </fieldset>
       );
     }
-    return <div onClick={ (event) => this.props.onSelect(event, metadata) }>Select Obs Source</div>;
+    return <div onClick={event => this.props.onSelect(event, metadata)}>Select Obs Source</div>;
   }
 }
 

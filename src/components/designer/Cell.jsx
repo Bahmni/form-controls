@@ -7,8 +7,8 @@ import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import ComponentStore from 'src/helpers/componentStore';
 
-const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
-const defaultCellControl = React.createElement(() => <div className="cell" ></div>);
+const cellPosition = (row, column) => ((Constants.Grid.defaultRowWidth * row) + column);
+const defaultCellControl = React.createElement(() => <div className="cell" />);
 
 export class CellDesigner extends DropTarget {
   constructor(props) {
@@ -29,7 +29,7 @@ export class CellDesigner extends DropTarget {
 
   processMove(metadata) {
     if (!isEqual(this.props.location, CellDesigner.dropLoc)) {
-      const filteredData = this.state.data.filter((data) => data.id !== metadata.id);
+      const filteredData = this.state.data.filter(data => data.id !== metadata.id);
       this.setState({ data: filteredData });
     }
   }
@@ -103,11 +103,11 @@ export class CellDesigner extends DropTarget {
   render() {
     return (
       <div
-        className={ this.className }
-        onDragEnter={ this.onDragEnter }
-        onDragLeave={ this.onDragLeave }
-        onDragOver={ this.onDragOver }
-        onDrop={ this.onDrop }
+        className={this.className}
+        onDragEnter={this.onDragEnter}
+        onDragLeave={this.onDragLeave}
+        onDragOver={this.onDragOver}
+        onDrop={this.onDrop}
       >
         { this.getComponents() }
       </div>

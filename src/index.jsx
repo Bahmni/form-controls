@@ -37,5 +37,6 @@ export { IDGenerator } from 'src/helpers/idGenerator';
 export { DescriptorParser } from 'src/helpers/descriptorParser';
 export { default as ComponentStore } from 'src/helpers/componentStore';
 
+/* eslint-disable import/first */
 import '../styles/styles.scss';
-
+/* eslint-disable import/first */

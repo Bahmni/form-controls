@@ -8,9 +8,9 @@ export class DateTimeDesigner extends Component {
 
   render() {
     return (<div>
-        <input type="date" />
-        <input type="time" />
-      </div>
+      <input type="date" />
+      <input type="time" />
+    </div>
     );
   }
 }

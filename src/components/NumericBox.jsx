@@ -54,7 +54,7 @@ export class NumericBox extends Component {
   }
 
   _hasErrors(errors, errorType) {
-    return !isEmpty(errors.filter((error) => error.type === errorType));
+    return !isEmpty(errors.filter(error => error.type === errorType));
   }
 
   _getErrors(value) {
@@ -74,8 +74,8 @@ export class NumericBox extends Component {
     return (
       <div>
         <input
-          className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
-          onChange={ (e) => this.handleChange(e) }
+          className={classNames({ 'form-builder-error': this.state.hasErrors })}
+          onChange={e => this.handleChange(e)}
           ref={(elem) => { this.input = elem; }}
           type="number"
         />

@@ -46,7 +46,7 @@ export class Container extends Component {
 
   getValue() {
     const records = this.state.data.getRecords();
-    const observations = this._getObservations(records.map((record) => record.getObject()));
+    const observations = this._getObservations(records.map(record => record.getObject()));
     const errors = getErrors(records);
     if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
       return { observations };
@@ -80,7 +80,7 @@ export class Container extends Component {
   }
 
   areAllVoided(observations) {
-    return observations.every((obs) => obs.voided);
+    return observations.every(obs => obs.voided);
   }
 
   render() {

@@ -91,12 +91,12 @@ describe('NumericBox', () => {
   it('should throw warning when the value is not in correct range', () => {
     const numericContext = { hiNormal: 50, lowNormal: 20 };
     const wrapper = mount(
-        <NumericBox
-          {...numericContext}
-          onChange={onChangeSpy}
-          validate={false}
-          validations={validations}
-        />
+      <NumericBox
+        {...numericContext}
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+      />
     );
     const allowRangeWarning = new Error({
       type: constants.errorTypes.warning,

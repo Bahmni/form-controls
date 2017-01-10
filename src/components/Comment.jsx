@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
+
 export class Comment extends Component {
 
   constructor(props) {
@@ -22,12 +23,12 @@ export class Comment extends Component {
     if (this.state.showCommentSection) {
       return (
         <div className="obs-comment-section-wrap">
-          <div className="label-wrap"></div>
+          <div className="label-wrap" />
           <textarea
             className="obs-comment-section fr"
             defaultValue={this.props.comment}
             maxLength="255"
-            onChange={(e) => this.handleChange(e)}
+            onChange={e => this.handleChange(e)}
             placeholder="Notes"
           />
         </div>);

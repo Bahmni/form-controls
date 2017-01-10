@@ -50,7 +50,7 @@ describe('Row', () => {
   const formName = 'formName';
   const formVersion = '1';
 
-  const records = controls.map((control) => ({
+  const records = controls.map(control => ({
     control,
     obs: new Obs({ formFieldPath: `${formName}.${formVersion}/${control.id}` }),
     mapper: new ObsMapper(),

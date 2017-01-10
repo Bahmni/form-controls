@@ -22,7 +22,7 @@ describe('Row', () => {
         onChange={() => {}}
         rowData={[]}
         rowPosition={0}
-        wrapper={ testComponent }
+        wrapper={testComponent}
       />);
 
     const row = rowDesigner.find('.row0');
@@ -39,7 +39,7 @@ describe('Row', () => {
         onChange={() => {}}
         rowData={[]}
         rowPosition={1}
-        wrapper={ testComponent }
+        wrapper={testComponent}
       />);
 
     const row = rowDesigner.find('.row1');
@@ -59,7 +59,7 @@ describe('Row', () => {
         onChange={onChange.onChange}
         rowData={[]}
         rowPosition={0}
-        wrapper={ testComponent }
+        wrapper={testComponent}
       />);
 
     const row = rowDesigner.find('.row0');
@@ -85,7 +85,7 @@ describe('Row', () => {
         onChange={() => {}}
         rowData={[rowData]}
         rowPosition={0}
-        wrapper={ testComponent }
+        wrapper={testComponent}
       />);
 
     const child = rowDesigner.find('CellDesigner').at(0);

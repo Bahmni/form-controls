@@ -10,7 +10,7 @@ export class ObsGroupMapper {
     let updatedObsGroup = obsGroup.addGroupMember(obs);
 
     const filteredMembers = this.areAllChildObsVoided(updatedObsGroup.getGroupMembers());
-    const voided = updatedObsGroup.getGroupMembers().every((groupMember) => groupMember.isVoided());
+    const voided = updatedObsGroup.getGroupMembers().every(groupMember => groupMember.isVoided());
 
     if (filteredMembers.size === 0 || voided) {
       updatedObsGroup = updatedObsGroup.setValue(undefined).void();

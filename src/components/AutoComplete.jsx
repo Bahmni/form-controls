@@ -143,9 +143,9 @@ export class AutoComplete extends Component {
       return (
         <div className={className}>
           <Select.Async
-            { ...props }
-            loadOptions={ this.getOptions }
-            onFocus={ this.handleFocus }
+            {...props}
+            loadOptions={this.getOptions}
+            onFocus={this.handleFocus}
             ref={this.storeChildRef}
           />
         </div>
@@ -153,10 +153,11 @@ export class AutoComplete extends Component {
     }
     return (
       <div className={className}>
-        <Select { ...props }
+        <Select
+          {...props}
           noResultsText={this.state.noResultsText}
           onInputChange={this.onInputChange}
-          options={ this.state.options }
+          options={this.state.options}
         />
       </div>
     );

@@ -5,7 +5,7 @@ export class AddMore extends Component {
   showAdd() {
     if (this.props.canAdd) {
       return (
-          <button onClick={ this.props.onAdd } >
+        <button onClick={this.props.onAdd} >
             +
           </button>
       );
@@ -16,7 +16,7 @@ export class AddMore extends Component {
   showDelete() {
     if (this.props.canRemove) {
       return (
-          <button onClick={ this.props.onRemove } >
+        <button onClick={this.props.onRemove} >
             -
           </button>
       );
@@ -27,8 +27,8 @@ export class AddMore extends Component {
   render() {
     return (
       <div>
-          { this.showAdd() }
-          { this.showDelete() }
+        { this.showAdd() }
+        { this.showDelete() }
       </div>
     );
   }

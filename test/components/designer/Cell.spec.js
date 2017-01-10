@@ -22,7 +22,7 @@ describe('Cell', () => {
       },
       dataTransfer: { getData: () => JSON.stringify(metadata) },
     };
-    sinon.stub(React, 'cloneElement', e => e);
+    sinon.stub(React, 'cloneElement').callsFake(e => e);
   });
 
   after(() => {
@@ -42,7 +42,7 @@ describe('Cell', () => {
         idGenerator={idGenerator}
         location={location}
         onChange={() => {}}
-        wrapper={ TestComponent }
+        wrapper={TestComponent}
       />
     );
 
@@ -63,7 +63,7 @@ describe('Cell', () => {
         idGenerator={idGenerator}
         location={location}
         onChange={() => {}}
-        wrapper={ TestComponent }
+        wrapper={TestComponent}
       />
     );
 
@@ -85,7 +85,7 @@ describe('Cell', () => {
         idGenerator={idGenerator}
         location={location}
         onChange={() => {}}
-        wrapper={ TestComponent }
+        wrapper={TestComponent}
       />
     );
 
@@ -102,9 +102,9 @@ describe('Cell', () => {
       <CellDesigner
         cellData={[metadata]}
         idGenerator={idGenerator}
-        location={ { row: 0, location: 0 } }
+        location={{ row: 0, location: 0 }}
         onChange={() => {}}
-        wrapper={ TestComponent }
+        wrapper={TestComponent}
       />
     );
     const cell2 = mount(
@@ -113,7 +113,7 @@ describe('Cell', () => {
         idGenerator={idGenerator}
         location={{ row: 0, location: 1 }}
         onChange={() => {}}
-        wrapper={ TestComponent }
+        wrapper={TestComponent}
       />
     );
 
@@ -141,7 +141,7 @@ describe('Cell', () => {
         idGenerator={idGenerator}
         location={{ column: 10, row: 1 }}
         onChange={() => {}}
-        wrapper={ TestComponent }
+        wrapper={TestComponent}
       />
     );
     const cell = cellDesigner.find('.gridCell');
@@ -149,7 +149,7 @@ describe('Cell', () => {
     cell.props().onDrop(eventData);
     const instance = cellDesigner.instance();
     const expectedProperties = { properties: { location: { row: 1, column: 10 } } };
-    sinon.stub(instance, 'getCellDefinition', () => [expectedProperties]);
+    sinon.stub(instance, 'getCellDefinition').callsFake(() => [expectedProperties]);
     const cellDefinition = instance.getCellDefinition();
     expect(cellDesigner.text()).to.eql('TestComponent');
     expect(cellDefinition[0].properties.location).to.deep.eql({ row: 1, column: 10 });
@@ -170,7 +170,7 @@ describe('Cell', () => {
         idGenerator={idGenerator}
         location={location}
         onChange={onChange.onChange}
-        wrapper={ TestComponent }
+        wrapper={TestComponent}
       />
     );
 
@@ -188,7 +188,7 @@ describe('Cell', () => {
         idGenerator={idGenerator}
         location={location}
         onChange={() => {}}
-        wrapper={ TestComponent }
+        wrapper={TestComponent}
       />
     );
     const metadataClone = Object.assign({}, metadata, {
@@ -213,7 +213,7 @@ describe('Cell', () => {
         idGenerator={idGenerator}
         location={location}
         onChange={() => {}}
-        wrapper={ TestComponent }
+        wrapper={TestComponent}
       />
     );
 

@@ -58,11 +58,11 @@ export class ObsControlDesigner extends Component {
     const labelMetadata = label || { type: 'label', value: metadata.concept.name };
     if (!hideLabel) {
       return (
-          <LabelDesigner
-            metadata={ labelMetadata }
-            onSelect={ (event) => this.props.onSelect(event, metadata) }
-            ref={ this.storeLabelRef }
-          />
+        <LabelDesigner
+          metadata={labelMetadata}
+          onSelect={event => this.props.onSelect(event, metadata)}
+          ref={this.storeLabelRef}
+        />
       );
     }
     return null;
@@ -84,14 +84,16 @@ export class ObsControlDesigner extends Component {
       concept.description[0].display : undefined;
     if (description) {
       return (
-        <div className={classNames('concept-tooltip-wrap',
-           { active: showHintButton === true })}>
-          <i className="fa fa-question-circle concept-tooltip-trigger"
+        <div
+          className={classNames('concept-tooltip-wrap',
+           { active: showHintButton === true })}
+        >
+          <i
+            className="fa fa-question-circle concept-tooltip-trigger"
             onClick={() => this.setState({ showHintButton: !showHintButton })}
-          >
-          </i>
+          />
           <div className="concept-tooltip-description">
-            <i className="fa fa-caret-down"></i>
+            <i className="fa fa-caret-down" />
             <span className="details hint">{description}</span>
           </div>
         </div>
@@ -127,7 +129,7 @@ export class ObsControlDesigner extends Component {
     const designerComponent = concept && ComponentStore.getDesignerComponent(concept.datatype);
     if (designerComponent) {
       return (
-        <div className="obs-wrap" onClick={ (event) => this.props.onSelect(event, metadata) }>
+        <div className="obs-wrap" onClick={event => this.props.onSelect(event, metadata)}>
           <div className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
@@ -139,7 +141,7 @@ export class ObsControlDesigner extends Component {
         </div>
       );
     }
-    return <div onClick={ (event) => this.props.onSelect(event, metadata) }>Select Obs Source</div>;
+    return <div onClick={event => this.props.onSelect(event, metadata)}>Select Obs Source</div>;
   }
 }
 

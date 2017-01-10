@@ -21,7 +21,7 @@ export class AbnormalObsGroupMapper {
       }
     }
     if (abnormalChildObs === obs) {
-      const numericObs = updatedObsGroup.getGroupMembers().filter((o) => o.isNumeric()).get(0);
+      const numericObs = updatedObsGroup.getGroupMembers().filter(o => o.isNumeric()).get(0);
       if (!numericObs.getValue()) {
         updatedObsGroup = updatedObsGroup.addGroupMember(abnormalChildObs.void());
       }
@@ -29,7 +29,7 @@ export class AbnormalObsGroupMapper {
 
     const filteredMembers = updatedObsGroup.getGroupMembers()
       .filter(groupMember => groupMember.getValue() !== undefined);
-    const voided = updatedObsGroup.getGroupMembers().every((groupMember) => groupMember.isVoided());
+    const voided = updatedObsGroup.getGroupMembers().every(groupMember => groupMember.isVoided());
 
     if (filteredMembers.size === 0 || voided) {
       updatedObsGroup = updatedObsGroup.setValue(undefined).void();

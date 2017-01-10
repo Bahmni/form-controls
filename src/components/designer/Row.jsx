@@ -19,7 +19,7 @@ export class RowDesigner extends Component {
   }
 
   getRowDefinition() {
-    const cells = map(this.cellRef, (ref) => ref.getCellDefinition()) || [];
+    const cells = map(this.cellRef, ref => ref.getCellDefinition()) || [];
     return [].concat(...cells);
   }
 
@@ -35,13 +35,13 @@ export class RowDesigner extends Component {
     for (let i = 0; i < columns; ++i) {
       cells.push(
         <CellDesigner
-          cellData={ get(this.cellData, i, []) }
-          idGenerator={ this.props.idGenerator }
+          cellData={get(this.cellData, i, [])}
+          idGenerator={this.props.idGenerator}
           key={i}
           location={{ column: i, row: this.props.rowPosition }}
-          onChange={ this.changeHandler }
-          ref={ this.cellReference }
-          wrapper={ this.props.wrapper }
+          onChange={this.changeHandler}
+          ref={this.cellReference}
+          wrapper={this.props.wrapper}
         />);
     }
     return cells;
@@ -55,9 +55,9 @@ export class RowDesigner extends Component {
 
   render() {
     return (
-        <div className={`canvas-row row${this.props.rowPosition}`} onChange={ this.changeHandler }>
-          { this.createCells() }
-        </div>
+      <div className={`canvas-row row${this.props.rowPosition}`} onChange={this.changeHandler}>
+        { this.createCells() }
+      </div>
     );
   }
 }

@@ -1,7 +1,9 @@
+/* eslint-disable no-undef */
 import 'whatwg-fetch';
+/* eslint-disable no-undef */
 
 export const httpInterceptor = {
-  get: (url) =>
+  get: url =>
     fetch(url, { credentials: 'same-origin', Accept: 'application/json' })
       .then((response) => {
         if (response.status >= 200 && response.status < 300) {

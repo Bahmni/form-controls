@@ -54,7 +54,7 @@ export class Date extends Component {
       <input
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
         defaultValue={this.props.value}
-        onChange={(e) => this.handleChange(e)}
+        onChange={e => this.handleChange(e)}
         type="date"
       />
     );

@@ -7,7 +7,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import { Util } from './Util';
 
 function getRecordsForControl(control, records) {
-  return records.filter((record) => record.control.id === control.id);
+  return records.filter(record => record.control.id === control.id);
 }
 
 function createReactComponent(component, props) {
@@ -29,7 +29,7 @@ export function getControls(controls, records, props) {
           record => Util.toInt(record.formFieldPath.split('-')[1]));
         recordsForControl = setupAddRemoveButtonsForAddMore(recordsForControl);
       }
-      const components = recordsForControl.map((record) => createReactComponent(registeredControl, {
+      const components = recordsForControl.map(record => createReactComponent(registeredControl, {
         key: control.id,
         metadata: control,
         obs: record.obs,

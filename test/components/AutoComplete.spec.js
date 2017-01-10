@@ -2,10 +2,10 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { AutoComplete } from '../../src/components/AutoComplete.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import { Error } from 'src/Error';
+import { AutoComplete } from '../../src/components/AutoComplete.jsx';
 
 chai.use(chaiEnzyme());
 

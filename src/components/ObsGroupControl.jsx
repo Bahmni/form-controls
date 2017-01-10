@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
-import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import { controlStateFactory, getErrors } from 'src/ControlState';
 import each from 'lodash/each';
+import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 
 export class ObsGroupControl extends Component {
 
@@ -40,12 +40,12 @@ export class ObsGroupControl extends Component {
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const records = this.state.data.getRecords();
     return (
-        <fieldset className="form-builder-fieldset">
-          <legend>{label.value}</legend>
-          <div className="obsGroup-controls">
-            {displayRowControls(groupedRowControls, records, childProps)}
-          </div>
-        </fieldset>
+      <fieldset className="form-builder-fieldset">
+        <legend>{label.value}</legend>
+        <div className="obsGroup-controls">
+          {displayRowControls(groupedRowControls, records, childProps)}
+        </div>
+      </fieldset>
     );
   }
 }

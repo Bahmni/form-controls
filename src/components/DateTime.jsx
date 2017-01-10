@@ -92,13 +92,13 @@ export class DateTime extends Component {
         <input
           className={classNames({ 'form-builder-error': this.state.hasErrors })}
           defaultValue={this.dateValue}
-          onChange={(e) => this.handleDateChange(e)}
+          onChange={e => this.handleDateChange(e)}
           type="date"
         />
         <input
           className={classNames({ 'form-builder-error': this.state.hasErrors })}
           defaultValue={this.timeValue}
-          onChange={(e) => this.handleTimeChange(e)}
+          onChange={e => this.handleTimeChange(e)}
           type="time"
         />
       </div>

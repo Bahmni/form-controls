@@ -18,12 +18,12 @@ export class GridDesigner extends Component {
   }
 
   getControls() {
-    const controls = map(this.rowRef, (ref) => ref.getRowDefinition()) || [];
+    const controls = map(this.rowRef, ref => ref.getRowDefinition()) || [];
     return [].concat(...controls);
   }
 
   _getRowCount() {
-    const maxRow = maxBy(this.props.controls, (control) => control.properties.location.row);
+    const maxRow = maxBy(this.props.controls, control => control.properties.location.row);
     if (maxRow) return Math.max(maxRow.properties.location.row + 2, this.props.minRows);
     return this.props.minRows;
   }
@@ -40,13 +40,13 @@ export class GridDesigner extends Component {
     for (let i = 0; i < rowCount; ++i) {
       rows.push(
         <RowDesigner
-          idGenerator={ this.props.idGenerator }
+          idGenerator={this.props.idGenerator}
           key={i}
           onChange={this.changeHandler}
           ref={this.rowReference}
-          rowData={ get(this.rowData, i, []) }
+          rowData={get(this.rowData, i, [])}
           rowPosition={i}
-          wrapper={ this.props.wrapper }
+          wrapper={this.props.wrapper}
         />);
     }
     return rows;

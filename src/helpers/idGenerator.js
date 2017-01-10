@@ -6,7 +6,7 @@ export class IDGenerator {
   }
 
   getControlIDs(controls) {
-    const controlIDs = controls.map(control => {
+    const controlIDs = controls.map((control) => {
       if (control.controls) {
         return [].concat(control.id, this.getControlIDs(control.controls));
       }

@@ -2,10 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { DropDown } from '../../src/components/DropDown.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import { Error } from 'src/Error';
+import { DropDown } from '../../src/components/DropDown.jsx';
 
 chai.use(chaiEnzyme());
 

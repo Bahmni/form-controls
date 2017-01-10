@@ -49,7 +49,7 @@ export class Button extends Component {
     let value = this._getValueFromProps() || [];
     if (this._isActive(valueSelected)) {
       if (multiSelect) {
-        value = filter(value, (val) => val.value !== valueSelected.value);
+        value = filter(value, val => val.value !== valueSelected.value);
       } else {
         value = [];
       }
@@ -71,7 +71,7 @@ export class Button extends Component {
   }
 
   _isActive(option) {
-    return find(this._getValueFromProps(), (value) => option.value === value.value);
+    return find(this._getValueFromProps(), value => option.value === value.value);
   }
 
   _getValueFromProps() {
@@ -89,7 +89,7 @@ export class Button extends Component {
         key={index}
         onClick={() => this.changeValue(option)}
       >
-        <i className="fa fa-ok"></i>{option.name}
+        <i className="fa fa-ok" />{option.name}
       </button>
     );
   }
