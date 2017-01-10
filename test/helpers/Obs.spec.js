@@ -173,4 +173,22 @@ describe('Obs', () => {
     const abnormalChildObs = pulseDataObs.getAbnormalChildObs();
     expect(pulseAbnormalObs).to.be.eql(abnormalChildObs);
   });
+
+  it('should clone obs for AddMore', () => {
+    const originalObs = new Obs({
+      concept,
+      formFieldPath: 'formName.1/5-0',
+      formNamespace: 'Bahmni',
+      uuid: 'childObs2Uuid',
+    });
+
+    const clonedObs = originalObs.cloneForAddMore();
+
+    const expectedClonedObs = new Obs({
+      concept,
+      formNamespace: 'Bahmni',
+      voided: true,
+    });
+    expect(clonedObs).to.deep.eql(expectedClonedObs);
+  });
 });

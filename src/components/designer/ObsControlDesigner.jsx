@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import { LabelDesigner } from 'components/designer/Label.jsx';
 import { CommentDesigner } from 'components/designer/Comment.jsx';
+import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
@@ -110,6 +111,17 @@ export class ObsControlDesigner extends Component {
     return null;
   }
 
+  showAddMore() {
+    const { properties } = this.props.metadata;
+    const isAddMoreEnabled = find(properties, (value, key) => (key === 'addMore' && value));
+    if (isAddMoreEnabled) {
+      return (
+        <AddMoreDesigner />
+      );
+    }
+    return null;
+  }
+
   render() {
     const { metadata, metadata: { concept } } = this.props;
     const designerComponent = concept && ComponentStore.getDesignerComponent(concept.datatype);
@@ -122,6 +134,7 @@ export class ObsControlDesigner extends Component {
             {this.showHelperText()}
           </div>
           {this.displayObsControl(designerComponent)}
+          {this.showAddMore()}
           {this.showComment()}
         </div>
       );
@@ -227,6 +240,11 @@ const descriptor = {
           },
           {
             name: 'notes',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
+          {
+            name: 'addMore',
             dataType: 'boolean',
             defaultValue: false,
           },
