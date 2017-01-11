@@ -20,5 +20,13 @@ export class ObsList extends ImmutableObsList {
     return this.set('obsList', obsList);
   }
 
+  getObject(obsList) {
+    const observationList = [];
+    obsList.getObsList().forEach((obs) => {
+      observationList.push(obs.getObject(obs));
+    });
+
+    return observationList;
+  }
 }
 /* eslint-disable new-cap */

@@ -8,7 +8,8 @@ export class Section extends Component {
   constructor(props) {
     super(props);
     const { formName, formVersion, obs, metadata } = this.props;
-    const data = controlStateFactory(metadata, obs.toArray(), formName, formVersion);
+    const observations = obs.getObsList().toArray();
+    const data = controlStateFactory(metadata, observations, formName, formVersion);
     this.state = { obs, errors: [], data };
     this.onChange = this.onChange.bind(this);
   }

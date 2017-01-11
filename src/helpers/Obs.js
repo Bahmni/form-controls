@@ -97,6 +97,10 @@ export class Obs extends ImmutableObs {
   getAbnormalChildObs() {
     return this.get('groupMembers').find(o => o.concept.conceptClass === ABNORMAL_CONCEPT_CLASS);
   }
+
+  getObject(obs) {
+    return obs.toJS();
+  }
 }
 /* eslint-disable new-cap */
 

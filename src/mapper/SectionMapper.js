@@ -2,7 +2,7 @@ import { Obs } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
 import each from 'lodash/each';
 import filter from 'lodash/filter';
-
+import { ObsList } from 'src/helpers/ObsList';
 import { List } from 'immutable';
 import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 
@@ -22,20 +22,29 @@ export class SectionMapper {
       }
     });
 
-    return obsList;
+    const { formFieldPath } = createFormNamespaceAndPath(formName, formVersion, control.id);
+    return new ObsList({ obsList, formFieldPath });
   }
 
-  setValue(obsList, obs) {
+  setValue(obsListRecord, obs) {
+    let obsList = obsListRecord.getObsList();
     const index = obsList.findIndex(o => o.formFieldPath === obs.formFieldPath);
 
     if (index === -1) {
-      return obsList.push(obs);
+      obsList = obsList.push(obs);
     }
 
-    return obsList.setIn([index], obs);
+    obsList = obsList.setIn([index], obs);
+
+    return obsListRecord.setObsList(obsList);
   }
 
-  getObject(obsGroup) {
-    return obsGroup.toJS();
+  getObject(obsListRecord) {
+    const observations = [];
+    obsListRecord.getObsList().forEach((obs) => {
+      observations.push(obs.getObject(obs));
+    });
+
+    return [].concat(...observations);
   }
 }
