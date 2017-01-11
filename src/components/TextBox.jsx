@@ -54,8 +54,8 @@ export class TextBox extends Component {
     return (
       <textarea
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
+        defaultValue={this.props.value}
         onChange={(e) => this.handleChange(e)}
-        value={this.props.value}
       />
     );
   }

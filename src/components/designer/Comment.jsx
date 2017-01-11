@@ -12,7 +12,7 @@ export class CommentDesigner extends PureComponent { // PureComponent has been a
         <div className="obs-comment-section-wrap">
             <div className="label-wrap"></div>
             <textarea
-              className="obs-comment-section"
+              className="obs-comment-section fl"
               placeholder="Notes"
             />
         </div>);
@@ -24,7 +24,7 @@ export class CommentDesigner extends PureComponent { // PureComponent has been a
     return (
         <div>
             <button
-              className={classNames('comment-toggle',
+              className={classNames('form-builder-comment-toggle',
                 { active: this.state.showCommentSection === true })}
               onClick={() => this.setState({
                 showCommentSection: !this.state.showCommentSection,

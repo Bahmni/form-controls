@@ -24,7 +24,7 @@ export class Comment extends Component {
         <div className="obs-comment-section-wrap">
           <div className="label-wrap"></div>
           <textarea
-            className="obs-comment-section fr"
+            className="obs-comment-section fl"
             defaultValue={this.props.comment}
             maxLength="255"
             onChange={(e) => this.handleChange(e)}
@@ -39,7 +39,7 @@ export class Comment extends Component {
     return (
       <div>
         <button
-          className={classNames('comment-toggle',
+          className={classNames('form-builder-comment-toggle',
             { active: this.state.showCommentSection === true,
               'has-notes': this.state.hasNote === true })}
           onClick={() => this.setState({ showCommentSection: !this.state.showCommentSection })}

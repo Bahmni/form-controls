@@ -5,26 +5,20 @@ import map from 'lodash/map';
 export default class Row extends Component {
 
   getControlsByColumn(sortedColumnControls, records, childProps) {
-    return map(sortedColumnControls, control => {
+    return map(sortedColumnControls, (control, index) => {
       const column = control[0].properties.location.column;
       const className = `form-builder-column form-builder-column-${column}`;
-      const controls = getControls(control, records, childProps);
-      return this.getAddMoreControls(controls, className);
+      return (
+        <div className={className} key={index}>
+          {getControls(control, records, childProps)}
+        </div>
+      );
     });
   }
 
-  getAddMoreControls(controls, className) {
-    return controls.map((control, index) => (
-      control.map((ctrl, indx) => (
-        <div className={`${className}-index${index}`} key={indx}>
-          {ctrl}
-        </div>
-      ))
-    ));
-  }
-
   render() {
-    const { controls, records, ...childProps } = this.props;
+    const { controls, formName, formVersion, records, onValueChanged, validate } = this.props;
+    const childProps = { formName, formVersion, onValueChanged, validate };
     const groupedColumnControls = getGroupedControls(controls, 'column');
     return (
       <div className="form-builder-row">

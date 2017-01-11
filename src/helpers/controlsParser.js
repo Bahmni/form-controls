@@ -1,44 +1,29 @@
 import React from 'react';
 import Row from 'src/components/Row.jsx';
 import groupBy from 'lodash/groupBy';
-import sortBy from 'lodash/sortBy';
 import map from 'lodash/map';
 import ComponentStore from 'src/helpers/componentStore';
-import { Util } from './Util';
 
-function getRecordsForControl(control, records) {
-  return records.filter((record) => record.control.id === control.id);
+function getRecordForControl(control, records) {
+  return records.find((record) => record.control.id === control.id);
 }
 
 function createReactComponent(component, props) {
   return React.createElement(component, props);
 }
 
-export function setupAddRemoveButtonsForAddMore(records) {
-  return records.map((record, index) =>
-    record.set('showRemove', index > 0).set('showAddMore', index === records.length - 1));
-}
-
 export function getControls(controls, records, props) {
   return controls.map((control) => {
     const registeredControl = ComponentStore.getRegisteredComponent(control.type);
     if (registeredControl) {
-      let recordsForControl = getRecordsForControl(control, records);
-      if (recordsForControl.length > 1) {
-        recordsForControl = sortBy(recordsForControl,
-          record => Util.toInt(record.formFieldPath.split('-')[1]));
-        recordsForControl = setupAddRemoveButtonsForAddMore(recordsForControl);
-      }
-      const components = recordsForControl.map((record) => createReactComponent(registeredControl, {
+      const record = getRecordForControl(control, records);
+      return createReactComponent(registeredControl, {
         key: control.id,
         metadata: control,
         obs: record.obs,
         mapper: record.mapper,
-        showAddMore: record.showAddMore,
-        showRemove: record.showRemove,
         ...props,
-      }));
-      return components;
+      });
     }
     return undefined;
   }).filter(element => element !== undefined);
@@ -64,7 +49,7 @@ export function getGroupedControls(controls, property) {
 }
 
 export function displayRowControls(controls, records, childProps) {
-  const rows = map(controls, (rowControls, index) =>
+  return map(controls, (rowControls, index) =>
     <Row
       controls={rowControls}
       id={index}
@@ -73,5 +58,4 @@ export function displayRowControls(controls, records, childProps) {
       {...childProps}
     />
   );
-  return rows;
 }

@@ -28,7 +28,7 @@ describe('TextBox', () => {
     const wrapper = shallow(
       <TextBox onChange={onChangeSpy} validate={false} validations={[]} value={'defaultText'} />
     );
-    expect(wrapper.find('textarea').props().value).to.be.eql('defaultText');
+    expect(wrapper.find('textarea').props().defaultValue).to.be.eql('defaultText');
   });
 
   it('should get user entered value of the text box', () => {
@@ -93,6 +93,6 @@ describe('TextBox', () => {
       />
     );
     wrapper.setProps({ value: 'someText' });
-    expect(wrapper.find('textarea').props().value).to.be.eql('someText');
+    expect(wrapper.find('textarea').props().defaultValue).to.be.eql('someText');
   });
 });

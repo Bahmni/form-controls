@@ -68,7 +68,7 @@ const metadata = {
       properties: {
         mandatory: false,
         location: {
-          column: 0,
+          column: 1,
           row: 0,
         },
         hideLabel: true,
@@ -91,8 +91,8 @@ componentStore.registerComponent('Coded', CodedControl);
 componentStore.registerComponent('autoComplete', AutoComplete);
 componentStore.registerComponent('text', TextBox);
 
-const pulseObs = new Obs({ concept: metadata.controls[0].concept, formFieldPath: 'f.1/6-0', formNamespace: 'bahmni' });
-const pulseAbnormalObs = new Obs({ concept: metadata.controls[1].concept, formFieldPath: 'f.1/7-0', formNamespace: 'bahmni' });
+const pulseObs = new Obs({ concept: metadata.controls[0].concept, formNamespace: 'f/6' });
+const pulseAbnormalObs = new Obs({ concept: metadata.controls[1].concept, formNamespace: 'f/7' });
 const pulseDataObs = new Obs({
   concept: metadata.concept,
   formNamespace: 'f/5',

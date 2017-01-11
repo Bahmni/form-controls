@@ -4,7 +4,6 @@ import { Label } from 'components/Label.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import { Comment } from 'components/Comment.jsx';
-import { AddMore } from 'components/AddMore.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import isEmpty from 'lodash/isEmpty';
@@ -16,8 +15,6 @@ export class ObsControl extends Component {
     this.state = { obs: props.obs };
     this.onChange = this.onChange.bind(this);
     this.onCommentChange = this.onCommentChange.bind(this);
-    this.onAddControl = this.onAddControl.bind(this);
-    this.onRemoveControl = this.onRemoveControl.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -36,14 +33,6 @@ export class ObsControl extends Component {
     const updatedObs = this.props.mapper.setComment(this.state.obs, comment);
     this.setState({ obs: updatedObs });
     this.props.onValueChanged(updatedObs);
-  }
-
-  onAddControl() {
-    this.props.onControlAdd(this.state.obs);
-  }
-
-  onRemoveControl() {
-    this.props.onControlRemove(this.state.obs);
   }
 
   displayObsControl(registeredComponent) {
@@ -98,16 +87,16 @@ export class ObsControl extends Component {
       concept.description[0].display : undefined;
     if (description) {
       return (
-        <div className={classNames('concept-tooltip-wrap fr',
+        <p className={classNames('form-builder-tooltip-wrap fr',
            { active: showHintButton === true }) }>
-          <i className="fa fa-question-circle concept-tooltip-trigger"
+          <i className="fa fa-question-circle form-builder-tooltip-trigger"
             onClick={() => this.setState({ showHintButton: !showHintButton })}
           />
-          <div className="concept-tooltip-description">
+          <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
             <span className="details hint">{description}</span>
-          </div>
-        </div>
+          </p>
+        </p>
       );
     }
     return null;
@@ -125,32 +114,18 @@ export class ObsControl extends Component {
     return null;
   }
 
-  showAddMore() {
-    const { metadata: { properties } } = this.props;
-    const isAddMoreEnabled = find(properties, (value, key) => (key === 'addMore' && value));
-    if (isAddMoreEnabled) {
-      return (
-              <AddMore canAdd={ this.props.showAddMore } canRemove={ this.props.showRemove }
-                onAdd={this.onAddControl} onRemove={this.onRemoveControl}
-              />
-      );
-    }
-    return null;
-  }
-
   render() {
     const { concept } = this.props.metadata;
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
     if (registeredComponent) {
       return (
-        <div>
-          <div className="label-wrap fl">
+        <div className="form-field-wrap">
+          <p className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
             {this.showHelperText()}
-          </div>
+          </p>
           {this.displayObsControl(registeredComponent)}
-          {this.showAddMore()}
           {this.showComment()}
         </div>
       );
@@ -179,17 +154,8 @@ ObsControl.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   obs: PropTypes.any.isRequired,
-  onControlAdd: PropTypes.func,
-  onControlRemove: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
-  showAddMore: PropTypes.bool.isRequired,
-  showRemove: PropTypes.bool.isRequired,
   validate: PropTypes.bool.isRequired,
-};
-
-ObsControl.defaultProps = {
-  showAddMore: false,
-  showRemove: false,
 };
 
 ComponentStore.registerComponent('obsControl', ObsControl);

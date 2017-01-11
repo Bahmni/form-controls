@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf,action } from '@kadira/storybook';
+import { storiesOf } from '@kadira/storybook';
 import StoryWrapper from './StoryWrapper';
 import { Container } from 'src/components/Container.jsx';
 import { ObsControl } from 'src/components/ObsControl.jsx';
@@ -41,7 +41,6 @@ const form = {
       properties: {
         mandatory: true,
         allowDecimal: false,
-        addMore: true,
         location: {
           column: 0,
           row: 0,
@@ -226,29 +225,6 @@ const form = {
   ],
 };
 
-const addMoreControl = {
-  type: 'obsControl',
-  label: {
-    id: 'headache',
-    type: 'label',
-    value: 'Headache',
-  },
-  properties: {
-    mandatory: true,
-    addMore: true,
-    location: {
-      column: 0,
-      row: 0,
-    },
-  },
-  id: '20',
-  concept: {
-    name: 'Headache',
-    uuid: 'c379aaff-3f10-11e4-adec-0800271c1b75',
-    datatype: 'Text',
-  },
-};
-
 storiesOf('Forms', module)
     .add('Form1', () =>
         <StoryWrapper json={form}>
@@ -260,18 +236,18 @@ storiesOf('Forms', module)
 
 
 storiesOf('ObsControl', module)
-    .add('Numeric Obs Control', () => (
-        <StoryWrapper json={ form.controls[0] }>
-          <ObsControl
-            formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
-            mapper = { new ObsMapper() }
-            metadata={form.controls[0]}
-            obs={new Obs({ concept: form.controls[0].concept })}
-            onValueChanged={() => {}}
-            validate={ false }
-          />
-        </StoryWrapper>
-    ));
+  .add('Numeric Obs Control', () => (
+      <StoryWrapper json={ form.controls[0] }>
+        <ObsControl
+          formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
+          mapper = { new ObsMapper() }
+          metadata={form.controls[0]}
+          obs={new Obs({ concept: form.controls[0].concept })}
+          onValueChanged={() => {}}
+          validate={ false }
+        />
+      </StoryWrapper>
+  ));
 
 storiesOf('ObsControl', module)
   .add('TextBox Obs Control', () => (
@@ -285,22 +261,7 @@ storiesOf('ObsControl', module)
           validate={ false }
         />
       </StoryWrapper>
-  )
-  )
-  .add('TextBox ObsControl With Add More enabled', () => (
-    <StoryWrapper json={form.controls[1]}>
-      <ObsControl
-          formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
-          mapper = { new ObsMapper() }
-          metadata={addMoreControl}
-          obs={new Obs({ concept: form.controls[1].concept })}
-          onValueChanged={() => {}}
-          validate={ false }
-          onControlAdd={  action('add clicked')}
-          onControlRemove={ action('remove clicked') }
-      />
-    </StoryWrapper>
-));
+  ));
 
 storiesOf('ObsControl', module)
   .add('Boolean Obs Control', () => (

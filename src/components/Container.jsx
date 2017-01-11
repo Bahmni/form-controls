@@ -13,8 +13,6 @@ export class Container extends Component {
     this.state = { errors: [], data };
     this.storeChildRef = this.storeChildRef.bind(this);
     this.onValueChanged = this.onValueChanged.bind(this);
-    this.onControlAdd = this.onControlAdd.bind(this);
-    this.onControlRemove = this.onControlRemove.bind(this);
   }
 
   onValueChanged(obs, errors) {
@@ -23,25 +21,6 @@ export class Container extends Component {
       .set('errors', errors);
     const data = this.state.data.setRecord(bahmniRecord);
     this.setState({ data });
-  }
-
-  onControlAdd(obs) {
-    const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
-    const obsUpdated = obs.cloneForAddMore().set('formFieldPath', nextFormFieldPath);
-    const clonedRecord = this.state.data
-      .getRecord(obs.formFieldPath)
-      .set('formFieldPath', nextFormFieldPath)
-      .set('obs', obsUpdated);
-    const data = this.state.data.setRecord(clonedRecord);
-    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-
-    this.setState({ data: updatedState.data });
-  }
-
-  onControlRemove(obs) {
-    const data = this.state.data.deleteRecord(obs);
-    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-    this.setState({ data: updatedState.data });
   }
 
   getValue() {
@@ -91,12 +70,10 @@ export class Container extends Component {
       formVersion,
       ref: this.storeChildRef,
       onValueChanged: this.onValueChanged,
-      onControlAdd: this.onControlAdd,
-      onControlRemove: this.onControlRemove,
       validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
-    const records = this.state.data.getActiveRecords();
+    const records = this.state.data.getRecords();
     return (
       <div>{displayRowControls(groupedRowControls, records, childProps)}</div>
     );

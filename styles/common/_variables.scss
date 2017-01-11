@@ -1,4 +1,5 @@
 /* settings */
+/* stylelint-disable */
 $max-page-width: 1300px;
 
 /*  _colors - bahmniTheme:  */
@@ -6,26 +7,26 @@ $bahmniPrimaryColor: #00463f;
 $bahmniSecondaryColor: #669999;
 $bahmniTertiaryColor: #457FAC;
 
-$linkColor: #2b95ff;
+$bahmniLinkColor: #2b95ff;
 
-$primaryBtnColor: #a1d030;
-$primaryBtnColorHover: #88af28;
+$bahmniPrimaryBtnColor: #a1d030;
+$bahmniPrimaryBtnColorHover: #88af28;
 
-$sectionHeaderColor: #66b298;
-
-
+$bahmniSectionHeaderColor: #66b298;
 
 /*  _different shades of grey/gray:  */
-$darkGray:     #333;
-$mediumGray:   #666;       /* any text will not be lighter than this */
-$lightGray:    #ccc;     /* any border will not be lighter than this */
-$lighterGray:  #ddd;
-$lightestGray: #eee; /* any background will not be lighter than this */
+$gray800: #444;
+$gray700: #333;
+$gray600: #666; /* any text will not be lighter than this */
+$gray500: #BBB;
+$gray400: #ccc; /* any border will not be lighter than this */
+$gray300: #ddd;
+$gray200: #eee; /* any background will not be lighter than this */
+$gray100: #f3f3f3;
 
-$primarySectionGridBorder: #bbb;
-$tableHeaderBg: #f1f1f1;
+$bahmniTableHeaderBg: #f1f1f1;
 
-$pageBg: #fafafa;
+$bahmniPageBg: #fafafa;
 
 //fonts
 $fontPath: "/implementer-interface/fonts";
@@ -34,16 +35,16 @@ $fontPath: "/implementer-interface/fonts";
 $alertBackground: #FFFDF0;
 $bodyBackground: #EEE;
 
-$white: #FFFFFF;
-$black: #000000;
-$darkerGrey: #BBB;
-$lighterGrey: #f3f3f3;
+$white: #FFF;
+$black: #000;
+$red:#f00;
+$green:#008000;
 
 //openMrs colors
 $highlight: darken(#009384, 15%);
 $text: darken(#5B57A6, 20%);
-$subtleText: darken($darkerGrey, 25%);
-$subtlerText: $darkerGrey;
+$subtleText: darken($gray500, 25%);
+$subtlerText: $gray500;
 
 $link: #007FFF;
 $focus: #FFFDF7;
@@ -53,8 +54,7 @@ $alert: #FFA000;
 $error: #ff6666;
 $successBackground: #ddffdd;
 
-$bahmniTextColor:#363463;
-
+$bahmniTextColor: #363463;
 
 /*  _spacing padding - margin:  */
 $smallestSpacing: 5px;
@@ -62,29 +62,12 @@ $defaultSpacing: 10px;
 $mediumSpacing: 15px;
 $largeSpacing: 20px;
 
-
 /* _fonts */
 
 $primaryFont: "OpenSans";
-$primaryBoldFont: "OpenSansBold";
 $primaryLightFont: "OpenSansLight";
 $primaryItalicFont: "OpenSansItalic";
 
+$primaryBoldFont: "OpenSansBold";
+$primarySemiBoldFont: "OpenSansSemiBold";
 
-/* _mixins */
-@mixin font-size($sizeValue: 1) {
-  font-size: ($sizeValue * 16) + px;
-  font-size: $sizeValue + rem;
-}
-
-@mixin clearfix() {
-  *zoom:1;
-  &:before,
-  &:after {
-    content:"";
-    display:table;
-  }
-  &:after {
-    clear:both;
-  }
-}

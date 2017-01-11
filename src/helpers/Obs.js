@@ -1,6 +1,6 @@
 /* eslint-disable new-cap */
 import { Record, List } from 'immutable';
-import { createFormNamespaceAndPath, getKeyPrefixForControl } from 'src/helpers/formNamespace';
+import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 
 export const ImmutableObs = Record({
   concept: undefined,
@@ -18,15 +18,6 @@ const NUMERIC_DATATYPE = 'Numeric';
 const ABNORMAL_CONCEPT_CLASS = 'Abnormal';
 
 export class Obs extends ImmutableObs {
-
-  cloneForAddMore() {
-    return new Obs({
-      concept: this.get('concept'),
-      formNamespace: this.get('formNamespace'),
-      voided: true,
-    });
-  }
-
   getUuid() {
     return this.get('uuid');
   }
@@ -120,16 +111,13 @@ export function obsFromMetadata(formNamespaceAndPath, metadata) {
 }
 
 export function createObsFromControl(formName, formVersion, control, bahmniObservations) {
-  const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id);
-
-  const observationsForControl = bahmniObservations.filter(observation =>
-    observation.formFieldPath.startsWith(keyPrefix.formFieldPath)
+  const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id);
+  const index = bahmniObservations.findIndex(observation =>
+    observation.formFieldPath === formNamespaceAndPath.formFieldPath
   );
 
-  if (observationsForControl.length > 0) {
-    return observationsForControl.map(obs => new Obs(obs));
+  if (index >= 0) {
+    return new Obs(bahmniObservations[index]);
   }
-
-  const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id);
-  return [obsFromMetadata(formNamespaceAndPath, control)];
+  return obsFromMetadata(formNamespaceAndPath, control);
 }
