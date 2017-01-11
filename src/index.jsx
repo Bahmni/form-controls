@@ -31,6 +31,7 @@ export { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
 export { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesigner.jsx';
 export { DateDesigner } from 'components/designer/Date.jsx';
 export { DateTimeDesigner } from 'components/designer/DateTime.jsx';
+export { SectionDesigner } from 'components/designer/Section.jsx';
 
 // -------------------------- helpers ---------------------
 

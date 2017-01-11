@@ -7,7 +7,7 @@ import sinon from 'sinon';
 import { Obs } from 'src/helpers/Obs';
 import { SectionMapper } from 'src/mapper/SectionMapper';
 import ComponentStore from 'src/helpers/componentStore';
-import { List } from 'immutable'
+import { List } from 'immutable';
 
 chai.use(chaiEnzyme());
 
@@ -91,16 +91,19 @@ describe('Section', () => {
     });
 
     it('should render section control with observations', () => {
-      const observations = (new List()).push(new Obs({ formFieldPath: 'formName.1/100-0', value: '72' }));
+      const observations = (new List()).push(
+        new Obs({ formFieldPath: 'formName.1/100-0', value: '72' })
+      );
+
       const wrapper = mount(
           <Section
-              formName={formName}
-              formVersion={formVersion}
-              mapper={sectionMapper}
-              metadata={metadata}
-              obs={observations}
-              onValueChanged={onChangeSpy}
-              validate={false}
+            formName={formName}
+            formVersion={formVersion}
+            mapper={sectionMapper}
+            metadata={metadata}
+            obs={observations}
+            onValueChanged={onChangeSpy}
+            validate={false}
           />);
 
       expect(wrapper.find('legend').text()).to.eql(metadata.label.value);
@@ -114,13 +117,13 @@ describe('Section', () => {
       ComponentStore.deRegisterComponent('randomType');
       const wrapper = mount(
           <Section
-              formName={formName}
-              formVersion={formVersion}
-              mapper={sectionMapper}
-              metadata={metadata}
-              obs={observation}
-              onValueChanged={onChangeSpy}
-              validate={false}
+            formName={formName}
+            formVersion={formVersion}
+            mapper={sectionMapper}
+            metadata={metadata}
+            obs={observation}
+            onValueChanged={onChangeSpy}
+            validate={false}
           />);
 
       expect(wrapper).to.not.have.descendants('DummyControl');

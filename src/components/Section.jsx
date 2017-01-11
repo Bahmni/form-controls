@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import { controlStateFactory, getErrors } from 'src/ControlState';
-import each from 'lodash/each';
 
 export class Section extends Component {
 

@@ -19,7 +19,7 @@ class MapperStore {
       return new ObsGroupMapper();
     }
 
-    if (control.type === 'section'){
+    if (control.type === 'section') {
       return new SectionMapper();
     }
 
