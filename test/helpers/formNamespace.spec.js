@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import Constants from 'src/constants';
-import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
+import { createFormNamespaceAndPath, getKeyPrefixForControl } from 'src/helpers/formNamespace';
 
 describe('FormNamespace Helper', () => {
   describe('createFormNamespace', () => {
@@ -12,6 +12,15 @@ describe('FormNamespace Helper', () => {
 
       expect(createFormNamespaceAndPath('someFormName', '1', 'someControlId'))
         .to.deep.eql(expectedDetails);
+    });
+
+    it('should return object containing formNamespace and formFieldPath', () => {
+      const expectedDetails = {
+        formNamespace: `${Constants.bahmni}`,
+        formFieldPath: 'formName.1/1',
+      };
+
+      expect(getKeyPrefixForControl('formName', '1', '1')).to.deep.eql(expectedDetails);
     });
   });
 });

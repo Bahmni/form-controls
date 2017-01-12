@@ -54,7 +54,7 @@ describe('NumericBoxDesigner', () => {
         metadata={metadata}
       />
     );
-    expect(numericBox.find('span')).to.have.text(`(${lowNormal}-${hiNormal})`);
+    expect(numericBox.find('label')).to.have.text(`(${lowNormal}-${hiNormal})`);
   });
 
   describe('getRange', () => {

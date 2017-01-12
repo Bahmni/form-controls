@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import { LabelDesigner } from 'components/designer/Label.jsx';
 import { CommentDesigner } from 'components/designer/Comment.jsx';
+import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
@@ -83,17 +84,17 @@ export class ObsControlDesigner extends Component {
       concept.description[0].display : undefined;
     if (description) {
       return (
-        <p className={classNames('form-builder-tooltip-wrap',
+        <div className={classNames('concept-tooltip-wrap',
            { active: showHintButton === true })}>
-          <i className="fa fa-question-circle form-builder-tooltip-trigger"
+          <i className="fa fa-question-circle concept-tooltip-trigger"
             onClick={() => this.setState({ showHintButton: !showHintButton })}
           >
           </i>
-          <p className="form-builder-tooltip-description">
+          <div className="concept-tooltip-description">
             <i className="fa fa-caret-down"></i>
             <span className="details hint">{description}</span>
-          </p>
-        </p>
+          </div>
+        </div>
       );
     }
     return null;
@@ -110,20 +111,30 @@ export class ObsControlDesigner extends Component {
     return null;
   }
 
+  showAddMore() {
+    const { properties } = this.props.metadata;
+    const isAddMoreEnabled = find(properties, (value, key) => (key === 'addMore' && value));
+    if (isAddMoreEnabled) {
+      return (
+        <AddMoreDesigner />
+      );
+    }
+    return null;
+  }
+
   render() {
     const { metadata, metadata: { concept } } = this.props;
     const designerComponent = concept && ComponentStore.getDesignerComponent(concept.datatype);
     if (designerComponent) {
       return (
-        <div className="form-field-wrap"
-          onClick={ (event) => this.props.onSelect(event, metadata) }
-        >
-          <p className="label-wrap fl">
+        <div className="obs-wrap" onClick={ (event) => this.props.onSelect(event, metadata) }>
+          <div className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
             {this.showHelperText()}
-          </p>
+          </div>
           {this.displayObsControl(designerComponent)}
+          {this.showAddMore()}
           {this.showComment()}
         </div>
       );
@@ -229,6 +240,11 @@ const descriptor = {
           },
           {
             name: 'notes',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
+          {
+            name: 'addMore',
             dataType: 'boolean',
             defaultValue: false,
           },

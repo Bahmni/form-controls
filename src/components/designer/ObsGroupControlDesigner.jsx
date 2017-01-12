@@ -54,7 +54,7 @@ export class ObsGroupControlDesigner extends Component {
           className="form-builder-fieldset"
           onClick={(event) => this.props.onSelect(event, metadata)}
         >
-          <legend>{this.displayLabel()}</legend>
+          {this.displayLabel()}
           <div className="obsGroup-controls">
             <Grid
               controls={ metadata.controls }

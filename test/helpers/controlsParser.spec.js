@@ -1,5 +1,7 @@
 import { expect } from 'chai';
 import { groupControlsByLocation, sortGroupedControls } from 'src/helpers/controlsParser';
+import { setupAddRemoveButtonsForAddMore } from 'src/helpers/controlsParser';
+import { ControlRecord } from 'src/ControlState';
 
 describe('ControlsParser', () => {
   function getControl(row, column) {
@@ -47,6 +49,22 @@ describe('ControlsParser', () => {
       const expectedControls = [[control3, control4], [control1, control2], [control5]];
       expect(sortedRows.length).to.eql(3);
       expect(sortedRows).to.deep.eql(expectedControls);
+    });
+  });
+
+  describe('setupAddRemoveButtonsForAddMore', () => {
+    it('should properly set showAddMore and showRemove properties', () => {
+      const controlRecords = [new ControlRecord(), new ControlRecord(), new ControlRecord()];
+      const modifiedRecords = setupAddRemoveButtonsForAddMore(controlRecords);
+
+      expect(modifiedRecords[0].showAddMore).to.eql(false);
+      expect(modifiedRecords[0].showRemove).to.eql(false);
+
+      expect(modifiedRecords[1].showAddMore).to.eql(false);
+      expect(modifiedRecords[1].showRemove).to.eql(true);
+
+      expect(modifiedRecords[2].showAddMore).to.eql(true);
+      expect(modifiedRecords[2].showRemove).to.eql(true);
     });
   });
 });

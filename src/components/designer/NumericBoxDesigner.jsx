@@ -11,9 +11,7 @@ export class NumericBoxDesigner extends Component {
     return (
       <div>
         <input type="number" />
-        <span className="form-builder-valid-range">
-          {NumericBoxDesigner.getRange(lowNormal, hiNormal)}
-        </span>
+        <label>{NumericBoxDesigner.getRange(lowNormal, hiNormal)}</label>
       </div>
     );
   }

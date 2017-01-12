@@ -1,7 +1,8 @@
 {
   "name": "bahmni-form-controls",
-  "version": "0.1.42",
+  "version": "0.1.45",
   "description": "Repository for form controls",
+  "license": "GPL-2.0",
   "main": "./dist/bundle.js",
   "scripts": {
     "clean": "rimraf dist/*",
@@ -12,7 +13,7 @@
     "posttest": "eslint --ext .js --ext .jsx ./src ./test",
     "eslintFix": "eslint --ext .js --ext .jsx ./src ./test --fix",
     "publish": "publish || true",
-    "ci": "npm run clean && npm run build && npm run publish",
+    "ci": "yarn run clean && yarn run build && yarn run publish",
     "storybook": "start-storybook -p 6006",
     "deploy-storybook": "storybook-to-ghpages",
     "build-storybook": "build-storybook",
@@ -65,8 +66,9 @@
     "react": "^15.4.1",
     "react-addons-test-utils": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-json-tree": "^0.10.0",
     "react-json-syntax-highlighter": "^0.1.15",
+    "react-json-tree": "^0.10.0",
+    "rimraf": "^2.5.4",
     "sass-loader": "^4.0.2",
     "sinon": "^2.0.0-pre.2",
     "style-loader": "^0.13.1",
@@ -81,6 +83,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "immutable": "3.8.1",
+    "lodash": "^4.17.4",
     "react-select": "1.0.0-rc.1",
     "whatwg-fetch": "^1.0.0"
   }

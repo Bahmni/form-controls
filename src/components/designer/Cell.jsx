@@ -24,7 +24,7 @@ export class CellDesigner extends DropTarget {
   }
 
   _setActiveClass(active = false) {
-    this.className = classNames('form-builder-column', { active });
+    this.className = classNames('gridCell', { active });
   }
 
   processMove(metadata) {
@@ -57,7 +57,7 @@ export class CellDesigner extends DropTarget {
     metadataClone.properties = Object.assign({}, metadata.properties, location);
     dataClone.push(metadataClone);
     this.changeHandler(this.cellPosition);
-    this.className = classNames('form-builder-column', { active: false });
+    this.className = classNames('gridCell', { active: false });
     this.setState({ data: dataClone });
   }
 

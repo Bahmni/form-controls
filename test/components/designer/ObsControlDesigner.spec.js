@@ -148,8 +148,8 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should call onSelect function passed as prop', () => {
-      expect(wrapper.find('.form-field-wrap')).to.have.prop('onClick');
-      wrapper.find('.form-field-wrap').simulate('click');
+      expect(wrapper.find('.obs-wrap')).to.have.prop('onClick');
+      wrapper.find('.obs-wrap').simulate('click');
       sinon.assert.calledOnce(onSelectSpy);
       sinon.assert.calledWith(onSelectSpy, sinon.match.any, metadata);
     });
@@ -240,7 +240,7 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should show help tooltip if concept description is present', () => {
-      expect(wrapper.find('.form-builder-tooltip-trigger')).to.have.prop('onClick');
+      expect(wrapper.find('.concept-tooltip-trigger')).to.have.prop('onClick');
     });
   });
 });

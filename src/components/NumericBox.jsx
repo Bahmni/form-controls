@@ -79,9 +79,7 @@ export class NumericBox extends Component {
           ref={(elem) => { this.input = elem; }}
           type="number"
         />
-        <span className="form-builder-valid-range">
-          {NumericBoxDesigner.getRange(lowNormal, hiNormal)}
-        </span>
+        <label>{NumericBoxDesigner.getRange(lowNormal, hiNormal)}</label>
       </div>
     );
   }

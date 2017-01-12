@@ -1,6 +1,6 @@
 const Constants = {
   Grid: {
-    defaultRowWidth: 1,
+    defaultRowWidth: 3,
     minRows: 4,
   },
   validations: {
