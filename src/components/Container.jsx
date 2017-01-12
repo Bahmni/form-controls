@@ -27,7 +27,7 @@ export class Container extends Component {
 
   onControlAdd(obs) {
     const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
-    const obsUpdated = obs.cloneForAddMore().set('formFieldPath', nextFormFieldPath);
+    const obsUpdated = obs.cloneForAddMore(nextFormFieldPath);
     const clonedRecord = this.state.data
       .getRecord(obs.formFieldPath)
       .set('formFieldPath', nextFormFieldPath)

@@ -1,26 +1,40 @@
 import { createObsFromControl } from 'src/helpers/Obs';
 import { List } from 'immutable';
 import filter from 'lodash/filter';
-import each from 'lodash/each';
+import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
 import map from 'lodash/map';
 import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 import { obsFromMetadata } from 'src/helpers/Obs';
 import { ObsList } from 'src/helpers/ObsList';
+import { getKeyPrefixForControl } from 'src/helpers/formNamespace';
 
 export class ObsListMapper {
 
   getInitialObject(formName, formVersion, control, bahmniObservations) {
     const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id);
     const obs = obsFromMetadata(formNamespaceAndPath, control);
-    const { formFieldPath } = formNamespaceAndPath;
+
+    const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id);
     const filteredObs = filter(bahmniObservations,
-      (observation) => observation.formFieldPath === formFieldPath);
-    let obsList = new List();
-    each(filteredObs, (observation) => {
-      obsList = obsList.push(createObsFromControl(formName, formVersion, control, [observation]));
+      (observation) => observation.formFieldPath.startsWith(keyPrefix.formFieldPath));
+    const groupedObs = groupBy(filteredObs, 'formFieldPath');
+
+    const obsLists = [];
+    Object.keys(groupedObs).sort().forEach(formFieldPath => {
+      let obsList = new List();
+      for (const observation of groupedObs[formFieldPath]) {
+        obsList = obsList.concat(createObsFromControl(formName,
+          formVersion, control, [observation]));
+      }
+      obsLists.push(new ObsList({ obsList, formFieldPath,
+        obs: obs.set('formFieldPath', formFieldPath) }));
     });
-    return new ObsList({ obsList, formFieldPath, obs });
+    if (obsLists.length === 0) {
+      return [new ObsList({ obsList: new List(),
+        formFieldPath: formNamespaceAndPath.formFieldPath, obs })];
+    }
+    return obsLists;
   }
 
   _hasNoValue(obs) {

@@ -175,16 +175,18 @@ describe('Obs', () => {
   });
 
   it('should clone obs for AddMore', () => {
+    const formFieldPath = 'formName.1/5-0';
     const originalObs = new Obs({
       concept,
-      formFieldPath: 'formName.1/5-0',
+      formFieldPath,
       formNamespace: 'Bahmni',
       uuid: 'childObs2Uuid',
     });
 
-    const clonedObs = originalObs.cloneForAddMore();
+    const clonedObs = originalObs.cloneForAddMore(formFieldPath);
 
     const expectedClonedObs = new Obs({
+      formFieldPath,
       concept,
       formNamespace: 'Bahmni',
       voided: true,

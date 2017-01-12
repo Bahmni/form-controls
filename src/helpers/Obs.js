@@ -19,8 +19,9 @@ const ABNORMAL_CONCEPT_CLASS = 'Abnormal';
 
 export class Obs extends ImmutableObs {
 
-  cloneForAddMore() {
+  cloneForAddMore(formFieldPath) {
     return new Obs({
+      formFieldPath,
       concept: this.get('concept'),
       formNamespace: this.get('formNamespace'),
       voided: true,

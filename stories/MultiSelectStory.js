@@ -284,7 +284,8 @@ const obsList = [
       displayString: 'Diabetes',
       resourceVersion: '1.9',
     },
-    formNamespace: '8f36439c-8e3a-45ac-bb31-98b43a91ecb5/1',
+    formNamespace: 'Bahmni',
+    formFieldPath: '8f36439c-8e3a-45ac-bb31-98b43a91ecb5/1',
   },
   {
     observationDateTime: '2016-09-08T10:10:38.000+0530',
@@ -314,7 +315,8 @@ const obsList = [
       displayString: 'Liver Disease',
       resourceVersion: '1.9',
     },
-    formNamespace: '8f36439c-8e3a-45ac-bb31-98b43a91ecb5/1',
+    formNamespace: 'Bahmni',
+    formFieldPath: '8f36439c-8e3a-45ac-bb31-98b43a91ecb5/1',
   },
 ];
 

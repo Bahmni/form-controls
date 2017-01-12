@@ -38,18 +38,21 @@ describe('ObsListMapper', () => {
     it('should return initial object when obs has no value', () => {
       expect(mapper.obs).to.eql(undefined);
 
-      const initialObject = mapper.getInitialObject(formName, formVersion, control, []);
-      expect(initialObject.getObsList().size).to.eql(0);
-      expect(initialObject.getObs().concept).to.eql(concept);
-      expect(initialObject.formFieldPath).to.eql(formFieldPath);
+      const initialObjectArray = mapper.getInitialObject(formName, formVersion, control, []);
+      expect(initialObjectArray.length).to.eql(1);
+      expect(initialObjectArray[0].getObsList().size).to.eql(0);
+      expect(initialObjectArray[0].getObs().concept).to.eql(concept);
+      expect(initialObjectArray[0].formFieldPath).to.eql(formFieldPath);
     });
 
     it('should return initial object with default values', () => {
       const observations = [getObs('uuid1', '72'), getObs('uuid2', 'notes')];
-      const initialObject = mapper.getInitialObject(formName, formVersion, control, observations);
-      expect(initialObject.getObsList().size).to.eql(2);
-      expect(initialObject.getObs().concept).to.eql(concept);
-      expect(initialObject.formFieldPath).to.eql(formFieldPath);
+      const initialObjectArray = mapper.getInitialObject(formName, formVersion,
+        control, observations);
+      expect(initialObjectArray.length).to.eql(1);
+      expect(initialObjectArray[0].getObsList().size).to.eql(2);
+      expect(initialObjectArray[0].getObs().concept).to.eql(concept);
+      expect(initialObjectArray[0].formFieldPath).to.eql(formFieldPath);
     });
   });
 

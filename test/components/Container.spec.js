@@ -7,8 +7,10 @@ import { Container } from 'components/Container.jsx';
 import { Label } from 'components/Label.jsx';
 import { TextBox } from 'components/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
+import { Button } from 'components/Button.jsx';
 import { ObsControl } from 'components/ObsControl.jsx';
 import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
+import { CodedControl } from 'components/CodedControl.jsx';
 import { Error } from 'src/Error';
 import constants from 'src/constants';
 
@@ -24,6 +26,8 @@ describe('Container', () => {
     componentStore.registerComponent('label', Label);
     componentStore.registerComponent('text', TextBox);
     componentStore.registerComponent('numeric', NumericBox);
+    componentStore.registerComponent('button', Button);
+    componentStore.registerComponent('Coded', CodedControl);
     componentStore.registerComponent('obsControl', ObsControl);
     componentStore.registerComponent('obsGroupControl', ObsGroupControl);
   });
@@ -32,6 +36,8 @@ describe('Container', () => {
     componentStore.deRegisterComponent('label');
     componentStore.deRegisterComponent('text');
     componentStore.deRegisterComponent('numeric');
+    componentStore.deRegisterComponent('button');
+    componentStore.deRegisterComponent('Coded');
     componentStore.deRegisterComponent('obsControl');
     componentStore.deRegisterComponent('obsGroupControl');
   });
@@ -519,6 +525,277 @@ describe('Container', () => {
       expect(wrapper).to.have.exactly(1).descendants('TextBox');
       expect(wrapper).to.have.exactly(1).descendants('AddMore');
       expect(wrapper).to.have.exactly(1).descendants('button');
+    });
+  });
+
+  describe('AddMore For MultiSelect', () => {
+    let codedConcept;
+    let obsList1;
+    let obsList2;
+    let metadata3;
+
+    beforeEach(() => {
+      codedConcept = {
+        uuid: '70645842-be6a-4974-8d5f-45b52990e132',
+        name: 'Disease',
+        datatype: 'Coded',
+        answers: [
+          {
+            uuid: '1e3f1870-b252-4808-8edb-f86fad050ebd',
+            name: {
+              display: 'Diabetes',
+              uuid: 'fdabcf86-7ac9-4122-96f7-9f84858228fd',
+              name: 'Diabetes',
+              locale: 'en',
+              localePreferred: true,
+              conceptNameType: 'FULLY_SPECIFIED',
+              resourceVersion: '1.9',
+            },
+            names: [
+              {
+                display: 'Diabetes',
+                uuid: 'fdabcf86-7ac9-4122-96f7-9f84858228fd',
+                name: 'Diabetes',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                resourceVersion: '1.9',
+              },
+            ],
+            displayString: 'Diabetes',
+            resourceVersion: '1.9',
+          },
+          {
+            uuid: 'f48a534d-b1dd-4d37-8794-065243c546a4',
+            name: {
+              display: 'Liver Disease',
+              uuid: '47937ec0-b7a2-405b-8a2a-a137738bda9b',
+              name: 'Liver Disease',
+              locale: 'en',
+              localePreferred: true,
+              conceptNameType: 'FULLY_SPECIFIED',
+              resourceVersion: '1.9',
+            },
+            names: [
+              {
+                display: 'Liver Disease',
+                uuid: '47937ec0-b7a2-405b-8a2a-a137738bda9b',
+                name: 'Liver Disease',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                resourceVersion: '1.9',
+              },
+            ],
+            displayString: 'Liver Disease',
+            resourceVersion: '1.9',
+          }],
+      };
+
+      obsList1 = [
+        {
+          observationDateTime: '2016-09-08T10:10:38.000+0530',
+          uuid: 'systolicUuid',
+          value: {
+            uuid: '1e3f1870-b252-4808-8edb-f86fad050ebd',
+            name: {
+              display: 'Diabetes',
+              uuid: 'fdabcf86-7ac9-4122-96f7-9f84858228fd',
+              name: 'Diabetes',
+              locale: 'en',
+              localePreferred: true,
+              conceptNameType: 'FULLY_SPECIFIED',
+              resourceVersion: '1.9',
+            },
+            names: [
+              {
+                display: 'Diabetes',
+                uuid: 'fdabcf86-7ac9-4122-96f7-9f84858228fd',
+                name: 'Diabetes',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                resourceVersion: '1.9',
+              },
+            ],
+            displayString: 'Diabetes',
+            resourceVersion: '1.9',
+          },
+          formNamespace: 'Bahmni',
+          formFieldPath: 'MultiSelect.1/1-0',
+        },
+        {
+          observationDateTime: '2016-09-08T10:10:38.000+0530',
+          uuid: 'diastolicUuid',
+          value: {
+            uuid: 'f48a534d-b1dd-4d37-8794-065243c546a4',
+            name: {
+              display: 'Liver Disease',
+              uuid: '47937ec0-b7a2-405b-8a2a-a137738bda9b',
+              name: 'Liver Disease',
+              locale: 'en',
+              localePreferred: true,
+              conceptNameType: 'FULLY_SPECIFIED',
+              resourceVersion: '1.9',
+            },
+            names: [
+              {
+                display: 'Liver Disease',
+                uuid: '47937ec0-b7a2-405b-8a2a-a137738bda9b',
+                name: 'Liver Disease',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                resourceVersion: '1.9',
+              },
+            ],
+            displayString: 'Liver Disease',
+            resourceVersion: '1.9',
+          },
+          formNamespace: 'Bahmni',
+          formFieldPath: 'MultiSelect.1/1-0',
+        },
+      ];
+
+      obsList2 = [
+        {
+          observationDateTime: '2016-09-08T10:10:38.000+0530',
+          uuid: 'systolicUuid',
+          value: {
+            uuid: '1e3f1870-b252-4808-8edb-f86fad050ebd',
+            name: {
+              display: 'Diabetes',
+              uuid: 'fdabcf86-7ac9-4122-96f7-9f84858228fd',
+              name: 'Diabetes',
+              locale: 'en',
+              localePreferred: true,
+              conceptNameType: 'FULLY_SPECIFIED',
+              resourceVersion: '1.9',
+            },
+            names: [
+              {
+                display: 'Diabetes',
+                uuid: 'fdabcf86-7ac9-4122-96f7-9f84858228fd',
+                name: 'Diabetes',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                resourceVersion: '1.9',
+              },
+            ],
+            displayString: 'Diabetes',
+            resourceVersion: '1.9',
+          },
+          formNamespace: 'Bahmni',
+          formFieldPath: 'MultiSelect.1/1-1',
+        },
+      ];
+
+      metadata3 = {
+        id: 101,
+        uuid: 'fm1',
+        name: 'MultiSelect',
+        version: '1',
+        controls: [
+          {
+            id: '1',
+            type: 'obsControl',
+            concept: codedConcept,
+            label,
+            properties: {
+              ...getLocationProperties(1, 0),
+              addMore: true,
+              multiSelect: true,
+            },
+          },
+        ],
+      };
+    });
+
+    it('should render control with multiple observations', () => {
+      const wrapper = mount(<Container metadata={metadata3}
+        observations={obsList1}
+        validate={false}
+      />);
+
+      expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+      expect(wrapper.find('ObsControl')).to.have.exactly(1).descendants('Button');
+      expect(wrapper).to.have.exactly(1).descendants('AddMore');
+      expect(wrapper.find('ObsControl').at(0).props().validate).to.eql(false);
+      expect(wrapper.find('Button').props().options.length).to.eql(2);
+      expect(wrapper.find('button').at(0).hasClass('active'));
+      expect(wrapper.find('button').at(1).hasClass('active'));
+      expect(wrapper.find('AddMore').at(0).props().canAdd).to.eql(true);
+      expect(wrapper.find('AddMore').at(0).props().canRemove).to.eql(false);
+    });
+
+
+    it('should render two controls', () => {
+      const wrapper = mount(<Container metadata={metadata3}
+        observations={[...obsList1, ...obsList2]}
+        validate={false}
+      />);
+
+      expect(wrapper).to.have.exactly(2).descendants('ObsControl');
+      expect(wrapper.find('ObsControl').at(0)).to.have.exactly(1).descendants('Button');
+      expect(wrapper.find('ObsControl').at(1)).to.have.exactly(1).descendants('Button');
+      expect(wrapper).to.have.exactly(2).descendants('AddMore');
+      expect(wrapper.find('ObsControl').at(0).props().validate).to.eql(false);
+      expect(wrapper.find('ObsControl').at(1).props().validate).to.eql(false);
+      expect(wrapper.find('Button').at(0).props().options.length).to.eql(2);
+      expect(wrapper.find('Button').at(1).props().options.length).to.eql(2);
+      expect(wrapper.find('button').at(0).hasClass('active')).to.eql(true);
+      expect(wrapper.find('button').at(1).hasClass('active')).to.eql(true);
+      expect(wrapper.find('button').at(2).hasClass('active')).to.eql(true);
+      expect(wrapper.find('button').at(3).hasClass('active')).to.eql(false);
+      expect(wrapper.find('AddMore').at(0).props().canAdd).to.eql(false);
+      expect(wrapper.find('AddMore').at(0).props().canRemove).to.eql(false);
+      expect(wrapper.find('AddMore').at(1).props().canAdd).to.eql(true);
+      expect(wrapper.find('AddMore').at(1).props().canRemove).to.eql(true);
+    });
+
+    it('should add a control on clicking AddMore', () => {
+      const wrapper = mount(<Container metadata={metadata3}
+        observations={obsList1}
+        validate={false}
+      />);
+      wrapper.find('button').at(2).simulate('click');
+
+      expect(wrapper).to.have.exactly(2).descendants('ObsControl');
+      expect(wrapper.find('ObsControl').at(0)).to.have.exactly(1).descendants('Button');
+      expect(wrapper.find('ObsControl').at(1)).to.have.exactly(1).descendants('Button');
+      expect(wrapper).to.have.exactly(2).descendants('AddMore');
+      expect(wrapper.find('ObsControl').at(0).props().validate).to.eql(false);
+      expect(wrapper.find('ObsControl').at(1).props().validate).to.eql(false);
+      expect(wrapper.find('Button').at(0).props().options.length).to.eql(2);
+      expect(wrapper.find('Button').at(1).props().options.length).to.eql(2);
+      expect(wrapper.find('button').at(0).hasClass('active')).to.eql(true);
+      expect(wrapper.find('button').at(1).hasClass('active')).to.eql(true);
+      expect(wrapper.find('button').at(2).hasClass('active')).to.eql(false);
+      expect(wrapper.find('button').at(3).hasClass('active')).to.eql(false);
+      expect(wrapper.find('AddMore').at(0).props().canAdd).to.eql(false);
+      expect(wrapper.find('AddMore').at(0).props().canRemove).to.eql(false);
+      expect(wrapper.find('AddMore').at(1).props().canAdd).to.eql(true);
+      expect(wrapper.find('AddMore').at(1).props().canRemove).to.eql(true);
+    });
+
+    it('should add a control on clicking AddMore', () => {
+      const wrapper = mount(<Container metadata={metadata3}
+        observations={[...obsList1, ...obsList2]}
+        validate={false}
+      />);
+      wrapper.find('button').at(5).simulate('click');
+
+      expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+      expect(wrapper.find('ObsControl').at(0)).to.have.exactly(1).descendants('Button');
+      expect(wrapper).to.have.exactly(1).descendants('AddMore');
+      expect(wrapper.find('ObsControl').at(0).props().validate).to.eql(false);
+      expect(wrapper.find('Button').at(0).props().options.length).to.eql(2);
+      expect(wrapper.find('button').at(0).hasClass('active')).to.eql(true);
+      expect(wrapper.find('button').at(1).hasClass('active')).to.eql(true);
+      expect(wrapper.find('button').at(2).hasClass('active')).to.eql(false);
+      expect(wrapper.find('AddMore').at(0).props().canAdd).to.eql(true);
+      expect(wrapper.find('AddMore').at(0).props().canRemove).to.eql(false);
     });
   });
 });

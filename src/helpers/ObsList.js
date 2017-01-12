@@ -8,6 +8,21 @@ export const ImmutableObsList = Record({
 });
 
 export class ObsList extends ImmutableObsList {
+
+  cloneForAddMore(formFieldPath) {
+    return new ObsList({
+      obs: this.get('obs').set('formFieldPath', formFieldPath),
+      formNamespace: this.get('formNamespace'),
+      obsList: new List(),
+      formFieldPath,
+    });
+  }
+
+  void() {
+    const voidedObsList = this.obsList.map(obs => obs.void());
+    return this.set('obsList', voidedObsList);
+  }
+
   getObsList() {
     return this.get('obsList');
   }
