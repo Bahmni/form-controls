@@ -5,25 +5,36 @@ import filter from 'lodash/filter';
 import { ObsList } from 'src/helpers/ObsList';
 import { List } from 'immutable';
 import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
+import flattenDeep from 'lodash/flattenDeep';
 
 
 export class SectionMapper {
   getInitialObject(formName, formVersion, control, bahmniObservations) {
-    let formNamespaceAndPath;
     let obsList = new List();
+    obsList = this.findControls(control, formName, formVersion, bahmniObservations, obsList);
+
+    const { formFieldPath } = createFormNamespaceAndPath(formName, formVersion, control.id);
+    return new ObsList({ obsList, formFieldPath });
+  }
+
+  findControls(control, formName, formVersion, bahmniObservations, oldObsList) {
+    let obsList = oldObsList;
     each(control.controls, (item) => {
-      formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, item.id);
-      const { formFieldPath } = formNamespaceAndPath;
+      if (item.type === 'section') {
+        obsList = obsList.push(
+          this.getInitialObject(formName, formVersion, item, bahmniObservations)
+        );
+      }
+
+      const { formFieldPath } = createFormNamespaceAndPath(formName, formVersion, item.id);
       const filteredObs = filter(bahmniObservations,
-          (observation) => observation.formFieldPath === formFieldPath);
+        (observation) => observation.formFieldPath === formFieldPath);
 
       if (!isEmpty(filteredObs)) {
         obsList = obsList.push(new Obs(filteredObs[0]));
       }
     });
-
-    const { formFieldPath } = createFormNamespaceAndPath(formName, formVersion, control.id);
-    return new ObsList({ obsList, formFieldPath });
+    return obsList;
   }
 
   setValue(obsListRecord, obs) {
@@ -45,6 +56,6 @@ export class SectionMapper {
       observations.push(obs.getObject(obs));
     });
 
-    return [].concat(...observations);
+    return flattenDeep(observations);
   }
 }
