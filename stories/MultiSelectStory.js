@@ -6,7 +6,9 @@ import '../styles/styles.scss';
 import '../node_modules/react-select/dist/react-select.css';
 
 const form = {
-  id: '8f36439c-8e3a-45ac-bb31-98b43a91ecb5',
+  id: 1,
+  name: 'abcd',
+  version: '1',
   uuid: '8f36439c-8e3a-45ac-bb31-98b43a91ecb5',
   controls: [
     {

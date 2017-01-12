@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import { ObsGroupControl } from 'src/components/ObsGroupControl.jsx';
+import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import { Obs } from 'src/helpers/Obs';
 import '../styles/styles.scss';
 import { NumericBox } from 'src/components/NumericBox.jsx';
@@ -51,8 +52,8 @@ const metadata = {
         uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
         datatype: 'Numeric',
         conceptClass: 'Misc',
-        lowNormal: '60',
-        hiNormal: '120',
+        lowNormal: 60,
+        hiNormal: 120,
       },
     },
     {
@@ -103,6 +104,9 @@ storiesOf('Abnormal ObsControl', module)
   .add('Basic View', () => (
   <StoryWrapper json={metadata}>
     <ObsGroupControl
+      formName="f"
+      formVersion="1"
+      mapper={new ObsGroupMapper()}
       errors={[]}
       metadata={metadata}
       obs={ pulseDataObs }
