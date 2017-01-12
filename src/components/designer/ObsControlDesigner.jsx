@@ -84,17 +84,17 @@ export class ObsControlDesigner extends Component {
       concept.description[0].display : undefined;
     if (description) {
       return (
-        <div className={classNames('concept-tooltip-wrap',
+        <p className={classNames('form-builder-tooltip-wrap',
            { active: showHintButton === true })}>
-          <i className="fa fa-question-circle concept-tooltip-trigger"
+          <i className="fa fa-question-circle form-builder-tooltip-trigger"
             onClick={() => this.setState({ showHintButton: !showHintButton })}
           >
           </i>
-          <div className="concept-tooltip-description">
+          <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
             <span className="details hint">{description}</span>
-          </div>
-        </div>
+          </p>
+        </p>
       );
     }
     return null;
@@ -127,12 +127,14 @@ export class ObsControlDesigner extends Component {
     const designerComponent = concept && ComponentStore.getDesignerComponent(concept.datatype);
     if (designerComponent) {
       return (
-        <div className="obs-wrap" onClick={ (event) => this.props.onSelect(event, metadata) }>
-          <div className="label-wrap fl">
+        <div className="form-field-wrap"
+          onClick={ (event) => this.props.onSelect(event, metadata) }
+        >
+          <p className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
             {this.showHelperText()}
-          </div>
+          </p>
           {this.displayObsControl(designerComponent)}
           {this.showAddMore()}
           {this.showComment()}

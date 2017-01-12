@@ -1,136 +1,177 @@
-.form-builder-row{
-  padding: 5px;
-  display: flex;
-  flex-flow: row;
-  flex-wrap: wrap;
+.form-builder-row {
+  width: 100%;
   .form-builder-column {
-    padding: 0 10px;
-    width:33.33%;
-    position: relative;
+    min-height: 40px;
+    width: 100%;
+    padding: 5px 10px;
     box-sizing: border-box;
-    .label-wrap{
-      float: left;
-      width: 127px;
-      margin-right: 10px;
-      font-size: 12px;
-      margin-top: 8px;
-      text-align: right;
+    &.active {
+      border: 1px dotted $gray500;
     }
-    .form-builder-asterisk{
-      vertical-align: top;
-    }
-    input{
-      color: #363463;
-      padding: 2px 10px;
-      margin-top: 5px;
-      background-color: #FFF;
-      border: 1px solid #DDD;
-      width: 197px;
-      margin-right: 15px;
-      box-sizing: border-box;
-    }
-    .comment-toggle{
-      position: absolute;
-      right:10px;
-      top:3px;
-    }
-    .obs-comment-section-wrap{
-      margin-right: 72px;
-      clear: both;
-    }
-    textarea{
-      word-wrap: break-word;
-      height: 35px;
-      width: 197px;
-      padding: 2px 10px;
-      color: #363463 ;
-      background-color: #FFF;
-      border: 1px solid #DDD;
-      box-sizing: border-box;
-    }
-
-    .form-builder-error {
-      border: 2px solid #ff3434;
-      background: #ffcdcd;
-      outline: 0;
-    }
-    .concept-tooltip-wrap{
-      .concept-tooltip-trigger {
-        cursor: pointer;
-        display: inline-block;
-        width: 18px;
-        height: 18px;
-        line-height: 18px;
-        text-align: center;
-        border-radius: 100%;
-        font-size: 20px;
-        color: $bahmniSecondaryColor;
-        box-shadow: 1px 1px 1px $lightGray;
-        background: $white;
-        padding: 0;
-        position: relative;
-
-      }
-      .concept-tooltip-description {
-        bottom: 100%;
-        margin-left:0;
-        margin-top: 0;
-        text-align: left;
-        position: absolute;
-        display:none;
-        z-index: 9;
-        .details {
-          display: inline-block;
-          font-size: 12px;
-          padding: 5px;
-          border-radius: 5px;
-          background:$black;
-          color: $white;
-          width: 200px;
-        }
-        i {
-          position: absolute;
-          bottom: -16px;
-          left: 1%;
-          font-size: 20px;
-          color: $black;
-        }
-        p {
-          margin-bottom: 5px;
-          line-height: 1.1;
-        }
-      }
-      &.active{
-        .concept-tooltip-description{
-          display: block;
-        }
-      }
-    }
-    .form-builder-column {
-      width: 100%;
-    }
-  }
-  .form-builder-fieldset {
-    border: 1px solid #c0c0c0;
-    margin: 0 2px 10px;
-    padding: 2.6em 0.625em 0.4em;
-    box-sizing: border-box;
-    .label-wrap {
-      width: 100%;
+    .form-field-wrap {
       position: relative;
-      label {
-        text-align: left;
-        margin: 0 0 5px 0;
-        width: calc(100% - 25px);
+      .label-wrap {
+        float: left;
+        width: 200px;
+        padding-right: 15px;
+        font-size: 12px;
+        margin-top: 6px;
+        text-align: right;
+        position: relative;
+        label {
+          padding-right: 10px;
+        }
+        .form-builder-asterisk {
+          position: absolute;
+          color: $red;
+          top: -2px;
+        }
+      }
+      input {
+        width: 12.5em;
+        color: $bahmniTextColor;
+        padding: 2px 10px;
+        margin: 5px 10px 0 0;
+        background-color: $white;
+        border: 1px solid $gray300;
+      }
+      .form-builder-valid-range {
+        color: $gray600;
+        font-size: 13px;
+      }
+      .obs-comment-section-wrap {
+        @include clearfix();
+        margin-top: 5px;
+      }
+      .form-builder-comment-toggle {
+        position: absolute;
+        right: 10px;
+        top: 0;
+        padding: 5px;
+        &.active {
+          .fa-file-o {
+            .fa-plus-circle {
+              display: none;
+            }
+            .fa-minus-circle {
+              display: block;
+            }
+          }
+        }
+
+        .fa-file-o {
+          position: relative;
+          color: $gray600;
+          .fa-minus-circle {
+            display: none;
+          }
+          .fa-plus-circle, .fa-ok-sign, .fa-plus, .fa-minus-circle {
+            position: absolute;
+            right: 2px;
+            bottom: 2px;
+            font-size: 10px;
+            color: $green;
+            background: $white;
+            border-radius: 8px;
+            padding: 0;
+          }
+        }
+        .fa-file-text-o {
+          display: none;
+        }
+        &.has-notes {
+          .fa-file-o {
+            display: none;
+          }
+          .fa-file-text-o {
+            display: block;
+          }
+        }
+      }
+      textarea {
+        word-wrap: break-word;
+        min-height: 53px;
+        width: 500px;
+        padding: 2px 10px;
+        color: $bahmniTextColor;
+        background-color: $white;
+        border: 1px solid $gray300;
+        box-sizing: border-box;
+        resize: vertical;
+      }
+      .form-builder-tooltip-wrap {
+        display: inline-block;
+        padding-left: 10px;
+        .form-builder-tooltip-trigger {
+          cursor: pointer;
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          line-height: 18px;
+          text-align: center;
+          border-radius: 100%;
+          font-size: 20px;
+          color: $bahmniSecondaryColor;
+          box-shadow: 1px 1px 1px $gray400;
+          background: $white;
+          padding: 0;
+          position: relative;
+
+        }
+        .form-builder-tooltip-description {
+          bottom: calc(100% + 10px);
+          margin-left: 0;
+          margin-top: 0;
+          text-align: left;
+          position: absolute;
+          display: none;
+          z-index: 9;
+          .details {
+            display: inline-block;
+            font-size: 12px;
+            padding: 5px;
+            border-radius: 5px;
+            background: $black;
+            color: $white;
+            width: 200px;
+          }
+          i {
+            position: absolute;
+            bottom: -16px;
+            left: 1%;
+            font-size: 20px;
+            color: $black;
+          }
+          p {
+            margin-bottom: 5px;
+            line-height: 1.1;
+          }
+        }
+        &.active {
+          .form-builder-tooltip-description {
+            display: block;
+          }
+        }
+
       }
     }
+    legend {
+      padding: 2px 10px;
+      font-family: $primaryBoldFont;
+      color: $gray600;
+      border: 1px solid #999;
+      border-radius: 20px;
+      text-transform: none;
+      font-size: 12px;
+    }
+    .form-builder-fieldset {
+      border: 1px solid #c0c0c0;
+      margin: 0 2px 10px;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 5px;
+    }
   }
-}
-
-
-.form-builder-asterisk {
-  color: red;
-  margin-left: 5px;
 }
 
 .form-builder-radio {

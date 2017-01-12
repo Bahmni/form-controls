@@ -46,7 +46,7 @@ describe('Cell', () => {
       />
     );
 
-    const cell = cellDesigner.find('.gridCell');
+    const cell = cellDesigner.find('.form-builder-column');
     expect(cell).to.have.prop('onDrop');
 
     sinon.spy(eventData, 'preventDefault');
@@ -67,7 +67,7 @@ describe('Cell', () => {
       />
     );
 
-    const cell = cellDesigner.find('.gridCell');
+    const cell = cellDesigner.find('.form-builder-column');
     const cellDesignerInstance = cellDesigner.instance();
 
     sinon.spy(cellDesignerInstance, 'processDrop');
@@ -89,7 +89,7 @@ describe('Cell', () => {
       />
     );
 
-    const cell = cellDesigner.find('.gridCell');
+    const cell = cellDesigner.find('.form-builder-column');
 
     cell.props().onDrop(eventData);
     expect(cellDesigner.text()).to.eql('TestComponent');
@@ -127,10 +127,10 @@ describe('Cell', () => {
       dataTransfer: { getData: () => JSON.stringify(metadataClone) },
     });
 
-    cell1.find('.gridCell').props().onDrop(eventDataClone);
+    cell1.find('.form-builder-column').props().onDrop(eventDataClone);
     cell2.instance().processMove(metadataClone);
-    expect(cell1.find('.gridCell')).to.have.exactly(2).descendants('TestComponent');
-    expect(cell2.find('.gridCell')).to.not.have.descendants('TestComponent');
+    expect(cell1.find('.form-builder-column')).to.have.exactly(2).descendants('TestComponent');
+    expect(cell2.find('.form-builder-column')).to.not.have.descendants('TestComponent');
   });
 
   it('should update the components location to that of cells when dropped', () => {
@@ -144,7 +144,7 @@ describe('Cell', () => {
         wrapper={ TestComponent }
       />
     );
-    const cell = cellDesigner.find('.gridCell');
+    const cell = cellDesigner.find('.form-builder-column');
 
     cell.props().onDrop(eventData);
     const instance = cellDesigner.instance();
@@ -174,7 +174,7 @@ describe('Cell', () => {
       />
     );
 
-    const cell = cellDesigner.find('.gridCell');
+    const cell = cellDesigner.find('.form-builder-column');
     cell.props().onDrop(eventData);
 
     mockOnChange.verify();
@@ -199,7 +199,7 @@ describe('Cell', () => {
     const eventDataClone = Object.assign({}, eventData, {
       dataTransfer: { getData: () => JSON.stringify(metadataClone) },
     });
-    const cell = cellDesigner.find('.gridCell');
+    const cell = cellDesigner.find('.form-builder-column');
     cell.props().onDrop(eventDataClone);
     cellDesigner.instance().processMove(metadataClone);
     expect(cellDesigner.text()).to.eql('TestComponent');
@@ -217,7 +217,7 @@ describe('Cell', () => {
       />
     );
 
-    const child = cellDesigner.find('.gridCell').children().at(0);
+    const child = cellDesigner.find('.form-builder-column').children().at(0);
     expect(child.prop('idGenerator')).to.equal(idGenerator); // reference equality
     expect(child.prop('wrapper')).to.eql(TestComponent);
     expect(child.prop('metadata')).to.eql(metadata);
