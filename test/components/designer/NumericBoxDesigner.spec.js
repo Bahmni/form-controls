@@ -54,7 +54,7 @@ describe('NumericBoxDesigner', () => {
         metadata={metadata}
       />
     );
-    expect(numericBox.find('span')).to.have.text(`(${lowNormal}-${hiNormal})`);
+    expect(numericBox.find('span')).to.have.text(`(${lowNormal} - ${hiNormal})`);
   });
 
   describe('getRange', () => {
@@ -63,7 +63,7 @@ describe('NumericBoxDesigner', () => {
       const hiNormal = 10;
 
       const rangeStr = NumericBoxDesigner.getRange(lowNormal, hiNormal);
-      expect(rangeStr).to.eql(`(${lowNormal}-${hiNormal})`);
+      expect(rangeStr).to.eql(`(${lowNormal} - ${hiNormal})`);
     });
 
     it('should show range as greater than lowNormal when only it is present', () => {

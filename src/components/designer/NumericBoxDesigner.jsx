@@ -8,13 +8,20 @@ export class NumericBoxDesigner extends Component {
 
   render() {
     const { lowNormal, hiNormal } = this.props;
+    if (NumericBoxDesigner.getRange(lowNormal, hiNormal) !== '') {
+      return (
+          <div className="fl">
+            <input type="number" />
+            <span className="form-builder-valid-range">
+              {NumericBoxDesigner.getRange(lowNormal, hiNormal)}
+            </span>
+          </div>
+      );
+    }
     return (
-      <div>
-        <input type="number" />
-        <span className="form-builder-valid-range">
-          {NumericBoxDesigner.getRange(lowNormal, hiNormal)}
-        </span>
-      </div>
+        <div className="fl">
+          <input type="number" />
+        </div>
     );
   }
 }
@@ -34,7 +41,7 @@ NumericBoxDesigner.propTypes = {
 
 NumericBoxDesigner.getRange = (lowNormal, hiNormal) => {
   if (lowNormal && hiNormal) {
-    return `(${lowNormal}-${hiNormal})`;
+    return `(${lowNormal} - ${hiNormal})`;
   } else if (lowNormal) {
     return `(>${lowNormal})`;
   } else if (hiNormal) {

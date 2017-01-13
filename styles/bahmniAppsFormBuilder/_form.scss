@@ -5,17 +5,19 @@
     width: 100%;
     padding: 5px 10px;
     box-sizing: border-box;
+    clear: both;
     &.active {
       border: 1px dotted $gray500;
     }
     .form-field-wrap {
       position: relative;
+      margin-top:5px;
       .label-wrap {
         float: left;
-        width: 200px;
+        width: 230px;
         padding-right: 15px;
         font-size: 12px;
-        margin-top: 6px;
+        margin-top: 5px;
         text-align: right;
         position: relative;
         label {
@@ -31,18 +33,22 @@
         width: 12.5em;
         color: $bahmniTextColor;
         padding: 2px 10px;
-        margin: 5px 10px 0 0;
+        margin: 0 10px 5px 0;
         background-color: $white;
         border: 1px solid $gray300;
         font-size: 14px;
+        &.form-builder-label{
+          margin-top:-4px;
+        }
       }
       .form-builder-valid-range {
         color: $gray600;
         font-size: 13px;
+        padding-right:10px;
       }
-      .obs-comment-section-wrap {
-        @include clearfix();
-        margin-top: 5px;
+      .form-builder-comment-wrap{
+        clear: both;
+        overflow: hidden;
       }
       .form-builder-comment-toggle {
         position: absolute;
@@ -90,6 +96,7 @@
         }
       }
       textarea {
+        float: left;
         word-wrap: break-word;
         min-height: 53px;
         width: 500px;
@@ -99,6 +106,7 @@
         border: 1px solid $gray300;
         box-sizing: border-box;
         resize: vertical;
+        margin:0 10px 5px 0;
       }
       .form-builder-tooltip-wrap {
         display: inline-block;
@@ -156,6 +164,21 @@
 
       }
     }
+    .form-builder-clone{
+      margin-top: 3px;
+      float:left;
+      .form-builder-add-more{
+        padding: 2px 0;
+        color: $green;
+        margin:0;
+      }
+      .form-builder-remove{
+        padding: 2px 0;
+        color:#9D0101;
+        margin-left: 10px;
+      }
+    }
+
     legend {
       padding: 2px 10px;
       font-family: $primaryBoldFont;

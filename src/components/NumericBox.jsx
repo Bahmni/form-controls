@@ -71,17 +71,33 @@ export class NumericBox extends Component {
 
   render() {
     const { lowNormal, hiNormal } = this.props;
+    if (NumericBoxDesigner.getRange(lowNormal, hiNormal) !== '') {
+      return (
+        <div className="fl">
+          <input
+            className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
+            onChange={ (e) => this.handleChange(e) }
+            ref={(elem) => {
+              this.input = elem;
+            }}
+            type="number"
+          />
+          <span className="form-builder-valid-range">
+            {NumericBoxDesigner.getRange(lowNormal, hiNormal)}
+          </span>
+        </div>
+      );
+    }
     return (
-      <div>
+      <div className="fl">
         <input
           className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
           onChange={ (e) => this.handleChange(e) }
-          ref={(elem) => { this.input = elem; }}
+          ref={(elem) => {
+            this.input = elem;
+          }}
           type="number"
         />
-        <span className="form-builder-valid-range">
-          {NumericBoxDesigner.getRange(lowNormal, hiNormal)}
-        </span>
       </div>
     );
   }

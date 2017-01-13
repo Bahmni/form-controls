@@ -70,3 +70,15 @@ $primaryItalicFont: "OpenSansItalic";
 $primaryBoldFont: "OpenSansBold";
 $primarySemiBoldFont: "OpenSansSemiBold";
 
+.clearfix {
+  &:before {
+    content: "";
+    display: table;
+  }
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+

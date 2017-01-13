@@ -5,8 +5,8 @@ export class AddMore extends Component {
   showAdd() {
     if (this.props.canAdd) {
       return (
-          <button onClick={ this.props.onAdd } >
-            +
+          <button className="form-builder-add-more" onClick={ this.props.onAdd } >
+            <i className="fa fa-plus"></i>
           </button>
       );
     }
@@ -16,8 +16,8 @@ export class AddMore extends Component {
   showDelete() {
     if (this.props.canRemove) {
       return (
-          <button onClick={ this.props.onRemove } >
-            -
+          <button className="form-builder-remove" onClick={ this.props.onRemove } >
+            <i className="fa fa-remove"></i>
           </button>
       );
     }
@@ -26,7 +26,7 @@ export class AddMore extends Component {
 
   render() {
     return (
-      <div>
+      <div className="form-builder-clone">
           { this.showAdd() }
           { this.showDelete() }
       </div>

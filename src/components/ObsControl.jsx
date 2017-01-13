@@ -98,7 +98,7 @@ export class ObsControl extends Component {
       concept.description[0].display : undefined;
     if (description) {
       return (
-        <p className={classNames('form-builder-tooltip-wrap fr',
+        <div className={classNames('form-builder-tooltip-wrap fr',
            { active: showHintButton === true }) }>
           <i className="fa fa-question-circle form-builder-tooltip-trigger"
             onClick={() => this.setState({ showHintButton: !showHintButton })}
@@ -107,7 +107,7 @@ export class ObsControl extends Component {
             <i className="fa fa-caret-down"></i>
             <span className="details hint">{description}</span>
           </p>
-        </p>
+        </div>
       );
     }
     return null;
@@ -143,12 +143,12 @@ export class ObsControl extends Component {
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
     if (registeredComponent) {
       return (
-        <div className="form-field-wrap">
-          <p className="label-wrap fl">
+        <div className="form-field-wrap clearfix">
+          <div className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
             {this.showHelperText()}
-          </p>
+          </div>
           {this.displayObsControl(registeredComponent)}
           {this.showAddMore()}
           {this.showComment()}

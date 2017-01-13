@@ -37,7 +37,7 @@ export class Comment extends Component {
 
   render() {
     return (
-      <div>
+      <div className="form-builder-comment-wrap">
         <button
           className={classNames('form-builder-comment-toggle',
             { active: this.state.showCommentSection === true,

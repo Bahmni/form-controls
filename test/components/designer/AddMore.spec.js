@@ -10,7 +10,7 @@ describe('AddMore', () => {
   it('should render AddMore designer component', () => {
     const wrapper = mount(<AddMoreDesigner />);
 
-    expect(wrapper.find('button').at(0).text()).to.be.eql('+');
-    expect(wrapper.find('button').at(1).text()).to.be.eql('-');
+    expect(wrapper.find('button').at(0).find('.fa-plus')).to.have.exactly(1).descendants('i');
+    expect(wrapper.find('button').at(1).find('.fa-remove')).to.have.exactly(1).descendants('i');
   });
 });

@@ -15,9 +15,9 @@ describe('AddMore', () => {
       onAdd={onAddSpy} onRemove={onRemoveSpy}
     />);
 
-    expect(wrapper.find('button').at(0).text()).to.be.eql('+');
+    expect(wrapper.find('button').find('.fa-plus')).to.have.exactly(1).descendants('i');
     expect(wrapper.find('button').at(0).props().onClick).to.be.eql(onAddSpy);
-    expect(wrapper.find('button').at(1).text()).to.be.eql('-');
+    expect(wrapper.find('button').find('.fa-remove')).to.have.exactly(1).descendants('i');
     expect(wrapper.find('button').at(1).props().onClick).to.be.eql(onRemoveSpy);
   });
 
@@ -28,7 +28,7 @@ describe('AddMore', () => {
       canRemove onAdd={onAddSpy} onRemove={onRemoveSpy}
     />);
 
-    expect(wrapper.find('button').text()).to.be.eql('-');
+    expect(wrapper.find('button').find('.fa-remove')).to.have.exactly(1).descendants('i');
     expect(wrapper.find('button').props().onClick).to.be.eql(onRemoveSpy);
   });
 
@@ -39,7 +39,7 @@ describe('AddMore', () => {
       onAdd={onAddSpy} onRemove={onRemoveSpy}
     />);
 
-    expect(wrapper.find('button').text()).to.be.eql('+');
+    expect(wrapper.find('button').find('.fa-plus')).to.have.exactly(1).descendants('i');
     expect(wrapper.find('button').props().onClick).to.be.eql(onAddSpy);
   });
 

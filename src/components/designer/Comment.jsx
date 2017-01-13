@@ -22,7 +22,7 @@ export class CommentDesigner extends PureComponent { // PureComponent has been a
 
   render() {
     return (
-        <div>
+        <div className="form-builder-comment-wrap">
             <button
               className={classNames('form-builder-comment-toggle',
                 { active: this.state.showCommentSection === true })}

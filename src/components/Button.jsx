@@ -99,6 +99,8 @@ export class Button extends Component {
       classNames('form-control-buttons', { 'form-builder-error': this.state.hasErrors });
     return <div className={className}>{this.displayButtons()}</div>;
   }
+
+
 }
 
 Button.propTypes = {

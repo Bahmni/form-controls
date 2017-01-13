@@ -59,9 +59,8 @@ export class LabelDesigner extends Component {
     if (this.state.isEditable) {
       return (
         <input
-          defaultValue={ this.state.value }
-          onBlur={this.onBlur}
-          onKeyUp={this.onEnterKey}
+          className="form-builder-label" defaultValue={ this.state.value }
+          onBlur={this.onBlur} onKeyUp={this.onEnterKey}
           ref={ this.storeComponentRef }
           type="text"
         />
