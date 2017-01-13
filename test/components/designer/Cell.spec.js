@@ -22,7 +22,7 @@ describe('Cell', () => {
       },
       dataTransfer: { getData: () => JSON.stringify(metadata) },
     };
-    sinon.stub(React, 'cloneElement', e => e);
+    sinon.stub(React, 'cloneElement').callsFake(e => e);
   });
 
   after(() => {
@@ -149,7 +149,7 @@ describe('Cell', () => {
     cell.props().onDrop(eventData);
     const instance = cellDesigner.instance();
     const expectedProperties = { properties: { location: { row: 1, column: 10 } } };
-    sinon.stub(instance, 'getCellDefinition', () => [expectedProperties]);
+    sinon.stub(instance, 'getCellDefinition').callsFake(() => [expectedProperties]);
     const cellDefinition = instance.getCellDefinition();
     expect(cellDesigner.text()).to.eql('TestComponent');
     expect(cellDefinition[0].properties.location).to.deep.eql({ row: 1, column: 10 });
