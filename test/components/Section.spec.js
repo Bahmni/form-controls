@@ -5,6 +5,7 @@ import chai, { expect } from 'chai';
 import { Section } from 'components/Section.jsx';
 import sinon from 'sinon';
 import { Obs } from 'src/helpers/Obs';
+import { ObsList } from 'src/helpers/ObsList';
 import { SectionMapper } from 'src/mapper/SectionMapper';
 import ComponentStore from 'src/helpers/componentStore';
 import { List } from 'immutable';
@@ -68,8 +69,7 @@ describe('Section', () => {
     ],
   };
   const onChangeSpy = sinon.spy();
-  const observation = new List();
-
+  const observation = new ObsList();
   const sectionMapper = new SectionMapper();
 
   describe('render', () => {
@@ -91,9 +91,9 @@ describe('Section', () => {
     });
 
     it('should render section control with observations', () => {
-      const observations = (new List()).push(
+      const observations = (new ObsList()).setObsList((new List()).push(
         new Obs({ formFieldPath: 'formName.1/100-0', value: '72' })
-      );
+      ));
 
       const wrapper = mount(
           <Section
@@ -163,7 +163,7 @@ describe('Section', () => {
         value: 10, formFieldPath: 'formName.1/100-0', uuid: 'childObs1Uuid',
       });
 
-      const obsList = (new List()).push(pulseNumericObs);
+      const obsList = (new ObsList).setObsList(new List().push(pulseNumericObs));
 
       const wrapper = mount(
         <Section
