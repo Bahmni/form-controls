@@ -15,11 +15,11 @@ export default class Row extends Component {
 
   getAddMoreControls(controls, className) {
     return controls.map((control, index) => (
-      control.map((ctrl, indx) => (
-        <div className={`${className}-index${index}`} key={indx}>
+      control.map(ctrl =>
+        <div className={`${className}-index${index}`} key={ ctrl.props.obs.formFieldPath }>
           {ctrl}
         </div>
-      ))
+      )
     ));
   }
 
