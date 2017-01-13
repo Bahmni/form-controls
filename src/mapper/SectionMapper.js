@@ -9,7 +9,15 @@ import flattenDeep from 'lodash/flattenDeep';
 
 
 export class SectionMapper {
+
   getInitialObject(formName, formVersion, control, bahmniObservations) {
+    const obsList =
+      this._getInitialObjectInternal(formName, formVersion, control, bahmniObservations);
+
+    return [obsList];
+  }
+
+  _getInitialObjectInternal(formName, formVersion, control, bahmniObservations) {
     let obsList = new List();
     obsList = this.findControls(control, formName, formVersion, bahmniObservations, obsList);
 
@@ -22,7 +30,7 @@ export class SectionMapper {
     each(control.controls, (item) => {
       if (item.type === 'section') {
         obsList = obsList.push(
-          this.getInitialObject(formName, formVersion, item, bahmniObservations)
+          this._getInitialObjectInternal(formName, formVersion, item, bahmniObservations)
         );
       }
 
