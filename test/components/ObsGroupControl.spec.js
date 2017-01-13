@@ -82,6 +82,24 @@ describe('ObsGroupControl', () => {
   const obsGroupMapper = new ObsGroupMapper();
 
   describe('render', () => {
+    it('should render obsGroup control collapse equals to true', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          collapse
+          formName={formName}
+          formVersion={formVersion}
+          mapper={obsGroupMapper}
+          metadata={metadata}
+          obs={observation}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper).to.have.exactly(3).descendants('DummyControl');
+      expect(wrapper.find('DummyControl').at(0).props().collapse).to.eql(true);
+      expect(wrapper.find('DummyControl').at(1).props().collapse).to.eql(true);
+    });
+
     it('should render obsGroup control with observations', () => {
       const wrapper = mount(
         <ObsGroupControl
@@ -116,6 +134,54 @@ describe('ObsGroupControl', () => {
       ComponentStore.registerComponent('randomType', DummyControl);
     });
 
+
+    it('should collapse all child controls on click of collapse icon', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          mapper={obsGroupMapper}
+          metadata={metadata}
+          obs={observation}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls active-obsGroup-controls');
+
+      wrapper.find('legend').simulate('click');
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls closing-obsGroup-controls');
+    });
+
+    it('should collapse all child controls on change of collapse props', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          mapper={obsGroupMapper}
+          metadata={metadata}
+          obs={observation}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls active-obsGroup-controls');
+
+      wrapper.setProps({ collapse: true });
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls closing-obsGroup-controls');
+    });
 
     it('should trigger onChange in obsGroup if its child obs has changed', () => {
       const pulseNumericConcept = {

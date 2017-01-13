@@ -86,6 +86,7 @@ export class Container extends Component {
   render() {
     const { metadata: { controls, name: formName, version: formVersion }, validate } = this.props;
     const childProps = {
+      collapse: this.props.collapse,
       errors: this.state.errors,
       formName,
       formVersion,
@@ -104,6 +105,7 @@ export class Container extends Component {
 }
 
 Container.propTypes = {
+  collapse: PropTypes.bool.isRequired,
   metadata: PropTypes.shape({
     controls: React.PropTypes.arrayOf(
       React.PropTypes.shape({
@@ -116,4 +118,8 @@ Container.propTypes = {
   }),
   observations: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
+};
+
+Container.defaultProps = {
+  collapse: false,
 };

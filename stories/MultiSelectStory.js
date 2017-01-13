@@ -322,6 +322,8 @@ const obsList = [
   },
 ];
 
+const secondForm = {id:12,uuid:'d640ddc0-1f2d-4c4f-9e18-09181025601a',controls:[{type:'obsGroupControl',label:{type:'label',value:'Pulse Data'},properties:{abnormal:false,location:{column:0,row:0}},id:'1',concept:{name:'Pulse Data',uuid:'c36af094-3f10-11e4-adec-0800271c1b75',datatype:'N/A',set:true,setMembers:[{name:'Pulse(/min)',uuid:'c36bc411-3f10-11e4-adec-0800271c1b75',datatype:'Numeric',description:[],units:'/min',hiNormal:72,lowNormal:72,hiAbsolute:null,lowAbsolute:-5,answers:[],properties:{allowDecimal:true}},{name:'Pulse Abnormal',uuid:'c36c7c98-3f10-11e4-adec-0800271c1b75',datatype:'Boolean',description:[],units:null,hiNormal:null,lowNormal:null,hiAbsolute:null,lowAbsolute:null,answers:[],properties:{allowDecimal:null}}]},controls:[{type:'obsControl',label:{type:'label',value:'Pulse(/min)'},properties:{mandatory:false,notes:false,hideLabel:false,location:{row:0,column:0}},id:'2',concept:{name:'Pulse(/min)',uuid:'c36bc411-3f10-11e4-adec-0800271c1b75',datatype:'Numeric',description:[],units:'/min',hiNormal:72,lowNormal:72,hiAbsolute:null,lowAbsolute:-5,answers:[],properties:{allowDecimal:true}}},{options:[{name:'Yes',value:true},{name:'No',value:false}],type:'obsControl',label:{type:'label',value:'Pulse Abnormal'},properties:{mandatory:false,notes:false,hideLabel:false,location:{row:1,column:0}},id:'3',concept:{name:'Pulse Abnormal',uuid:'c36c7c98-3f10-11e4-adec-0800271c1b75',datatype:'Boolean',description:[],units:null,hiNormal:null,lowNormal:null,hiAbsolute:null,lowAbsolute:null,answers:[],properties:{allowDecimal:null}}}]},{type:'obsGroupControl',label:{type:'label',value:'Systolic Data'},properties:{abnormal:false,location:{column:0,row:1}},id:'4',concept:{name:'Systolic Data',uuid:'c36ddb6d-3f10-11e4-adec-0800271c1b75',datatype:'N/A',set:true,setMembers:[{name:'Systolic(mm Hg)',uuid:'c36e9c8b-3f10-11e4-adec-0800271c1b75',datatype:'Numeric',description:[],units:'mm Hg',hiNormal:140,lowNormal:110,hiAbsolute:null,lowAbsolute:null,answers:[],properties:{allowDecimal:true}},{name:'Systolic Abnormal',uuid:'c36f5a8b-3f10-11e4-adec-0800271c1b75',datatype:'Boolean',description:[],units:null,hiNormal:null,lowNormal:null,hiAbsolute:null,lowAbsolute:null,answers:[],properties:{allowDecimal:null}}]},controls:[{type:'obsControl',label:{type:'label',value:'Systolic(mm Hg)'},properties:{mandatory:false,notes:false,hideLabel:false,location:{row:0,column:1}},id:'5',concept:{name:'Systolic(mm Hg)',uuid:'c36e9c8b-3f10-11e4-adec-0800271c1b75',datatype:'Numeric',description:[],units:'mm Hg',hiNormal:140,lowNormal:110,hiAbsolute:null,lowAbsolute:null,answers:[],properties:{allowDecimal:true}}},{options:[{name:'Yes',value:true},{name:'No',value:false}],type:'obsControl',label:{type:'label',value:'Systolic Abnormal'},properties:{mandatory:false,notes:false,hideLabel:false,location:{row:1,column:1}},id:'6',concept:{name:'Systolic Abnormal',uuid:'c36f5a8b-3f10-11e4-adec-0800271c1b75',datatype:'Boolean',description:[],units:null,hiNormal:null,lowNormal:null,hiAbsolute:null,lowAbsolute:null,answers:[],properties:{allowDecimal:null}}}]}]};
+
 storiesOf('Forms', module)
   .add('Multi Select', () =>
     <StoryWrapper json={form}>
@@ -329,4 +331,14 @@ storiesOf('Forms', module)
         validate={ false }
       />
     </StoryWrapper>
-  );
+  )
+  .add('Container Collapsed', () =>
+    <StoryWrapper json={secondForm}>
+        <Container metadata={ secondForm }
+                   expand = { true }
+                   observations = {[]}
+                   validate={ false }
+        />
+    </StoryWrapper>
+    );
+
