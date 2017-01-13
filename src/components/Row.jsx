@@ -35,6 +35,7 @@ export default class Row extends Component {
 }
 
 Row.propTypes = {
+  collapse: PropTypes.bool,
   controls: PropTypes.array.isRequired,
   formName: PropTypes.string.isRequired,
   formVersion: PropTypes.string.isRequired,

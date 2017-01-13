@@ -104,10 +104,10 @@ storiesOf('Abnormal ObsControl', module)
   .add('Basic View', () => (
   <StoryWrapper json={metadata}>
     <ObsGroupControl
+      errors={[]}
       formName="f"
       formVersion="1"
       mapper={new ObsGroupMapper()}
-      errors={[]}
       metadata={metadata}
       obs={ pulseDataObs }
       onValueChanged={() => {}}

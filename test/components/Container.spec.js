@@ -130,6 +130,16 @@ describe('Container', () => {
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
     });
 
+    it('should render form with collapse equals true', () => {
+      const wrapper = mount(
+        <Container collapse metadata={metadata} observations={[]} validate={false} />
+      );
+
+      expect(wrapper).to.have.exactly(3).descendants('Row');
+      expect(wrapper.find('Row').at(0).props().collapse).to.eql(true);
+      expect(wrapper.find('Row').at(1).props().collapse).to.eql(true);
+    });
+
     it('should render form without controls when it is empty', () => {
       const meta = { id: 100, name: 'Vitals', controls: [], uuid: 'uuid', version: '1' };
       const wrapper = shallow(<Container metadata={meta} observations={[]} validate={false} />);

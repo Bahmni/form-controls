@@ -201,3 +201,28 @@
 .form-builder-radio {
   display: inline-block;
 }
+
+.form-builder-toggle {
+  .fa-caret-right{
+    display: block;
+  }
+  .fa-caret-down{
+    display: none;
+  }
+  &.active{
+    .fa-caret-right{
+      display: none;
+    }
+    .fa-caret-down{
+      display: block
+    }
+  }
+}
+
+.active-obsGroup-controls {
+  display: block;
+}
+
+.closing-obsGroup-controls {
+  display: none;
+}
