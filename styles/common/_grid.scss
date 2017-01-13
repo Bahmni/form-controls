@@ -1,7 +1,7 @@
 .form-control-buttons {
   float: left;
   max-width: 223px;
-  margin-right:10px;
+  margin-right: 10px;
   button {
     margin: 0 2px 4px 0;
     text-align: center;
@@ -29,25 +29,48 @@
   }
 }
 
-.form-builder-canvas ,.form-builder-row{
+.form-builder-canvas, .form-builder-row {
   .obs-control-select-wrapper {
-    width:197px !important;
-    display:inline-block !important;
+    width: 197px !important;
+    display: inline-block !important;
     box-sizing: border-box;
   }
   .Select-control {
-    height:25px;
-    .Select-placeholder ,.Select-value{
+    height: 25px;
+    .Select-placeholder, .Select-value {
       line-height: 24px;
       max-width: initial;
     }
   }
-  .Select-input{
-    height:25px;
-    input{
-      padding:3px 0 !important;
+  .Select-input {
+    height: 25px;
+    input {
+      padding: 3px 0 !important;
       margin-top: 0 !important;
 
+    }
+  }
+  .Select--multi {
+    .Select-control {
+      width: 275px;
+      .Select-value {
+        float: left;
+        background: #eee;
+        border-radius: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+        margin: 3px;
+        line-height: 1em;
+        .Select-value-icon {
+          float: left;
+          display: inline-block;
+          cursor: pointer;
+          width: 12px;
+        }
+      }
+    }
+    .Select-menu-outer {
+      width: 275px;
     }
   }
 }
