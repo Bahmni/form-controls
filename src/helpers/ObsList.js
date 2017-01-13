@@ -1,5 +1,6 @@
 /* eslint-disable new-cap */
 import { Record, List } from 'immutable';
+import flattenDeep from 'lodash/flattenDeep';
 
 export const ImmutableObsList = Record({
   formFieldPath: undefined,
@@ -35,5 +36,13 @@ export class ObsList extends ImmutableObsList {
     return this.set('obsList', obsList);
   }
 
+  getObject(obsList) {
+    const observationList = [];
+    obsList.getObsList().forEach((obs) => {
+      observationList.push(obs.getObject(obs));
+    });
+
+    return flattenDeep(observationList);
+  }
 }
 /* eslint-disable new-cap */

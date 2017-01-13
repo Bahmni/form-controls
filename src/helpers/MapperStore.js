@@ -2,6 +2,7 @@ import { ObsMapper } from 'src/mapper/ObsMapper';
 import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import { ObsListMapper } from 'src/mapper/ObsListMapper';
+import { SectionMapper } from 'src/mapper/SectionMapper';
 
 class MapperStore {
 
@@ -16,6 +17,10 @@ class MapperStore {
 
     if (control.type === 'obsGroupControl') {
       return new ObsGroupMapper();
+    }
+
+    if (control.type === 'section') {
+      return new SectionMapper();
     }
 
     return new ObsMapper();
