@@ -66,4 +66,14 @@ export class Concept {
     };
   }
 
+  getNumericContext() {
+    return {
+      units: this.concept.units,
+      hiNormal: this.concept.hiNormal,
+      lowNormal: this.concept.lowNormal,
+      hiAbsolute: this.concept.hiAbsolute,
+      lowAbsolute: this.concept.lowAbsolute,
+    };
+  }
+
 }

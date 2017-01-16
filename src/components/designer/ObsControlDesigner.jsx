@@ -6,6 +6,7 @@ import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
+import { Concept } from 'src/helpers/Concept';
 
 export class ObsControlDesigner extends Component {
 
@@ -43,12 +44,12 @@ export class ObsControlDesigner extends Component {
   }
 
   _numericContext(metadata) {
-    const { concept } = metadata;
     return {
-      hiNormal: concept.hiNormal,
-      lowNormal: concept.lowNormal,
-      hiAbsolute: concept.hiAbsolute,
-      lowAbsolute: concept.lowAbsolute,
+      units: metadata.units,
+      hiNormal: metadata.hiNormal,
+      lowNormal: metadata.lowNormal,
+      hiAbsolute: metadata.hiAbsolute,
+      lowAbsolute: metadata.lowAbsolute,
     };
   }
 
@@ -178,19 +179,12 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
     value: `${concept.name.name}${ObsControlDesigner.getUnits(concept)}`,
   };
 
-  const numericContext = {
-    units: concept.units,
-    hiNormal: concept.hiNormal,
-    lowNormal: concept.lowNormal,
-    hiAbsolute: concept.hiAbsolute,
-    lowAbsolute: concept.lowAbsolute,
-  };
   return Object.assign(
     {},
     metadata,
     { concept: filteredConcepts },
     { label },
-    { ...numericContext }
+    { ...(new Concept(concept).getNumericContext()) }
   );
 };
 

@@ -1,5 +1,6 @@
 import { DescriptorParser as Descriptor } from './descriptorParser';
 import ComponentStore from 'src/helpers/componentStore';
+import { Concept } from 'src/helpers/Concept';
 
 export class Metadata {
   getMetadataForConcept(concept, idGenerator, type = 'obsGroupControl',
@@ -23,11 +24,16 @@ export class Metadata {
     const metadata = descriptor.data().metadata;
     metadata.properties = Object.assign({}, metadata.properties, properties);
 
-    return Object.assign({}, metadata,
+    const updatedMetadata = Object.assign({}, metadata,
       { id: id || String(idGenerator.getId()) },
       { concept },
       { controls },
       { label: Object.assign({}, metadata.label, { value: concept.name }) },
       { properties: Object.assign({}, metadata.properties, properties) });
+    if (type === childType) {
+      return Object.assign({}, updatedMetadata, new Concept(concept).getNumericContext());
+    }
+    return updatedMetadata;
   }
+
 }
