@@ -203,8 +203,13 @@
 }
 
 .form-builder-toggle {
+  i {
+    width: 1.25em;
+    text-align: center;
+    margin-left: 1.25em;
+  }
   .fa-caret-right{
-    display: block;
+    display: inline-block;
   }
   .fa-caret-down{
     display: none;
@@ -214,7 +219,8 @@
       display: none;
     }
     .fa-caret-down{
-      display: block
+      display: inline-block;
+      width: 1.2em;
     }
   }
 }
