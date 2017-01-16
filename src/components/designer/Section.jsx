@@ -52,7 +52,7 @@ export class SectionDesigner extends Component {
             <Grid
               controls={ controls }
               idGenerator={this.props.idGenerator}
-              minRows={3}
+              minRows={2}
               ref={ this.storeGridRef }
               wrapper={this.props.wrapper}
             />

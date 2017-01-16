@@ -90,7 +90,7 @@ describe('SectionDesigner', () => {
       expect(grid.prop('controls')).to.eql([childControl]);
       expect(grid).to.have.prop('idGenerator');
       expect(grid).to.have.prop('wrapper');
-      expect(grid.prop('minRows')).to.eql(3);
+      expect(grid.prop('minRows')).to.eql(2);
     });
 
     it('should render section without any controls', () => {
