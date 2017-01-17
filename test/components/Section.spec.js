@@ -73,6 +73,24 @@ describe('Section', () => {
   const sectionMapper = new SectionMapper();
 
   describe('render', () => {
+    it('should render section control collapse equal to true', () => {
+      const wrapper = mount(
+        <Section
+          collapse
+          formName={formName}
+          formVersion={formVersion}
+          mapper={sectionMapper}
+          metadata={metadata}
+          obs={observation}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper).to.have.exactly(3).descendants('DummyControl');
+      expect(wrapper.find('DummyControl').at(0).props().collapse).to.eql(true);
+      expect(wrapper.find('DummyControl').at(1).props().collapse).to.eql(true);
+    });
+
     it('should render section control', () => {
       const wrapper = mount(
         <Section
@@ -128,6 +146,56 @@ describe('Section', () => {
 
       expect(wrapper).to.not.have.descendants('DummyControl');
       ComponentStore.registerComponent('randomType', DummyControl);
+    });
+
+
+    it('should collapse all child controls on click of collapse icon', () => {
+      const wrapper = mount(
+        <Section
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          mapper={sectionMapper}
+          metadata={metadata}
+          obs={observation}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls active-group-controls');
+
+      wrapper.find('legend').simulate('click');
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls closing-group-controls');
+    });
+
+
+    it('should collapse all child controls on change of collapse props', () => {
+      const wrapper = mount(
+        <Section
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          mapper={sectionMapper}
+          metadata={metadata}
+          obs={observation}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls active-group-controls');
+
+      wrapper.setProps({ collapse: true });
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls closing-group-controls');
     });
 
 

@@ -150,13 +150,13 @@ describe('ObsGroupControl', () => {
 
       expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
       expect(wrapper.find('div').at(0).props().className)
-        .to.eql('obsGroup-controls active-obsGroup-controls');
+        .to.eql('obsGroup-controls active-group-controls');
 
       wrapper.find('legend').simulate('click');
 
       expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
       expect(wrapper.find('div').at(0).props().className)
-        .to.eql('obsGroup-controls closing-obsGroup-controls');
+        .to.eql('obsGroup-controls closing-group-controls');
     });
 
     it('should collapse all child controls on change of collapse props', () => {
@@ -174,13 +174,13 @@ describe('ObsGroupControl', () => {
 
       expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
       expect(wrapper.find('div').at(0).props().className)
-        .to.eql('obsGroup-controls active-obsGroup-controls');
+        .to.eql('obsGroup-controls active-group-controls');
 
       wrapper.setProps({ collapse: true });
 
       expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
       expect(wrapper.find('div').at(0).props().className)
-        .to.eql('obsGroup-controls closing-obsGroup-controls');
+        .to.eql('obsGroup-controls closing-group-controls');
     });
 
     it('should trigger onChange in obsGroup if its child obs has changed', () => {

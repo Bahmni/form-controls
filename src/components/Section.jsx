@@ -1,17 +1,27 @@
 import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import { controlStateFactory, getErrors } from 'src/ControlState';
+
 
 export class Section extends Component {
 
   constructor(props) {
     super(props);
-    const { formName, formVersion, obs, metadata } = this.props;
+    const { formName, formVersion, obs, metadata, collapse } = this.props;
     const observations = props.mapper.getObject(obs);
     const data = controlStateFactory(metadata, observations, formName, formVersion);
-    this.state = { obs, errors: [], data };
+    this.state = { obs, errors: [], data, collapse };
     this.onChange = this.onChange.bind(this);
+    this._onCollapse = this._onCollapse.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.collapse !== this.props.collapse ||
+      nextProps.collapse !== this.state.collapse) {
+      this.setState({ collapse: nextProps.collapse });
+    }
   }
 
   onChange(obs, errors) {
@@ -25,15 +35,28 @@ export class Section extends Component {
     this.props.onValueChanged(updatedObs, updatedErrors);
   }
 
+  _onCollapse() {
+    const collapse = !this.state.collapse;
+    this.setState({ collapse });
+  }
+
   render() {
-    const { formName, formVersion, metadata: { label }, validate } = this.props;
-    const childProps = { formName, formVersion, validate, onValueChanged: this.onChange };
+    const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
+    const childProps = { collapse, formName, formVersion, validate, onValueChanged: this.onChange };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const records = this.state.data.getRecords();
+    const sectionClass =
+      this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
+    const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
+
     return (
         <fieldset className="form-builder-fieldset">
-          <legend>{label.value}</legend>
-          <div className="obsGroup-controls">
+          <legend className={toggleClass} onClick={ this._onCollapse}>
+            <i className="fa fa-caret-down"></i>
+            <i className="fa fa-caret-right"></i>
+            {label.value}
+          </legend>
+          <div className={`obsGroup-controls ${sectionClass}`} >
             {displayRowControls(groupedRowControls, records, childProps)}
           </div>
         </fieldset>
@@ -42,6 +65,7 @@ export class Section extends Component {
 }
 
 Section.propTypes = {
+  collapse: PropTypes.bool,
   formName: PropTypes.string.isRequired,
   formVersion: PropTypes.string.isRequired,
   mapper: PropTypes.object.isRequired,
@@ -58,6 +82,10 @@ Section.propTypes = {
   obs: PropTypes.any.isRequired,
   onValueChanged: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
+};
+
+Section.defaultProps = {
+  collapse: false,
 };
 
 ComponentStore.registerComponent('section', Section);

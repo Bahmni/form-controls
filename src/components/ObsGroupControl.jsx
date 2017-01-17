@@ -55,7 +55,7 @@ export class ObsGroupControl extends Component {
     const records = this.state.data.getRecords();
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
     const obsGroupClass =
-      this.state.collapse ? 'closing-obsGroup-controls' : 'active-obsGroup-controls';
+      this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
     return (
         <fieldset className="form-builder-fieldset">
           <legend className={toggleClass} onClick={ this._onCollapse}>
