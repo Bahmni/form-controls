@@ -240,12 +240,12 @@ const descriptor = {
             defaultValue: false,
           },
           {
-            name: 'addMore',
+            name: 'add More',
             dataType: 'boolean',
             defaultValue: false,
           },
           {
-            name: 'hideLabel',
+            name: 'hide Label',
             dataType: 'boolean',
             defaultValue: false,
           },

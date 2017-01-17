@@ -26,7 +26,7 @@
         .form-builder-asterisk {
           position: absolute;
           color: $red;
-          top: -2px;
+          top: auto;
         }
       }
       input {
@@ -187,6 +187,9 @@
       border-radius: 20px;
       text-transform: none;
       font-size: 12px;
+      &.form-builder-toggle{
+        cursor: pointer;
+      }
     }
     .form-builder-fieldset {
       border: 1px solid #c0c0c0;

@@ -34,6 +34,17 @@
     width: 197px !important;
     display: inline-block !important;
     box-sizing: border-box;
+    &.form-builder-error {
+      border: none !important;
+      background: none !important;
+      .Select-control {
+        border: 2px solid $red !important;
+        background: #ffcdcd !important;
+        input{
+          background-color: transparent;
+        }
+      }
+    }
   }
   .Select-control {
     height: 25px;
@@ -73,4 +84,9 @@
       width: 275px;
     }
   }
+}
+
+.form-builder-error{
+  border: 2px solid $red !important;
+  background: #ffcdcd !important;
 }
