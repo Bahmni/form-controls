@@ -8,3 +8,5 @@ window.renderWithControls =
       { metadata: formDetails, observations, validate: true, collapse });
     return ReactDOM.render(container, document.getElementById(nodeId));
   };
+
+window.unMountForm = (container) => ReactDOM.unmountComponentAtNode(container);
