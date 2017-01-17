@@ -10,6 +10,6 @@ window.renderWithControls =
   };
 
 window.unMountForm = (container) => {
-  if(container) return ReactDOM.unmountComponentAtNode(container);
+  if (container) return ReactDOM.unmountComponentAtNode(container);
   return false;
 };
