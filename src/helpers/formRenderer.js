@@ -9,4 +9,7 @@ window.renderWithControls =
     return ReactDOM.render(container, document.getElementById(nodeId));
   };
 
-window.unMountForm = (container) => ReactDOM.unmountComponentAtNode(container);
+window.unMountForm = (container) => {
+  if(container) return ReactDOM.unmountComponentAtNode(container);
+  return false;
+};
