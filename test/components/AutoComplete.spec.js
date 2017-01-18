@@ -53,7 +53,7 @@ describe('AutoComplete', () => {
     });
 
     it('should focus on search box after every update', () => {
-      const wrapper = mount(<AutoComplete />);
+      const wrapper = mount(<AutoComplete autofocus />);
       const instance = wrapper.instance();
       const focusSpy = sinon.spy(instance.childRef, 'focus');
 
@@ -61,6 +61,17 @@ describe('AutoComplete', () => {
       onChange('value');
 
       sinon.assert.calledOnce(focusSpy);
+    });
+
+    it('should not focus on search box if autofocus is disabled', () => {
+      const wrapper = mount(<AutoComplete autofocus={false} />);
+      const instance = wrapper.instance();
+      const focusSpy = sinon.spy(instance.childRef, 'focus');
+
+      const onChange = wrapper.find('Select').props().onChange;
+      onChange('value');
+
+      sinon.assert.notCalled(focusSpy);
     });
   });
 
@@ -181,6 +192,7 @@ describe('AutoComplete', () => {
       const wrapper = mount(
         <AutoComplete
           asynchronous={false}
+          autofocus
         />);
       const instance = wrapper.instance();
       const focusSpy = sinon.spy(instance.childRef, 'focus');
@@ -188,6 +200,20 @@ describe('AutoComplete', () => {
       wrapper.find('input').simulate('change', { target: { value: 'aa' } });
 
       sinon.assert.calledOnce(focusSpy);
+    });
+
+    it('should not focus on search box if autofocus is disabled', () => {
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          autofocus={false}
+        />);
+      const instance = wrapper.instance();
+      const focusSpy = sinon.spy(instance.childRef, 'focus');
+
+      wrapper.find('input').simulate('change', { target: { value: 'aa' } });
+
+      sinon.assert.notCalled(focusSpy);
     });
   });
 });
