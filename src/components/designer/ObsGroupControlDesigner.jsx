@@ -67,7 +67,12 @@ export class ObsGroupControlDesigner extends Component {
         </fieldset>
       );
     }
-    return <div onClick={ (event) => this.props.onSelect(event, metadata) }>Select Obs Source</div>;
+    return (
+      <div
+        onClick={ (event) => this.props.onSelect(event, metadata) }
+      >
+      Select ObsGroup Source
+      </div>);
   }
 }
 

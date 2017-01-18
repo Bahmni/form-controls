@@ -85,7 +85,7 @@ describe('ObsGroupControlDesigner', () => {
     });
 
     it('should render simple div', () => {
-      expect(wrapper.find('div').text()).to.eql('Select Obs Source');
+      expect(wrapper.find('div').text()).to.eql('Select ObsGroup Source');
     });
 
     it('should call onSelect function passed as prop', () => {
