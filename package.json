@@ -84,7 +84,7 @@
     "classnames": "^2.2.5",
     "immutable": "3.8.1",
     "lodash": "^4.17.4",
-    "react-select": "1.0.0-rc.1",
+    "react-select": "^1.0.0-rc.2",
     "whatwg-fetch": "^1.0.0"
   }
 }
