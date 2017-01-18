@@ -62,6 +62,9 @@ export class AutoComplete extends Component {
     if (this._hasErrors(errors)) {
       this.props.onValueChange(this.state.value, errors);
     }
+    if (this.childRef) {
+      this.childRef.focus();
+    }
   }
 
   onInputChange(input) {
@@ -157,6 +160,7 @@ export class AutoComplete extends Component {
           noResultsText={this.state.noResultsText}
           onInputChange={this.onInputChange}
           options={ this.state.options }
+          ref={ this.storeChildRef }
         />
       </div>
     );

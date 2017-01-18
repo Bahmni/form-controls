@@ -51,6 +51,17 @@ describe('AutoComplete', () => {
       wrapper.find('Select').props().onFocus();
       sinon.assert.calledOnce(loadOptionsSpy);
     });
+
+    it('should focus on search box after every update', () => {
+      const wrapper = mount(<AutoComplete />);
+      const instance = wrapper.instance();
+      const focusSpy = sinon.spy(instance.childRef, 'focus');
+
+      const onChange = wrapper.find('Select').props().onChange;
+      onChange('value');
+
+      sinon.assert.calledOnce(focusSpy);
+    });
   });
 
   context('when component is not asynchronous', () => {
@@ -164,6 +175,19 @@ describe('AutoComplete', () => {
 
       wrapper.find('input').simulate('change', { target: { value: 'akkk' } });
       expect(instance.state.noResultsText).to.eql('No Results Found');
+    });
+
+    it('should focus on search box after every update', () => {
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+        />);
+      const instance = wrapper.instance();
+      const focusSpy = sinon.spy(instance.childRef, 'focus');
+
+      wrapper.find('input').simulate('change', { target: { value: 'aa' } });
+
+      sinon.assert.calledOnce(focusSpy);
     });
   });
 });
