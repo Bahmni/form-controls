@@ -133,7 +133,7 @@ export class AutoComplete extends Component {
                   asynchronous, multiSelect, minimumInput, searchable } = this.props;
     const props = {
       autofocus,
-      backspaceRemoves: false,
+      backspaceRemoves: true,
       disabled,
       labelKey,
       minimumInput,
@@ -161,7 +161,8 @@ export class AutoComplete extends Component {
     }
     return (
       <div className={className}>
-        <Select { ...props }
+        <Select
+          { ...props }
           noResultsText={this.state.noResultsText}
           onInputChange={this.onInputChange}
           options={ this.state.options }

@@ -1,9 +1,23 @@
 import { createObsFromControl } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
+import flattenDeep from 'lodash/flattenDeep';
+import MapperStore from 'src/helpers/MapperStore';
+import { List } from 'immutable';
 
 export class ObsGroupMapper {
+
   getInitialObject(formName, formVersion, control, bahmniObservations) {
-    return createObsFromControl(formName, formVersion, control, bahmniObservations);
+    const obsGroup = createObsFromControl(formName, formVersion, control, bahmniObservations)[0];
+    if (obsGroup.groupMembers !== undefined) {
+      let groupMembers = new List();
+      for (const ctrl of control.controls) {
+        const mapper = MapperStore.getMapper(ctrl);
+        groupMembers = groupMembers.concat(mapper.getInitialObject(formName, formVersion,
+          ctrl, obsGroup.groupMembers));
+      }
+      return [obsGroup.set('groupMembers', groupMembers)];
+    }
+    return [obsGroup];
   }
 
   setValue(obsGroup, obs) {
@@ -30,7 +44,18 @@ export class ObsGroupMapper {
     });
   }
 
+  getGroupMembers(obsGroup) {
+    const observations = [];
+    if (obsGroup.groupMembers !== undefined) {
+      obsGroup.groupMembers.forEach((obs) => {
+        observations.push(obs.getObject(obs));
+      });
+    }
+    return flattenDeep(observations);
+  }
+
   getObject(obsGroup) {
-    return obsGroup.toJS();
+    const groupMembers = this.getGroupMembers(obsGroup);
+    return obsGroup.set('groupMembers', groupMembers).toJS();
   }
 }

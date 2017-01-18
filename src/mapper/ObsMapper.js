@@ -42,6 +42,6 @@ export class ObsMapper {
   }
 
   getObject(obs) {
-    return obs.toJS();
+    return obs.getObject(obs);
   }
 }

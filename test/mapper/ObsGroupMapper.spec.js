@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import { Obs } from 'src/helpers/Obs';
 import { List } from 'immutable';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
+import sinon from 'sinon';
 
 describe('ObsGroupMapper', () => {
   const booleanObs = new Obs({
@@ -100,10 +101,13 @@ describe('ObsGroupMapper', () => {
   });
 
   it('should return final object', () => {
-    const observationGroup = mapper.getObject(obsGroup);
+    sinon.spy(numericObs, 'getObject');
+    const obsGroupWithSpyMember = obsGroup.set('groupMembers', List.of(numericObs, booleanObs));
+    const observationGroup = mapper.getObject(obsGroupWithSpyMember);
     expect(observationGroup.groupMembers.length).to.eql(2);
     expect(observationGroup.formNamespace).to.eql('formUuid/4');
     expect(observationGroup.groupMembers[0].value).to.eql(10);
     expect(observationGroup.groupMembers[1].value).to.eql(undefined);
+    sinon.assert.calledOnce(numericObs.getObject);
   });
 });

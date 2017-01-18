@@ -84,4 +84,26 @@ describe('ObsList', () => {
     expect(voidedObsList.obsList.get(1).voided).to.deep.eql(true);
     expect(voidedObsList.obsList.get(1).value).to.deep.eql(undefined);
   });
+
+  it('should return true if all obs are voided', () => {
+    const obs = new Obs({ concept, formFieldPath });
+    const obs1 = new Obs({ concept, formFieldPath, value: 2, voided: true });
+    const obs2 = new Obs({ concept, formFieldPath, voided: true });
+    const observationList = List.of(obs1, obs2);
+    const formNameSpace = 'Bahmni';
+    const obsList = new ObsList({ formFieldPath, obs, obsList: observationList, formNameSpace });
+
+    expect(obsList.isVoided()).to.deep.eql(true);
+  });
+
+  it('should return false if all obs are not voided', () => {
+    const obs = new Obs({ concept, formFieldPath });
+    const obs1 = new Obs({ concept, formFieldPath, value: 2, voided: true });
+    const obs2 = new Obs({ concept, formFieldPath });
+    const observationList = List.of(obs1, obs2);
+    const formNameSpace = 'Bahmni';
+    const obsList = new ObsList({ formFieldPath, obs, obsList: observationList, formNameSpace });
+
+    expect(obsList.isVoided()).to.deep.eql(false);
+  });
 });
