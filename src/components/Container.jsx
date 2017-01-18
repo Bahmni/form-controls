@@ -21,8 +21,41 @@ export class Container extends Component {
     const bahmniRecord = this.state.data.getRecord(obs.formFieldPath)
       .set('obs', obs)
       .set('errors', errors);
-    const data = this.state.data.setRecord(bahmniRecord);
+    var data = this.state.data.setRecord(bahmniRecord);
+    data = this.handleFormCondition_unsafe(data);
     this.setState({ data });
+  }
+
+  handleFormCondition_safe(data) {
+    var func_getObsValue = this['getObsValue'];
+    var func_updateObsValue = this['updateObsValue'];
+
+    if (typeof func_getObsValue === 'function' && typeof func_updateObsValue === 'function') {
+      return func_updateObsValue(data, 'form-condition2.1/2-0', func_getObsValue(data, 'form-condition2.1/1-0')? 'Yes':'No')
+    }
+
+    return data;
+  }
+
+  handleFormCondition_unsafe(data) {
+    var updateObsValue = 'this.updateObsValue(data, "form-condition2.1/2-0", this.getObsValue(data, "form-condition2.1/1-0")?"Yes":"No")';
+    return eval(updateObsValue);
+  }
+
+  getObsValue(data, name) {
+    return data.getRecord(name)
+      .get('obs')
+      .get('value');
+  }
+
+  updateObsValue(data, name, value) {
+    const obs = data.getRecord(name).get('obs')
+      .set('value', value)
+      .set('voided', false);
+    const record = data.getRecord(name)
+      .set('obs', obs);
+
+    return data.setRecord(record);
   }
 
   onControlAdd(obs) {
