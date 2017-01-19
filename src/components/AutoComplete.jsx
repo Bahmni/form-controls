@@ -62,9 +62,6 @@ export class AutoComplete extends Component {
     if (this._hasErrors(errors)) {
       this.props.onValueChange(this.state.value, errors);
     }
-    if (this.childRef && this.props.autofocus) {
-      this.childRef.focus();
-    }
   }
 
   onInputChange(input) {
