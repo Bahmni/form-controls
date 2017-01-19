@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Comment } from 'components/Comment.jsx';
@@ -12,7 +12,7 @@ describe('Comment', () => {
   const onCommentChange = sinon.spy();
 
   beforeEach(() => {
-    wrapper = shallow(<Comment onCommentChange={onCommentChange} />);
+    wrapper = mount(<Comment onCommentChange={onCommentChange} />);
   });
 
   it('should render add comment button', () => {
@@ -47,7 +47,7 @@ describe('Comment', () => {
   });
 
   it('should render comment section with default value', () => {
-    wrapper = shallow(<Comment comment={'Some Comment'} onCommentChange={onCommentChange} />);
+    wrapper = mount(<Comment comment={'Some Comment'} onCommentChange={onCommentChange} />);
     wrapper.find('button').simulate('click');
     expect(wrapper.find('textarea').props().defaultValue).to.be.eql('Some Comment');
   });

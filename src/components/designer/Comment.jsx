@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
+import Textarea from 'react-textarea-autosize';
 export class CommentDesigner extends PureComponent { // PureComponent has been added because of eslint post test prefer-stateless-function error.
 
   constructor() {
@@ -11,7 +12,7 @@ export class CommentDesigner extends PureComponent { // PureComponent has been a
       return (
         <div className="obs-comment-section-wrap">
             <div className="label-wrap"></div>
-            <textarea
+            <Textarea
               className="obs-comment-section fl"
               placeholder="Notes"
             />

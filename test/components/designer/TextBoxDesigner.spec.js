@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { TextBoxDesigner } from 'components/designer/TextBoxDesigner.jsx';
@@ -21,7 +21,7 @@ describe('TextBoxDesigner', () => {
       id: 'someId',
       properties: {},
     };
-    wrapper = shallow(<TextBoxDesigner metadata={metadata} />);
+    wrapper = mount(<TextBoxDesigner metadata={metadata} />);
   });
 
   it('should render the TextBox designer component', () => {

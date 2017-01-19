@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
+import Textarea from 'react-textarea-autosize';
 export class Comment extends Component {
 
   constructor(props) {
@@ -23,7 +24,7 @@ export class Comment extends Component {
       return (
         <div className="obs-comment-section-wrap">
           <div className="label-wrap"></div>
-          <textarea
+          <Textarea
             className="obs-comment-section fl"
             defaultValue={this.props.comment}
             maxLength="255"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { CommentDesigner } from 'components/designer/Comment.jsx';
@@ -10,7 +10,7 @@ describe('CommentDesigner', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<CommentDesigner />);
+    wrapper = mount(<CommentDesigner />);
   });
 
   it('should render add comment button', () => {

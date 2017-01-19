@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
+import Textarea from 'react-textarea-autosize';
 
 export class TextBoxDesigner extends Component {
   getJsonDefinition() {
@@ -7,7 +8,7 @@ export class TextBoxDesigner extends Component {
   }
 
   render() {
-    return (<textarea />);
+    return (<Textarea />);
   }
 }
 
