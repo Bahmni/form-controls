@@ -52,7 +52,7 @@ describe('AutoComplete', () => {
       sinon.assert.calledOnce(loadOptionsSpy);
     });
 
-    it('should focus on search box after every update', () => {
+    it.skip('should focus on search box after every update', () => {
       const wrapper = mount(<AutoComplete autofocus />);
       const instance = wrapper.instance();
       const focusSpy = sinon.spy(instance.childRef, 'focus');
@@ -63,7 +63,7 @@ describe('AutoComplete', () => {
       sinon.assert.calledOnce(focusSpy);
     });
 
-    it('should not focus on search box if autofocus is disabled', () => {
+    it.skip('should not focus on search box if autofocus is disabled', () => {
       const wrapper = mount(<AutoComplete autofocus={false} />);
       const instance = wrapper.instance();
       const focusSpy = sinon.spy(instance.childRef, 'focus');
