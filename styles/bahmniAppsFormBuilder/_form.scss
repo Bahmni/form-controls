@@ -193,10 +193,19 @@
     }
     .form-builder-fieldset {
       border: 1px solid #c0c0c0;
-      margin: 0 2px 10px;
-      padding: 10px;
+      margin: 15px 2px 10px;
       box-sizing: border-box;
       border-radius: 5px;
+      position: relative;
+      form-builder-fieldset {
+        margin-top: 35px;
+      }
+      legend {
+        position: absolute;
+        top: -11px;
+        left: 10px;
+
+      }
     }
   }
 }
@@ -206,6 +215,7 @@
 }
 
 .form-builder-toggle {
+  background: $gray400;
   i {
     width: 1.25em;
     text-align: center;
@@ -218,6 +228,7 @@
     display: none;
   }
   &.active{
+    background: $white;;
     .fa-caret-right{
       display: none;
     }
@@ -230,6 +241,7 @@
 
 .active-group-controls {
   display: block;
+  padding: 15px 10px 10px;
 }
 
 .closing-group-controls {
