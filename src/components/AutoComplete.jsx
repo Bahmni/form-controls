@@ -95,6 +95,9 @@ export class AutoComplete extends Component {
 
   handleChange(value) {
     const errors = this._getErrors(value);
+    if (!this.props.asynchronous && this.props.minimumInput !== 0) {
+      this.setState({ options: [], noResultsText: '' });
+    }
     this.setState({ value, hasErrors: this._hasErrors(errors) });
     if (this.props.onValueChange) {
       this.props.onValueChange(value, errors);

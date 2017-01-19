@@ -96,8 +96,11 @@ describe('AutoComplete', () => {
           onValueChange={onValueChange}
           options={options}
         />);
+      const instance = wrapper.instance();
       const onChange = wrapper.find('Select').props().onChange;
       onChange(options[0]);
+      expect(instance.state.options).to.eql([]);
+      expect(instance.state.noResultsText).to.eql('');
       sinon.assert.calledOnce(onValueChange.withArgs(options[0], []));
     });
 
