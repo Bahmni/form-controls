@@ -40,6 +40,9 @@
         &.form-builder-label{
           margin-top:-4px;
         }
+        &[type = "date"], &[type = "time"] {
+          float: left;
+        }
       }
       .form-builder-valid-range {
         color: $gray600;
