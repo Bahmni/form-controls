@@ -128,7 +128,8 @@ export function createObsFromControl(formName, formVersion, control, bahmniObser
   const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id);
 
   const observationsForControl = bahmniObservations.filter(observation =>
-    observation.formFieldPath.startsWith(keyPrefix.formFieldPath)
+    observation.formFieldPath.startsWith(keyPrefix.formFieldPath) &&
+      new RegExp(`${keyPrefix.formFieldPath}[^0-9]`).test(observation.formFieldPath)
   );
 
   if (observationsForControl.length > 0) {
