@@ -74,16 +74,19 @@ export class AutoComplete extends Component {
     this.setState({ options: [] });
   }
 
-  getOptions(input) {
-    const { optionsUrl } = this.props;
-    return httpInterceptor.get(optionsUrl + input)
-      .then((data) => {
-        const options = data.results;
-        return { options };
-      }).catch(() => {
-        const options = [];
-        return { options };
-      });
+  getOptions(input = '') {
+    const { optionsUrl, minimumInput } = this.props;
+    if (input.length >= minimumInput) {
+      return httpInterceptor.get(optionsUrl + input)
+        .then((data) => {
+          const options = data.results;
+          return { options };
+        }).catch(() => {
+          const options = [];
+          return { options };
+        });
+    }
+    return Promise.resolve();
   }
 
   getValue() {
@@ -126,7 +129,7 @@ export class AutoComplete extends Component {
 
 
   render() {
-    const { autofocus, disabled, labelKey, valueKey,
+    const { autofocus, autoload, cache, disabled, labelKey, valueKey,
                   asynchronous, multiSelect, minimumInput, searchable } = this.props;
     const props = {
       autofocus,
@@ -147,6 +150,8 @@ export class AutoComplete extends Component {
         <div className={className}>
           <Select.Async
             { ...props }
+            autoload={autoload}
+            cache={cache}
             loadOptions={ this.getOptions }
             onFocus={ this.handleFocus }
             ref={this.storeChildRef}
@@ -170,6 +175,8 @@ export class AutoComplete extends Component {
 AutoComplete.propTypes = {
   asynchronous: PropTypes.bool,
   autofocus: PropTypes.bool,
+  autoload: PropTypes.bool,
+  cache: PropTypes.bool,
   disabled: PropTypes.bool,
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
@@ -186,6 +193,8 @@ AutoComplete.propTypes = {
 AutoComplete.defaultProps = {
   asynchronous: true,
   autofocus: false,
+  autoload: false,
+  cache: false,
   disabled: false,
   labelKey: 'display',
   minimumInput: 2,
