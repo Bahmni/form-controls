@@ -4,6 +4,7 @@ let path = require('path');
 let webpack = require('webpack');
 let srcPath = path.join(__dirname, './src');
 let CopyWebpackPlugin = require('copy-webpack-plugin');
+let StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
   devtool: 'eval',
@@ -26,6 +27,7 @@ module.exports = {
         ],
         {copyUnmodified: true}
     ),
+      new StyleLintPlugin(),
   ],
   externals: {
     'react/lib/ExecutionEnvironment': true,

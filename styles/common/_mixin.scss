@@ -1,6 +1,5 @@
 @mixin font-size($sizeValue: 1) {
   font-size: ($sizeValue * 16) + px;
-  font-size: $sizeValue + rem;
 }
 
 
@@ -60,5 +59,16 @@
   &:disabled{
     opacity: 0.4;
     cursor: not-allowed;
+  }
+}
+.clearfix {
+  &:before {
+    content: "";
+    display: table;
+  }
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
   }
 }

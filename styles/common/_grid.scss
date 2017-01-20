@@ -9,7 +9,7 @@
     padding-left: 15px;
     padding-right: 15px;
     font-size: 12px;
-    line-height: 1em !important;
+    line-height: 1em;
     i.fa-ok {
       display: none;
       padding-top: 0;
@@ -31,15 +31,15 @@
 
 .form-builder-canvas, .form-builder-row {
   .obs-control-select-wrapper {
-    width: 197px !important;
-    display: inline-block !important;
+    width: 197px;
+    display: inline-block;
     box-sizing: border-box;
     &.form-builder-error {
-      border: none !important;
-      background: none !important;
+      border: none;
+      background: none;
       .Select-control {
-        border: 2px solid $red !important;
-        background: #ffcdcd !important;
+        border: 2px solid $red;
+        background: #ffcdcd;
         input{
           background-color: transparent;
         }
@@ -56,8 +56,10 @@
   .Select-input {
     height: 25px;
     input {
+      /* stylelint-disable */
       padding: 3px 0 !important;
       margin-top: 0 !important;
+      /* stylelint-enable */
 
     }
   }
@@ -87,6 +89,6 @@
 }
 
 .form-builder-error{
-  border: 2px solid $red !important;
-  background: #ffcdcd !important;
+  border: 2px solid $red;
+  background: #ffcdcd;
 }
