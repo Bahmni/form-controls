@@ -18,10 +18,12 @@
       line-height: inherit;
     }
     &.active {
+      /* stylelint-disable */
       color: #457FAC;
+      /* stylelint-enable */
       padding-left: 3px;
-      background: #d8d8d8;
-      border-color: #d0d0d0;
+      background: $gray300;
+      border-color: $gray400;
       i.fa-ok {
         display: inline-block;
       }
@@ -39,7 +41,7 @@
       background: none;
       .Select-control {
         border: 2px solid $red;
-        background: #ffcdcd;
+        background: $alertBackground;
         input{
           background-color: transparent;
         }
@@ -68,7 +70,7 @@
       width: 275px;
       .Select-value {
         float: left;
-        background: #eee;
+        background: $gray200;
         border-radius: 5px;
         padding: 5px;
         box-sizing: border-box;
@@ -90,5 +92,5 @@
 
 .form-builder-error{
   border: 2px solid $red;
-  background: #ffcdcd;
+  background: $errorBackground;
 }
