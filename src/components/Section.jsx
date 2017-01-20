@@ -18,7 +18,7 @@ export class Section extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.collapse !== this.props.collapse ||
+    if (nextProps.collapse !== this.props.collapse &&
       nextProps.collapse !== this.state.collapse) {
       this.setState({ collapse: nextProps.collapse });
     }
