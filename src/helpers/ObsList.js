@@ -24,6 +24,10 @@ export class ObsList extends ImmutableObsList {
     return this.set('obsList', voidedObsList);
   }
 
+  isVoided() {
+    return this.obsList.every(obs => obs.isVoided());
+  }
+
   getObsList() {
     return this.get('obsList');
   }

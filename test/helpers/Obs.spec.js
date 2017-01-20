@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { Obs, createObsFromControl } from 'src/helpers/Obs';
 import { List } from 'immutable';
+import sinon from 'sinon';
 
 describe('Obs', () => {
   const concept = {
@@ -192,6 +193,20 @@ describe('Obs', () => {
       voided: true,
     });
     expect(clonedObs).to.deep.eql(expectedClonedObs);
+  });
+
+  it('getObject should process groupMembers', () => {
+    const booleanObs = new Obs({
+      value: undefined,
+      formNamespace: 'formUuid/5',
+      uuid: 'booleanUuid',
+    });
+    sinon.spy(booleanObs, 'getObject');
+    const obs = new Obs({ concept, formNamespace, value, groupMembers: List.of(booleanObs) });
+
+    obs.getObject(obs);
+
+    sinon.assert.calledOnce(booleanObs.getObject);
   });
 
   describe('exact match id in form field path', () => {

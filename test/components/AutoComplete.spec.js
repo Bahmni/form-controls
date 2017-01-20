@@ -29,6 +29,8 @@ describe('AutoComplete', () => {
       expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
       expect(wrapper.find('Select').props().minimumInput).to.be.eql(2);
       expect(wrapper.find('Select').props().disabled).to.be.eql(false);
+      expect(wrapper.find('Select').props().cache).to.be.eql(false);
+      expect(wrapper.find('Select').props().autoload).to.be.eql(false);
     });
 
     it('should render asynchronous AutoComplete with default value', () => {

@@ -1,6 +1,7 @@
 /* eslint-disable new-cap */
 import { Record, List } from 'immutable';
 import { createFormNamespaceAndPath, getKeyPrefixForControl } from 'src/helpers/formNamespace';
+import { flattenDeep } from 'lodash';
 
 export const ImmutableObs = Record({
   concept: undefined,
@@ -109,6 +110,13 @@ export class Obs extends ImmutableObs {
   }
 
   getObject(obs) {
+    if (obs.groupMembers) {
+      const groupMembers = [];
+      for (const member of obs.groupMembers) {
+        groupMembers.push(member.getObject(member));
+      }
+      return obs.set('groupMembers', flattenDeep(groupMembers)).toJS();
+    }
     return obs.toJS();
   }
 }

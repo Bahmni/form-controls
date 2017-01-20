@@ -222,10 +222,10 @@ describe('ObsGroupControl', () => {
           datatype: 'Misc',
         },
         groupMembers: [
-          {
+          new Obs({
             concept: pulseNumericConcept,
             value: 10, formFieldPath: 'formName.1/100-0', uuid: 'childObs1Uuid',
-          }],
+          })],
         formFieldPath: 'formName.1/1-0', uuid: 'pulseDataObsUuid',
       });
 
