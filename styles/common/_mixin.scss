@@ -2,8 +2,7 @@
   font-size: ($sizeValue * 16) + px;
 }
 
-
-@mixin box-shadow-for-section{
+@mixin box-shadow-for-section {
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
@@ -11,20 +10,20 @@
   -webkit-appearance: none;
   background-color: $bahmniPageBg;
   border: 1px solid $gray400;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 -15px 10px -12px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 -15px 10px -12px rgba(0, 0, 0, 0.05);
   padding: 8px;
   border-radius: 3px;
   display: inline-block;
   position: relative;
 
   &:active, &:checked:active {
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   &:checked {
     background-color: $white;
     border: 1px solid $gray500;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 -15px 10px -12px rgba(0,0,0,0.05), inset 15px 10px -12px rgba(255,255,255,0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 -15px 10px -12px rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
     color: $text;
   }
 
@@ -46,7 +45,7 @@
   padding: 6px 20px 7px;
   display: inline-block;
   line-height: 1.2em;
-  color:$bahmniTextColor;
+  color: $bahmniTextColor;
   cursor: pointer;
   min-width: 0;
   max-width: 300px;
@@ -56,11 +55,12 @@
   &:hover {
     opacity: 0.8;
   }
-  &:disabled{
+  &:disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
 }
+
 .clearfix {
   &:before {
     content: "";

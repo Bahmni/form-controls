@@ -11,7 +11,7 @@
     }
     .form-field-wrap {
       position: relative;
-      margin-top:5px;
+      margin-top: 5px;
       .label-wrap {
         float: left;
         width: 230px;
@@ -37,8 +37,8 @@
         background-color: $white;
         border: 1px solid $gray300;
         font-size: 14px;
-        &.form-builder-label{
-          margin-top:-4px;
+        &.form-builder-label {
+          margin-top: -4px;
         }
         &[type = "date"], &[type = "time"] {
           float: left;
@@ -47,9 +47,9 @@
       .form-builder-valid-range {
         color: $gray600;
         font-size: 13px;
-        padding-right:10px;
+        padding-right: 10px;
       }
-      .form-builder-comment-wrap{
+      .form-builder-comment-wrap {
         clear: both;
         overflow: hidden;
       }
@@ -109,7 +109,7 @@
         border: 1px solid $gray300;
         box-sizing: border-box;
         resize: vertical;
-        margin:0 10px 5px 0;
+        margin: 0 10px 5px 0;
       }
       .form-builder-tooltip-wrap {
         display: inline-block;
@@ -167,15 +167,15 @@
 
       }
     }
-    .form-builder-clone{
+    .form-builder-clone {
       margin-top: 3px;
-      float:left;
-      .form-builder-add-more{
+      float: left;
+      .form-builder-add-more {
         padding: 2px 0;
         color: $green;
-        margin:0;
+        margin: 0;
       }
-      .form-builder-remove{
+      .form-builder-remove {
         padding: 2px 0;
         color: $darkRed;
         margin-left: 10px;
@@ -190,7 +190,7 @@
       border-radius: 20px;
       text-transform: none;
       font-size: 12px;
-      &.form-builder-toggle{
+      &.form-builder-toggle {
         cursor: pointer;
       }
     }
@@ -224,18 +224,18 @@
     text-align: center;
     margin-left: 1.25em;
   }
-  .fa-caret-right{
+  .fa-caret-right {
     display: inline-block;
   }
-  .fa-caret-down{
+  .fa-caret-down {
     display: none;
   }
-  &.active{
+  &.active {
     background: $white;;
-    .fa-caret-right{
+    .fa-caret-right {
       display: none;
     }
-    .fa-caret-down{
+    .fa-caret-down {
       display: inline-block;
       width: 1.2em;
     }
