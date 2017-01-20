@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { Obs } from 'src/helpers/Obs';
+import { Obs, createObsFromControl } from 'src/helpers/Obs';
 import { List } from 'immutable';
 
 describe('Obs', () => {
@@ -192,5 +192,40 @@ describe('Obs', () => {
       voided: true,
     });
     expect(clonedObs).to.deep.eql(expectedClonedObs);
+  });
+
+  describe('exact match id in form field path', () => {
+    const formName = '3116_2';
+    const formVersion = '1';
+
+    it('should get obs given form path exist in observations', () => {
+      const controlExistInObservations = { id: '1' };
+      const bahmniObservations = [
+        { formFieldPath: '3116_2.1/18-0' },
+        { formFieldPath: '3116_2.1/1-0' },
+      ];
+
+      const result = createObsFromControl(formName,
+        formVersion, controlExistInObservations, bahmniObservations);
+
+      expect(result.length).to.be.eqls(1);
+      const existingObs = result[0];
+      expect(existingObs.formFieldPath).to.be.eqls('3116_2.1/1-0');
+    });
+
+    it('should create a obs given form path not exist in observations', () => {
+      const controlNotExistInObservations = { id: '2' };
+      const bahmniObservations = [
+        { formFieldPath: '3116_2.1/28-0' },
+        { formFieldPath: '3116_2.1/1-0' },
+      ];
+
+      const result = createObsFromControl(formName,
+        formVersion, controlNotExistInObservations, bahmniObservations);
+
+      expect(result.length).to.be.eqls(1);
+      const newCreatedObs = result[0];
+      expect(newCreatedObs.formFieldPath).to.be.eqls('3116_2.1/2-0');
+    });
   });
 });
