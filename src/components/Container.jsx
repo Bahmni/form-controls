@@ -18,10 +18,7 @@ export class Container extends Component {
   }
 
   onValueChanged(obs, errors) {
-    const bahmniRecord = this.state.data.getRecord(obs.formFieldPath)
-      .set('obs', obs)
-      .set('errors', errors);
-    const data = this.state.data.setRecord(bahmniRecord);
+    const data = this._changeValue(obs, errors);
     this.setState({ data });
   }
 
@@ -39,7 +36,7 @@ export class Container extends Component {
   }
 
   onControlRemove(obs) {
-    const data = this.state.data.deleteRecord(obs);
+    const data = this._changeValue(obs, []).deleteRecord(obs);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
     this.setState({ data: updatedState.data });
   }
@@ -53,6 +50,13 @@ export class Container extends Component {
     }
 
     return { errors, observations };
+  }
+
+  _changeValue(obs, errors) {
+    const bahmniRecord = this.state.data.getRecord(obs.formFieldPath)
+      .set('obs', obs)
+      .set('errors', errors);
+    return this.state.data.setRecord(bahmniRecord);
   }
 
   /* eslint-disable no-param-reassign */
