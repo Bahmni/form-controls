@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { TextBox } from 'src/components/TextBox.jsx';
@@ -17,7 +17,7 @@ describe('TextBox', () => {
   });
 
   it('should render TextBox', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <TextBox onChange={onChangeSpy} validate={false} validations={[]} />
     );
     expect(wrapper).to.have.descendants('textarea');
@@ -25,14 +25,14 @@ describe('TextBox', () => {
   });
 
   it('should render TextBox with default value', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <TextBox onChange={onChangeSpy} validate={false} validations={[]} value={'defaultText'} />
     );
-    expect(wrapper.find('textarea').props().value).to.be.eql('defaultText');
+    expect(wrapper.find('textarea').props().defaultValue).to.be.eql('defaultText');
   });
 
   it('should get user entered value of the text box', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <TextBox onChange={onChangeSpy} validate={false} validations={[]} value={'defalutText'} />
     );
     wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
@@ -41,7 +41,7 @@ describe('TextBox', () => {
   });
 
   it('should return undefined when value is empty string', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <TextBox onChange={onChangeSpy} validate={false} validations={[]} />
     );
     wrapper.find('textarea').simulate('change', { target: { value: '  ' } });
@@ -52,7 +52,7 @@ describe('TextBox', () => {
   it('should throw error on fail of validations', () => {
     const validations = [constants.validations.mandatory];
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <TextBox
         onChange={onChangeSpy}
         validate={false}
@@ -84,7 +84,7 @@ describe('TextBox', () => {
   });
 
   it('should render TextBox on change of props', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <TextBox
         onChange={onChangeSpy}
         validate={false}
@@ -93,6 +93,6 @@ describe('TextBox', () => {
       />
     );
     wrapper.setProps({ value: 'someText' });
-    expect(wrapper.find('textarea').props().value).to.be.eql('someText');
+    expect(wrapper.find('textarea').props().defaultValue).to.be.eql('someText');
   });
 });

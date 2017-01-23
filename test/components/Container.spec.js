@@ -412,7 +412,7 @@ describe('Container', () => {
         />);
 
       expect(wrapper.find('input')).to.have.value('99');
-      expect(wrapper.find('textarea').props().value).to.be.eql('notes');
+      expect(wrapper.find('textarea').props().defaultValue).to.be.eql('notes');
     });
   });
 
