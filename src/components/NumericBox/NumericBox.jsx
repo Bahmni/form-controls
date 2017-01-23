@@ -4,7 +4,7 @@ import { Validator } from 'src/helpers/Validator';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import constants from 'src/constants';
-import { NumericBoxDesigner } from 'src/components/designer/NumericBoxDesigner.jsx';
+import { NumericBoxDesigner } from 'src/components/NumericBox/NumericBoxDesigner.jsx';
 
 export class NumericBox extends Component {
   constructor(props) {

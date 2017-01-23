@@ -6,7 +6,7 @@ import chai, { expect } from 'chai';
 import { Container } from 'components/Container.jsx';
 import { Label } from 'components/Label.jsx';
 import { TextBox } from 'components/TextBox.jsx';
-import { NumericBox } from 'components/NumericBox.jsx';
+import { NumericBox } from 'components/NumericBox/NumericBox.jsx';
 import { Button } from 'components/Button.jsx';
 import { ObsControl } from 'components/ObsControl.jsx';
 import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
