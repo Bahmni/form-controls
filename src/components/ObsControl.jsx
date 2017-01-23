@@ -62,12 +62,11 @@ export class ObsControl extends Component {
   }
 
   _numericContext(metadata) {
-    const { concept } = metadata;
     return {
-      hiNormal: concept.hiNormal,
-      lowNormal: concept.lowNormal,
-      hiAbsolute: concept.hiAbsolute,
-      lowAbsolute: concept.lowAbsolute,
+      hiNormal: metadata.hiNormal,
+      lowNormal: metadata.lowNormal,
+      hiAbsolute: metadata.hiAbsolute,
+      lowAbsolute: metadata.lowAbsolute,
     };
   }
 
