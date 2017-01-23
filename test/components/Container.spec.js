@@ -221,7 +221,10 @@ describe('Container', () => {
       const instance = wrapper.instance();
 
       const mandatoryError = new Error({ message: constants.validations.mandatory });
-      expect(instance.getValue()).to.deep.eql({ errors: [mandatoryError] });
+      expect(instance.getValue().errors.length).to.eql(1);
+      expect(instance.getValue().errors).to.deep.eql([mandatoryError]);
+
+      expect(instance.getValue().observations.length).to.equal(1);
     });
 
     it('should not throw mandatory errors if there are no observations', () => {
@@ -305,7 +308,10 @@ describe('Container', () => {
       wrapper.find('input').at(1).simulate('change', { target: { value: undefined } });
 
       const mandatoryError = new Error({ message: constants.validations.mandatory });
-      expect(instance.getValue()).to.deep.equal({ errors: [mandatoryError] });
+      expect(instance.getValue().errors.length).to.equal(1);
+      expect(instance.getValue().errors).to.deep.equal([mandatoryError]);
+
+      expect(instance.getValue().observations.length).to.equal(1);
     });
   });
 
@@ -406,7 +412,7 @@ describe('Container', () => {
         />);
 
       expect(wrapper.find('input')).to.have.value('99');
-      expect(wrapper.find('textarea').props().value).to.be.eql('notes');
+      expect(wrapper.find('textarea').props().defaultValue).to.be.eql('notes');
     });
   });
 

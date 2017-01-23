@@ -3,6 +3,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import { Validator } from 'src/helpers/Validator';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import Textarea from 'react-textarea-autosize';
 
 export class TextBox extends Component {
   constructor(props) {
@@ -52,11 +53,13 @@ export class TextBox extends Component {
 
   render() {
     return (
-      <textarea
+        <div className="obs-comment-section-wrap">
+      <Textarea
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
+        defaultValue={this.props.value}
         onChange={(e) => this.handleChange(e)}
-        value={this.props.value}
       />
+        </div>
     );
   }
 }

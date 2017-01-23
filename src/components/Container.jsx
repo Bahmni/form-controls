@@ -52,7 +52,7 @@ export class Container extends Component {
       return { observations };
     }
 
-    return { errors };
+    return { errors, observations };
   }
 
   /* eslint-disable no-param-reassign */

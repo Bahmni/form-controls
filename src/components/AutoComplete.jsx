@@ -142,6 +142,7 @@ export class AutoComplete extends Component {
       value: this.state.value,
       valueKey,
       searchable,
+      matchProp: 'label',
     };
     const className =
       classNames('obs-control-select-wrapper', { 'form-builder-error': this.state.hasErrors });

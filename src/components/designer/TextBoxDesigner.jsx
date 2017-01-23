@@ -8,7 +8,11 @@ export class TextBoxDesigner extends Component {
   }
 
   render() {
-    return (<Textarea />);
+    return (
+        <div className="obs-comment-section-wrap">
+        <Textarea />
+        </div>
+    );
   }
 }
 
