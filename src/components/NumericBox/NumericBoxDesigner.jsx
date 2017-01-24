@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
-
+require('./styles/NumericBox.scss');
 export class NumericBoxDesigner extends Component {
   getJsonDefinition() {
     return this.props.metadata;
