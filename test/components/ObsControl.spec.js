@@ -364,4 +364,34 @@ describe('ObsControl', () => {
 
     expect(wrapper.find('DummyControl').props()).to.have.property('value', 'abc');
   });
+
+  it('should pass numeric context', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      hiNormal: 72,
+      lowNormal: 72,
+      hiAbsolute: null,
+      lowAbsolute: null,
+      concept: getConcept('text'),
+      label,
+      properties,
+    };
+    metadata.properties.hideLabel = false;
+
+    const observation = new Obs(metadata);
+    const wrapper = mount(
+      <ObsControl
+        mapper={mapper}
+        metadata={metadata}
+        obs={observation}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper.find('DummyControl').props()).to.have.property('lowNormal', 72);
+    expect(wrapper.find('DummyControl').props()).to.have.property('hiNormal', 72);
+    expect(wrapper.find('DummyControl').props()).to.have.property('hiAbsolute', null);
+    expect(wrapper.find('DummyControl').props()).to.have.property('lowAbsolute', null);
+  });
 });

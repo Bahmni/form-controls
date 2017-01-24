@@ -65,6 +65,13 @@
 
     }
   }
+  .Select--single > .Select-control .Select-value .Select-value-label{
+    width:135px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+  }
   .Select--multi {
     .Select-control {
       width: 275px;
