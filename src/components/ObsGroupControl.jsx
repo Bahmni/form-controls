@@ -9,8 +9,8 @@ export class ObsGroupControl extends Component {
 
   constructor(props) {
     super(props);
-    const { formName, mapper, formVersion, obs, metadata, collapse } = this.props;
-    const groupMembers = mapper.getGroupMembers(obs);
+    const { formName, formVersion, obs, metadata, collapse } = this.props;
+    const groupMembers = obs._getGroupMembers(obs);
     const data = controlStateFactory(metadata, groupMembers, formName, formVersion);
     this.state = { obs: this._getObsGroup(obs, data), errors: [], data, collapse };
     this.onChange = this.onChange.bind(this);

@@ -5,6 +5,9 @@ import { List } from 'immutable';
 import { ObsList } from 'src/helpers/ObsList';
 import { Obs } from 'src/helpers/Obs';
 import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
+import sinon from 'sinon';
+import MapperStore from 'src/helpers/MapperStore';
+import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 
 chai.use(chaiEnzyme());
 
@@ -20,11 +23,13 @@ describe('SectionMapper', () => {
     type: 'obsControl',
     id: '2',
     concept,
+    properties: {},
   };
   const sectionControl = {
     type: 'section',
     id: '1',
     controls: [obsControl],
+    properties: {},
   };
 
   const sectionControlFormFieldPath =
@@ -66,12 +71,14 @@ describe('SectionMapper', () => {
         type: 'section',
         id: '3',
         controls: [obsControl],
+        properties: {},
       };
 
       const sectionLayer1 = {
         type: 'section',
         id: '1',
         controls: [sectionLayer2],
+        properties: {},
       };
 
       const observations = [{
@@ -85,6 +92,37 @@ describe('SectionMapper', () => {
       const layer2 = layer1[0].getObsList().get(0).getObsList();
       expect(layer2.size).to.eql(1);
       expect(layer2.get(0).formFieldPath).to.eql(obsControlFormFieldPath);
+    });
+
+    it('should use mapper store to fetch mapper for children', () => {
+      const obsControl2 = {
+        type: 'obsGroupControl',
+        id: '2',
+        concept,
+        properties: {},
+      };
+
+      const sectionLayer1 = {
+        type: 'section',
+        id: '1',
+        controls: [obsControl2],
+        properties: {},
+      };
+
+      const observations = [{
+        formFieldPath: obsControlFormFieldPath,
+        concept,
+      }];
+
+      const mapperStub = sinon.stub(MapperStore, 'getMapper').callsFake(() => new ObsGroupMapper());
+      const layer1 = mapper.getInitialObject(formName, formVersion, sectionLayer1, observations);
+
+      expect(mapperStub.calledOnce).to.eql(true);
+      expect(layer1.length).to.eql(1);
+      const layer2 = layer1[0].getObsList();
+      expect(layer2.size).to.eql(1);
+      expect(layer2.get(0).formFieldPath).to.eql(obsControlFormFieldPath);
+      mapperStub.restore();
     });
   });
 

@@ -1,4 +1,3 @@
-import { Obs } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
 import each from 'lodash/each';
 import filter from 'lodash/filter';
@@ -6,7 +5,7 @@ import { ObsList } from 'src/helpers/ObsList';
 import { List } from 'immutable';
 import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 import flattenDeep from 'lodash/flattenDeep';
-
+import MapperStore from 'src/helpers/MapperStore';
 
 export class SectionMapper {
 
@@ -39,7 +38,9 @@ export class SectionMapper {
         (observation) => observation.formFieldPath === formFieldPath);
 
       if (!isEmpty(filteredObs)) {
-        obsList = obsList.push(new Obs(filteredObs[0]));
+        const mapper = MapperStore.getMapper(item);
+        obsList = obsList.push(...mapper.getInitialObject(formName, formVersion,
+          item, filteredObs));
       }
     });
     return obsList;
