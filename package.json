@@ -56,7 +56,7 @@
     "karma-coverage": "^1.1.0",
     "karma-jsdom-launcher": "^3.0.0",
     "karma-mocha": "^1.1.1",
-    "karma-mocha-reporter": "^2.0.4",
+    "karma-mocha-gsporter": "^2.0.4",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
     "karma-webpack-with-fast-source-maps": "^1.10.0",
@@ -78,7 +78,9 @@
   },
   "peerDependencies": {
     "react": "^15.4.1",
-    "react-dom": "^15.4.1"
+    "react-dom": "^15.4.1",
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0"
   },
   "dependencies": {
     "classnames": "^2.2.5",

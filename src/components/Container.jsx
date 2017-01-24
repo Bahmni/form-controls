@@ -20,6 +20,7 @@ export class Container extends Component {
   onValueChanged(obs, errors) {
     const data = this._changeValue(obs, errors);
     this.setState({ data });
+    this.props.onValueChange(obs, errors);
   }
 
   onControlAdd(obs) {
@@ -122,8 +123,12 @@ Container.propTypes = {
   }),
   observations: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
+  onValueChange: PropTypes.func,
 };
 
 Container.defaultProps = {
   collapse: false,
+  onValueChange: () => {},
 };
+
+ComponentStore.registerComponent('FormContainer', Container);

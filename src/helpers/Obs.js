@@ -110,13 +110,13 @@ export class Obs extends ImmutableObs {
   }
 
   getObject(obs) {
-    if (obs.groupMembers) {
-      const groupMembers = [];
-      for (const member of obs.groupMembers) {
-        groupMembers.push(member.getObject(member));
-      }
-      return obs.set('groupMembers', flattenDeep(groupMembers)).toJS();
-    }
+    //if (obs.groupMembers) {
+    //  const groupMembers = [];
+    //  for (const member of obs.groupMembers) {
+    //    groupMembers.push(member.getObject(member));
+    //  }
+    //  return obs.set('groupMembers', flattenDeep(groupMembers)).toJS();
+    //}
     return obs.toJS();
   }
 }
