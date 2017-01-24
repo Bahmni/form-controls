@@ -3,9 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 window.renderWithControls =
-  function renderWithControls(formDetails, observations, nodeId, collapse, store) {
-    const container = React.createElement(ReduxConnextor,
-      { metadata: formDetails, observations, validate: true, collapse });
+  function renderWithControls(formDetails, observations, nodeId, collapse, cb) {
+    const container = React.createElement(Container,
+      { metadata: formDetails, observations, validate: true, collapse, onValueChange: cb });
 
     return ReactDOM.render(container, document.getElementById(nodeId));
   };

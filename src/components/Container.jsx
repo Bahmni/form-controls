@@ -20,7 +20,7 @@ export class Container extends Component {
   onValueChanged(obs, errors) {
     const data = this._changeValue(obs, errors);
     this.setState({ data });
-    this.props.onValueChange(obs, errors);
+    this.props.onValueChange(this._generateValue(data));
   }
 
   onControlAdd(obs) {
@@ -43,7 +43,11 @@ export class Container extends Component {
   }
 
   getValue() {
-    const records = this.state.data.getRecords();
+    return this._generateValue(this.state.data);
+  }
+
+  _generateValue(immutableRecord) {
+    const records = immutableRecord.getRecords();
     const observations = this._getObservations(records.map((record) => record.getObject()));
     const errors = getErrors(records);
     if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
@@ -130,5 +134,3 @@ Container.defaultProps = {
   collapse: false,
   onValueChange: () => {},
 };
-
-ComponentStore.registerComponent('FormContainer', Container);
