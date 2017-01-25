@@ -3,7 +3,6 @@
 let path = require('path');
 let webpack = require('webpack');
 let srcPath = path.join(__dirname, './src');
-let CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   devtool: 'eval',
@@ -17,16 +16,6 @@ module.exports = {
     libraryTarget: 'umd',
     library: 'FormControls'
   },
-  plugins: [
-    new CopyWebpackPlugin(
-        [
-          {
-            from: path.join(__dirname, './styles/fonts'), to: path.join(__dirname, './dist/fonts'),
-          },
-        ],
-        {copyUnmodified: true}
-    ),
-  ],
   externals: {
     'react/lib/ExecutionEnvironment': true,
     'react/lib/ReactContext': true,
@@ -58,14 +47,6 @@ module.exports = {
       {
         test: /\.scss$/,
         loaders: ["style", "css", "sass"]
-      },
-      {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: "file-loader"
       }
     ],
   },

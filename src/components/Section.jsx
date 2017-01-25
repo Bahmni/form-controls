@@ -54,7 +54,7 @@ export class Section extends Component {
           <legend className={toggleClass} onClick={ this._onCollapse}>
             <i className="fa fa-caret-down"></i>
             <i className="fa fa-caret-right"></i>
-            {label.value}
+            <strong>{label.value}</strong>
           </legend>
           <div className={`obsGroup-controls ${sectionClass}`} >
             {displayRowControls(groupedRowControls, records, childProps)}
