@@ -44,15 +44,15 @@ $highlight: darken(#009384, 15%);
 $text: darken(#5B57A6, 20%);
 $subtleText: darken($gray500, 25%);
 $subtlerText: $gray500;
-
 $link: #007FFF;
 $focus: #FFFDF7;
-
+$warningBg: #FFFAD8;
+$warningOutline: #ffe63f;
 $success: #A1D030;
 $alert: #FFA000;
 $error: #ff6666;
+$errorBg: #ffcdcd;
 $successBackground: #ddffdd;
-
 $bahmniTextColor: #363463;
 
 /*  _spacing padding - margin:  */

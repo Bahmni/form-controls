@@ -40,7 +40,7 @@
       .Select-control {
         border: 2px solid $red !important;
         background: #ffcdcd !important;
-        input{
+        input {
           background-color: transparent;
         }
       }
@@ -94,6 +94,10 @@
 }
 
 .form-builder-error{
-  border: 2px solid $red !important;
-  background: #ffcdcd !important;
+  border: 2px solid $error;
+  background: $errorBg;
+}
+.form-builder-warning {
+  border: 2px solid $warningOutline;
+  background: $warningBg;
 }

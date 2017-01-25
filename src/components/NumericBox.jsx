@@ -75,7 +75,8 @@ export class NumericBox extends Component {
       return (
         <div className="fl">
           <input
-            className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
+            className={ classNames({ 'form-builder-error': this.state.hasErrors },
+                { 'form-builder-warning': this.state.hasWarnings }) }
             onChange={ (e) => this.handleChange(e) }
             ref={(elem) => {
               this.input = elem;

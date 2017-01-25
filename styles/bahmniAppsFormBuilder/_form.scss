@@ -43,6 +43,14 @@
         &[type = "date"], &[type = "time"] {
           float: left;
         }
+        &.form-builder-warning {
+          outline: 2px solid $warningOutline;
+          background: $warningBg;
+        }
+        &.form-builder-error {
+          outline: 2px solid $error;
+          background: $errorBg;
+        }
       }
       .form-builder-valid-range {
         color: $gray600;
