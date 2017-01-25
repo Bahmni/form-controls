@@ -70,14 +70,14 @@ describe('NumericBoxDesigner', () => {
       const lowNormal = 5;
 
       const rangeStr = NumericBoxDesigner.getRange(lowNormal);
-      expect(rangeStr).to.eql(`(>${lowNormal})`);
+      expect(rangeStr).to.eql(`(> ${lowNormal})`);
     });
 
     it('should show range as lesser than hiNormal when only it is present', () => {
       const hiNormal = 5;
 
       const rangeStr = NumericBoxDesigner.getRange(undefined, hiNormal);
-      expect(rangeStr).to.eql(`(<${hiNormal})`);
+      expect(rangeStr).to.eql(`(< ${hiNormal})`);
     });
   });
 });

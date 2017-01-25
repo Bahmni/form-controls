@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty';
 import constants from 'src/constants';
 import MapperStore from 'src/helpers/MapperStore';
 import { setupAddRemoveButtonsForAddMore } from 'src/helpers/controlsParser';
-import { sortBy } from 'lodash';
+import sortBy from 'lodash/sortBy';
 import { Util } from 'src/helpers/Util';
 
 export const ControlRecord = new Record({

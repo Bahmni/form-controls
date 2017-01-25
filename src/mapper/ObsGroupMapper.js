@@ -1,6 +1,5 @@
 import { createObsFromControl } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
-import flattenDeep from 'lodash/flattenDeep';
 import MapperStore from 'src/helpers/MapperStore';
 import { List } from 'immutable';
 
@@ -44,18 +43,7 @@ export class ObsGroupMapper {
     });
   }
 
-  getGroupMembers(obsGroup) {
-    const observations = [];
-    if (obsGroup.groupMembers !== undefined) {
-      obsGroup.groupMembers.forEach((obs) => {
-        observations.push(obs.getObject(obs));
-      });
-    }
-    return flattenDeep(observations);
-  }
-
   getObject(obsGroup) {
-    const groupMembers = this.getGroupMembers(obsGroup);
-    return obsGroup.set('groupMembers', groupMembers).toJS();
+    return obsGroup.getObject(obsGroup);
   }
 }

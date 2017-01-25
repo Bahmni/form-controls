@@ -9,8 +9,8 @@ export class ObsGroupControl extends Component {
 
   constructor(props) {
     super(props);
-    const { formName, mapper, formVersion, obs, metadata, collapse } = this.props;
-    const groupMembers = mapper.getGroupMembers(obs);
+    const { formName, formVersion, obs, metadata, collapse } = this.props;
+    const groupMembers = obs._getGroupMembers(obs);
     const data = controlStateFactory(metadata, groupMembers, formName, formVersion);
     this.state = { obs: this._getObsGroup(obs, data), errors: [], data, collapse };
     this.onChange = this.onChange.bind(this);
@@ -61,7 +61,7 @@ export class ObsGroupControl extends Component {
           <legend className={toggleClass} onClick={ this._onCollapse}>
             <i className="fa fa-caret-down"></i>
             <i className="fa fa-caret-right"></i>
-          {label.value}
+          <strong>{label.value}</strong>
         </legend>
           <div className={`obsGroup-controls ${obsGroupClass}`}>
             { displayRowControls(groupedRowControls, records, childProps) }

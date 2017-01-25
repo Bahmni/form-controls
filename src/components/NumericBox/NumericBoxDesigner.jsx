@@ -43,9 +43,9 @@ NumericBoxDesigner.getRange = (lowNormal, hiNormal) => {
   if (lowNormal && hiNormal) {
     return `(${lowNormal} - ${hiNormal})`;
   } else if (lowNormal) {
-    return `(>${lowNormal})`;
+    return `(> ${lowNormal})`;
   } else if (hiNormal) {
-    return `(<${hiNormal})`;
+    return `(< ${hiNormal})`;
   }
   return '';
 };

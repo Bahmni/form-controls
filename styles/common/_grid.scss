@@ -97,7 +97,11 @@
   }
 }
 
-.form-builder-error {
-  border: 2px solid $red;
-  background: $errorBackground;
+.form-builder-error{
+  border: 2px solid $error;
+  background: $errorBg;
+}
+.form-builder-warning {
+  border: 2px solid $warningOutline;
+  background: $warningBg;
 }

@@ -1,7 +1,8 @@
 /* eslint-disable new-cap */
 import { Record, List } from 'immutable';
 import { createFormNamespaceAndPath, getKeyPrefixForControl } from 'src/helpers/formNamespace';
-import { flattenDeep } from 'lodash';
+import flattenDeep from 'lodash/flattenDeep';
+import isEmpty from 'lodash/isEmpty';
 
 export const ImmutableObs = Record({
   concept: undefined,
@@ -109,15 +110,20 @@ export class Obs extends ImmutableObs {
     return this.get('groupMembers').find(o => o.concept.conceptClass === ABNORMAL_CONCEPT_CLASS);
   }
 
-  getObject(obs) {
-    if (obs.groupMembers) {
-      const groupMembers = [];
-      for (const member of obs.groupMembers) {
-        groupMembers.push(member.getObject(member));
-      }
-      return obs.set('groupMembers', flattenDeep(groupMembers)).toJS();
+  _getGroupMembers(obsGroup) {
+    const observations = [];
+    if (obsGroup.groupMembers !== undefined) {
+      obsGroup.groupMembers.forEach((obs) => {
+        observations.push(obs.getObject(obs));
+      });
     }
-    return obs.toJS();
+    return flattenDeep(observations);
+  }
+
+  getObject(obsGroup) {
+    const groupMembers = this._getGroupMembers(obsGroup);
+    const updatedGroupMembers = isEmpty(groupMembers) ? undefined : groupMembers;
+    return obsGroup.set('groupMembers', updatedGroupMembers).toJS();
   }
 }
 /* eslint-disable new-cap */

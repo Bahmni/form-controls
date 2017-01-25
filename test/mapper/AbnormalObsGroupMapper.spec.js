@@ -99,5 +99,6 @@ describe('AbnormalObsGroupMapper', () => {
     const createObsStub = sinon.stub(Obs, 'createObsFromControl');
     createObsStub.withArgs('someUuid', { id: 1 }, []).returns(obs);
     expect(mapper.getInitialObject('someUuid', { id: 1 }, [])).to.deep.eql(obs);
+    Obs.createObsFromControl.restore();
   });
 });
