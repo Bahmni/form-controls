@@ -1,7 +1,7 @@
 .form-builder-row {
   width: 100%;
   .form-builder-column {
-    min-height: 40px;
+    min-height: 50px;
     width: 100%;
     padding: 5px 10px;
     box-sizing: border-box;
@@ -64,7 +64,7 @@
       .form-builder-comment-toggle {
         position: absolute;
         right: 10px;
-        top: 0;
+        top: -2px;
         padding: 5px;
         &.active {
           .fa-file-o {
@@ -176,7 +176,7 @@
       }
     }
     .form-builder-clone{
-      margin-top: 3px;
+      //margin-top: 3px;
       float:left;
       .form-builder-add-more{
         padding: 2px 0;
