@@ -159,6 +159,22 @@ describe('Container', () => {
       expect(wrapper.find('ObsControl').at(0).props().validate).to.eql(false);
       componentStore.registerComponent('numeric', NumericBox);
     });
+
+    it('should reRender on change of collapse property', () => {
+      const wrapper = mount(
+        <Container collapse metadata={metadata} observations={[]} validate={false} />
+      );
+
+
+      expect(wrapper).to.have.exactly(3).descendants('Row');
+      expect(wrapper.find('Row').at(0).props().collapse).to.eql(true);
+      expect(wrapper.find('Row').at(1).props().collapse).to.eql(true);
+
+      wrapper.setProps({ collapse: false });
+      expect(wrapper).to.have.exactly(3).descendants('Row');
+      expect(wrapper.find('Row').at(0).props().collapse).to.eql(false);
+      expect(wrapper.find('Row').at(1).props().collapse).to.eql(false);
+    });
   });
 
   describe('getValue', () => {

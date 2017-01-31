@@ -18,8 +18,8 @@ export class ObsGroupControl extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.collapse !== this.props.collapse &&
-        nextProps.collapse !== this.state.collapse) {
+    if (nextProps.collapse !== undefined && (nextProps.collapse !== this.props.collapse ||
+        nextProps.collapse !== this.state.collapse)) {
       this.setState({ collapse: nextProps.collapse });
     }
   }
@@ -93,8 +93,5 @@ ObsGroupControl.propTypes = {
   validate: PropTypes.bool.isRequired,
 };
 
-ObsGroupControl.defaultProps = {
-  collapse: false,
-};
 
 ComponentStore.registerComponent('obsGroupControl', ObsGroupControl);
