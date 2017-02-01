@@ -126,4 +126,17 @@ describe('NumericBox', () => {
     wrapper.find('input').simulate('change', { target: { value: '51' } });
     sinon.assert.calledOnce(onChangeSpy.withArgs('51', [allowRangeError]));
   });
+
+  it('should set the input value when the value of the numeric box is calculated', () => {
+    const wrapper = mount(
+        <NumericBox
+          onChange={onChangeSpy}
+          validate={false}
+          validations={validations}
+          value={'22'}
+        />
+    );
+    wrapper.setProps({ value: '10' });
+    expect(wrapper.find('input')).to.have.value('10');
+  });
 });
