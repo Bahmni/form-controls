@@ -49,7 +49,8 @@ export class Button extends Component {
     let value = this._getValueFromProps() || [];
     if (this._isActive(valueSelected)) {
       if (multiSelect) {
-        value = filter(value, (val) => val.value !== valueSelected.value);
+        const valueKey = this.props.valueKey;
+        value = filter(value, (val) => val[valueKey] !== valueSelected[valueKey]);
       } else {
         value = [];
       }
@@ -71,7 +72,8 @@ export class Button extends Component {
   }
 
   _isActive(option) {
-    return find(this._getValueFromProps(), (value) => option.value === value.value);
+    const valueKey = this.props.valueKey;
+    return find(this._getValueFromProps(), (value) => option[valueKey] === value[valueKey]);
   }
 
   _getValueFromProps() {
@@ -89,7 +91,7 @@ export class Button extends Component {
         key={index}
         onClick={() => this.changeValue(option)}
       >
-        <i className="fa fa-ok"></i>{option.name}
+        <i className="fa fa-ok"></i>{option[this.props.nameKey]}
       </button>
     );
   }
@@ -105,11 +107,18 @@ export class Button extends Component {
 
 Button.propTypes = {
   multiSelect: PropTypes.bool,
+  nameKey: PropTypes.string,
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
+  valueKey: PropTypes.string,
+};
+
+Button.defaultProps = {
+  valueKey: 'value',
+  nameKey: 'name',
 };
 
 ComponentStore.registerComponent('button', Button);
