@@ -10,16 +10,20 @@ export class Container extends Component {
     this.childControls = {};
     const { observations, metadata } = this.props;
     const data = controlStateFactory(metadata, observations);
-    this.state = { errors: [], data };
+    this.state = { errors: [], data, collapse: props.collapse };
     this.storeChildRef = this.storeChildRef.bind(this);
     this.onValueChanged = this.onValueChanged.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
     this.onControlRemove = this.onControlRemove.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ collapse: nextProps.collapse });
+  }
+
   onValueChanged(obs, errors) {
     const data = this._changeValue(obs, errors);
-    this.setState({ data });
+    this.setState({ data, collapse: undefined });
   }
 
   onControlAdd(obs) {
@@ -90,7 +94,7 @@ export class Container extends Component {
   render() {
     const { metadata: { controls, name: formName, version: formVersion }, validate } = this.props;
     const childProps = {
-      collapse: this.props.collapse,
+      collapse: this.state.collapse,
       errors: this.state.errors,
       formName,
       formVersion,
@@ -124,6 +128,3 @@ Container.propTypes = {
   validate: PropTypes.bool.isRequired,
 };
 
-Container.defaultProps = {
-  collapse: false,
-};

@@ -18,8 +18,8 @@ export class Section extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.collapse !== this.props.collapse &&
-      nextProps.collapse !== this.state.collapse) {
+    if (nextProps.collapse !== undefined && (nextProps.collapse !== this.props.collapse ||
+      nextProps.collapse !== this.state.collapse)) {
       this.setState({ collapse: nextProps.collapse });
     }
   }
@@ -84,8 +84,5 @@ Section.propTypes = {
   validate: PropTypes.bool.isRequired,
 };
 
-Section.defaultProps = {
-  collapse: false,
-};
 
 ComponentStore.registerComponent('section', Section);

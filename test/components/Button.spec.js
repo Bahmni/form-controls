@@ -219,4 +219,28 @@ describe('Button Component', () => {
     wrapper.find('button').at(0).simulate('click');
     sinon.assert.calledOnce(valueChangeSpy.withArgs([], []));
   });
+
+
+  it('should take value based on the valueKey specified', () => {
+    const optionsWithoutValueKey = [
+      { name: 'Yes' },
+      { name: 'No' },
+    ];
+
+    const wrapper = shallow(
+        <Button
+          onValueChange={valueChangeSpy}
+          options={optionsWithoutValueKey}
+          validate={false}
+          validations={[]}
+          value={{ name: 'Yes' }}
+          valueKey={'name' }
+        />
+    );
+    expect(wrapper.find('button').at(0)).to.have.className('fl active');
+    expect(wrapper.find('button').at(1)).to.have.className('fl');
+
+    wrapper.find('button').at(1).simulate('click');
+    sinon.assert.calledOnce(valueChangeSpy.withArgs(optionsWithoutValueKey[1], []));
+  });
 });
