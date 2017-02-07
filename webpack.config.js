@@ -3,6 +3,7 @@
 let path = require('path');
 let webpack = require('webpack');
 let srcPath = path.join(__dirname, './src');
+let stylePath = path.join(__dirname, './styles');
 let StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = {
@@ -57,6 +58,7 @@ module.exports = {
   resolve: {
     alias: {
       components: srcPath + '/components/',
+      style: stylePath,
       src: srcPath
     }
   }

@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import constants from 'src/constants';
 import { NumericBoxDesigner } from 'src/components/NumericBox/NumericBoxDesigner.jsx';
-require('./styles/NumericBox.scss');
+import './styles/NumericBox.scss';
+
 export class NumericBox extends Component {
   constructor(props) {
     super(props);
