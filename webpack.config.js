@@ -58,7 +58,7 @@ module.exports = {
   resolve: {
     alias: {
       components: srcPath + '/components/',
-      style: stylePath,
+      styles: stylePath,
       src: srcPath
     }
   }
