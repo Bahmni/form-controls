@@ -20,9 +20,13 @@ export class CellDesigner extends DropTarget {
     this.changeHandler = this.changeHandler.bind(this);
     this.childControls = {};
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.deleteControl = this.deleteControl.bind(this);
     this._setActiveClass(false);
   }
 
+  deleteControl(){
+    this.setState({ data: []});
+  }
   _setActiveClass(active = false) {
     this.className = classNames('form-builder-column', { active });
   }
@@ -79,6 +83,8 @@ export class CellDesigner extends DropTarget {
           parentRef: this,
           ref: this.storeChildRef,
           wrapper: this.props.wrapper,
+          deleteControl: this.deleteControl,
+          showDeleteButton: this.props.showDeleteButton,
         }
       )
     );
@@ -123,6 +129,7 @@ CellDesigner.dropLoc = {
 CellDesigner.propTypes = {
   cellData: PropTypes.array.isRequired,
   idGenerator: PropTypes.object.isRequired,
+  showDeleteButton: PropTypes.bool,
   location: PropTypes.shape({
     column: PropTypes.number,
     row: PropTypes.number,

@@ -55,29 +55,42 @@ export class LabelDesigner extends Component {
     if (ref !== null) this.input = ref;
   }
 
+  showDeleteButton() {
+    if(this.props.deleteControl) {
+      return (
+        <button onClick={this.props.deleteControl}>-</button>
+      )
+    }
+    else
+      return null;
+  }
   render() {
     if (this.state.isEditable) {
       return (
-        <input
-          className="form-builder-label" defaultValue={ this.state.value }
-          onBlur={this.onBlur} onKeyUp={this.onEnterKey}
-          ref={ this.storeComponentRef }
-          type="text"
-        />
+          <input
+            className="form-builder-label" defaultValue={ this.state.value }
+            onBlur={this.onBlur} onKeyUp={this.onEnterKey}
+            ref={ this.storeComponentRef }
+            type="text"
+          />
       );
     }
     return (
-      <label
-        onDoubleClick={ this.onDoubleClick }
-      >
-        { this.state.value }
-      </label>);
+      <div>
+        {this.showDeleteButton()}
+        <label
+          onDoubleClick={ this.onDoubleClick }
+        >
+          { this.state.value }
+        </label>
+      </div>);
   }
 }
 
 LabelDesigner.injectConceptToMetadata = metadata => metadata;
 
 LabelDesigner.propTypes = {
+  deleteControl: PropTypes.func,
   metadata: PropTypes.shape({
     id: PropTypes.string,
     type: PropTypes.string.isRequired,

@@ -14,6 +14,7 @@ export class ObsGroupControlDesigner extends Component {
     this.mapper = new ObsGroupMapper();
     this.storeGridRef = this.storeGridRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
+    this.deleteButton = this.deleteButton.bind(this);
   }
 
   getJsonDefinition() {
@@ -45,7 +46,18 @@ export class ObsGroupControlDesigner extends Component {
     );
   }
 
+  deleteButton(event) {
+    this.props.deleteControl();
+    this.props.deSelect(event);
+  }
 
+  showDeleteButton() {
+    if(this.props.showDeleteButton) {
+      return (
+        <button onClick={this.deleteButton}>-</button>
+      )
+    }
+  }
   render() {
     const { metadata, metadata: { concept } } = this.props;
     if (concept) {
@@ -54,6 +66,7 @@ export class ObsGroupControlDesigner extends Component {
           className="form-builder-fieldset"
           onClick={(event) => this.props.onSelect(event, metadata)}
         >
+          {this.showDeleteButton()}
           <legend><strong>{this.displayLabel()}</strong></legend>
           <div className="obsGroup-controls">
             <Grid
@@ -62,6 +75,7 @@ export class ObsGroupControlDesigner extends Component {
               minRows={0}
               ref={ this.storeGridRef }
               wrapper={this.props.wrapper}
+              isShowDeleteButton={false}
             />
           </div>
         </fieldset>
@@ -77,7 +91,9 @@ export class ObsGroupControlDesigner extends Component {
 }
 
 ObsGroupControlDesigner.propTypes = {
+  deleteControl: PropTypes.func.isRequired,
   idGenerator: PropTypes.object.isRequired,
+  showDeleteButton: PropTypes.bool,
   metadata: PropTypes.shape({
     concept: PropTypes.object,
     displayType: PropTypes.string,

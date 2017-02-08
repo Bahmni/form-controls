@@ -47,6 +47,7 @@ export class SectionDesigner extends Component {
     const controls = metadata.controls || [];
     return (
         <fieldset className="form-builder-fieldset">
+          <button onClick={this.props.deleteControl}>-</button>
           {this.displayLabel()}
           <div className="obsGroup-controls">
             <Grid
@@ -55,6 +56,7 @@ export class SectionDesigner extends Component {
               minRows={2}
               ref={ this.storeGridRef }
               wrapper={this.props.wrapper}
+              isShowDeleteButton={true}
             />
           </div>
         </fieldset>
@@ -63,6 +65,7 @@ export class SectionDesigner extends Component {
 }
 
 SectionDesigner.propTypes = {
+  deleteControl: PropTypes.func.isRequired,
   idGenerator: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     displayType: PropTypes.string,

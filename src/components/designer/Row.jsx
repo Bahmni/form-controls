@@ -42,6 +42,7 @@ export class RowDesigner extends Component {
           onChange={ this.changeHandler }
           ref={ this.cellReference }
           wrapper={ this.props.wrapper }
+          showDeleteButton={ this.props.showDeleteButton }
         />);
     }
     return cells;
@@ -67,6 +68,7 @@ export class RowDesigner extends Component {
 RowDesigner.propTypes = {
   columns: PropTypes.number,
   idGenerator: PropTypes.object.isRequired,
+  showDeleteButton: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   rowData: PropTypes.array.isRequired,
   rowPosition: PropTypes.number.isRequired,
