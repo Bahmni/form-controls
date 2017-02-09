@@ -65,7 +65,8 @@ describe('ObsControlDesigner', () => {
     beforeEach(() => {
       onSelectSpy = sinon.spy();
       metadata = { id: '123', label: {}, type: 'obsControl', properties };
-      wrapper = shallow(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      wrapper = shallow(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} clearSelectedControl={()=>{}}
+                                            deleteControl={()=>{}} showDeleteButton={false}/>);
     });
 
     it('should render simple div when there is no concept', () => {
@@ -104,7 +105,8 @@ describe('ObsControlDesigner', () => {
       const textBoxDescriptor = { control: DummyControl };
       componentStore.registerDesignerComponent('text', textBoxDescriptor); // eslint-disable-line no-undef
       onSelectSpy = sinon.spy();
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} clearSelectedControl={()=>{}}
+                                          deleteControl={()=>{}} showDeleteButton={false} />);
     });
 
     after(() => {
@@ -128,7 +130,8 @@ describe('ObsControlDesigner', () => {
         label,
         properties: { mandatory: true },
       };
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} clearSelectedControl={()=>{}}
+                                          deleteControl={()=>{}} showDeleteButton={false} />);
       expect(wrapper.find('span')).to.have.className('form-builder-asterisk');
       expect(wrapper.find('span').text()).to.eql('*');
     });
@@ -143,8 +146,10 @@ describe('ObsControlDesigner', () => {
       conceptClone.datatype = 'somethingRandom';
       const metadataClone = Object.assign({}, metadata);
       metadataClone.concept = conceptClone;
-      wrapper = mount(<ObsControlDesigner metadata={metadataClone} onSelect={onSelectSpy} />);
-      expect(wrapper).to.be.blank();
+      wrapper = mount(<ObsControlDesigner metadata={metadataClone} onSelect={onSelectSpy} clearSelectedControl={()=>{}}
+                                          deleteControl={()=>{}} showDeleteButton={false} />);
+      expect(wrapper).to.have.exactly(1).descendants('div');
+
     });
 
     it('should call onSelect function passed as prop', () => {
@@ -169,7 +174,8 @@ describe('ObsControlDesigner', () => {
         label,
         properties: { notes: true },
       };
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} clearSelectedControl={()=>{}}
+                                          deleteControl={()=>{}} showDeleteButton={false}/>);
       expect(wrapper).to.have.descendants('CommentDesigner');
     });
 
@@ -181,7 +187,8 @@ describe('ObsControlDesigner', () => {
         label,
         properties: {},
       };
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} clearSelectedControl={()=>{}}
+                                          deleteControl={()=>{}} showDeleteButton={false}/>);
       expect(wrapper).to.not.have.descendants('CommentDesigner');
     });
 
@@ -193,7 +200,8 @@ describe('ObsControlDesigner', () => {
         label,
         properties: { notes: true, hideLabel: true },
       };
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} clearSelectedControl={()=>{}}
+                                          deleteControl={()=>{}} showDeleteButton={false} />);
       expect(wrapper).to.not.have.descendants('LabelDesigner');
     });
 
@@ -204,11 +212,10 @@ describe('ObsControlDesigner', () => {
         concept,
         properties: { notes: true, hideLabel: false },
       };
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={()=>{}} clearSelectedControl={()=>{}}
+                                          deleteControl={()=>{}} showDeleteButton={false} />);
       expect(wrapper).to.have.descendants('LabelDesigner');
       expect(wrapper.find('LabelDesigner')).to.have.prop('onSelect');
-      wrapper.find('LabelDesigner').simulate('click');
-      sinon.assert.calledOnce(onSelectSpy);
     });
   });
 
@@ -232,7 +239,8 @@ describe('ObsControlDesigner', () => {
       const textBoxDescriptor = { control: DummyControl };
       componentStore.registerDesignerComponent('text', textBoxDescriptor); // eslint-disable-line no-undef
       onSelectSpy = sinon.spy();
-      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} />);
+      wrapper = mount(<ObsControlDesigner metadata={metadata} onSelect={onSelectSpy} clearSelectedControl={()=>{}}
+                                          deleteControl={()=>{}} showDeleteButton={false} />);
     });
 
     after(() => {

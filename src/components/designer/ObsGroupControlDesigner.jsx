@@ -48,7 +48,7 @@ export class ObsGroupControlDesigner extends Component {
 
   deleteButton(event) {
     this.props.deleteControl();
-    this.props.deSelect(event);
+    this.props.clearSelectedControl(event);
   }
 
   showDeleteButton() {
@@ -85,12 +85,14 @@ export class ObsGroupControlDesigner extends Component {
       <div
         onClick={ (event) => this.props.onSelect(event, metadata) }
       >
-      Select ObsGroup Source
+        {this.showDeleteButton()}
+        Select ObsGroup Source
       </div>);
   }
 }
 
 ObsGroupControlDesigner.propTypes = {
+  clearSelectedControl: PropTypes.func.isRequired,
   deleteControl: PropTypes.func.isRequired,
   idGenerator: PropTypes.object.isRequired,
   showDeleteButton: PropTypes.bool,

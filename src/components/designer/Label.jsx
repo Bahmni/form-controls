@@ -11,6 +11,7 @@ export class LabelDesigner extends Component {
     };
     this.onDoubleClick = this.onDoubleClick.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.showDeleteButton = this.showDeleteButton.bind(this);
     this.onEnterKey = this.onEnterKey.bind(this);
     this.storeComponentRef = this.storeComponentRef.bind(this);
     this.getJsonDefinition = this.getJsonDefinition.bind(this);
@@ -56,7 +57,7 @@ export class LabelDesigner extends Component {
   }
 
   showDeleteButton() {
-    if(this.props.deleteControl) {
+    if(this.props.deleteControl && this.props.showDeleteButton) {
       return (
         <button onClick={this.props.deleteControl}>-</button>
       )
@@ -64,6 +65,11 @@ export class LabelDesigner extends Component {
     else
       return null;
   }
+
+  stopEventPropagation(event) {
+    event.stopPropagation();
+  }
+
   render() {
     if (this.state.isEditable) {
       return (
@@ -76,13 +82,13 @@ export class LabelDesigner extends Component {
       );
     }
     return (
-      <div>
-        {this.showDeleteButton()}
+      <div onClick={(e) => this.stopEventPropagation(e) }>
         <label
           onDoubleClick={ this.onDoubleClick }
         >
           { this.state.value }
         </label>
+        {this.showDeleteButton()}
       </div>);
   }
 }
@@ -90,7 +96,8 @@ export class LabelDesigner extends Component {
 LabelDesigner.injectConceptToMetadata = metadata => metadata;
 
 LabelDesigner.propTypes = {
-  deleteControl: PropTypes.func,
+  deleteControl: PropTypes.func.isRequired,
+  showDeleteButton: PropTypes.bool.isRequired,
   metadata: PropTypes.shape({
     id: PropTypes.string,
     type: PropTypes.string.isRequired,

@@ -126,7 +126,7 @@ export class ObsControlDesigner extends Component {
 
   deleteButton(event) {
     this.props.deleteControl();
-    this.props.deSelect(event);
+    this.props.clearSelectedControl(event);
   }
 
   showDeleteButton() {
@@ -157,12 +157,17 @@ export class ObsControlDesigner extends Component {
         </div>
       );
     }
-    return <div onClick={ (event) => this.props.onSelect(event, metadata) }>Select Obs Source</div>;
+    return (
+      <div onClick={ (event) => this.props.onSelect(event, metadata) }>
+        {this.showDeleteButton()}
+        Select Obs Source
+      </div>
+    );
   }
 }
 
 ObsControlDesigner.propTypes = {
-  deSelect: PropTypes.func.isRequired,
+  clearSelectedControl: PropTypes.func.isRequired,
   deleteControl: PropTypes.func.isRequired,
   showDeleteButton: PropTypes.bool,
   metadata: PropTypes.shape({
