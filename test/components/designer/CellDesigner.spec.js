@@ -4,7 +4,7 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 
-import { CellDesigner } from 'components/designer/Cell.jsx';
+import { CellDesigner } from 'components/designer/CellDesigner.jsx';
 import { IDGenerator } from 'src/helpers/idGenerator';
 
 chai.use(chaiEnzyme());

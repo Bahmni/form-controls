@@ -21,13 +21,13 @@ export { ObsControlDesigner } from 'components/ObsControl/ObsControlDesigner.jsx
 export { TextBoxDesigner } from 'components/TextBox/TextBoxDesigner.jsx';
 export { NumericBoxDesigner } from 'components/NumericBox/NumericBoxDesigner.jsx';
 export { GridDesigner } from 'components/designer/Grid.jsx';
-export { CellDesigner } from 'components/designer/Cell.jsx';
+export { CellDesigner } from 'components/designer/CellDesigner.jsx';
 export { RadioButtonDesigner } from 'components/designer/RadioButton.jsx';
-export { ButtonDesigner } from 'components/designer/Button.jsx';
-export { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';
+export { ButtonDesigner } from 'components/designer/ButtonDesigner.jsx';
+export { BooleanControlDesigner } from 'components/designer/BooleanControlDesigner.jsx';
 export { Draggable } from 'components/Draggable.jsx';
 export { RowDesigner } from 'components/designer/Row.jsx';
-export { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
+export { CodedControlDesigner } from 'components/designer/CodedControlDesigner.jsx';
 export { ObsGroupControlDesigner } from 'components/ObsGroupControl/ObsGroupControlDesigner.jsx';
 export { DateDesigner } from 'components/designer/Date.jsx';
 export { DateTimeDesigner } from 'components/designer/DateTime.jsx';

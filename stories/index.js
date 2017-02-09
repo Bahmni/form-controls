@@ -6,7 +6,7 @@ import { TextBox } from 'src/components/TextBox.jsx';
 import { Label } from 'src/components/Label.jsx';
 import { Container } from 'src/components/Container.jsx';
 import { ObsControl } from 'src/components/ObsControl.jsx';
-import { BooleanControl } from 'src/components/BooleanControl.jsx';
+import { BooleanControl } from 'src/components/BooleanControlDesigner.jsx';
 import { Button } from 'src/components/Button.jsx';
 import { RadioButton } from 'src/components/RadioButton.jsx';
 import { NumericBox } from 'src/components/Button.jsx';

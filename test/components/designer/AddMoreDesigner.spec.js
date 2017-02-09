@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import chai, { expect } from 'chai';
 import chaiEnzyme from 'chai-enzyme';
-import { AddMoreDesigner } from 'src/components/designer/AddMore.jsx';
+import { AddMoreDesigner } from 'src/components/designer/AddMoreDesigner.jsx';
 
 chai.use(chaiEnzyme());
 

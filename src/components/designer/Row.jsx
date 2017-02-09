@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { CellDesigner } from 'components/designer/Cell.jsx';
+import { CellDesigner } from 'components/designer/CellDesigner.jsx';
 import Constants from 'src/constants';
 import map from 'lodash/map';
 import groupBy from 'lodash/groupBy';
