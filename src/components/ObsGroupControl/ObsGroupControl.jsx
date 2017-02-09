@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
-import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
+import { getGroupedControls, displayRowControls } from '../../helpers/controlsParser';
 import { controlStateFactory, getErrors } from 'src/ControlState';
 import each from 'lodash/each';
 import classNames from 'classnames';
+import './style/ObsGroupControl.scss';
 
 export class ObsGroupControl extends Component {
 

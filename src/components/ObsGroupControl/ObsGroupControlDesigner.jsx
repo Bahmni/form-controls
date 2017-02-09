@@ -5,6 +5,7 @@ import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 import { Concept } from '../../helpers/Concept';
 import { Metadata } from '../../helpers/Metadata';
 import { LabelDesigner } from 'components/designer/Label.jsx';
+import './style/ObsGroupControl.scss';
 
 export class ObsGroupControlDesigner extends Component {
 

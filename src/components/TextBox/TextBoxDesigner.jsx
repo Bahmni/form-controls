@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import Textarea from 'react-textarea-autosize';
+import './style/TextBox.scss'
 
 export class TextBoxDesigner extends Component {
   getJsonDefinition() {

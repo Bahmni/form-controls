@@ -1,9 +1,9 @@
 export { Container } from 'components/Container.jsx';
-export { ObsControl } from 'components/ObsControl.jsx';
+export { ObsControl } from 'components/ObsControl/ObsControl.jsx';
 export { Label } from 'components/Label.jsx';
-export { TextBox } from 'components/TextBox.jsx';
+export { TextBox } from 'components/TextBox/TextBox.jsx';
 export { NumericBox } from 'components/NumericBox/NumericBox.jsx';
-export { ObsGroupControl } from 'components/ObsGroupControl.jsx';
+export { ObsGroupControl } from 'components/ObsGroupControl/ObsGroupControl.jsx';
 export { AutoComplete } from 'components/AutoComplete.jsx';
 export { DropDown } from 'components/DropDown.jsx';
 export { BooleanControl } from 'components/BooleanControl.jsx';
@@ -17,8 +17,8 @@ export { Section } from 'components/Section.jsx';
 //  -----------designer components------------------
 
 export { LabelDesigner } from 'components/designer/Label.jsx';
-export { ObsControlDesigner } from 'components/designer/ObsControlDesigner.jsx';
-export { TextBoxDesigner } from 'components/designer/TextBoxDesigner.jsx';
+export { ObsControlDesigner } from 'components/ObsControl/ObsControlDesigner.jsx';
+export { TextBoxDesigner } from 'components/TextBox/TextBoxDesigner.jsx';
 export { NumericBoxDesigner } from 'components/NumericBox/NumericBoxDesigner.jsx';
 export { GridDesigner } from 'components/designer/Grid.jsx';
 export { CellDesigner } from 'components/designer/Cell.jsx';
@@ -28,7 +28,7 @@ export { BooleanControlDesigner } from 'components/designer/BooleanControl.jsx';
 export { Draggable } from 'components/Draggable.jsx';
 export { RowDesigner } from 'components/designer/Row.jsx';
 export { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
-export { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesigner.jsx';
+export { ObsGroupControlDesigner } from 'components/ObsGroupControl/ObsGroupControlDesigner.jsx';
 export { DateDesigner } from 'components/designer/Date.jsx';
 export { DateTimeDesigner } from 'components/designer/DateTime.jsx';
 export { SectionDesigner } from 'components/designer/Section.jsx';

@@ -7,6 +7,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import isEmpty from 'lodash/isEmpty';
 import { Concept } from 'src/helpers/Concept';
+import './style/ObsControl.scss';
 
 export class ObsControlDesigner extends Component {
 

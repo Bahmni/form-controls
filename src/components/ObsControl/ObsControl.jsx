@@ -8,6 +8,7 @@ import { AddMore } from 'components/AddMore.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import isEmpty from 'lodash/isEmpty';
+import './style/ObsControl.scss';
 
 export class ObsControl extends Component {
 

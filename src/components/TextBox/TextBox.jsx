@@ -4,6 +4,7 @@ import { Validator } from 'src/helpers/Validator';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import Textarea from 'react-textarea-autosize';
+import './style/TextBox.scss'
 
 export class TextBox extends Component {
   constructor(props) {
