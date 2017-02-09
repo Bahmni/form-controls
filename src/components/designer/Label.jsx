@@ -67,6 +67,9 @@ export class LabelDesigner extends Component {
   }
 
   stopEventPropagation(event) {
+    if(this.props.dispatch) {
+      this.props.dispatch();
+    }
     event.stopPropagation();
   }
 
@@ -96,7 +99,8 @@ export class LabelDesigner extends Component {
 LabelDesigner.injectConceptToMetadata = metadata => metadata;
 
 LabelDesigner.propTypes = {
-  deleteControl: PropTypes.func.isRequired,
+  clearSelectedControl: PropTypes.func,
+  deleteControl: PropTypes.func,
   showDeleteButton: PropTypes.bool.isRequired,
   metadata: PropTypes.shape({
     id: PropTypes.string,

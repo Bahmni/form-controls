@@ -12,6 +12,7 @@ export class SectionDesigner extends Component {
     this.mapper = new SectionMapper();
     this.storeGridRef = this.storeGridRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
+    this.deleteButton = this.deleteButton.bind(this);
   }
 
   getJsonDefinition() {
@@ -37,10 +38,28 @@ export class SectionDesigner extends Component {
       <LabelDesigner
         metadata={ label }
         ref={ this.storeLabelRef }
+        showDeleteButton={ false }
       />
     );
   }
 
+  deleteButton(event) {
+    this.props.deleteControl();
+    this.props.clearSelectedControl(event);
+  }
+
+  showDeleteButton() {
+    if (this.props.showDeleteButton) {
+      return (
+        <button onClick={this.deleteButton}>-</button>
+      )
+    }
+  }
+
+  stopEventPropagation(event) {
+    this.props.dispatch();
+    event.stopPropagation();
+  }
 
   render() {
     const { metadata } = this.props;
@@ -68,9 +87,10 @@ export class SectionDesigner extends Component {
 }
 
 SectionDesigner.propTypes = {
+  clearSelectedControl: PropTypes.func.isRequired,
   deleteControl: PropTypes.func.isRequired,
   idGenerator: PropTypes.object.isRequired,
-  showDeleteButton: PropTypes.bool.isRequired,
+  showDeleteButton: PropTypes.bool,
   metadata: PropTypes.shape({
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,

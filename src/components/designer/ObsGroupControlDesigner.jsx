@@ -41,6 +41,7 @@ export class ObsGroupControlDesigner extends Component {
       <LabelDesigner
         metadata={ labelMetadata }
         onSelect={ (event) => this.props.onSelect(event, metadata) }
+        showDeleteButton={false}
         ref={ this.storeLabelRef }
       />
     );
