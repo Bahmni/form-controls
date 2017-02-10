@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { CodedControlDesigner } from 'components/designer/CodedControlDesigner.jsx';
+import { CodedControlDesigner } from 'components/CodedControl/CodedControlDesigner.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 
 chai.use(chaiEnzyme());

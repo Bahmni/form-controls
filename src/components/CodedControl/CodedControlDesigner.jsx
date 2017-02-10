@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
+import './style/CodedControl.scss';
 
 export class CodedControlDesigner extends Component {
   constructor(props) {

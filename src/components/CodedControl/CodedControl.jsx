@@ -3,6 +3,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import each from 'lodash/each';
+import './style/CodedControl.scss';
 
 export class CodedControl extends Component {
   constructor(props) {

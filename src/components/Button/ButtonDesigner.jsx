@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
+import './style/Button.scss';
 
 export class ButtonDesigner extends Component {
   getJsonDefinition() {

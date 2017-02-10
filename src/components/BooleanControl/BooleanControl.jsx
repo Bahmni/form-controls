@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
+import './style/BooleanControl.scss';
 
 export class BooleanControl extends Component {
   constructor(props) {

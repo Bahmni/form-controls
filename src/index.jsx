@@ -8,8 +8,8 @@ export { AutoComplete } from 'components/AutoComplete.jsx';
 export { DropDown } from 'components/DropDown.jsx';
 export { BooleanControl } from 'components/BooleanControl/BooleanControl.jsx';
 export { RadioButton } from 'components/RadioButton.jsx';
-export { Button } from 'components/Button.jsx';
-export { CodedControl } from 'components/CodedControl.jsx';
+export { Button } from 'components/Button/Button.jsx';
+export { CodedControl } from 'components/CodedControl/CodedControl.jsx';
 export { Date } from 'components/Date.jsx';
 export { DateTime } from 'components/DateTime.jsx';
 export { Section } from 'components/Section.jsx';
@@ -21,13 +21,13 @@ export { ObsControlDesigner } from 'components/ObsControl/ObsControlDesigner.jsx
 export { TextBoxDesigner } from 'components/TextBox/TextBoxDesigner.jsx';
 export { NumericBoxDesigner } from 'components/NumericBox/NumericBoxDesigner.jsx';
 export { GridDesigner } from 'components/designer/Grid.jsx';
-export { CellDesigner } from 'components/designer/CellDesigner.jsx';
+export { CellDesigner } from 'components/Cell/CellDesigner.jsx';
 export { RadioButtonDesigner } from 'components/designer/RadioButton.jsx';
-export { ButtonDesigner } from 'components/designer/ButtonDesigner.jsx';
+export { ButtonDesigner } from 'components/Button/ButtonDesigner.jsx';
 export { BooleanControlDesigner } from 'components/BooleanControl/BooleanControlDesigner.jsx';
 export { Draggable } from 'components/Draggable.jsx';
 export { RowDesigner } from 'components/designer/Row.jsx';
-export { CodedControlDesigner } from 'components/designer/CodedControlDesigner.jsx';
+export { CodedControlDesigner } from 'components/CodedControl/CodedControlDesigner.jsx';
 export { ObsGroupControlDesigner } from 'components/ObsGroupControl/ObsGroupControlDesigner.jsx';
 export { DateDesigner } from 'components/designer/Date.jsx';
 export { DateTimeDesigner } from 'components/designer/DateTime.jsx';
@@ -39,5 +39,5 @@ export { IDGenerator } from 'src/helpers/idGenerator';
 export { DescriptorParser } from 'src/helpers/descriptorParser';
 export { default as ComponentStore } from 'src/helpers/componentStore';
 
-import '../styles/styles.scss';
+import '../styles/main.scss';
 

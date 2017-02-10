@@ -8,6 +8,7 @@ import isEqual from 'lodash/isEqual';
 import clone from 'lodash/clone';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
+import './style/Button.scss';
 
 export class Button extends Component {
   constructor(props) {

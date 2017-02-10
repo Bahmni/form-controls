@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
+import './style/BooleanControl.scss';
 
 export class BooleanControlDesigner extends Component {
   getJsonDefinition() {

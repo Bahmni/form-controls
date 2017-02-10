@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { Button } from 'components/Button.jsx';
+import { Button } from 'components/Button/Button.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 

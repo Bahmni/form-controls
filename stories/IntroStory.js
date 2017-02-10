@@ -5,7 +5,7 @@ import { Container } from 'src/components/Container.jsx';
 import { ObsControl } from 'src/components/ObsControl.jsx';
 import { ObsMapper } from 'src/mapper/ObsMapper';
 import { Obs } from 'src/helpers/Obs';
-import '../styles/styles.scss';
+import '../styles/main.scss';
 import '../node_modules/react-select/dist/react-select.css';
 import { AutoComplete } from 'src/components/AutoComplete.jsx';
 import { DropDown } from 'src/components/DropDown.jsx';

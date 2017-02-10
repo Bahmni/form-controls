@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import './style/AddMore.scss';
 
 export class AddMoreDesigner extends PureComponent {
 

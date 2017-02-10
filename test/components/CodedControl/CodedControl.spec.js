@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { CodedControl } from 'components/CodedControl.jsx';
+import { CodedControl } from 'components/CodedControl/CodedControl.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';

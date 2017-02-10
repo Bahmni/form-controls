@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { ButtonDesigner } from 'components/designer/ButtonDesigner.jsx';
+import { ButtonDesigner } from 'components/Button/ButtonDesigner.jsx';
 
 chai.use(chaiEnzyme());
 

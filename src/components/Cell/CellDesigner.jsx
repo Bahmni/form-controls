@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import ComponentStore from 'src/helpers/componentStore';
+import './style/Cell.scss';
 
 const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
 const defaultCellControl = React.createElement(() => <div className="cell" ></div>);

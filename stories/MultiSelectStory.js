@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@kadira/storybook';
 import StoryWrapper from './StoryWrapper';
 import { Container } from 'src/components/Container.jsx';
-import '../styles/styles.scss';
+import '../styles/main.scss';
 import '../node_modules/react-select/dist/react-select.css';
 
 const form = {

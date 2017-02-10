@@ -14,7 +14,7 @@ import { CodedControl } from 'src/components/CodedControl.jsx';
 import { AutoComplete } from 'src/components/AutoComplete.jsx';
 import { DropDown } from 'src/components/DropDown.jsx';
 import { Obs } from 'src/helpers/Obs';
-import '../styles/styles.scss';
+import '../styles/main.scss';
 import { ControlState, ControlRecord } from '../src/ControlState';
 import '../node_modules/react-select/dist/react-select.css';
 

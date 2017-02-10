@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import './style/AddMore.scss';
 
 export class AddMore extends Component {
 

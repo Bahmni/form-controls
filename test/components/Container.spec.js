@@ -7,10 +7,10 @@ import { Container } from 'components/Container.jsx';
 import { Label } from 'components/Label.jsx';
 import { TextBox } from 'components/TextBox/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox/NumericBox.jsx';
-import { Button } from 'components/Button.jsx';
+import { Button } from 'components/Button/Button.jsx';
 import { ObsControl } from 'components/ObsControl/ObsControl.jsx';
 import { ObsGroupControl } from 'components/ObsGroupControl/ObsGroupControl.jsx';
-import { CodedControl } from 'components/CodedControl.jsx';
+import { CodedControl } from 'components/CodedControl/CodedControl.jsx';
 import { Error } from 'src/Error';
 import constants from 'src/constants';
 
