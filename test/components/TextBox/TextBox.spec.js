@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { TextBox } from 'src/components/TextBox.jsx';
+import { TextBox } from 'src/components/TextBox/TextBox.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import { Error } from 'src/Error';

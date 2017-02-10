@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { BooleanControl } from 'components/BooleanControl.jsx';
+import { BooleanControl } from 'components/BooleanControl/BooleanControl.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';

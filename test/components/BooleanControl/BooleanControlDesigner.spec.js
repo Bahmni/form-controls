@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { BooleanControlDesigner } from 'components/designer/BooleanControlDesigner.jsx';
+import { BooleanControlDesigner } from 'components/BooleanControl/BooleanControlDesigner.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 
 chai.use(chaiEnzyme());

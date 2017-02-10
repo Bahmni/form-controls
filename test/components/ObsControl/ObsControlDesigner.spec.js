@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { ObsControlDesigner } from 'components/designer/ObsControlDesigner.jsx';
+import { ObsControlDesigner } from 'components/ObsControl/ObsControlDesigner.jsx';
 import sinon from 'sinon';
 
 chai.use(chaiEnzyme());

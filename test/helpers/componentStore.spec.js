@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { TextBox } from 'components/TextBox.jsx';
+import { TextBox } from 'components/TextBox/TextBox.jsx';
 import { Label } from 'components/Label.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 

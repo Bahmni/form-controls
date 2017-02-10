@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { TextBoxDesigner } from 'components/designer/TextBoxDesigner.jsx';
+import { TextBoxDesigner } from 'components/TextBox/TextBoxDesigner.jsx';
 
 chai.use(chaiEnzyme());
 

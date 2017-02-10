@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
+import { ObsGroupControl } from 'components/ObsGroupControl/ObsGroupControl.jsx';
 import sinon from 'sinon';
 import { Obs } from 'src/helpers/Obs';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';

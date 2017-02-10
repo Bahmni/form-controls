@@ -4,7 +4,7 @@ import { Label } from 'components/Label.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import { Comment } from 'components/Comment.jsx';
-import { AddMore } from 'components/AddMore.jsx';
+import { AddMore } from 'components/AddMore/AddMore.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import isEmpty from 'lodash/isEmpty';

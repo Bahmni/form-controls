@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
-import { ObsControl } from 'components/ObsControl.jsx';
+import { ObsControl } from 'components/ObsControl/ObsControl.jsx';
 import { Obs } from 'src/helpers/Obs';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';

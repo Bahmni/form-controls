@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesigner.jsx';
+import { ObsGroupControlDesigner } from 'components/ObsGroupControl/ObsGroupControlDesigner.jsx';
 import * as Grid from 'components/designer/Grid.jsx';
 import { IDGenerator } from 'src/helpers/idGenerator';
 import sinon from 'sinon';
