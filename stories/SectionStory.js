@@ -1,7 +1,7 @@
 import React from "react";
 import {storiesOf} from "@kadira/storybook";
 import {Obs} from "src/helpers/Obs";
-import "../styles/main.scss";
+import "../styles/styles.scss";
 import {NumericBox} from "src/components/NumericBox.jsx";
 import {BooleanControl} from "src/components/BooleanControlDesigner.jsx";
 import {Button} from "src/components/Button.jsx";

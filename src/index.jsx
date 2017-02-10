@@ -39,5 +39,5 @@ export { IDGenerator } from 'src/helpers/idGenerator';
 export { DescriptorParser } from 'src/helpers/descriptorParser';
 export { default as ComponentStore } from 'src/helpers/componentStore';
 
-import '../styles/main.scss';
+import 'styles/styles.scss';
 
