@@ -41,8 +41,8 @@ export class ObsGroupControlDesigner extends Component {
       <LabelDesigner
         metadata={ labelMetadata }
         onSelect={ (event) => this.props.onSelect(event, metadata) }
-        showDeleteButton={false}
         ref={ this.storeLabelRef }
+        showDeleteButton={false}
       />
     );
   }
@@ -53,11 +53,12 @@ export class ObsGroupControlDesigner extends Component {
   }
 
   showDeleteButton() {
-    if(this.props.showDeleteButton) {
+    if (this.props.showDeleteButton) {
       return (
         <button onClick={this.deleteButton}>-</button>
-      )
+      );
     }
+    return null;
   }
   render() {
     const { metadata, metadata: { concept } } = this.props;
@@ -73,10 +74,10 @@ export class ObsGroupControlDesigner extends Component {
             <Grid
               controls={ metadata.controls }
               idGenerator={this.props.idGenerator}
+              isShowDeleteButton={false}
               minRows={0}
               ref={ this.storeGridRef }
               wrapper={this.props.wrapper}
-              isShowDeleteButton={false}
             />
           </div>
         </fieldset>
@@ -96,7 +97,6 @@ ObsGroupControlDesigner.propTypes = {
   clearSelectedControl: PropTypes.func.isRequired,
   deleteControl: PropTypes.func.isRequired,
   idGenerator: PropTypes.object.isRequired,
-  showDeleteButton: PropTypes.bool,
   metadata: PropTypes.shape({
     concept: PropTypes.object,
     displayType: PropTypes.string,
@@ -111,6 +111,7 @@ ObsGroupControlDesigner.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
+  showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
 };
 

@@ -63,8 +63,8 @@ export class ObsControlDesigner extends Component {
           <LabelDesigner
             metadata={ labelMetadata }
             onSelect={ (event) => this.props.onSelect(event, metadata) }
-            showDeleteButton={false}
             ref={ this.storeLabelRef }
+            showDeleteButton={false}
           />
       );
     }
@@ -131,11 +131,12 @@ export class ObsControlDesigner extends Component {
   }
 
   showDeleteButton() {
-    if(this.props.showDeleteButton) {
+    if (this.props.showDeleteButton) {
       return (
         <button onClick={this.deleteButton}>-</button>
-      )
+      );
     }
+    return null;
   }
 
   render() {
@@ -170,7 +171,6 @@ export class ObsControlDesigner extends Component {
 ObsControlDesigner.propTypes = {
   clearSelectedControl: PropTypes.func.isRequired,
   deleteControl: PropTypes.func.isRequired,
-  showDeleteButton: PropTypes.bool,
   metadata: PropTypes.shape({
     concept: PropTypes.object,
     displayType: PropTypes.string,
@@ -185,6 +185,7 @@ ObsControlDesigner.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
+  showDeleteButton: PropTypes.bool,
 };
 
 ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {

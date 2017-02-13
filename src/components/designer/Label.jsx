@@ -57,17 +57,16 @@ export class LabelDesigner extends Component {
   }
 
   showDeleteButton() {
-    if(this.props.deleteControl && this.props.showDeleteButton) {
+    if (this.props.deleteControl && this.props.showDeleteButton) {
       return (
         <button onClick={this.props.deleteControl}>-</button>
-      )
+      );
     }
-    else
-      return null;
+    return null;
   }
 
   stopEventPropagation(event) {
-    if(this.props.dispatch) {
+    if (this.props.dispatch) {
       this.props.dispatch();
     }
     event.stopPropagation();
@@ -101,7 +100,7 @@ LabelDesigner.injectConceptToMetadata = metadata => metadata;
 LabelDesigner.propTypes = {
   clearSelectedControl: PropTypes.func,
   deleteControl: PropTypes.func,
-  showDeleteButton: PropTypes.bool.isRequired,
+  dispatch: PropTypes.func,
   metadata: PropTypes.shape({
     id: PropTypes.string,
     type: PropTypes.string.isRequired,
@@ -113,6 +112,7 @@ LabelDesigner.propTypes = {
       }),
     }),
   }),
+  showDeleteButton: PropTypes.bool.isRequired,
 };
 
 const descriptor = {

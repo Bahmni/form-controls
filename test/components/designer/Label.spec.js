@@ -17,13 +17,13 @@ describe('LabelDesigner', () => {
     idGenerator = new IDGenerator();
     metadata = { id: 'someId', type: 'label', value: 'History Notes', properties: {} };
     wrapper = mount(<LabelDesigner
+      clearSelectedControl={() => {}}
+      deleteControl={() => {}}
+      dispatch={() => {}}
       idGenerator={idGenerator}
       metadata={metadata}
-      wrapper={() => {}}
-      dispatch={() => {}}
-      deleteControl={() => {}}
-      clearSelectedControl={() => {}}
       showDeleteButton={false}
+      wrapper={() => {}}
     />);
   });
 
@@ -84,13 +84,13 @@ describe('LabelDesigner', () => {
     const dispatchSpy = sinon.spy();
     wrapper = mount(
       <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        dispatch={dispatchSpy}
         idGenerator={idGenerator}
         metadata={metadata}
-        wrapper={() => {}}
-        dispatch={dispatchSpy}
-        deleteControl={() => {}}
-        clearSelectedControl={() => {}}
         showDeleteButton={false}
+        wrapper={() => {}}
       />);
     wrapper.find('div').simulate('click', {
       preventDefault: () => {},
@@ -100,7 +100,7 @@ describe('LabelDesigner', () => {
   });
 
   it('should show delete button if the showDeleteButton props is true', () => {
-    wrapper.setProps({showDeleteButton: true});
+    wrapper.setProps({ showDeleteButton: true });
     const deleteButton = wrapper.find('button');
 
     expect(deleteButton.text()).to.eql('-');
@@ -110,13 +110,13 @@ describe('LabelDesigner', () => {
     const deleteControlSpy = sinon.spy();
     wrapper = mount(
       <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={deleteControlSpy}
+        dispatch={() => {}}
         idGenerator={idGenerator}
         metadata={metadata}
+        showDeleteButton
         wrapper={() => {}}
-        dispatch={() => {}}
-        deleteControl={deleteControlSpy}
-        clearSelectedControl={() => {}}
-        showDeleteButton={true}
       />);
     wrapper.find('button').simulate('click', {
       preventDefault: () => {},

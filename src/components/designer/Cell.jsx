@@ -24,8 +24,8 @@ export class CellDesigner extends DropTarget {
     this._setActiveClass(false);
   }
 
-  deleteControl(){
-    this.setState({ data: []});
+  deleteControl() {
+    this.setState({ data: [] });
   }
   _setActiveClass(active = false) {
     this.className = classNames('form-builder-column', { active });
@@ -129,12 +129,12 @@ CellDesigner.dropLoc = {
 CellDesigner.propTypes = {
   cellData: PropTypes.array.isRequired,
   idGenerator: PropTypes.object.isRequired,
-  showDeleteButton: PropTypes.bool,
   location: PropTypes.shape({
     column: PropTypes.number,
     row: PropTypes.number,
   }).isRequired,
   onChange: PropTypes.func.isRequired,
+  showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
 };
 

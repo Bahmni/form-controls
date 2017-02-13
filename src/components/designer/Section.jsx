@@ -52,11 +52,12 @@ export class SectionDesigner extends Component {
     if (this.props.showDeleteButton) {
       return (
         <button onClick={this.deleteControl}>-</button>
-      )
+      );
     }
+    return null;
   }
 
-   stopEventPropagation(event) {
+  stopEventPropagation(event) {
     this.props.dispatch();
     event.stopPropagation();
   }
@@ -77,8 +78,8 @@ export class SectionDesigner extends Component {
               idGenerator={this.props.idGenerator}
               minRows={2}
               ref={ this.storeGridRef }
+              showDeleteButton
               wrapper={this.props.wrapper}
-              showDeleteButton={true}
             />
           </div>
         </fieldset>
@@ -89,8 +90,8 @@ export class SectionDesigner extends Component {
 SectionDesigner.propTypes = {
   clearSelectedControl: PropTypes.func.isRequired,
   deleteControl: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
   idGenerator: PropTypes.object.isRequired,
-  showDeleteButton: PropTypes.bool,
   metadata: PropTypes.shape({
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
@@ -103,6 +104,7 @@ SectionDesigner.propTypes = {
     }),
     type: PropTypes.string.isRequired,
   }),
+  showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
 };
 

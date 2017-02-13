@@ -68,12 +68,12 @@ describe('SectionDesigner', () => {
       idGenerator = new IDGenerator();
       wrapper = mount(
         <SectionDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
           wrapper={() => {}}
-          deleteControl={() => {}}
-          clearSelectedControl={() => {}}
-          dispatch={() => {}}
         />);
     });
 
@@ -101,12 +101,12 @@ describe('SectionDesigner', () => {
 
       wrapper = mount(
         <SectionDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
           wrapper={() => {}}
-          deleteControl={() => {}}
-          clearSelectedControl={() => {}}
-          dispatch={() => {}}
         />);
 
       expect(wrapper).to.have.descendants('GridDesigner');
@@ -123,22 +123,22 @@ describe('SectionDesigner', () => {
       const dispatchSpy = sinon.spy();
       wrapper = mount(
         <SectionDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch = {dispatchSpy}
           idGenerator={idGenerator}
           metadata={metadata}
           wrapper={() => {}}
-          dispatch = {dispatchSpy}
-          deleteControl={() => {}}
-          clearSelectedControl={() => {}}
         />);
       wrapper.find('fieldset').simulate('click', {
         preventDefault: () => {},
-        });
+      });
 
       sinon.assert.calledOnce(dispatchSpy);
     });
 
     it('should show delete button if the showDeleteButton props is true', () => {
-      wrapper.setProps({showDeleteButton: true});
+      wrapper.setProps({ showDeleteButton: true });
       const deleteButton = wrapper.find('button');
 
       expect(deleteButton.text()).to.eql('-');
@@ -147,7 +147,7 @@ describe('SectionDesigner', () => {
     it('should call deleteControl when delete button is clicked', () => {
       const instance = wrapper.instance();
       sinon.spy(instance, 'deleteControl');
-      wrapper.setProps({showDeleteButton: true});
+      wrapper.setProps({ showDeleteButton: true });
       wrapper.find('button').simulate('click');
 
       sinon.assert.calledOnce(instance.deleteControl);

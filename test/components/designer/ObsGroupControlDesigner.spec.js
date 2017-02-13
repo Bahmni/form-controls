@@ -77,6 +77,8 @@ describe('ObsGroupControlDesigner', () => {
       const idGenerator = new IDGenerator();
       wrapper = shallow(
         <ObsGroupControlDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
           onSelect={onSelectSpy}
@@ -143,6 +145,8 @@ describe('ObsGroupControlDesigner', () => {
       const idGenerator = new IDGenerator();
       wrapper = mount(
         <ObsGroupControlDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
           onSelect={onSelectSpy}
@@ -178,6 +182,34 @@ describe('ObsGroupControlDesigner', () => {
     it('should return json definition', () => {
       const instance = wrapper.instance();
       expect(instance.getJsonDefinition()).to.deep.eql(metadata);
+    });
+
+    it('should show delete button if the showDeleteButton props is true', () => {
+      wrapper.setProps({ showDeleteButton: true });
+      const deleteButton = wrapper.find('button');
+
+      expect(deleteButton.text()).to.eql('-');
+    });
+
+    it('should call deleteControl after delete button is clicked', () => {
+      const deleteControlSpy = sinon.spy();
+      const idGenerator = new IDGenerator();
+      wrapper = mount(
+        <ObsGroupControlDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={deleteControlSpy}
+          dispatch={() => {}}
+          idGenerator={idGenerator}
+          metadata={metadata}
+          onSelect={() => {}}
+          showDeleteButton
+          wrapper={() => {}}
+        />);
+      wrapper.find('button').simulate('click', {
+        preventDefault: () => {},
+      });
+
+      sinon.assert.calledOnce(deleteControlSpy);
     });
   });
 });

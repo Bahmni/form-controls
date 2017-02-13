@@ -123,7 +123,12 @@ describe('Container', () => {
 
   describe('render', () => {
     it('should render form', () => {
-      const wrapper = mount(<Container metadata={metadata} observations={[]} validate={false} />);
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata}
+        observations={[]}
+        validate={false}
+      />);
 
       expect(wrapper).to.have.exactly(3).descendants('Row');
       expect(wrapper).to.have.exactly(3).descendants('Label');
@@ -142,7 +147,12 @@ describe('Container', () => {
 
     it('should render form without controls when it is empty', () => {
       const meta = { id: 100, name: 'Vitals', controls: [], uuid: 'uuid', version: '1' };
-      const wrapper = shallow(<Container metadata={meta} observations={[]} validate={false} />);
+      const wrapper = shallow(<Container
+        collapse
+        metadata={meta}
+        observations={[]}
+        validate={false}
+      />);
 
       expect(wrapper).to.be.blank();
     });
@@ -150,7 +160,12 @@ describe('Container', () => {
     it('should render form with only the registered controls', () => {
       componentStore.deRegisterComponent('numeric');
 
-      const wrapper = mount(<Container metadata={metadata} observations={[]} validate={false} />);
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata}
+        observations={[]}
+        validate={false}
+      />);
 
       expect(wrapper).to.have.exactly(2).descendants('ObsControl');
       expect(wrapper).to.have.exactly(1).descendants('TextBox');
@@ -162,9 +177,13 @@ describe('Container', () => {
 
     it('should reRender on change of collapse property', () => {
       const wrapper = mount(
-        <Container collapse metadata={metadata} observations={[]} validate={false} />
+        <Container
+          collapse
+          metadata={metadata}
+          observations={[]}
+          validate={false}
+        />
       );
-
 
       expect(wrapper).to.have.exactly(3).descendants('Row');
       expect(wrapper.find('Row').at(0).props().collapse).to.eql(true);
@@ -181,6 +200,7 @@ describe('Container', () => {
     it('should return the observations of its children which are data controls', () => {
       const wrapper = mount(<
         Container
+        collapse
         metadata={metadata}
         observations={observations}
         validate={false}
@@ -191,7 +211,12 @@ describe('Container', () => {
     });
 
     it('should return empty when there are no observations', () => {
-      const wrapper = mount(<Container metadata={metadata} observations={[]} validate={false} />);
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata}
+        observations={[]}
+        validate={false}
+      />);
       const instance = wrapper.instance();
 
       expect(instance.getValue()).to.deep.equal({ observations: [] });
@@ -210,7 +235,12 @@ describe('Container', () => {
           formFieldPath: 'fm1/999999',
         },
       ];
-      const wrapper = mount(<Container metadata={metadata} observations={obs} validate={false} />);
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata}
+        observations={obs}
+        validate={false}
+      />);
       const instance = wrapper.instance();
 
       expect(instance.getValue()).to.deep.equal({ observations: [] });
@@ -228,6 +258,7 @@ describe('Container', () => {
       metadataClone.controls.push(mandatoryControl);
       const wrapper = mount(<
         Container
+        collapse
         metadata={metadataClone}
         observations={observations}
         validate={false}
@@ -255,6 +286,7 @@ describe('Container', () => {
       metadataClone.controls.push(mandatoryControl);
       const wrapper = mount(<
         Container
+        collapse
         metadata={metadataClone}
         observations={[]}
         validate={false}
@@ -285,7 +317,10 @@ describe('Container', () => {
       };
       metadataClone.controls.push(mandatoryControl);
       const wrapper =
-        mount(<Container metadata={metadataClone} observations={[voidedObservation]}
+        mount(<Container
+          collapse
+          metadata={metadataClone}
+          observations={[voidedObservation]}
           validate={false}
         />);
       wrapper.find('input').at(0).simulate('change', { target: { value: undefined } });
@@ -315,6 +350,7 @@ describe('Container', () => {
       const wrapper =
         mount(
           <Container
+            collapse
             metadata={metadataClone}
             observations={[voidedObservation, observation2]}
             validate={false}
@@ -374,6 +410,7 @@ describe('Container', () => {
     it('should filter child obs which are not having value from obs group', () => {
       const wrapper = mount(
         <Container
+          collapse
           metadata={obsGroupMetaData}
           observations={[]}
           validate={false}
@@ -422,6 +459,7 @@ describe('Container', () => {
       ];
       const wrapper = mount(
         <Container
+          collapse
           metadata={obsGroupMetaData}
           observations={obs}
           validate={false}
@@ -482,7 +520,9 @@ describe('Container', () => {
     });
 
     it('should render multiple observations filled using AddMore', () => {
-      const wrapper = mount(<Container metadata={metadata2}
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata2}
         observations={[obs1, obs2]}
         validate={false}
       />);
@@ -501,7 +541,9 @@ describe('Container', () => {
     });
 
     it('should render empty control if Add button is clicked', () => {
-      const wrapper = mount(<Container metadata={metadata2}
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata2}
         observations={[]}
         validate={false}
       />);
@@ -520,7 +562,9 @@ describe('Container', () => {
     });
 
     it('should remove control if Remove button is clicked', () => {
-      const wrapper = mount(<Container metadata={metadata2}
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata2}
         observations={[obs1, obs2]}
         validate={false}
       />);
@@ -541,7 +585,9 @@ describe('Container', () => {
     it('should remove control having saved obs if Remove button is clicked', () => {
       obs1.uuid = 'uuid1';
       obs2.uuid = 'uuid2';
-      const wrapper = mount(<Container metadata={metadata2}
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata2}
         observations={[obs1, obs2]}
         validate={false}
       />);
@@ -745,7 +791,9 @@ describe('Container', () => {
     });
 
     it('should render control with multiple observations', () => {
-      const wrapper = mount(<Container metadata={metadata3}
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata3}
         observations={obsList1}
         validate={false}
       />);
@@ -763,7 +811,9 @@ describe('Container', () => {
 
 
     it('should render two controls', () => {
-      const wrapper = mount(<Container metadata={metadata3}
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata3}
         observations={[...obsList1, ...obsList2]}
         validate={false}
       />);
@@ -787,7 +837,9 @@ describe('Container', () => {
     });
 
     it('should add a control on clicking AddMore', () => {
-      const wrapper = mount(<Container metadata={metadata3}
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata3}
         observations={obsList1}
         validate={false}
       />);
@@ -812,7 +864,9 @@ describe('Container', () => {
     });
 
     it('should add a control on clicking AddMore', () => {
-      const wrapper = mount(<Container metadata={metadata3}
+      const wrapper = mount(<Container
+        collapse
+        metadata={metadata3}
         observations={[...obsList1, ...obsList2]}
         validate={false}
       />);
