@@ -55,6 +55,23 @@ describe('Cell', () => {
     eventData.preventDefault.restore();
   });
 
+  it('should set data to null when deleteControl called', () => {
+    const idGenerator = new IDGenerator();
+    const cellDesigner = shallow(
+      <CellDesigner
+        cellData={[]}
+        idGenerator={idGenerator}
+        location={location}
+        onChange={() => {}}
+        wrapper={ TestComponent }
+      />
+    );
+
+    cellDesigner.instance().deleteControl();
+
+    expect(cellDesigner.state('data')).to.eql([]);
+  });
+
   it('should call appropriate processDrop when a component is dropped', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(

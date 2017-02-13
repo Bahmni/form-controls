@@ -12,7 +12,7 @@ export class SectionDesigner extends Component {
     this.mapper = new SectionMapper();
     this.storeGridRef = this.storeGridRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
-    this.deleteButton = this.deleteButton.bind(this);
+    this.deleteControl = this.deleteControl.bind(this);
   }
 
   getJsonDefinition() {
@@ -43,7 +43,7 @@ export class SectionDesigner extends Component {
     );
   }
 
-  deleteButton(event) {
+  deleteControl(event) {
     this.props.deleteControl();
     this.props.clearSelectedControl(event);
   }
@@ -51,12 +51,12 @@ export class SectionDesigner extends Component {
   showDeleteButton() {
     if (this.props.showDeleteButton) {
       return (
-        <button onClick={this.deleteButton}>-</button>
+        <button onClick={this.deleteControl}>-</button>
       )
     }
   }
 
-  stopEventPropagation(event) {
+   stopEventPropagation(event) {
     this.props.dispatch();
     event.stopPropagation();
   }
