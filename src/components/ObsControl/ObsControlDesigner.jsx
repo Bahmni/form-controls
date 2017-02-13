@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import { LabelDesigner } from 'components/designer/Label.jsx';
-import { CommentDesigner } from 'components/designer/Comment.jsx';
+import { LabelDesigner } from 'components/designer/LabelDesigner.jsx';
+import { CommentDesigner } from 'components/Comment/CommentDesigner.jsx';
 import { AddMoreDesigner } from 'components/AddMore/AddMoreDesigner.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { RowDesigner } from 'components/designer/Row.jsx';
+import { RowDesigner } from 'components/designer/RowDesigner.jsx';
 import map from 'lodash/map';
 import maxBy from 'lodash/maxBy';
 import groupBy from 'lodash/groupBy';

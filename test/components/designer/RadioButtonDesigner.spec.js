@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { RadioButtonDesigner } from 'components/designer/RadioButton.jsx';
+import { RadioButtonDesigner } from 'components/designer/RadioButtonDesigner.jsx';
 
 chai.use(chaiEnzyme());
 

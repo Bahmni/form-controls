@@ -3,7 +3,7 @@ import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { ObsGroupControlDesigner } from 'components/ObsGroupControl/ObsGroupControlDesigner.jsx';
-import * as Grid from 'components/designer/Grid.jsx';
+import * as Grid from 'components/designer/GridDesigner.jsx';
 import { IDGenerator } from 'src/helpers/idGenerator';
 import sinon from 'sinon';
 

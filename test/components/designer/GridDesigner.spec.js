@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { GridDesigner } from 'components/designer/Grid.jsx';
+import { GridDesigner } from 'components/designer/GridDesigner.jsx';
 import constants from 'src/constants';
 import { IDGenerator } from 'src/helpers/idGenerator';
 

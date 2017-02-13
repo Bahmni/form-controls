@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import { ObsGroupMapper } from '../../mapper/ObsGroupMapper';
-import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
+import { GridDesigner as Grid } from 'components/designer/GridDesigner.jsx';
 import { Concept } from '../../helpers/Concept';
 import { Metadata } from '../../helpers/Metadata';
-import { LabelDesigner } from 'components/designer/Label.jsx';
+import { LabelDesigner } from 'components/designer/LabelDesigner.jsx';
 import './style/ObsGroupControl.scss';
 
 export class ObsGroupControlDesigner extends Component {

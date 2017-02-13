@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import Textarea from 'react-textarea-autosize';
+import './style/Comment.scss';
+
 export class Comment extends Component {
 
   constructor(props) {

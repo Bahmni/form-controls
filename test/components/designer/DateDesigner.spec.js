@@ -2,18 +2,18 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { DateTimeDesigner } from 'components/designer/DateTime.jsx';
+import { DateDesigner } from 'components/designer/DateDesigner.jsx';
 
 chai.use(chaiEnzyme());
 
-describe('DateTimeDesigner', () => {
+describe('DateDesigner', () => {
   let wrapper;
   let metadata;
 
   beforeEach(() => {
     metadata = {
       concept: {
-        name: 'DateTime',
+        name: 'Follow up Date',
         uuid: 'someUuid',
         dataType: 'Date',
       },
@@ -21,13 +21,12 @@ describe('DateTimeDesigner', () => {
       id: 'someId',
       properties: {},
     };
-    wrapper = shallow(<DateTimeDesigner metadata={metadata} />);
+    wrapper = shallow(<DateDesigner metadata={metadata} />);
   });
 
-  it('should render the DateTime designer component', () => {
-    expect(wrapper).to.have.exactly(2).descendants('input');
-    expect(wrapper.find('input').at(0)).to.have.prop('type').to.eql('date');
-    expect(wrapper.find('input').at(1)).to.have.prop('type').to.eql('time');
+  it('should render the Date designer component', () => {
+    expect(wrapper).to.have.descendants('input');
+    expect(wrapper.find('input')).to.have.prop('type').to.eql('date');
   });
 
   it('should return json definition', () => {

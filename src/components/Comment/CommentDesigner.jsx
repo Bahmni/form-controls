@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import classNames from 'classnames';
 import Textarea from 'react-textarea-autosize';
+import './style/Comment.scss';
+
 export class CommentDesigner extends PureComponent { // PureComponent has been added because of eslint post test prefer-stateless-function error.
 
   constructor() {

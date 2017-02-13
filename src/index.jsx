@@ -16,21 +16,21 @@ export { Section } from 'components/Section.jsx';
 
 //  -----------designer components------------------
 
-export { LabelDesigner } from 'components/designer/Label.jsx';
+export { LabelDesigner } from 'components/designer/LabelDesigner.jsx';
 export { ObsControlDesigner } from 'components/ObsControl/ObsControlDesigner.jsx';
 export { TextBoxDesigner } from 'components/TextBox/TextBoxDesigner.jsx';
 export { NumericBoxDesigner } from 'components/NumericBox/NumericBoxDesigner.jsx';
-export { GridDesigner } from 'components/designer/Grid.jsx';
+export { GridDesigner } from 'components/designer/GridDesigner.jsx';
 export { CellDesigner } from 'components/Cell/CellDesigner.jsx';
-export { RadioButtonDesigner } from 'components/designer/RadioButton.jsx';
+export { RadioButtonDesigner } from 'components/designer/RadioButtonDesigner.jsx';
 export { ButtonDesigner } from 'components/Button/ButtonDesigner.jsx';
 export { BooleanControlDesigner } from 'components/BooleanControl/BooleanControlDesigner.jsx';
 export { Draggable } from 'components/Draggable.jsx';
-export { RowDesigner } from 'components/designer/Row.jsx';
+export { RowDesigner } from 'components/designer/RowDesigner.jsx';
 export { CodedControlDesigner } from 'components/CodedControl/CodedControlDesigner.jsx';
 export { ObsGroupControlDesigner } from 'components/ObsGroupControl/ObsGroupControlDesigner.jsx';
-export { DateDesigner } from 'components/designer/Date.jsx';
-export { DateTimeDesigner } from 'components/designer/DateTime.jsx';
+export { DateDesigner } from 'components/designer/DateDesigner.jsx';
+export { DateTimeDesigner } from 'components/designer/DateTimeDesigner.jsx';
 export { SectionDesigner } from 'components/designer/Section.jsx';
 
 // -------------------------- helpers ---------------------

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { RowDesigner } from 'components/designer/Row.jsx';
+import { RowDesigner } from 'components/designer/RowDesigner.jsx';
 import Constants from 'src/constants';
 import sinon from 'sinon';
 import { IDGenerator } from 'src/helpers/idGenerator';

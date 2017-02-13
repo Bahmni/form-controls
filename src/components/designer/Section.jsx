@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import { SectionMapper } from '../../mapper/SectionMapper';
-import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
-import { LabelDesigner } from 'components/designer/Label.jsx';
+import { GridDesigner as Grid } from 'components/designer/GridDesigner.jsx';
+import { LabelDesigner } from 'components/designer/LabelDesigner.jsx';
 
 export class SectionDesigner extends Component {
 

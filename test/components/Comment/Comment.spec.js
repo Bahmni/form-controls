@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { Comment } from 'components/Comment.jsx';
+import { Comment } from 'components/Comment/Comment.jsx';
 import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
