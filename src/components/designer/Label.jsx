@@ -68,8 +68,8 @@ export class LabelDesigner extends Component {
   stopEventPropagation(event) {
     if (this.props.dispatch) {
       this.props.dispatch();
+      event.stopPropagation();
     }
-    event.stopPropagation();
   }
 
   render() {
