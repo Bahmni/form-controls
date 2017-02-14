@@ -3,16 +3,28 @@ import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { LabelDesigner } from 'components/designer/Label.jsx';
+import { IDGenerator } from 'src/helpers/idGenerator';
+import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
 describe('LabelDesigner', () => {
   let wrapper;
   let metadata;
+  let idGenerator;
 
   beforeEach(() => {
+    idGenerator = new IDGenerator();
     metadata = { id: 'someId', type: 'label', value: 'History Notes', properties: {} };
-    wrapper = mount(<LabelDesigner metadata={metadata} />);
+    wrapper = mount(<LabelDesigner
+      clearSelectedControl={() => {}}
+      deleteControl={() => {}}
+      dispatch={() => {}}
+      idGenerator={idGenerator}
+      metadata={metadata}
+      showDeleteButton={false}
+      wrapper={() => {}}
+    />);
   });
 
   it('should render the non editable value', () => {
@@ -66,5 +78,50 @@ describe('LabelDesigner', () => {
     instance.input.value = '  ';
     wrapper.find('input').props().onKeyUp({ keyCode: 13 });
     expect(wrapper.find('label')).text().to.eql('History Notes');
+  });
+
+  it('should stop event propagation to upper component when click on lable', () => {
+    const dispatchSpy = sinon.spy();
+    wrapper = mount(
+      <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        dispatch={dispatchSpy}
+        idGenerator={idGenerator}
+        metadata={metadata}
+        showDeleteButton={false}
+        wrapper={() => {}}
+      />);
+    wrapper.find('div').simulate('click', {
+      preventDefault: () => {},
+    });
+
+    sinon.assert.calledOnce(dispatchSpy);
+  });
+
+  it('should show delete button if the showDeleteButton props is true', () => {
+    wrapper.setProps({ showDeleteButton: true });
+    const deleteButton = wrapper.find('button');
+
+    expect(deleteButton.text()).to.eql('-');
+  });
+
+  it('should call deleteControl when delete button is clicked', () => {
+    const deleteControlSpy = sinon.spy();
+    wrapper = mount(
+      <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={deleteControlSpy}
+        dispatch={() => {}}
+        idGenerator={idGenerator}
+        metadata={metadata}
+        showDeleteButton
+        wrapper={() => {}}
+      />);
+    wrapper.find('button').simulate('click', {
+      preventDefault: () => {},
+    });
+
+    sinon.assert.calledOnce(deleteControlSpy);
   });
 });

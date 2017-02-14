@@ -68,6 +68,9 @@ describe('SectionDesigner', () => {
       idGenerator = new IDGenerator();
       wrapper = mount(
         <SectionDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
           wrapper={() => {}}
@@ -98,6 +101,9 @@ describe('SectionDesigner', () => {
 
       wrapper = mount(
         <SectionDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
           wrapper={() => {}}
@@ -111,6 +117,41 @@ describe('SectionDesigner', () => {
     it('should return json definition', () => {
       const instance = wrapper.instance();
       expect(instance.getJsonDefinition()).to.deep.eql(metadata);
+    });
+
+    it('should stop event propagation to upper component when click on section', () => {
+      const dispatchSpy = sinon.spy();
+      wrapper = mount(
+        <SectionDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch = {dispatchSpy}
+          idGenerator={idGenerator}
+          metadata={metadata}
+          wrapper={() => {}}
+        />);
+      wrapper.find('fieldset').simulate('click', {
+        preventDefault: () => {},
+      });
+
+      sinon.assert.calledOnce(dispatchSpy);
+    });
+
+    it('should show delete button if the showDeleteButton props is true', () => {
+      wrapper.setProps({ showDeleteButton: true });
+      const deleteButton = wrapper.find('button');
+
+      expect(deleteButton.text()).to.eql('-');
+    });
+
+    it('should call deleteControl when delete button is clicked', () => {
+      const instance = wrapper.instance();
+      sinon.spy(instance, 'deleteControl');
+      wrapper.setProps({ showDeleteButton: true });
+      wrapper.find('button').simulate('click');
+
+      sinon.assert.calledOnce(instance.deleteControl);
+      instance.deleteControl.restore();
     });
   });
 });

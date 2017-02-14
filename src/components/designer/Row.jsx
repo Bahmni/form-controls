@@ -41,6 +41,7 @@ export class RowDesigner extends Component {
           location={{ column: i, row: this.props.rowPosition }}
           onChange={ this.changeHandler }
           ref={ this.cellReference }
+          showDeleteButton={ this.props.showDeleteButton }
           wrapper={ this.props.wrapper }
         />);
     }
@@ -70,6 +71,7 @@ RowDesigner.propTypes = {
   onChange: PropTypes.func.isRequired,
   rowData: PropTypes.array.isRequired,
   rowPosition: PropTypes.number.isRequired,
+  showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
 };
 

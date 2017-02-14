@@ -12,6 +12,7 @@ export class SectionDesigner extends Component {
     this.mapper = new SectionMapper();
     this.storeGridRef = this.storeGridRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
+    this.deleteControl = this.deleteControl.bind(this);
   }
 
   getJsonDefinition() {
@@ -37,16 +38,39 @@ export class SectionDesigner extends Component {
       <LabelDesigner
         metadata={ label }
         ref={ this.storeLabelRef }
+        showDeleteButton={ false }
       />
     );
   }
 
+  deleteControl(event) {
+    this.props.deleteControl();
+    this.props.clearSelectedControl(event);
+  }
+
+  showDeleteButton() {
+    if (this.props.showDeleteButton) {
+      return (
+        <button onClick={this.deleteControl}>-</button>
+      );
+    }
+    return null;
+  }
+
+  stopEventPropagation(event) {
+    this.props.dispatch();
+    event.stopPropagation();
+  }
 
   render() {
     const { metadata } = this.props;
     const controls = metadata.controls || [];
     return (
-        <fieldset className="form-builder-fieldset">
+        <fieldset
+          className="form-builder-fieldset"
+          onClick={ (e) => this.stopEventPropagation(e) }
+        >
+          {this.showDeleteButton()}
           {this.displayLabel()}
           <div className="obsGroup-controls">
             <Grid
@@ -54,6 +78,7 @@ export class SectionDesigner extends Component {
               idGenerator={this.props.idGenerator}
               minRows={2}
               ref={ this.storeGridRef }
+              showDeleteButton
               wrapper={this.props.wrapper}
             />
           </div>
@@ -63,6 +88,9 @@ export class SectionDesigner extends Component {
 }
 
 SectionDesigner.propTypes = {
+  clearSelectedControl: PropTypes.func.isRequired,
+  deleteControl: PropTypes.func.isRequired,
+  dispatch: PropTypes.func,
   idGenerator: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     displayType: PropTypes.string,
@@ -76,6 +104,7 @@ SectionDesigner.propTypes = {
     }),
     type: PropTypes.string.isRequired,
   }),
+  showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
 };
 

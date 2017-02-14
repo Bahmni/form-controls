@@ -14,6 +14,7 @@ export class ObsGroupControlDesigner extends Component {
     this.mapper = new ObsGroupMapper();
     this.storeGridRef = this.storeGridRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
+    this.deleteButton = this.deleteButton.bind(this);
   }
 
   getJsonDefinition() {
@@ -41,11 +42,24 @@ export class ObsGroupControlDesigner extends Component {
         metadata={ labelMetadata }
         onSelect={ (event) => this.props.onSelect(event, metadata) }
         ref={ this.storeLabelRef }
+        showDeleteButton={false}
       />
     );
   }
 
+  deleteButton(event) {
+    this.props.deleteControl();
+    this.props.clearSelectedControl(event);
+  }
 
+  showDeleteButton() {
+    if (this.props.showDeleteButton) {
+      return (
+        <button onClick={this.deleteButton}>-</button>
+      );
+    }
+    return null;
+  }
   render() {
     const { metadata, metadata: { concept } } = this.props;
     if (concept) {
@@ -54,11 +68,13 @@ export class ObsGroupControlDesigner extends Component {
           className="form-builder-fieldset"
           onClick={(event) => this.props.onSelect(event, metadata)}
         >
+          {this.showDeleteButton()}
           <legend><strong>{this.displayLabel()}</strong></legend>
           <div className="obsGroup-controls">
             <Grid
               controls={ metadata.controls }
               idGenerator={this.props.idGenerator}
+              isShowDeleteButton={false}
               minRows={0}
               ref={ this.storeGridRef }
               wrapper={this.props.wrapper}
@@ -71,12 +87,15 @@ export class ObsGroupControlDesigner extends Component {
       <div
         onClick={ (event) => this.props.onSelect(event, metadata) }
       >
-      Select ObsGroup Source
+        {this.showDeleteButton()}
+        Select ObsGroup Source
       </div>);
   }
 }
 
 ObsGroupControlDesigner.propTypes = {
+  clearSelectedControl: PropTypes.func.isRequired,
+  deleteControl: PropTypes.func.isRequired,
   idGenerator: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object,
@@ -92,6 +111,7 @@ ObsGroupControlDesigner.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
+  showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
 };
 

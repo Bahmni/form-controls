@@ -11,6 +11,7 @@ export class LabelDesigner extends Component {
     };
     this.onDoubleClick = this.onDoubleClick.bind(this);
     this.onBlur = this.onBlur.bind(this);
+    this.showDeleteButton = this.showDeleteButton.bind(this);
     this.onEnterKey = this.onEnterKey.bind(this);
     this.storeComponentRef = this.storeComponentRef.bind(this);
     this.getJsonDefinition = this.getJsonDefinition.bind(this);
@@ -55,29 +56,51 @@ export class LabelDesigner extends Component {
     if (ref !== null) this.input = ref;
   }
 
+  showDeleteButton() {
+    if (this.props.deleteControl && this.props.showDeleteButton) {
+      return (
+        <button onClick={this.props.deleteControl}>-</button>
+      );
+    }
+    return null;
+  }
+
+  stopEventPropagation(event) {
+    if (this.props.dispatch) {
+      this.props.dispatch();
+      event.stopPropagation();
+    }
+  }
+
   render() {
     if (this.state.isEditable) {
       return (
-        <input
-          className="form-builder-label" defaultValue={ this.state.value }
-          onBlur={this.onBlur} onKeyUp={this.onEnterKey}
-          ref={ this.storeComponentRef }
-          type="text"
-        />
+          <input
+            className="form-builder-label" defaultValue={ this.state.value }
+            onBlur={this.onBlur} onKeyUp={this.onEnterKey}
+            ref={ this.storeComponentRef }
+            type="text"
+          />
       );
     }
     return (
-      <label
-        onDoubleClick={ this.onDoubleClick }
-      >
-        { this.state.value }
-      </label>);
+      <div onClick={(e) => this.stopEventPropagation(e) }>
+        <label
+          onDoubleClick={ this.onDoubleClick }
+        >
+          { this.state.value }
+        </label>
+        {this.showDeleteButton()}
+      </div>);
   }
 }
 
 LabelDesigner.injectConceptToMetadata = metadata => metadata;
 
 LabelDesigner.propTypes = {
+  clearSelectedControl: PropTypes.func,
+  deleteControl: PropTypes.func,
+  dispatch: PropTypes.func,
   metadata: PropTypes.shape({
     id: PropTypes.string,
     type: PropTypes.string.isRequired,
@@ -89,6 +112,7 @@ LabelDesigner.propTypes = {
       }),
     }),
   }),
+  showDeleteButton: PropTypes.bool.isRequired,
 };
 
 const descriptor = {

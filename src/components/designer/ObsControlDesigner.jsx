@@ -15,6 +15,7 @@ export class ObsControlDesigner extends Component {
     this.metadata = props.metadata;
     this.storeChildRef = this.storeChildRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
+    this.deleteButton = this.deleteButton.bind(this);
   }
 
   getJsonDefinition() {
@@ -63,6 +64,7 @@ export class ObsControlDesigner extends Component {
             metadata={ labelMetadata }
             onSelect={ (event) => this.props.onSelect(event, metadata) }
             ref={ this.storeLabelRef }
+            showDeleteButton={false}
           />
       );
     }
@@ -123,6 +125,20 @@ export class ObsControlDesigner extends Component {
     return null;
   }
 
+  deleteButton(event) {
+    this.props.deleteControl();
+    this.props.clearSelectedControl(event);
+  }
+
+  showDeleteButton() {
+    if (this.props.showDeleteButton) {
+      return (
+        <button onClick={this.deleteButton}>-</button>
+      );
+    }
+    return null;
+  }
+
   render() {
     const { metadata, metadata: { concept } } = this.props;
     const designerComponent = concept && ComponentStore.getDesignerComponent(concept.datatype);
@@ -131,6 +147,7 @@ export class ObsControlDesigner extends Component {
         <div className="form-field-wrap clearfix"
           onClick={ (event) => this.props.onSelect(event, metadata) }
         >
+          {this.showDeleteButton()}
           <div className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
@@ -142,11 +159,18 @@ export class ObsControlDesigner extends Component {
         </div>
       );
     }
-    return <div onClick={ (event) => this.props.onSelect(event, metadata) }>Select Obs Source</div>;
+    return (
+      <div onClick={ (event) => this.props.onSelect(event, metadata) }>
+        {this.showDeleteButton()}
+        Select Obs Source
+      </div>
+    );
   }
 }
 
 ObsControlDesigner.propTypes = {
+  clearSelectedControl: PropTypes.func.isRequired,
+  deleteControl: PropTypes.func.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object,
     displayType: PropTypes.string,
@@ -161,6 +185,7 @@ ObsControlDesigner.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
+  showDeleteButton: PropTypes.bool,
 };
 
 ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {

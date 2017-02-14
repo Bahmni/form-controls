@@ -55,6 +55,23 @@ describe('Cell', () => {
     eventData.preventDefault.restore();
   });
 
+  it('should set data to null when deleteControl called', () => {
+    const idGenerator = new IDGenerator();
+    const cellDesigner = shallow(
+      <CellDesigner
+        cellData={[]}
+        idGenerator={idGenerator}
+        location={location}
+        onChange={() => {}}
+        wrapper={ TestComponent }
+      />
+    );
+
+    cellDesigner.instance().deleteControl();
+
+    expect(cellDesigner.state('data')).to.eql([]);
+  });
+
   it('should call appropriate processDrop when a component is dropped', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
@@ -223,4 +240,21 @@ describe('Cell', () => {
     expect(child.prop('metadata')).to.eql(metadata);
     expect(child.prop('metadata')).to.eql(metadata);
   });
+
+  // it.skip('should remove controls when remove function is called', () => {
+  //   const idGenerator = new IDGenerator();
+  //   const cellDesigner = mount(
+  //     <CellDesigner
+  //       cellData={[metadata]}
+  //       idGenerator={idGenerator}
+  //       location={location}
+  //       onChange={() => {}}
+  //       wrapper={ TestComponent }
+  //     />
+  //   );
+  //
+  //   cellDesigner.find('button').simulate('click');
+  //   const instance = cellDesigner.instance();
+  //   expect(instance.state.data.length).to.eql(0);
+  // });
 });
