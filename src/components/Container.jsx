@@ -91,6 +91,17 @@ export class Container extends Component {
     return observations.every((obs) => obs.voided);
   }
 
+  filterEmptyRecords(records) {
+    return records.filter(r => {
+      if (r.obs.value === undefined && r.obs.voided === true && r.obs.uuid !== undefined) {
+        const prefix = r.formFieldPath.split('-')[0];
+        const filteredRecords = records.filter(record => record.formFieldPath.startsWith(prefix));
+        return (filteredRecords.length <= 1);
+      }
+      return true;
+    });
+  }
+
   render() {
     const { metadata: { controls, name: formName, version: formVersion }, validate } = this.props;
     const childProps = {
@@ -105,7 +116,8 @@ export class Container extends Component {
       validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
-    const records = this.state.data.getActiveRecords();
+    const activeRecords = this.state.data.getActiveRecords();
+    const records = this.filterEmptyRecords(activeRecords);
     return (
       <div>{displayRowControls(groupedRowControls, records, childProps)}</div>
     );

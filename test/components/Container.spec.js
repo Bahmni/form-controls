@@ -175,6 +175,92 @@ describe('Container', () => {
       expect(wrapper.find('Row').at(0).props().collapse).to.eql(false);
       expect(wrapper.find('Row').at(1).props().collapse).to.eql(false);
     });
+
+    it('should filter empty records when that is add-more ' +
+      'one and have the same kind existed', () => {
+      const records = [
+        {
+          formFieldPath: 'Test.1/1-0',
+          obs: {
+            uuid: '"baee53f5-b4ea-4297-abd9-ffcf3be9c14c"',
+            value: 3,
+            voided: false,
+          },
+        },
+        {
+          formFieldPath: 'Test.1/1-1',
+          obs: {
+            uuid: '1fca19b7-0637-4b57-bf60-4e7d690f2967',
+            value: undefined,
+            voided: true,
+          },
+        },
+      ];
+
+      const wrapper = mount(
+        <Container collapse metadata={metadata} observations={[]} validate={false} />
+      );
+      const instance = wrapper.instance();
+      const filteredRecords = instance.filterEmptyRecords(records);
+      expect(filteredRecords.length).to.be.equal(1);
+      expect(filteredRecords[0].formFieldPath).to.be.equal('Test.1/1-0');
+    });
+
+    it('should not filter empty records when that do not have same kind existed', () => {
+      const records = [
+        {
+          formFieldPath: 'TestA.1/1-0',
+          obs: {
+            uuid: '"baee53f5-b4ea-4297-abd9-ffcf3be9c14c"',
+            value: 3,
+            voided: false,
+          },
+        },
+        {
+          formFieldPath: 'Test.1/1-1',
+          obs: {
+            uuid: '1fca19b7-0637-4b57-bf60-4e7d690f2967',
+            value: undefined,
+            voided: true,
+          },
+        },
+      ];
+
+      const wrapper = mount(
+        <Container collapse metadata={metadata} observations={[]} validate={false} />
+      );
+      const instance = wrapper.instance();
+      const filteredRecords = instance.filterEmptyRecords(records);
+      expect(filteredRecords.length).to.be.equal(2);
+    });
+
+    it('should not filter records when that are not empty', () => {
+      const records = [
+        {
+          formFieldPath: 'Test.1/1-0',
+          obs: {
+            uuid: '"baee53f5-b4ea-4297-abd9-ffcf3be9c14c"',
+            value: 3,
+            voided: false,
+          },
+        },
+        {
+          formFieldPath: 'Test.1/1-1',
+          obs: {
+            uuid: '1fca19b7-0637-4b57-bf60-4e7d690f2967',
+            value: 4,
+            voided: true,
+          },
+        },
+      ];
+
+      const wrapper = mount(
+        <Container collapse metadata={metadata} observations={[]} validate={false} />
+      );
+      const instance = wrapper.instance();
+      const filteredRecords = instance.filterEmptyRecords(records);
+      expect(filteredRecords.length).to.be.equal(2);
+    });
   });
 
   describe('getValue', () => {
