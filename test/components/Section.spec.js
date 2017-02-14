@@ -198,6 +198,30 @@ describe('Section', () => {
         .to.eql('obsGroup-controls closing-group-controls');
     });
 
+    it('should collapse all child controls on change of collapse state', () => {
+      const wrapper = mount(
+        <Section
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          mapper={sectionMapper}
+          metadata={metadata}
+          obs={observation}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls active-group-controls');
+
+      wrapper.setState({ collapse: false });
+      wrapper.setProps({ collapse: true });
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(0).props().className)
+        .to.eql('obsGroup-controls closing-group-controls');
+    });
 
     it('should trigger onChange in section if its child obs has changed', () => {
       const pulseNumericConcept = {
