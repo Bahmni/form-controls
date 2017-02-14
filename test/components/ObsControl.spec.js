@@ -414,8 +414,9 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         validate={false}
       />);
-    const instance = wrapper.instance();
-    const helperText = instance.showHelperText();
+
+    const helperText = wrapper.instance().showHelperText();
+
     expect(helperText).to.not.equal(null);
   });
 });
