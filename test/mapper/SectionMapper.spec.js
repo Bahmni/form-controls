@@ -8,6 +8,7 @@ import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 import sinon from 'sinon';
 import MapperStore from 'src/helpers/MapperStore';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
+import { getKeyPrefixForControl } from '../../src/helpers/formNamespace';
 
 chai.use(chaiEnzyme());
 
@@ -123,6 +124,27 @@ describe('SectionMapper', () => {
       expect(layer2.size).to.eql(1);
       expect(layer2.get(0).formFieldPath).to.eql(obsControlFormFieldPath);
       mapperStub.restore();
+    });
+
+    it('should return more than one obs when observations come from addMore controls', () => {
+      const formFieldPathPrefix =
+        getKeyPrefixForControl(formName, formVersion, obsControl.id).formFieldPath;
+      const observations = [{
+        formFieldPath: `${formFieldPathPrefix}-0`,
+        concept,
+      },
+      {
+        formFieldPath: `${formFieldPathPrefix}-1`,
+        concept,
+      }];
+
+      const initObjectArray =
+        mapper.getInitialObject(formName, formVersion, sectionControl, observations);
+
+      expect(initObjectArray.length).to.eql(1);
+      const initObject = initObjectArray[0].toJS();
+      expect(initObject.formFieldPath).to.eql(sectionControlFormFieldPath);
+      expect(initObject.obsList.length).to.eql(2);
     });
   });
 

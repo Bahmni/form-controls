@@ -6,6 +6,7 @@ import { List } from 'immutable';
 import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 import flattenDeep from 'lodash/flattenDeep';
 import MapperStore from 'src/helpers/MapperStore';
+import { getKeyPrefixForControl } from '../helpers/formNamespace';
 
 export class SectionMapper {
 
@@ -33,9 +34,14 @@ export class SectionMapper {
         );
       }
 
-      const { formFieldPath } = createFormNamespaceAndPath(formName, formVersion, item.id);
+      const formFieldPathPrefix =
+        getKeyPrefixForControl(formName, formVersion, item.id).formFieldPath;
       const filteredObs = filter(bahmniObservations,
-        (observation) => observation.formFieldPath === formFieldPath);
+        (observation) => {
+          const obsFormFieldPathPrefix = observation.formFieldPath.split('-')[0];
+          return obsFormFieldPathPrefix === formFieldPathPrefix;
+        }
+      );
 
       if (!isEmpty(filteredObs)) {
         const mapper = MapperStore.getMapper(item);
