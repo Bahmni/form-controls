@@ -5,6 +5,8 @@ import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 import { Concept } from '../../helpers/Concept';
 import { Metadata } from '../../helpers/Metadata';
 import { LabelDesigner } from 'components/designer/Label.jsx';
+import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
+import find from 'lodash/find';
 
 export class ObsGroupControlDesigner extends Component {
 
@@ -60,6 +62,18 @@ export class ObsGroupControlDesigner extends Component {
     }
     return null;
   }
+
+  showAddMore() {
+    const { properties } = this.props.metadata;
+    const isAddMoreEnabled = find(properties, (value, key) => (key === 'addMore' && value));
+    if (isAddMoreEnabled) {
+      return (
+        <AddMoreDesigner />
+      );
+    }
+    return null;
+  }
+
   render() {
     const { metadata, metadata: { concept } } = this.props;
     if (concept) {
@@ -68,6 +82,7 @@ export class ObsGroupControlDesigner extends Component {
           className="form-builder-fieldset"
           onClick={(event) => this.props.onSelect(event, metadata)}
         >
+          {this.showAddMore()}
           {this.showDeleteButton()}
           <legend><strong>{this.displayLabel()}</strong></legend>
           <div className="obsGroup-controls">
@@ -157,6 +172,11 @@ const descriptor = {
         attributes: [
           {
             name: 'abnormal',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
+          {
+            name: 'addMore',
             dataType: 'boolean',
             defaultValue: false,
           },
