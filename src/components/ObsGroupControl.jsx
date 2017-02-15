@@ -39,6 +39,14 @@ export class ObsGroupControl extends Component {
     this.props.onValueChanged(updatedObs, updatedErrors);
   }
 
+  onAddControl() {
+    this.props.onControlAdd(this.state.obs);
+  }
+
+  onRemoveControl() {
+    this.props.onControlRemove(this.state.obs);
+  }
+
   _getObsGroup(obs, data) {
     let observations = obs.removeGroupMembers();
     each(data.getRecords(), (record) => {
@@ -50,14 +58,6 @@ export class ObsGroupControl extends Component {
   _onCollapse() {
     const collapse = !this.state.collapse;
     this.setState({ collapse });
-  }
-
-  onAddControl() {
-    this.props.onControlAdd(this.state.obs);
-  }
-
-  onRemoveControl() {
-    this.props.onControlRemove(this.state.obs);
   }
 
   showAddMore() {
