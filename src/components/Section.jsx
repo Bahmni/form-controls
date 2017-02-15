@@ -15,6 +15,7 @@ export class Section extends Component {
     this.state = { obs, errors: [], data, collapse };
     this.onChange = this.onChange.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
+    this.onControlAdd = this.onControlAdd.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,14 +36,29 @@ export class Section extends Component {
     this.props.onValueChanged(updatedObs, updatedErrors);
   }
 
+  onControlAdd(obs) {
+    const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
+    const obsUpdated = obs.cloneForAddMore(nextFormFieldPath);
+    const clonedRecord = this.state.data
+      .getRecord(obs.formFieldPath)
+      .set('formFieldPath', nextFormFieldPath)
+      .set('obs', obsUpdated);
+    const data = this.state.data.setRecord(clonedRecord);
+    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
+
+    this.setState({ data: updatedState.data });
+  }
+
   _onCollapse() {
     const collapse = !this.state.collapse;
     this.setState({ collapse });
   }
 
+
   render() {
     const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
-    const childProps = { collapse, formName, formVersion, validate, onValueChanged: this.onChange };
+    const childProps = { collapse, formName, formVersion, validate, onValueChanged: this.onChange,
+      onControlAdd: this.onControlAdd };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const records = this.state.data.getRecords();
     const sectionClass =
