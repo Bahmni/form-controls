@@ -492,66 +492,67 @@ describe('Container', () => {
       }],
     };
 
-    it('should also generate nextFormFieldPath for obsControl when click obsGroup\'s add more button', () => {
-      const obsGroupMetaData = {
-        "controls": [
+    it('should also generate nextFormFieldPath for obsControl ' +
+      'when click obsGroup\'s add more button', () => {
+      const newObsGroupMetaData = {
+        controls: [
           {
-            "concept": {
-              "datatype": "N/A",
-              "name": "Bacteriology Additional Attributes",
-              "uuid": "695e99d6-12b2-11e6-8c00-080027d2adbd"
+            concept: {
+              datatype: 'N/A',
+              name: 'Bacteriology Additional Attributes',
+              uuid: '695e99d6-12b2-11e6-8c00-080027d2adbd',
             },
-            "controls": [
+            controls: [
               {
-                "concept": {
-                  "datatype": "Text",
-                  "name": "Consultation Note",
-                  "uuid": "81d6e852-3f10-11e4-adec-0800271c1b75"
+                concept: {
+                  datatype: 'Text',
+                  name: 'Consultation Note',
+                  uuid: '81d6e852-3f10-11e4-adec-0800271c1b75',
                 },
-                "id": "2",
-                "label": {
-                  "type": "label",
-                  "value": "Consultation Note"
+                id: '2',
+                label: {
+                  type: 'label',
+                  value: 'Consultation Note',
                 },
-                "properties": {
-                  "addMore": false,
-                  "hideLabel": false,
-                  "location": {
-                    "column": 0,
-                    "row": 0
+                properties: {
+                  addMore: false,
+                  hideLabel: false,
+                  location: {
+                    column: 0,
+                    row: 0,
                   },
-                  "mandatory": false,
-                  "notes": false
+                  mandatory: false,
+                  notes: false,
                 },
-                "type": "obsControl",
-              }
+                type: 'obsControl',
+              },
             ],
-            "id": "1",
-            "label": {
-              "type": "label",
-              "value": "Bacteriology Additional Attributes"
+            id: '1',
+            label: {
+              type: 'label',
+              value: 'Bacteriology Additional Attributes',
             },
-            "properties": {
-              "abnormal": false,
-              "addMore": true,
-              "location": {
-                "column": 0,
-                "row": 0
-              }
+            properties: {
+              abnormal: false,
+              addMore: true,
+              location: {
+                column: 0,
+                row: 0,
+              },
             },
-            "type": "obsGroupControl"
-          }
+            type: 'obsGroupControl',
+          },
         ],
-        "id": 185,
-        "name": "Test1",
-        "uuid": "63d4fd28-38e6-4638-bab0-c052fa824352",
-        "version": "1"
+        id: 185,
+        name: 'Test1',
+        uuid: '63d4fd28-38e6-4638-bab0-c052fa824352',
+        version: '1',
       };
-      var nextFormFieldPath = 'Test1.1/2-1';
+      const nextFormFieldPath = 'Test1.1/2-1';
       const wrapper = mount(
         <Container
           collapse
-          metadata={obsGroupMetaData}
+          metadata={newObsGroupMetaData}
           observations={[]}
           validate={false}
         />);
@@ -559,7 +560,8 @@ describe('Container', () => {
       wrapper.find('.form-builder-add-more').simulate('click');
 
       const obsGroupMembers = wrapper.state().data.getRecords()[1].obs.getGroupMembers();
-      expect(obsGroupMembers && obsGroupMembers.getIn([0, 'formFieldPath'])).to.equal(nextFormFieldPath);
+      expect(obsGroupMembers &&
+        obsGroupMembers.getIn([0, 'formFieldPath'])).to.equal(nextFormFieldPath);
     });
 
     it('should filter child obs which are not having value from obs group', () => {

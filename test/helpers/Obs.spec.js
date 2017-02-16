@@ -192,7 +192,8 @@ describe('Obs', () => {
       formNamespace: 'Bahmni',
       voided: true,
     });
-    expect(clonedObs).to.deep.eql(expectedClonedObs);
+
+    expect(clonedObs.toJS()).to.deep.eql(expectedClonedObs.toJS());
   });
 
   it('getObject should process groupMembers', () => {

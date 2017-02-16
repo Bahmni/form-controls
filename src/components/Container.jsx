@@ -29,8 +29,8 @@ export class Container extends Component {
 
   onControlAdd(obs) {
     const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
-    const nextGroupMembers = obs.groupMembers.map(nextObs => {
-      const nextPath = nextObs.formFieldPath.split('-')[0] + '-' + nextFormFieldPath.split('-')[1];
+    const nextGroupMembers = obs.groupMembers && obs.groupMembers.map(nextObs => {
+      const nextPath = `${nextObs.formFieldPath.split('-')[0]}-${nextFormFieldPath.split('-')[1]}`;
       return nextObs.set('formFieldPath', nextPath).set('uuid', undefined).set('value', undefined);
     });
     const obsUpdated = obs.cloneForAddMore(nextFormFieldPath, nextGroupMembers);
