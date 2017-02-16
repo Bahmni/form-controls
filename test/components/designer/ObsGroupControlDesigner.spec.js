@@ -164,6 +164,7 @@ describe('ObsGroupControlDesigner', () => {
       const newProperties = Object.assign({}, metadata.properties, { addMore: true });
       const newMetadata = Object.assign({}, metadata, { properties: newProperties });
       const idGenerator = new IDGenerator();
+
       const newWrapper = mount(
         <ObsGroupControlDesigner
           clearSelectedControl={() => {}}
@@ -173,6 +174,7 @@ describe('ObsGroupControlDesigner', () => {
           onSelect={onSelectSpy}
           wrapper={() => {}}
         />);
+
       expect(newWrapper.contains(<AddMoreDesigner />)).to.equal(true);
     });
 

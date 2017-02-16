@@ -488,7 +488,7 @@ describe('Container', () => {
           properties: { location: { column: 0, row: 2 } },
           label: { type: 'label', value: 'History Notes' },
         }],
-        properties: { location: { column: 0, row: 1 }, addMore: true },
+        properties: { location: { column: 0, row: 1 } },
       }],
     };
 
