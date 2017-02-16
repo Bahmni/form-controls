@@ -183,6 +183,25 @@ describe('ObsGroupControl', () => {
         .to.eql('obsGroup-controls closing-group-controls');
     });
 
+    it('should render obsGroup with addMore icon when has addMore properties', () => {
+      const newProperties = Object.assign({}, metadata.properties, { addMore: true });
+      const newMetadata = Object.assign({}, metadata, { properties: newProperties });
+
+      const wrapper = mount(
+        <ObsGroupControl
+          collapse
+          formName={formName}
+          formVersion={formVersion}
+          mapper={obsGroupMapper}
+          metadata={newMetadata}
+          obs={observation}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper).to.have.descendants('AddMore');
+    });
+
     it('should trigger onChange in obsGroup if its child obs has changed', () => {
       const pulseNumericConcept = {
         name: 'Pulse',
