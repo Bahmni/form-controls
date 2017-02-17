@@ -417,7 +417,7 @@ describe('Container', () => {
           },
           formFieldPath: 'bug.1/1-0',
           uuid: 'aa91a654-b346-4d70-9881-01ef54bf928c',
-          value: 1,
+          value: '1',
           voided: false,
         },
         {
@@ -441,6 +441,7 @@ describe('Container', () => {
       const wrapper =
         mount(
           <Container
+            collapse
             metadata={metadata}
             observations={observations}
             validate={false}
