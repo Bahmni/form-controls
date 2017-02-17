@@ -16,6 +16,7 @@ export class Section extends Component {
     this.onChange = this.onChange.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
+    this.onControlRemove = this.onControlRemove.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,18 +50,42 @@ export class Section extends Component {
     this.setState({ data: updatedState.data });
   }
 
+  onControlRemove(obs) {
+    const obsVoid = obs.void();
+    const updatedObs = this.props.mapper.setValue(this.state.obs, obsVoid);
+    const data = this._changeValue(obs, []).deleteRecord(obs);
+    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
+    const updatedErrors = getErrors(data.getRecords());
+
+    this.setState({ data: updatedState.data, obs: updatedObs });
+    this.props.onValueChanged(updatedObs, updatedErrors);
+  }
+
+  _changeValue(obs, errors) {
+    const bahmniRecord = this.state.data.getRecord(obs.formFieldPath)
+      .set('obs', obs)
+      .set('errors', errors);
+    return this.state.data.setRecord(bahmniRecord);
+  }
+
   _onCollapse() {
     const collapse = !this.state.collapse;
     this.setState({ collapse });
   }
 
-
   render() {
     const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
-    const childProps = { collapse, formName, formVersion, validate, onValueChanged: this.onChange,
-      onControlAdd: this.onControlAdd };
+    const childProps = {
+      collapse,
+      formName,
+      formVersion,
+      validate,
+      onValueChanged: this.onChange,
+      onControlAdd: this.onControlAdd,
+      onControlRemove: this.onControlRemove,
+    };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
-    const records = this.state.data.getRecords();
+    const records = this.state.data.getActiveRecords();
     const sectionClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
