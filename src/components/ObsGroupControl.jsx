@@ -17,7 +17,8 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     this.onChange = this.onChange.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
     this.onAddControl = this.onAddControl.bind(this);
-    this.onRemoveControl = this.onRemoveControl.bind(this);
+    this.onControlAdd = this.onControlAdd.bind(this);
+    this.onControlRemove = this.onControlRemove.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,9 +54,10 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
 
   render() {
     const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
-    const childProps = { collapse, formName, formVersion, validate, onValueChanged: this.onChange };
+    const childProps = { collapse, formName, formVersion, validate,
+      onValueChanged: this.onChange, onControlAdd: this.onControlAdd, onControlRemove: this.onControlRemove, };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
-    const records = this.state.data.getRecords();
+    const records = this.state.data.getActiveRecords();
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
     const obsGroupClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
