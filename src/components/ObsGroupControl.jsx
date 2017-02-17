@@ -4,10 +4,9 @@ import { getGroupedControls, displayRowControls } from '../helpers/controlsParse
 import { controlStateFactory, getErrors } from 'src/ControlState';
 import each from 'lodash/each';
 import classNames from 'classnames';
-import { AddMore } from 'components/AddMore.jsx';
-import find from 'lodash/find';
+import addMoreDecorator from './AddMoreDecorator';
 
-export class ObsGroupControl extends Component {
+export class ObsGroupControl extends addMoreDecorator(Component) {
 
   constructor(props) {
     super(props);
@@ -39,14 +38,6 @@ export class ObsGroupControl extends Component {
     this.props.onValueChanged(updatedObs, updatedErrors);
   }
 
-  onAddControl() {
-    this.props.onControlAdd(this.state.obs);
-  }
-
-  onRemoveControl() {
-    this.props.onControlRemove(this.state.obs);
-  }
-
   _getObsGroup(obs, data) {
     let observations = obs.removeGroupMembers();
     each(data.getRecords(), (record) => {
@@ -58,22 +49,6 @@ export class ObsGroupControl extends Component {
   _onCollapse() {
     const collapse = !this.state.collapse;
     this.setState({ collapse });
-  }
-
-  showAddMore() {
-    const { metadata: { properties } } = this.props;
-    const isAddMoreEnabled = find(properties, (value, key) => (key === 'addMore' && value));
-    if (isAddMoreEnabled) {
-      return (
-        <AddMore
-          canAdd={ this.props.showAddMore }
-          canRemove={ this.props.showRemove }
-          onAdd={this.onAddControl}
-          onRemove={this.onRemoveControl}
-        />
-      );
-    }
-    return null;
   }
 
   render() {

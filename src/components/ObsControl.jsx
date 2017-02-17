@@ -4,12 +4,12 @@ import { Label } from 'components/Label.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import { Comment } from 'components/Comment.jsx';
-import { AddMore } from 'components/AddMore.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import isEmpty from 'lodash/isEmpty';
+import addMoreDecorator from './AddMoreDecorator';
 
-export class ObsControl extends Component {
+export class ObsControl extends addMoreDecorator(Component) {
 
   constructor(props) {
     super(props);
@@ -37,15 +37,6 @@ export class ObsControl extends Component {
     this.setState({ obs: updatedObs });
     this.props.onValueChanged(updatedObs);
   }
-
-  onAddControl() {
-    this.props.onControlAdd(this.state.obs);
-  }
-
-  onRemoveControl() {
-    this.props.onControlRemove(this.state.obs);
-  }
-
   displayObsControl(registeredComponent) {
     const { mapper, metadata, metadata: { concept }, validate } = this.props;
     const options = metadata.options || concept.answers;
@@ -124,18 +115,6 @@ export class ObsControl extends Component {
     return null;
   }
 
-  showAddMore() {
-    const { metadata: { properties } } = this.props;
-    const isAddMoreEnabled = find(properties, (value, key) => (key === 'addMore' && value));
-    if (isAddMoreEnabled) {
-      return (
-              <AddMore canAdd={ this.props.showAddMore } canRemove={ this.props.showRemove }
-                onAdd={this.onAddControl} onRemove={this.onRemoveControl}
-              />
-      );
-    }
-    return null;
-  }
 
   render() {
     const { concept } = this.props.metadata;
