@@ -194,96 +194,6 @@ describe('Container', () => {
       expect(wrapper.find('Row').at(0).props().collapse).to.eql(false);
       expect(wrapper.find('Row').at(1).props().collapse).to.eql(false);
     });
-
-    it('should filter empty added records when original record exists', () => {
-      const originalRecord = {
-        formFieldPath: 'Test.1/1-0',
-        obs: {
-          uuid: '"baee53f5-b4ea-4297-abd9-ffcf3be9c14c"',
-          value: 3,
-          voided: false,
-        },
-      };
-      const addedEmptyRecord = {
-        formFieldPath: 'Test.1/1-1',
-        obs: {
-          uuid: '1fca19b7-0637-4b57-bf60-4e7d690f2967',
-          value: undefined,
-          voided: true,
-        },
-      };
-      const wrapper = mount(
-        <Container collapse metadata={metadata} observations={[]} validate={false} />
-      );
-
-      const filteredRecords = wrapper.instance().filterEmptyRecords([
-        originalRecord,
-        addedEmptyRecord,
-      ]);
-
-      expect(filteredRecords.length).to.be.equal(1);
-      expect(filteredRecords[0].formFieldPath).to.be.equal('Test.1/1-0');
-    });
-
-    it('should not filter empty records when original record not exists', () => {
-      const Record = {
-        formFieldPath: 'TestA.1/1-0',
-        obs: {
-          uuid: '"baee53f5-b4ea-4297-abd9-ffcf3be9c14c"',
-          value: 3,
-          voided: false,
-        },
-      };
-      const emptyRecords = {
-        formFieldPath: 'Test.1/1-1',
-        obs: {
-          uuid: '1fca19b7-0637-4b57-bf60-4e7d690f2967',
-          value: undefined,
-          voided: true,
-        },
-      };
-      const records = [
-        Record,
-        emptyRecords,
-      ];
-      const wrapper = mount(
-        <Container collapse metadata={metadata} observations={[]} validate={false} />
-      );
-
-      const filteredRecords = wrapper.instance().filterEmptyRecords(records);
-
-      expect(filteredRecords.length).to.be.equal(2);
-    });
-
-    it('should not filter records when that are not empty', () => {
-      const originalRecord = {
-        formFieldPath: 'Test.1/1-0',
-        obs: {
-          uuid: '"baee53f5-b4ea-4297-abd9-ffcf3be9c14c"',
-          value: 3,
-          voided: false,
-        },
-      };
-      const addedRecord = {
-        formFieldPath: 'Test.1/1-1',
-        obs: {
-          uuid: '1fca19b7-0637-4b57-bf60-4e7d690f2967',
-          value: 4,
-          voided: true,
-        },
-      };
-      const records = [
-        originalRecord,
-        addedRecord,
-      ];
-      const wrapper = mount(
-        <Container collapse metadata={metadata} observations={[]} validate={false} />
-      );
-
-      const filteredRecords = wrapper.instance().filterEmptyRecords(records);
-
-      expect(filteredRecords.length).to.be.equal(2);
-    });
   });
 
   describe('getValue', () => {
@@ -455,6 +365,91 @@ describe('Container', () => {
 
       expect(instance.getValue().observations.length).to.equal(1);
     });
+
+    it('should set active of empty record to be false when call filterEmptyRecords method', () => {
+      metadata = {
+        controls: [
+          {
+            concept: {
+              answers: [],
+              datatype: 'Numeric',
+              name: 'Pulse',
+              properties: {
+                allowDecimal: true,
+              },
+              uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+            },
+            id: '1',
+            label: {
+              type: 'label',
+              value: 'Pulse(/min)',
+            },
+            properties: {
+              addMore: true,
+              location: {
+                column: 0,
+                row: 0,
+              },
+              mandatory: false,
+              notes: false,
+            },
+            type: 'obsControl',
+          },
+        ],
+        id: 182,
+        name: 'bug',
+        uuid: '77024fad-36eb-4b76-86f6-dbe84612dda1',
+        version: '1',
+      };
+
+      observations =
+      [
+        {
+          concept: {
+            conceptClass: 'Misc',
+            dataType: 'Numeric',
+            mappings: [],
+            name: 'Pulse',
+            set: false,
+            shortName: 'Pulse',
+            units: '/min',
+            uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+          },
+          formFieldPath: 'bug.1/1-0',
+          uuid: 'aa91a654-b346-4d70-9881-01ef54bf928c',
+          value: 1,
+          voided: false,
+        },
+        {
+          concept: {
+            conceptClass: 'Misc',
+            dataType: 'Numeric',
+            mappings: [],
+            name: 'Pulse',
+            set: false,
+            shortName: 'Pulse',
+            units: '/min',
+            uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+          },
+          formFieldPath: 'bug.1/1-1',
+          uuid: 'c9e0d7fb-79ec-43c4-9739-28b98fae8dc4',
+          voided: true,
+        },
+      ];
+
+
+      const wrapper =
+        mount(
+          <Container
+            metadata={metadata}
+            observations={observations}
+            validate={false}
+          />
+        );
+
+      expect(wrapper.state('data').getRecords()[0].toJS().active).to.equal(true);
+      expect(wrapper.state('data').getRecords()[1].toJS().active).to.equal(false);
+    });
   });
 
   describe('obsGroup', () => {
@@ -496,6 +491,78 @@ describe('Container', () => {
         properties: { location: { column: 0, row: 1 } },
       }],
     };
+
+    it('should also generate nextFormFieldPath for obsControl ' +
+      'when click obsGroup\'s add more button', () => {
+      const newObsGroupMetaData = {
+        controls: [
+          {
+            concept: {
+              datatype: 'N/A',
+              name: 'Bacteriology Additional Attributes',
+              uuid: '695e99d6-12b2-11e6-8c00-080027d2adbd',
+            },
+            controls: [
+              {
+                concept: {
+                  datatype: 'Text',
+                  name: 'Consultation Note',
+                  uuid: '81d6e852-3f10-11e4-adec-0800271c1b75',
+                },
+                id: '2',
+                label: {
+                  type: 'label',
+                  value: 'Consultation Note',
+                },
+                properties: {
+                  addMore: false,
+                  hideLabel: false,
+                  location: {
+                    column: 0,
+                    row: 0,
+                  },
+                  mandatory: false,
+                  notes: false,
+                },
+                type: 'obsControl',
+              },
+            ],
+            id: '1',
+            label: {
+              type: 'label',
+              value: 'Bacteriology Additional Attributes',
+            },
+            properties: {
+              abnormal: false,
+              addMore: true,
+              location: {
+                column: 0,
+                row: 0,
+              },
+            },
+            type: 'obsGroupControl',
+          },
+        ],
+        id: 185,
+        name: 'Test1',
+        uuid: '63d4fd28-38e6-4638-bab0-c052fa824352',
+        version: '1',
+      };
+      const nextFormFieldPath = 'Test1.1/2-1';
+      const wrapper = mount(
+        <Container
+          collapse
+          metadata={newObsGroupMetaData}
+          observations={[]}
+          validate={false}
+        />);
+
+      wrapper.find('.form-builder-add-more').simulate('click');
+
+      const obsGroupMembers = wrapper.state().data.getRecords()[1].obs.getGroupMembers();
+      expect(obsGroupMembers &&
+        obsGroupMembers.getIn([0, 'formFieldPath'])).to.equal(nextFormFieldPath);
+    });
 
     it('should filter child obs which are not having value from obs group', () => {
       const wrapper = mount(

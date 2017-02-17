@@ -9,7 +9,8 @@ export class Container extends Component {
     super(props);
     this.childControls = {};
     const { observations, metadata } = this.props;
-    const data = controlStateFactory(metadata, observations);
+    const originalData = controlStateFactory(metadata, observations);
+    const data = this.filterEmptyRecords(originalData);
     this.state = { errors: [], data, collapse: props.collapse };
     this.storeChildRef = this.storeChildRef.bind(this);
     this.onValueChanged = this.onValueChanged.bind(this);
@@ -28,7 +29,11 @@ export class Container extends Component {
 
   onControlAdd(obs) {
     const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
-    const obsUpdated = obs.cloneForAddMore(nextFormFieldPath);
+    const nextGroupMembers = obs.groupMembers && obs.groupMembers.map(nextObs => {
+      const nextPath = `${nextObs.formFieldPath.split('-')[0]}-${nextFormFieldPath.split('-')[1]}`;
+      return nextObs.set('formFieldPath', nextPath).set('uuid', undefined).set('value', undefined);
+    });
+    const obsUpdated = obs.cloneForAddMore(nextFormFieldPath, nextGroupMembers);
     const clonedRecord = this.state.data
       .getRecord(obs.formFieldPath)
       .set('formFieldPath', nextFormFieldPath)
@@ -91,15 +96,27 @@ export class Container extends Component {
     return observations.every((obs) => obs.voided);
   }
 
-  filterEmptyRecords(records) {
-    return records.filter(r => {
-      if (r.obs.value === undefined && r.obs.voided === true && r.obs.uuid !== undefined) {
+  filterEmptyRecords(data) {
+    const records = data.getActiveRecords();
+
+    const inactiveFormFieldPath = [];
+    const inactiveRecords = records.filter(r => {
+      if (r.obs.value === undefined && r.obs.voided === true) {
         const prefix = r.formFieldPath.split('-')[0];
-        const filteredRecords = records.filter(record => record.formFieldPath.startsWith(prefix));
-        return (filteredRecords.length <= 1);
+        const filteredRecords = records.filter(record =>
+          !inactiveFormFieldPath[record.formFieldPath] && record.formFieldPath.startsWith(prefix)
+        );
+        if (filteredRecords.length > 1) {
+          inactiveFormFieldPath[r.formFieldPath] = true;
+          return true;
+        }
       }
-      return true;
+      return false;
     });
+
+    inactiveRecords.forEach((r) => {data = data.deleteRecord(r.obs);});
+
+    return data;
   }
 
   render() {
@@ -116,8 +133,7 @@ export class Container extends Component {
       validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
-    const activeRecords = this.state.data.getActiveRecords();
-    const records = this.filterEmptyRecords(activeRecords);
+    const records = this.state.data.getActiveRecords();
     return (
       <div>{displayRowControls(groupedRowControls, records, childProps)}</div>
     );

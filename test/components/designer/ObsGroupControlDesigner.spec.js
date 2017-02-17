@@ -6,6 +6,7 @@ import { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesi
 import * as Grid from 'components/designer/Grid.jsx';
 import { IDGenerator } from 'src/helpers/idGenerator';
 import sinon from 'sinon';
+import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
 
 chai.use(chaiEnzyme());
 
@@ -58,6 +59,7 @@ describe('ObsGroupControlDesigner', () => {
       },
       properties: {
         abnormal: false,
+        addMore: false,
         location: { row: 0, column: 0 },
       },
       controls: [],
@@ -156,6 +158,24 @@ describe('ObsGroupControlDesigner', () => {
 
     afterEach(() => {
       componentStore.deRegisterDesignerComponent('text'); // eslint-disable-line no-undef
+    });
+
+    it('should render add more with addMore properties', () => {
+      const newProperties = Object.assign({}, metadata.properties, { addMore: true });
+      const newMetadata = Object.assign({}, metadata, { properties: newProperties });
+      const idGenerator = new IDGenerator();
+
+      const newWrapper = mount(
+        <ObsGroupControlDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          idGenerator={idGenerator}
+          metadata={newMetadata}
+          onSelect={onSelectSpy}
+          wrapper={() => {}}
+        />);
+
+      expect(newWrapper.contains(<AddMoreDesigner />)).to.equal(true);
     });
 
     it('should render a fieldset with the appropriate label', () => {

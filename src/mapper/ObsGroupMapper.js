@@ -6,17 +6,19 @@ import { List } from 'immutable';
 export class ObsGroupMapper {
 
   getInitialObject(formName, formVersion, control, bahmniObservations) {
-    const obsGroup = createObsFromControl(formName, formVersion, control, bahmniObservations)[0];
-    if (obsGroup.groupMembers !== undefined) {
-      let groupMembers = new List();
-      for (const ctrl of control.controls) {
-        const mapper = MapperStore.getMapper(ctrl);
-        groupMembers = groupMembers.concat(mapper.getInitialObject(formName, formVersion,
-          ctrl, obsGroup.groupMembers));
+    const obsGroups = createObsFromControl(formName, formVersion, control, bahmniObservations);
+    return obsGroups.map(obsGroup => {
+      if (obsGroup.groupMembers !== undefined) {
+        let groupMembers = new List();
+        for (const ctrl of control.controls) {
+          const mapper = MapperStore.getMapper(ctrl);
+          groupMembers = groupMembers.concat(mapper.getInitialObject(formName, formVersion,
+            ctrl, obsGroup.groupMembers));
+        }
+        return obsGroup.set('groupMembers', groupMembers);
       }
-      return [obsGroup.set('groupMembers', groupMembers)];
-    }
-    return [obsGroup];
+      return obsGroup;
+    });
   }
 
   setValue(obsGroup, obs) {
@@ -28,7 +30,7 @@ export class ObsGroupMapper {
     if (filteredMembers.size === 0 || voided) {
       updatedObsGroup = updatedObsGroup.setValue(undefined).void();
     } else {
-      updatedObsGroup = updatedObsGroup.set('voided', false);
+      updatedObsGroup = updatedObsGroup.setValue(obs.value).set('voided', false);
     }
 
     return updatedObsGroup;

@@ -4,8 +4,9 @@ import { getGroupedControls, displayRowControls } from '../helpers/controlsParse
 import { controlStateFactory, getErrors } from 'src/ControlState';
 import each from 'lodash/each';
 import classNames from 'classnames';
+import addMoreDecorator from './AddMoreDecorator';
 
-export class ObsGroupControl extends Component {
+export class ObsGroupControl extends addMoreDecorator(Component) {
 
   constructor(props) {
     super(props);
@@ -15,6 +16,8 @@ export class ObsGroupControl extends Component {
     this.state = { obs: this._getObsGroup(obs, data), errors: [], data, collapse };
     this.onChange = this.onChange.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
+    this.onAddControl = this.onAddControl.bind(this);
+    this.onRemoveControl = this.onRemoveControl.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,6 +66,7 @@ export class ObsGroupControl extends Component {
             <i className="fa fa-caret-right"></i>
           <strong>{label.value}</strong>
         </legend>
+          {this.showAddMore()}
           <div className={`obsGroup-controls ${obsGroupClass}`}>
             { displayRowControls(groupedRowControls, records, childProps) }
           </div>
@@ -89,9 +93,17 @@ ObsGroupControl.propTypes = {
     controls: PropTypes.array,
   }),
   obs: PropTypes.any.isRequired,
+  onControlAdd: PropTypes.func,
+  onControlRemove: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
+  showAddMore: PropTypes.bool.isRequired,
+  showRemove: PropTypes.bool.isRequired,
   validate: PropTypes.bool.isRequired,
 };
 
+ObsGroupControl.defaultProps = {
+  showAddMore: false,
+  showRemove: false,
+};
 
 ComponentStore.registerComponent('obsGroupControl', ObsGroupControl);
