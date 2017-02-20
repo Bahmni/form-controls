@@ -15,6 +15,8 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     const data = controlStateFactory(metadata, groupMembers, formName, formVersion);
     this.state = { obs: this._getObsGroup(obs, data), errors: [], data, collapse };
     this.onChange = this.onChange.bind(this);
+    this.onControlAdd = this.onControlAdd.bind(this);
+    this.onControlRemove = this.onControlRemove.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
     this.onAddControl = this.onAddControl.bind(this);
     this.onRemoveControl = this.onRemoveControl.bind(this);
@@ -38,10 +40,36 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     this.props.onValueChanged(updatedObs, updatedErrors);
   }
 
-  _getObsGroup(obs, data) {
+  onControlAdd(obs) {
+    const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
+    const nextGroupMembers = obs.groupMembers && obs.groupMembers.map(nextObs => {
+        const nextPath = `${nextObs.formFieldPath.split('-')[0]}-${nextFormFieldPath.split('-')[1]}`;
+        return nextObs.set('formFieldPath', nextPath).set('uuid', undefined).set('value', undefined);
+      });
+    const obsUpdated = obs.cloneForAddMore(nextFormFieldPath, nextGroupMembers);
+    const clonedRecord = this.state.data
+      .getRecord(obs.formFieldPath)
+      .set('formFieldPath', nextFormFieldPath)
+      .set('obs', obsUpdated);
+    const data = this.state.data.setRecord(clonedRecord);
+    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
+    const newObs = this._getObsGroup(this.state.obs, updatedState.data, true);
+    this.setState({ data: updatedState.data, obs: newObs });
+  }
+
+  onControlRemove(obs, errors) {
+    const data = this.state.data.deleteRecord(obs);
+    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
+    const groupMembers = this.state.obs.getGroupMembers().filter(existedObs => existedObs.formFieldPath !== obs.formFieldPath);
+    const newObs = this.state.obs.setGroupMembers(groupMembers);
+
+    this.setState({ data: updatedState.data, obs: newObs });
+  }
+
+  _getObsGroup(obs, data, isAddedGroupMemberWithSameConcept) {
     let observations = obs.removeGroupMembers();
     each(data.getRecords(), (record) => {
-      observations = observations.addGroupMember(record.obs);
+      observations = observations.addGroupMember(record.obs, isAddedGroupMemberWithSameConcept);
     });
     return observations;
   }
@@ -53,9 +81,10 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
 
   render() {
     const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
-    const childProps = { collapse, formName, formVersion, validate, onValueChanged: this.onChange };
+    const childProps = { collapse, formName, formVersion, validate,
+      onValueChanged: this.onChange, onControlAdd: this.onControlAdd, onControlRemove: this.onControlRemove };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
-    const records = this.state.data.getRecords();
+    const records = this.state.data.getActiveRecords();
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
     const obsGroupClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';

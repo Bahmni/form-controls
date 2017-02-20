@@ -73,7 +73,7 @@ export class Obs extends ImmutableObs {
     return this.get('formNamespace');
   }
 
-  addGroupMember(obs) {
+  addGroupMember(obs, isAddedGroupMemberWithSameConcept) {
     let groupMembers = this.get('groupMembers');
     if (!groupMembers) {
       groupMembers = new List();
@@ -83,7 +83,7 @@ export class Obs extends ImmutableObs {
     }
     const index = groupMembers.findIndex(o => o.concept === obs.concept);
 
-    if (index === -1) {
+    if (isAddedGroupMemberWithSameConcept || index === -1) {
       return this.set('groupMembers', groupMembers.push(obs));
     }
     return this.setIn(['groupMembers', index], obs);
@@ -95,6 +95,10 @@ export class Obs extends ImmutableObs {
 
   removeGroupMembers() {
     return this.set('groupMembers', undefined);
+  }
+
+  setGroupMembers(groupMembers) {
+    return this.removeGroupMembers().set('groupMembers', groupMembers);
   }
 
   isNumeric() {
