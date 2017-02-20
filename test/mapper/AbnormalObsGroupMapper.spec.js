@@ -18,7 +18,7 @@ describe('AbnormalObsGroupMapper', () => {
     uuid: 'pulseUuid',
     datatype: 'Numeric',
     conceptClass: 'Misc',
-  }, value: 10, formNamespace: 'formUuid/6', uuid: 'childObs1Uuid' });
+  }, value: 10, formNamespace: 'formUuid/6', uuid: 'childObs1Uuid', formFieldPath: 'SomePath_A' });
 
   const pulseDataObs = new Obs.Obs({ concept: {
     name: 'Pulse Data',
@@ -26,7 +26,7 @@ describe('AbnormalObsGroupMapper', () => {
     datatype: 'Misc',
   },
     groupMembers: List.of(pulseNumericObs, pulseAbnormalObs),
-    formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid' });
+    formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid', formFieldPath: 'SomePath' });
 
   const mapper = new AbnormalObsGroupMapper();
   it('should handle abnormal observations when the numeric observation is in invalid range', () => {

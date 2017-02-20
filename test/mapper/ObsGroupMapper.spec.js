@@ -15,6 +15,7 @@ describe('ObsGroupMapper', () => {
     value: undefined,
     formNamespace: 'formUuid/5',
     uuid: 'booleanUuid',
+    formFieldPath: 'OtherPath'
   });
   const numericObs = new Obs({ concept: {
     name: 'Pulse',
@@ -29,7 +30,7 @@ describe('ObsGroupMapper', () => {
     datatype: 'Misc',
   },
     groupMembers: List.of(numericObs, booleanObs),
-    formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid' });
+    formNamespace: 'formUuid/4', uuid: 'pulseDataObsUuid', formFieldPath: 'SomePath' });
 
   const mapper = new ObsGroupMapper();
 
@@ -37,7 +38,7 @@ describe('ObsGroupMapper', () => {
     const booleanObsUpdated = booleanObs.setValue(true);
     const obsGroupUpdated = mapper.setValue(obsGroup, booleanObsUpdated);
 
-    expect(obsGroupUpdated.getGroupMembers().get(1).getValue()).to.be.eql(true);
+    expect(obsGroupUpdated.getGroupMembers().get(1).getValue()).to.eql(true);
   });
 
   it('should void obsGroup if child obs are not having any value', () => {
