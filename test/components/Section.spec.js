@@ -8,7 +8,10 @@ import { Obs } from 'src/helpers/Obs';
 import { ObsList } from 'src/helpers/ObsList';
 import { SectionMapper } from 'src/mapper/SectionMapper';
 import ComponentStore from 'src/helpers/componentStore';
+import { ObsControl } from 'components/ObsControl.jsx';
+import { NumericBox } from 'components/NumericBox.jsx';
 import { List } from 'immutable';
+import { Label } from 'components/Label.jsx';
 
 chai.use(chaiEnzyme());
 
@@ -33,11 +36,23 @@ DummyControl.propTypes = {
 describe('Section', () => {
   before(() => {
     ComponentStore.registerComponent('randomType', DummyControl);
+    ComponentStore.registerComponent('obsControl', ObsControl);
+    ComponentStore.registerComponent('numeric', NumericBox);
+    ComponentStore.registerComponent('label', Label);
   });
 
   after(() => {
     ComponentStore.deRegisterComponent('randomType');
+    ComponentStore.deRegisterComponent('obsControl');
+    ComponentStore.deRegisterComponent('numeric');
+    ComponentStore.deRegisterComponent('label');
   });
+
+  const label = {
+    id: 'someId',
+    value: 'someValue',
+    type: 'label',
+  };
 
   const formName = 'formName';
   const formVersion = '1';
@@ -148,6 +163,139 @@ describe('Section', () => {
       ComponentStore.registerComponent('randomType', DummyControl);
     });
 
+    it('should render one more control after click \'+\' button', () => {
+      const pulseNumericConcept = {
+        name: 'Pulse',
+        uuid: 'pulseUuid',
+        datatype: 'Numeric',
+        conceptClass: 'Misc',
+      };
+
+      const metadata2 = {
+        id: '1',
+        type: 'section',
+        properties: getLocationProperties(0, 0),
+        label: {
+          type: 'label',
+          value: 'label',
+        },
+        controls: [
+          {
+            id: '100',
+            type: 'obsControl',
+            label,
+            concept: pulseNumericConcept,
+            properties: {
+              ...getLocationProperties(0, 0),
+              addMore: true,
+            },
+          },
+        ],
+      };
+
+      const pulseNumericObs0 = new Obs({
+        concept: pulseNumericConcept,
+        value: '10', formFieldPath: 'formName.1/100-0', uuid: 'childObs1Uuid',
+      });
+
+      const obsList = (new ObsList).setObsList(new List().push(pulseNumericObs0));
+
+      const wrapper = mount(
+        <Section
+          formName={formName}
+          formVersion={formVersion}
+          mapper={sectionMapper}
+          metadata={metadata2}
+          obs={obsList}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+      expect(wrapper.find('ObsControl')).to.have.exactly(1).descendants('AddMore');
+      expect(wrapper.find('AddMore')).to.have.exactly(1).descendants('button');
+      expect(wrapper.find('input').node.value).to.eql('10');
+
+      wrapper.find('.fa').at(2).simulate('click');
+
+      expect(wrapper).to.have.exactly(2).descendants('ObsControl');
+      expect(wrapper.find('ObsControl').at(0).find('AddMore')).to.not.have.descendants('button');
+      expect(wrapper.find('ObsControl').at(1)).to.have.exactly(1).descendants('AddMore');
+      expect(wrapper.find('ObsControl').at(1).find('AddMore'))
+        .to.have.exactly(2).descendants('button');
+      expect(wrapper).to.have.exactly(2).descendants('input');
+      expect(wrapper.find('input').at(1).node.value).to.eql('undefined');
+    });
+
+    it('should render delete control after click \'x\' button', () => {
+      const pulseNumericConcept = {
+        name: 'Pulse',
+        uuid: 'pulseUuid',
+        datatype: 'Numeric',
+        conceptClass: 'Misc',
+      };
+
+      const metadata2 = {
+        id: '1',
+        type: 'section',
+        properties: getLocationProperties(0, 0),
+        label: {
+          type: 'label',
+          value: 'label',
+        },
+        controls: [
+          {
+            id: '100',
+            type: 'obsControl',
+            label,
+            concept: pulseNumericConcept,
+            properties: {
+              ...getLocationProperties(0, 0),
+              addMore: true,
+            },
+          },
+        ],
+      };
+
+      const pulseNumericObs0 = new Obs({
+        concept: pulseNumericConcept,
+        value: '10', formFieldPath: 'formName.1/100-0', uuid: 'childObs1Uuid',
+      });
+      const pulseNumericObs1 = new Obs({
+        concept: pulseNumericConcept,
+        value: '10', formFieldPath: 'formName.1/100-1', uuid: 'childObs1Uuid',
+      });
+
+      const obsList = (new ObsList).setObsList(new List()
+        .push(pulseNumericObs0)
+        .push(pulseNumericObs1));
+
+      const wrapper = mount(
+        <Section
+          formName={formName}
+          formVersion={formVersion}
+          mapper={sectionMapper}
+          metadata={metadata2}
+          obs={obsList}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper).to.have.exactly(2).descendants('ObsControl');
+      expect(wrapper.find('ObsControl').at(0).find('AddMore')).to.not.have.descendants('button');
+      expect(wrapper.find('ObsControl').at(1)).to.have.exactly(1).descendants('AddMore');
+      expect(wrapper.find('ObsControl').at(1).find('AddMore'))
+        .to.have.exactly(2).descendants('button');
+      expect(wrapper.find('input').at(0).node.value).to.eql('10');
+      expect(wrapper.find('input').at(1).node.value).to.eql('10');
+
+      wrapper.find('button').at(1).simulate('click');
+
+      expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+      expect(wrapper.find('ObsControl')).to.have.exactly(1).descendants('AddMore');
+      expect(wrapper.find('AddMore')).to.have.exactly(1).descendants('button');
+      expect(wrapper.find('input').node.value).to.eql('10');
+    });
 
     it('should collapse all child controls on click of collapse icon', () => {
       const wrapper = mount(

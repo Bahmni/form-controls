@@ -64,7 +64,6 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
     const groupMembers = this.state.obs.getGroupMembers().filter(existedObs => existedObs.formFieldPath !== obs.formFieldPath);
     const newObs = this.state.obs.setGroupMembers(groupMembers);
-
     this.setState({ data: updatedState.data, obs: newObs });
 
     this.props.onValueChanged(newObs);

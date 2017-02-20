@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import { controlStateFactory, getErrors } from 'src/ControlState';
+import addMoreDecorator from './AddMoreDecorator';
 
-
-export class Section extends Component {
+export class Section extends addMoreDecorator(Component) {
 
   constructor(props) {
     super(props);
@@ -16,6 +16,7 @@ export class Section extends Component {
     this.onChange = this.onChange.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
+    this.onControlRemove = this.onControlRemove.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -46,7 +47,18 @@ export class Section extends Component {
     const data = this.state.data.setRecord(clonedRecord);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
 
-    this.setState({ data: updatedState.data });
+    this.setState({data: updatedState.data});
+  }
+
+  onControlRemove(obs) {
+    const obsVoid = obs.void();
+    const updatedObs = this.props.mapper.setValue(this.state.obs, obsVoid);
+    const data = this._changeValue(obs, []).deleteRecord(obs);
+    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
+    const updatedErrors = getErrors(data.getRecords());
+
+    this.setState({ data: updatedState.data, obs: updatedObs });
+    this.props.onValueChanged(updatedObs, updatedErrors);
   }
 
   _onCollapse() {
@@ -57,10 +69,17 @@ export class Section extends Component {
 
   render() {
     const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
-    const childProps = { collapse, formName, formVersion, validate, onValueChanged: this.onChange,
-      onControlAdd: this.onControlAdd };
+    const childProps = {
+      collapse,
+      formName,
+      formVersion,
+      validate,
+      onValueChanged: this.onChange,
+      onControlAdd: this.onControlAdd,
+      onControlRemove: this.onControlRemove,
+    };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
-    const records = this.state.data.getRecords();
+    const records = this.state.data.getActiveRecords();
     const sectionClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;

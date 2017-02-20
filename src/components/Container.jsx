@@ -3,8 +3,9 @@ import { displayRowControls, getGroupedControls } from 'src/helpers/controlsPars
 import isEmpty from 'lodash/isEmpty';
 import filter from 'lodash/filter';
 import { controlStateFactory, getErrors } from 'src/ControlState';
+import addMoreDecorator from './AddMoreDecorator';
 
-export class Container extends Component {
+export class Container extends addMoreDecorator(Component) {
   constructor(props) {
     super(props);
     this.childControls = {};
@@ -30,9 +31,9 @@ export class Container extends Component {
   onControlAdd(obs) {
     const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
     const nextGroupMembers = obs.groupMembers && obs.groupMembers.map(nextObs => {
-      const nextPath = `${nextObs.formFieldPath.split('-')[0]}-${nextFormFieldPath.split('-')[1]}`;
-      return nextObs.set('formFieldPath', nextPath).set('uuid', undefined).set('value', undefined);
-    });
+        const nextPath = `${nextObs.formFieldPath.split('-')[0]}-${nextFormFieldPath.split('-')[1]}`;
+        return nextObs.set('formFieldPath', nextPath).set('uuid', undefined).set('value', undefined);
+      });
     const obsUpdated = obs.cloneForAddMore(nextFormFieldPath, nextGroupMembers);
     const clonedRecord = this.state.data
       .getRecord(obs.formFieldPath)
@@ -59,13 +60,6 @@ export class Container extends Component {
     }
 
     return { errors, observations };
-  }
-
-  _changeValue(obs, errors) {
-    const bahmniRecord = this.state.data.getRecord(obs.formFieldPath)
-      .set('obs', obs)
-      .set('errors', errors);
-    return this.state.data.setRecord(bahmniRecord);
   }
 
   /* eslint-disable no-param-reassign */
