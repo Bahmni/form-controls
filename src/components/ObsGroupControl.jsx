@@ -53,23 +53,27 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
       .set('obs', obsUpdated);
     const data = this.state.data.setRecord(clonedRecord);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-    const newObs = this._getObsGroup(this.state.obs, updatedState.data, true);
+    const newObs = this._getObsGroup(this.state.obs, updatedState.data);
     this.setState({ data: updatedState.data, obs: newObs });
+
+    this.props.onValueChanged(newObs);
   }
 
-  onControlRemove(obs, errors) {
+  onControlRemove(obs) {
     const data = this.state.data.deleteRecord(obs);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
     const groupMembers = this.state.obs.getGroupMembers().filter(existedObs => existedObs.formFieldPath !== obs.formFieldPath);
     const newObs = this.state.obs.setGroupMembers(groupMembers);
 
     this.setState({ data: updatedState.data, obs: newObs });
+
+    this.props.onValueChanged(newObs);
   }
 
-  _getObsGroup(obs, data, isAddedGroupMemberWithSameConcept) {
+  _getObsGroup(obs, data) {
     let observations = obs.removeGroupMembers();
     each(data.getRecords(), (record) => {
-      observations = observations.addGroupMember(record.obs, isAddedGroupMemberWithSameConcept);
+      observations = observations.addGroupMember(record.obs);
     });
     return observations;
   }
