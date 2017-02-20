@@ -81,7 +81,7 @@ export class Obs extends ImmutableObs {
     if (groupMembers.includes(obs)) {
       return this;
     }
-    const index = groupMembers.findIndex(o => o.concept === obs.concept);
+    const index = groupMembers.findIndex(o => o.formFieldPath === obs.formFieldPath);
 
     if (index === -1) {
       return this.set('groupMembers', groupMembers.push(obs));

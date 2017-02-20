@@ -35,7 +35,17 @@ const addMoreDecorator = Sup => class extends Sup {
     const data = this.state.data.setRecord(clonedRecord);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
 
-    this.setState({ data: updatedState.data });
+    if(this.state.obs && this.state.obs.groupMembers) {
+      const obsClone = this.state.obs;
+
+      const updatedObsGroupMember = obsClone.groupMembers.push(obsUpdated);
+      const updatedObs = obsClone.setIn(['groupMembers'], updatedObsGroupMember)
+
+      this.setState({data: updatedState.data, obs: updatedObs});
+    }
+    else {
+      this.setState({data: updatedState.data});
+    }
   }
 
   onControlRemove(obs) {
