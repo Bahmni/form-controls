@@ -87,29 +87,6 @@ export class Container extends addMoreDecorator(Component) {
     return observations.every((obs) => obs.voided);
   }
 
-  filterEmptyRecords(data) {
-    const records = data.getActiveRecords();
-
-    const inactiveFormFieldPath = [];
-    const inactiveRecords = records.filter(r => {
-      if (r.obs.value === undefined && r.obs.voided === true) {
-        const prefix = r.formFieldPath.split('-')[0];
-        const filteredRecords = records.filter(record =>
-          !inactiveFormFieldPath[record.formFieldPath] && record.formFieldPath.startsWith(prefix)
-        );
-        if (filteredRecords.length > 1) {
-          inactiveFormFieldPath[r.formFieldPath] = true;
-          return true;
-        }
-      }
-      return false;
-    });
-
-    inactiveRecords.forEach((r) => {data = data.deleteRecord(r.obs);});
-
-    return data;
-  }
-
   render() {
     const { metadata: { controls, name: formName, version: formVersion }, validate } = this.props;
     const childProps = {

@@ -11,7 +11,8 @@ export class Section extends addMoreDecorator(Component) {
     super(props);
     const { formName, formVersion, obs, metadata, collapse } = this.props;
     const observations = props.mapper.getObject(obs);
-    const data = controlStateFactory(metadata, observations, formName, formVersion);
+    const originalData = controlStateFactory(metadata, observations, formName, formVersion);
+    const data = this.filterEmptyRecords(originalData);
     this.state = { obs, errors: [], data, collapse };
     this.onChange = this.onChange.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
