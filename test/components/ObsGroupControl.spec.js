@@ -7,7 +7,7 @@ import sinon from 'sinon';
 import { Obs } from 'src/helpers/Obs';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import ComponentStore from 'src/helpers/componentStore';
-
+import { Concept } from 'src/helpers/Concept';
 
 chai.use(chaiEnzyme());
 
@@ -265,6 +265,196 @@ describe('ObsGroupControl', () => {
         .mapper.setValue(instance.state.obs, pulseNumericUpdated, []);
       sinon.assert.calledOnce(
         onChangeSpy.withArgs(updatedObs, []));
+    });
+
+    it('should add more obs group when click obs group add more in obs group', () => {
+      const newFormName = '3042_1';
+      const newFormVersion = '2';
+      const pulseDataMetadata = {
+        "concept": {
+          "datatype": "N/A",
+          "name": "Pulse Data",
+          "setMembers": [
+            {
+              "datatype": "Numeric",
+              "name": "Pulse(/min)",
+              "properties": {
+                "allowDecimal": true
+              },
+              "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+            },
+            {
+              "datatype": "N/A",
+              "name": "TestGroup",
+              "setMembers": [
+                {
+                  "datatype": "Numeric",
+                  "name": "TestObs",
+                  "properties": {
+                    "allowDecimal": false
+                  },
+                  "uuid": "d0490af4-72eb-4090-9b43-ac3487ba7474"
+                }
+              ],
+              "uuid": "eafe7d68-904b-459b-b11d-6502ec0143a4"
+            }
+          ],
+          "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+        },
+        "controls": [
+          {
+            "concept": {
+              "datatype": "Numeric",
+              "name": "Pulse(/min)",
+              "properties": {
+                "allowDecimal": true
+              },
+              "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+            },
+            "id": "7",
+            "label": {
+              "type": "label",
+              "value": "Pulse(/min)"
+            },
+            "properties": {
+              "addMore": false,
+              "hideLabel": false,
+              "location": {
+                "column": 0,
+                "row": 0
+              },
+              "mandatory": false,
+              "notes": false
+            },
+            "type": "obsControl",
+          },
+          {
+            "concept": {
+              "datatype": "N/A",
+              "name": "TestGroup",
+              "setMembers": [
+                {
+                  "datatype": "Numeric",
+                  "name": "TestObs",
+                  "properties": {
+                    "allowDecimal": false
+                  },
+                  "uuid": "d0490af4-72eb-4090-9b43-ac3487ba7474"
+                }
+              ],
+              "uuid": "eafe7d68-904b-459b-b11d-6502ec0143a4"
+            },
+            "controls": [
+              {
+                "concept": {
+                  "datatype": "Numeric",
+                  "name": "TestObs",
+                  "properties": {
+                    "allowDecimal": false
+                  },
+                  "uuid": "d0490af4-72eb-4090-9b43-ac3487ba7474"
+                },
+                "id": "8",
+                "label": {
+                  "type": "label",
+                  "value": "TestObs"
+                },
+                "properties": {
+                  "addMore": false,
+                  "hideLabel": false,
+                  "location": {
+                    "column": 0,
+                    "row": 0
+                  },
+                  "mandatory": false,
+                  "notes": false
+                },
+                "type": "obsControl",
+              }
+            ],
+            "id": "9",
+            "label": {
+              "type": "label",
+              "value": "TestGroup"
+            },
+            "properties": {
+              "abnormal": false,
+              "addMore": true,
+              "location": {
+                "column": 0,
+                "row": 0
+              }
+            },
+            "type": "obsGroupControl"
+          }
+        ],
+        "id": "6",
+        "label": {
+          "type": "label",
+          "value": "Pulse Data"
+        },
+        "properties": {
+          "abnormal": false,
+          "addMore": false,
+          "location": {
+            "column": 0,
+            "row": 0
+          }
+        },
+        "type": "obsGroupControl"
+      };
+      const pulseDataConcept = {
+        "datatype": "N/A",
+        "name": "Pulse Data",
+        "setMembers": [
+          {
+            "datatype": "Numeric",
+            "name": "Pulse(/min)",
+            "properties": {
+              "allowDecimal": true
+            },
+            "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+          },
+          {
+            "datatype": "N/A",
+            "name": "TestGroup",
+            "setMembers": [
+              {
+                "datatype": "Numeric",
+                "name": "TestObs",
+                "properties": {
+                  "allowDecimal": false
+                },
+                "uuid": "d0490af4-72eb-4090-9b43-ac3487ba7474"
+              }
+            ],
+            "uuid": "eafe7d68-904b-459b-b11d-6502ec0143a4"
+          }
+        ],
+        "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+      };
+      const pulseDataObs = new Obs({
+        concept: new Concept(pulseDataConcept),
+        formFieldPath: '3042_1.2/6-0',
+        groupMembers: undefined,
+      });
+
+      const wrapper = mount(
+        <ObsGroupControl
+          collapse
+          formName={newFormName}
+          formVersion={newFormVersion}
+          mapper={obsGroupMapper}
+          metadata={pulseDataMetadata}
+          obs={pulseDataObs}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      const exceptGroupMembersLength = wrapper.state().obs.groupMembers.size + 1;
+      wrapper.find('.form-builder-add-more').simulate('click');
+
+      expect(wrapper.state().obs.groupMembers.size).to.equal(exceptGroupMembersLength);
     });
   });
 });
