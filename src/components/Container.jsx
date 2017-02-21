@@ -28,19 +28,9 @@ export class Container extends addMoreDecorator(Component) {
     this.setState({ data, collapse: undefined });
   }
 
-  updateGroupMembers(obs, nextFormFieldPath) {
-   if (obs.groupMembers) {
-     obs.groupMembers.map(nextObs => {
-       const nextPath = `${nextObs.formFieldPath.split('-')[0]}-${nextFormFieldPath.split('-')[1]}`;
-       const updatedObs = nextObs.set('formFieldPath', nextPath).set('uuid', undefined).set('value', undefined);
-       return updatedObs.set('groupMembers', this.updateGroupMembers(updatedObs, nextFormFieldPath));
-     })
-   }
-  }
-
   onControlAdd(obs) {
     const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
-    const nextGroupMembers = this.updateGroupMembers(obs.groupMembers);
+    const nextGroupMembers = this.updateGroupMembers(obs.groupMembers, nextFormFieldPath);
     const obsUpdated = obs.cloneForAddMore(nextFormFieldPath, nextGroupMembers);
     const clonedRecord = this.state.data
       .getRecord(obs.formFieldPath)
