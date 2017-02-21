@@ -50,10 +50,10 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
       .set('obs', obsUpdated);
     const data = this.state.data.setRecord(clonedRecord);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-    const newObs = this._getObsGroup(this.state.obs, updatedState.data);
-    this.setState({ data: updatedState.data, obs: newObs });
+    const updatedObs = this._getObsGroup(this.state.obs, updatedState.data);
+    this.setState({ data: updatedState.data, obs: updatedObs });
 
-    this.props.onValueChanged(newObs);
+    this.props.onValueChanged(updatedObs);
   }
 
   onControlRemove(obs) {

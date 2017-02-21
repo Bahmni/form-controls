@@ -34,7 +34,7 @@ const addMoreDecorator = Sup => class extends Sup {
 
   updateGroupMembers(obsGroupMembers, nextFormFieldPath) {
     if (obsGroupMembers) {
-      obsGroupMembers.map(nextObs => {
+      return obsGroupMembers.map(nextObs => {
         const nextPath = `${nextObs.formFieldPath.split('-')[0]}-${nextFormFieldPath.split('-')[1]}`;
         const updatedObs = nextObs.set('formFieldPath', nextPath).set('uuid', undefined).void();
         return updatedObs.set('groupMembers', this.updateGroupMembers(updatedObs.groupMembers, nextFormFieldPath));
