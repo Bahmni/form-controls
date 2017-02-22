@@ -36,7 +36,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     const data = this.state.data.setRecord(bahmniRecord);
     const updatedObs = this.props.mapper.setValue(this.props.obs, obs, errors);
     const updatedErrors = getErrors(data.getRecords());
-    this.setState({ data, obs: updatedObs });
+    this.setState({ data });
     this.props.onValueChanged(updatedObs, updatedErrors);
   }
 
@@ -51,7 +51,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     const data = this.state.data.setRecord(clonedRecord);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
     const updatedObs = this._getObsGroup(this.props.obs, updatedState.data);
-    this.setState({ data: updatedState.data, obs: updatedObs });
+    this.setState({ data: updatedState.data });
 
     this.props.onValueChanged(updatedObs);
   }
@@ -60,7 +60,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     const updatedObs = this.props.mapper.setValue(this.props.obs, obs.void());
     const data = this._changeValue(obs, []).deleteRecord(obs);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-    this.setState({ data: updatedState.data, obs: updatedObs });
+    this.setState({ data: updatedState.data });
 
     this.props.onValueChanged(updatedObs);
   }

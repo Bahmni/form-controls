@@ -13,7 +13,7 @@ export class Section extends addMoreDecorator(Component) {
     const observations = props.mapper.getObject(obs);
     const originalData = controlStateFactory(metadata, observations, formName, formVersion);
     const data = this.filterEmptyRecords(originalData);
-    this.state = { obs, errors: [], data, collapse };
+    this.state = { errors: [], data, collapse };
     this.onChange = this.onChange.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
@@ -32,9 +32,9 @@ export class Section extends addMoreDecorator(Component) {
       .set('obs', obs)
       .set('errors', errors);
     const data = this.state.data.setRecord(bahmniRecord);
-    const updatedObs = this.props.mapper.setValue(this.state.obs, obs);
+    const updatedObs = this.props.mapper.setValue(this.props.obs, obs);
     const updatedErrors = getErrors(data.getRecords());
-    this.setState({ data, obs: updatedObs });
+    this.setState({ data });
     this.props.onValueChanged(updatedObs, updatedErrors);
   }
 
@@ -53,12 +53,12 @@ export class Section extends addMoreDecorator(Component) {
 
   onControlRemove(obs) {
     const obsVoid = obs.void();
-    const updatedObs = this.props.mapper.setValue(this.state.obs, obsVoid);
+    const updatedObs = this.props.mapper.setValue(this.props.obs, obsVoid);
     const data = this._changeValue(obs, []).deleteRecord(obs);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
     const updatedErrors = getErrors(data.getRecords());
 
-    this.setState({ data: updatedState.data, obs: updatedObs });
+    this.setState({ data: updatedState.data });
     this.props.onValueChanged(updatedObs, updatedErrors);
   }
 
