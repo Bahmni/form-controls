@@ -18,11 +18,11 @@ const addMoreDecorator = Sup => class extends Sup {
   }
 
   onAddControl() {
-    this.props.onControlAdd(this.state.obs);
+    this.props.onControlAdd(this.props.obs);
   }
 
   onRemoveControl() {
-    this.props.onControlRemove(this.state.obs);
+    this.props.onControlRemove(this.props.obs);
   }
 
   _changeValue(obs, errors) {

@@ -13,28 +13,20 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   constructor(props) {
     super(props);
-    this.state = { obs: props.obs };
+    this.state = { };
     this.onChange = this.onChange.bind(this);
     this.onCommentChange = this.onCommentChange.bind(this);
     this.onAddControl = this.onAddControl.bind(this);
     this.onRemoveControl = this.onRemoveControl.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.obs !== nextProps.obs) {
-      this.setState({ obs: nextProps.obs });
-    }
-  }
-
   onChange(value, errors) {
-    const updatedObs = this.props.mapper.setValue(this.state.obs, value);
-    this.setState({ obs: updatedObs });
+    const updatedObs = this.props.mapper.setValue(this.props.obs, value);
     this.props.onValueChanged(updatedObs, errors);
   }
 
   onCommentChange(comment) {
-    const updatedObs = this.props.mapper.setComment(this.state.obs, comment);
-    this.setState({ obs: updatedObs });
+    const updatedObs = this.props.mapper.setComment(this.props.obs, comment);
     this.props.onValueChanged(updatedObs);
   }
   displayObsControl(registeredComponent) {
@@ -47,7 +39,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       onChange: this.onChange,
       validate,
       validations,
-      value: mapper.getValue(this.state.obs),
+      value: mapper.getValue(this.props.obs),
       ...this._numericContext(metadata),
     });
   }
@@ -107,7 +99,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     const { mapper, metadata: { properties } } = this.props;
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
-      const comment = mapper.getComment(this.state.obs);
+      const comment = mapper.getComment(this.props.obs);
       return (
         <Comment comment={comment} onCommentChange={this.onCommentChange} />
       );
