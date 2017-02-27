@@ -133,7 +133,7 @@ export class ObsControlDesigner extends Component {
   showDeleteButton() {
     if (this.props.showDeleteButton) {
       return (
-        <button onClick={this.deleteButton}>-</button>
+        <button className="remove-control-button" onClick={this.deleteButton}>X</button>
       );
     }
     return null;

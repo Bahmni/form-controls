@@ -59,7 +59,7 @@ export class LabelDesigner extends Component {
   showDeleteButton() {
     if (this.props.deleteControl && this.props.showDeleteButton) {
       return (
-        <button onClick={this.props.deleteControl}>-</button>
+        <button className="remove-control-button" onClick={this.props.deleteControl}>X</button>
       );
     }
     return null;

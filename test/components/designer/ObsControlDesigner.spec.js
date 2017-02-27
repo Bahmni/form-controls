@@ -98,7 +98,7 @@ describe('ObsControlDesigner', () => {
       wrapper.setProps({ showDeleteButton: true });
       const deleteButton = wrapper.find('button');
 
-      expect(deleteButton.text()).to.eql('-');
+      expect(deleteButton.text()).to.eql('X');
     });
 
     it('should call deleteControl after delete button is clicked', () => {
@@ -291,7 +291,7 @@ describe('ObsControlDesigner', () => {
       wrapper.setProps({ showDeleteButton: true });
       const deleteButton = wrapper.find('button');
 
-      expect(deleteButton.text()).to.eql('-');
+      expect(deleteButton.text()).to.eql('X');
     });
 
     it('should call deleteControl after delete button is clicked', () => {
