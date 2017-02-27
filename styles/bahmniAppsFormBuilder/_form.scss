@@ -46,6 +46,7 @@
         &.form-builder-warning {
           outline: 2px solid $warningOutline;
           background: $warningBg;
+          color: $red;
         }
         &.form-builder-error {
           outline: 2px solid $error;
