@@ -3,6 +3,7 @@ import { displayRowControls, getGroupedControls } from 'src/helpers/controlsPars
 import isEmpty from 'lodash/isEmpty';
 import filter from 'lodash/filter';
 import { controlStateFactory, getErrors } from 'src/ControlState';
+import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 import addMoreDecorator from './AddMoreDecorator';
 
 export class Container extends addMoreDecorator(Component) {
@@ -10,9 +11,8 @@ export class Container extends addMoreDecorator(Component) {
     super(props);
     this.childControls = {};
     const { observations, metadata } = this.props;
-    const originalData = controlStateFactory(metadata, observations);
-    const data = this.filterEmptyRecords(originalData);
-    this.state = { errors: [], data, collapse: props.collapse };
+    const controlRecordTree = new ControlRecordTreeBuilder().build(metadata, observations);
+    this.state = { errors: [], data: controlRecordTree, collapse: props.collapse };
     this.storeChildRef = this.storeChildRef.bind(this);
     this.onValueChanged = this.onValueChanged.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
@@ -101,7 +101,7 @@ export class Container extends addMoreDecorator(Component) {
       validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
-    const records = this.state.data.getActiveRecords();
+    const records = this.state.data.children;
     return (
       <div>{displayRowControls(groupedRowControls, records, childProps)}</div>
     );
