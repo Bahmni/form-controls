@@ -21,7 +21,15 @@ export default class ControlRecordTreeBuilder {
       const mapper = MapperStore.getMapper(control);
       const obsArray = mapper.getInitialObject(formName, formVersion, control, bahmniObservations);
       obsArray.forEach(obs => {
-        const record = new ControlRecord({ formFieldPath: obs.formFieldPath, obs, mapper, control, enabled: false, showAddMore: true });
+        const record = new ControlRecord({
+          formFieldPath: obs.formFieldPath,
+          obs,
+          mapper,
+          control,
+          enabled: false,
+          showAddMore: true,
+          children: control.controls && this.getRecords(control.controls, formName, formVersion, bahmniObservations),
+        });
         recordList = recordList.push(record);
       });
     });
