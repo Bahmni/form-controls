@@ -24,7 +24,8 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   onValueChanged(obs, errors) {
-    const data = this._changeValue(obs, errors);
+    const data = ControlRecordTreeBuilder.update(this.state.data, obs.formFieldPath, obs.value);
+    // const data = datathis._changeValue(obs, errors);
     this.setState({ data, collapse: undefined });
   }
 
@@ -49,9 +50,9 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   getValue() {
-    const records = this.state.data.getRecords();
-    const observations = this._getObservations(records.map((record) => record.getObject()));
-    const errors = getErrors(records);
+    const records = this.state.data;
+    const observations = this._getObservations(records.children.map((record) => record.getObject()));
+    const errors = getErrors(records.children);
     if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
       return { observations };
     }
@@ -101,7 +102,7 @@ export class Container extends addMoreDecorator(Component) {
       validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
-    const records = this.state.data.children;
+    const records = this.state.data.children.toArray();
     return (
       <div>{displayRowControls(groupedRowControls, records, childProps)}</div>
     );

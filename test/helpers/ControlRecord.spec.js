@@ -52,6 +52,17 @@ describe.only('Control Record', () => {
       expect(controlRecordTree.children.get(0).control.concept.uuid).to.equal(obsConcept.uuid);
     });
 
+    it('should update value when given value to obs control', () => {
+      const emptyObservation = [];
+      const formFieldPath = 'SingleObs.1/1-0';
+      const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
+
+      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, formFieldPath, 1);
+
+      expect(updatedRecordTree.children.get(0).formFieldPath).to.equal(formFieldPath);
+      expect(updatedRecordTree.children.get(0).obs.value).to.equal(1);
+    });
+
   });
 
   describe('Multiple layer Record', () => {

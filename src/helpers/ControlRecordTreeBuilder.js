@@ -11,6 +11,9 @@ export const ControlRecord = new Record({
   showAddMore: false,
   showRemove: false,
   errors: [],
+  getObject() {
+    return this.mapper.getObject(this.obs);
+  },
 });
 
 export default class ControlRecordTreeBuilder {
@@ -41,4 +44,13 @@ export default class ControlRecordTreeBuilder {
     return new ControlRecord({children: records});
   }
 
+  static update(recordTree, formFieldPath, value) {
+    const children = recordTree.children.map(r => {
+      if (r.formFieldPath === formFieldPath) {
+        return value ? r.set('obs', r.obs.setValue(value)) : r.set('obs', r.obs.void());
+      }
+      return r.children ? ControlRecordTreeBuilder.update(r, formFieldPath, value) : r;
+    });
+    return recordTree.set('children', children);
+  }
 }
