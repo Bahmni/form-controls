@@ -102,8 +102,7 @@ describe('LabelDesigner', () => {
   it('should show delete button if the showDeleteButton props is true', () => {
     wrapper.setProps({ showDeleteButton: true });
     const deleteButton = wrapper.find('button');
-
-    expect(deleteButton.text()).to.eql('X');
+    expect(deleteButton.text()).to.eql('');
   });
 
   it('should call deleteControl when delete button is clicked', () => {

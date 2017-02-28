@@ -60,7 +60,7 @@ export class LabelDesigner extends Component {
     if (this.props.deleteControl && this.props.showDeleteButton) {
       return (
         <button className="remove-control-button" onClick={this.props.deleteControl}>
-          <i className="fa fa-trash" aria-hidden="true"></i>
+          <i aria-hidden="true" className="fa fa-trash"></i>
         </button>
       );
     }
