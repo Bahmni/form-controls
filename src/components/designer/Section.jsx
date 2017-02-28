@@ -51,7 +51,9 @@ export class SectionDesigner extends Component {
   showDeleteButton() {
     if (this.props.showDeleteButton) {
       return (
-        <button className="remove-control-button" onClick={this.deleteControl}>X</button>
+        <button className="remove-control-button" onClick={this.deleteControl}>
+          <i className="fa fa-trash" aria-hidden="true"></i>
+        </button>
       );
     }
     return null;
