@@ -143,7 +143,7 @@ export function obsFromMetadata(formNamespaceAndPath, metadata) {
   };
 }
 
-export function createObsFromControl(formName, formVersion, control, bahmniObservations) {
+export function createObsFromControl(formName, formVersion, control, bahmniObservations=[]) {
   const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id);
 
   const observationsForControl = bahmniObservations.filter(observation =>
