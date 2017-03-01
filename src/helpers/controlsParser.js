@@ -1,5 +1,5 @@
 import React from 'react';
-import Row from 'src/components/Row.jsx';
+import Row from '../components/Row.jsx';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 import map from 'lodash/map';
@@ -37,6 +37,7 @@ export function getControls(controls, records, props) {
         mapper: record.mapper,
         showAddMore: record.showAddMore,
         showRemove: record.showRemove,
+        record: record,
         ...props,
       }));
       return components;

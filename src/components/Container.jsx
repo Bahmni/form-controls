@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { displayRowControls, getGroupedControls } from 'src/helpers/controlsParser';
+import { displayRowControls, getGroupedControls } from '../helpers/controlsParser';
 import isEmpty from 'lodash/isEmpty';
 import filter from 'lodash/filter';
 import { controlStateFactory, getErrors } from 'src/ControlState';
