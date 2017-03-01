@@ -23,8 +23,8 @@ export class Container extends addMoreDecorator(Component) {
     this.setState({ collapse: nextProps.collapse });
   }
 
-  onValueChanged(obs, errors) {
-    const data = ControlRecordTreeBuilder.update(this.state.data, obs.formFieldPath, obs.value);
+  onValueChanged(formFieldPath, value, errors) {
+    const data = ControlRecordTreeBuilder.update(this.state.data, formFieldPath, value);
     // const data = datathis._changeValue(obs, errors);
     this.setState({ data, collapse: undefined });
   }

@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import { getControls, getGroupedControls } from 'src/helpers/controlsParser';
+import { getControls, getGroupedControls } from '../helpers/controlsParser';
 import map from 'lodash/map';
 
 export default class Row extends Component {
@@ -16,7 +16,7 @@ export default class Row extends Component {
   getAddMoreControls(controls, className) {
     return controls.map((control, index) => (
       control.map(ctrl =>
-        <div className={`${className}-index${index}`} key={ ctrl.props.obs.formFieldPath }>
+        <div className={`${className}-index${index}`} key={ index }>
           {ctrl}
         </div>
       )

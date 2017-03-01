@@ -21,14 +21,14 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   onChange(value, errors) {
-    const updatedObs = this.props.mapper.setValue(this.props.obs, value);
-    this.props.onValueChanged(updatedObs, errors);
+    this.props.onValueChanged(this.props.formFieldPath, value, errors);
   }
 
   onCommentChange(comment) {
     const updatedObs = this.props.mapper.setComment(this.props.obs, comment);
     this.props.onValueChanged(updatedObs);
   }
+
   displayObsControl(registeredComponent) {
     const { mapper, metadata, metadata: { concept }, validate } = this.props;
     const options = metadata.options || concept.answers;
@@ -39,7 +39,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       onChange: this.onChange,
       validate,
       validations,
-      value: mapper.getValue(this.props.obs),
+      value: this.props.obs,
       ...this._numericContext(metadata),
     });
   }

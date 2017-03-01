@@ -22,12 +22,12 @@ export default class ControlRecordTreeBuilder {
     let recordList = new List();
     controls.forEach(control => {
       const mapper = MapperStore.getMapper(control);
+
       const obsArray = mapper.getInitialObject(formName, formVersion, control, bahmniObservations);
       obsArray.forEach(obs => {
         const record = new ControlRecord({
           formFieldPath: obs.formFieldPath,
-          obs,
-          mapper,
+          obs: mapper.getValue(obs),
           control,
           enabled: false,
           showAddMore: true,
@@ -47,7 +47,7 @@ export default class ControlRecordTreeBuilder {
   static update(recordTree, formFieldPath, value) {
     const children = recordTree.children.map(r => {
       if (r.formFieldPath === formFieldPath) {
-        return value ? r.set('obs', r.obs.setValue(value)) : r.set('obs', r.obs.void());
+        return r.set('obs', value);
       }
       return r.children ? ControlRecordTreeBuilder.update(r, formFieldPath, value) : r;
     });

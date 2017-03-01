@@ -33,6 +33,7 @@ export function getControls(controls, records, props) {
         key: control.id,
         metadata: control,
         obs: record.obs,
+        formFieldPath: record.formFieldPath,
         mapper: record.mapper,
         showAddMore: record.showAddMore,
         showRemove: record.showRemove,
