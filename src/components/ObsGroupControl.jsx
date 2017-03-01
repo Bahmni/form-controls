@@ -27,15 +27,8 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     }
   }
 
-  onChange(obs, errors) {
-    const bahmniRecord = this.state.data.getRecord(obs.formFieldPath)
-      .set('obs', obs)
-      .set('errors', errors);
-    const data = this.state.data.setRecord(bahmniRecord);
-    const updatedObs = this.props.mapper.setValue(this.props.obs, obs, errors);
-    const updatedErrors = getErrors(data.getRecords());
-    this.setState({ data });
-    this.props.onValueChanged(updatedObs, updatedErrors);
+  onChange(formFieldPath, value, errors) {
+    this.props.onValueChanged(formFieldPath, value, errors);
   }
 
   onControlAdd(obs) {
