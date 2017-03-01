@@ -5,7 +5,7 @@ let webpack = require('webpack');
 let srcPath = path.join(__dirname, './src');
 
 module.exports = {
-  devtool: 'cheap-module-source-map',
+  devtool: 'source-map',
   entry: {
     helpers: ['./src/helpers/componentStore.js', './src/helpers/formRenderer.js'],
     bundle: './src/index.jsx'
@@ -43,15 +43,7 @@ module.exports = {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: "file-loader"
       }
-    ],
-    preLoaders: [
-      {
-        test: /\.(js|jsx)$/,
-        include: path.join(__dirname, 'src'),
-        loader: 'isparta'
-      }
     ]
-
   },
   resolve: {
     alias: {

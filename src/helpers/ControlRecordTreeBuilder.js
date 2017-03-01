@@ -31,7 +31,7 @@ export default class ControlRecordTreeBuilder {
           control,
           enabled: false,
           showAddMore: true,
-          children: control.controls && this.getRecords(control.controls, formName, formVersion, bahmniObservations),
+          children: control.controls && this.getRecords(control.controls, formName, formVersion, obs.groupMembers),
         });
         recordList = recordList.push(record);
       });
