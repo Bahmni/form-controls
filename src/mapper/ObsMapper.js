@@ -44,4 +44,12 @@ export class ObsMapper {
   getObject(obs) {
     return obs.getObject(obs);
   }
+
+  getData(record){
+    let obs = record.dataSource;
+    obs.value = record.value;
+    obs.voided = false;
+
+    return obs;
+  }
 }

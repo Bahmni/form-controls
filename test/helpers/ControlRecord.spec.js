@@ -1,4 +1,7 @@
 import ControlRecordTreeBuilder from '../../src/helpers/ControlRecordTreeBuilder';
+import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
+import { List } from 'immutable';
+import ObservationMapper from "../../src/helpers/ObservationMapper";
 
 describe.only('Control Record', () => {
 
@@ -13,33 +16,82 @@ describe.only('Control Record', () => {
       "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
     };
 
+    let obsControl = {
+      "concept": obsConcept,
+      "id": "1",
+      "label": {
+        "type": "label",
+        "value": "Pulse(/min)"
+      },
+      "properties": {
+        "addMore": true,
+        "hideLabel": false,
+        "location": {
+          "column": 0,
+          "row": 0
+        },
+        "mandatory": true,
+        "notes": false
+      },
+      "type": "obsControl",
+    };
     const metadata = {
       "controls": [
-        {
-          "concept": obsConcept,
-          "id": "1",
-          "label": {
-            "type": "label",
-            "value": "Pulse(/min)"
-          },
-          "properties": {
-            "addMore": true,
-            "hideLabel": false,
-            "location": {
-              "column": 0,
-              "row": 0
-            },
-            "mandatory": true,
-            "notes": false
-          },
-          "type": "obsControl",
-        }
+        obsControl
       ],
       "id": 209,
       "name": "SingleObs",
       "uuid": "245940b7-3d6b-4a8b-806b-3f56444129ae",
       "version": "1"
     };
+
+    const observation = [{
+      "encounterDateTime": 1488354632000,
+      "visitStartDateTime": null,
+      "targetObsRelation": null,
+      "groupMembers": [],
+      "providers": [{
+        "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+        "name": "Super Man",
+        "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+      }],
+      "isAbnormal": null,
+      "duration": null,
+      "type": "Numeric",
+      "encounterUuid": "957a49f2-98ba-4cbc-a9f5-233be6d1afe5",
+      "obsGroupUuid": null,
+      "creatorName": "Super Man",
+      "conceptSortWeight": 1,
+      "parentConceptUuid": null,
+      "hiNormal": 72,
+      "lowNormal": 72,
+      "formNamespace": "Bahmni",
+      "formFieldPath": "SingleObs.1/1-0",
+      "conceptUuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
+      "concept": {
+        "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
+        "name": "Pulse",
+        "dataType": "Numeric",
+        "shortName": "Pulse",
+        "units": "/min",
+        "conceptClass": "Misc",
+        "hiNormal": 72,
+        "lowNormal": 72,
+        "set": false,
+        "mappings": []
+      },
+      "valueAsString": "1.0",
+      "voided": false,
+      "voidReason": null,
+      "unknown": false,
+      "uuid": "a2b351b7-03e2-47ce-a47d-b47ad425d3f6",
+      "observationDateTime": "2017-03-01T07:50:32.000+0000",
+      "comment": null,
+      "abnormal": null,
+      "orderUuid": null,
+      "conceptNameToDisplay": "Pulse",
+      "value": 1
+    }];
 
     it('should create single layer record given single layer metadata and empty data', () => {
       const emptyObservation = [];
@@ -53,54 +105,6 @@ describe.only('Control Record', () => {
     });
 
     it('should create single layer record given single layer metadata and data', () => {
-      const observation = [{
-        "encounterDateTime": 1488354632000,
-        "visitStartDateTime": null,
-        "targetObsRelation": null,
-        "groupMembers": [],
-        "providers": [{
-          "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
-          "name": "Super Man",
-          "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
-        }],
-        "isAbnormal": null,
-        "duration": null,
-        "type": "Numeric",
-        "encounterUuid": "957a49f2-98ba-4cbc-a9f5-233be6d1afe5",
-        "obsGroupUuid": null,
-        "creatorName": "Super Man",
-        "conceptSortWeight": 1,
-        "parentConceptUuid": null,
-        "hiNormal": 72,
-        "lowNormal": 72,
-        "formNamespace": "Bahmni",
-        "formFieldPath": "SingleObs.1/1-0",
-        "conceptUuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-        "concept": {
-          "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-          "name": "Pulse",
-          "dataType": "Numeric",
-          "shortName": "Pulse",
-          "units": "/min",
-          "conceptClass": "Misc",
-          "hiNormal": 72,
-          "lowNormal": 72,
-          "set": false,
-          "mappings": []
-        },
-        "valueAsString": "1.0",
-        "voided": false,
-        "voidReason": null,
-        "unknown": false,
-        "uuid": "a2b351b7-03e2-47ce-a47d-b47ad425d3f6",
-        "observationDateTime": "2017-03-01T07:50:32.000+0000",
-        "comment": null,
-        "abnormal": null,
-        "orderUuid": null,
-        "conceptNameToDisplay": "Pulse",
-        "value": 1
-      }];
-
       const expectedFormFieldPath = 'SingleObs.1/1-0';
 
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, observation);
@@ -120,6 +124,18 @@ describe.only('Control Record', () => {
       expect(updatedRecordTree.children.get(0).formFieldPath).to.equal(formFieldPath);
       expect(updatedRecordTree.children.get(0).value).to.equal(1);
     });
+
+    it('should generate data from record and metadata when input obs is empty', ()=>{
+      const emptyObservation = [];
+      const formFieldPath = 'SingleObs.1/1-0';
+
+      const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
+      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, formFieldPath, 1);
+
+      let obs = (new ObservationMapper()).from(updatedRecordTree);
+      expect(obs.length).to.equal(1);
+      expect(obs[0].value).to.equal(1);
+    })
   });
 
   describe('Multiple layer Record', () => {

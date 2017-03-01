@@ -5,6 +5,7 @@ import filter from 'lodash/filter';
 import { controlStateFactory, getErrors } from 'src/ControlState';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 import addMoreDecorator from './AddMoreDecorator';
+import ObservationMapper from "../helpers/ObservationMapper";
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
@@ -51,13 +52,8 @@ export class Container extends addMoreDecorator(Component) {
 
   getValue() {
     const records = this.state.data;
-    const observations = this._getObservations(records.children.map((record) => record.getObject()));
-    const errors = getErrors(records.children);
-    if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
-      return { observations };
-    }
-
-    return { errors, observations };
+    let obs = (new ObservationMapper()).from(records);
+    return {observations: obs}
   }
 
   /* eslint-disable no-param-reassign */

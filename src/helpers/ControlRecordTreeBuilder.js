@@ -11,6 +11,7 @@ export const ControlRecord = new Record({
   showAddMore: false,
   showRemove: false,
   errors: [],
+  dataSource: undefined,
   getObject() {
     return this.mapper.getObject(this.obs);
   },
@@ -28,6 +29,7 @@ export default class ControlRecordTreeBuilder {
         const record = new ControlRecord({
           formFieldPath: obs.formFieldPath,
           value: mapper.getValue(obs),
+          dataSource: obs,
           control,
           enabled: false,
           showAddMore: true,
