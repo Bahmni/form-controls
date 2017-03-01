@@ -25,7 +25,7 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   onCommentChange(comment) {
-    const updatedObs = this.props.mapper.setComment(this.props.obs, comment);
+    const updatedObs = this.props.mapper.setComment(this.props.value, comment);
     this.props.onValueChanged(updatedObs);
   }
 
@@ -39,7 +39,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       onChange: this.onChange,
       validate,
       validations,
-      value: this.props.obs,
+      value: this.props.value,
       ...this._numericContext(metadata),
     });
   }
@@ -148,7 +148,7 @@ ObsControl.propTypes = {
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
   }),
-  obs: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired,
   onControlAdd: PropTypes.func,
   onControlRemove: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,

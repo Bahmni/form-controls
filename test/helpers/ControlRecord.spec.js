@@ -107,7 +107,7 @@ describe.only('Control Record', () => {
 
       expect(controlRecordTree.children.size).to.equal(1);
       expect(controlRecordTree.children.get(0).formFieldPath).to.equal(expectedFormFieldPath);
-      expect(controlRecordTree.children.get(0).obs).to.equal(1);
+      expect(controlRecordTree.children.get(0).value).to.equal(1);
     });
 
     it('should update value when given value to obs control', () => {
@@ -118,7 +118,7 @@ describe.only('Control Record', () => {
       const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, formFieldPath, 1);
 
       expect(updatedRecordTree.children.get(0).formFieldPath).to.equal(formFieldPath);
-      expect(updatedRecordTree.children.get(0).obs).to.equal(1);
+      expect(updatedRecordTree.children.get(0).value).to.equal(1);
     });
   });
 
@@ -214,7 +214,7 @@ describe.only('Control Record', () => {
       expect(subNode.get(0).control.concept.uuid).to.equal(obsConcept.uuid);
     })
 
-    it.only('should create multiple layer record given multiple layer metadata and data', () => {
+    it('should create multiple layer record given multiple layer metadata and data', () => {
       const observation = [{
         "concept": {
           "uuid": "eafe7d68-904b-459b-b11d-6502ec0143a4",
@@ -269,7 +269,7 @@ describe.only('Control Record', () => {
       expect(subNode.size).to.equal(1);
       expect(subNode.get(0).formFieldPath).to.equal(expectedSubFormFieldPath);
       expect(subNode.get(0).control.concept.uuid).to.equal(obsConcept.uuid);
-      expect(subNode.get(0).obs).to.equal(1);
+      expect(subNode.get(0).value).to.equal(1);
     })
   });
 

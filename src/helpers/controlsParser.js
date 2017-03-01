@@ -32,7 +32,7 @@ export function getControls(controls, records, props) {
       const components = recordsForControl.map((record) => createReactComponent(registeredControl, {
         key: control.id,
         metadata: control,
-        obs: record.obs,
+        value: record.value,
         formFieldPath: record.formFieldPath,
         mapper: record.mapper,
         showAddMore: record.showAddMore,

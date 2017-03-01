@@ -5,7 +5,7 @@ export const ControlRecord = new Record({
   control: undefined,
   formFieldPath: '',
   children: undefined,
-  obs: undefined,
+  value: undefined,
   mapper: undefined,
   active: true,
   showAddMore: false,
@@ -27,7 +27,7 @@ export default class ControlRecordTreeBuilder {
       obsArray.forEach(obs => {
         const record = new ControlRecord({
           formFieldPath: obs.formFieldPath,
-          obs: mapper.getValue(obs),
+          value: mapper.getValue(obs),
           control,
           enabled: false,
           showAddMore: true,
@@ -47,7 +47,7 @@ export default class ControlRecordTreeBuilder {
   static update(recordTree, formFieldPath, value) {
     const children = recordTree.children.map(r => {
       if (r.formFieldPath === formFieldPath) {
-        return r.set('obs', value);
+        return r.set('value', value);
       }
       return r.children ? ControlRecordTreeBuilder.update(r, formFieldPath, value) : r;
     });
