@@ -125,7 +125,7 @@ describe.only('Control Record', () => {
       expect(updatedRecordTree.children.get(0).value).to.equal(1);
     });
 
-    it('should generate data from record and metadata when input obs is empty', ()=>{
+    it('should generate data from record when input obs is empty', ()=>{
       const emptyObservation = [];
       const formFieldPath = 'SingleObs.1/1-0';
 
@@ -135,6 +135,17 @@ describe.only('Control Record', () => {
       let obs = (new ObservationMapper()).from(updatedRecordTree);
       expect(obs.length).to.equal(1);
       expect(obs[0].value).to.equal(1);
+    })
+
+    it('should generate data from record when input obs is not empty', ()=>{
+      const formFieldPath = 'SingleObs.1/1-0';
+
+      const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, observation);
+      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, formFieldPath, 999);
+
+      let obs = (new ObservationMapper()).from(updatedRecordTree);
+      expect(obs.length).to.equal(1);
+      expect(obs[0].value).to.equal(999);
     })
   });
 
@@ -286,6 +297,33 @@ describe.only('Control Record', () => {
       expect(subNode.get(0).formFieldPath).to.equal(expectedSubFormFieldPath);
       expect(subNode.get(0).control.concept.uuid).to.equal(obsConcept.uuid);
       expect(subNode.get(0).value).to.equal(1);
+    })
+
+    it('should update data from record when input obs is emtpy', ()=>{
+      const emptyObservation = [];
+      const expectedSubFormFieldPath = 'SingleGroup.3/4-0';
+
+      const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
+      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, expectedSubFormFieldPath, 999);
+
+      const node = updatedRecordTree.children;
+      const subNode = node.get(0).children;
+      expect(subNode.size).to.equal(1);
+      expect(subNode.get(0).value).to.equal(999);
+    });
+
+    it('should generate data from record when input obs is emtpy', ()=>{
+      const emptyObservation = [];
+      const expectedSubFormFieldPath = 'SingleGroup.3/4-0';
+
+      const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
+      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, expectedSubFormFieldPath, 999);
+
+      let obs = (new ObservationMapper()).from(updatedRecordTree);
+
+      expect(obs.length).to.equal(1);
+      expect(obs[0].groupMembers.length).to.equal(1);
+      expect(obs[0].groupMembers[0].value).to.equal(999);
     })
   });
 

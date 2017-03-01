@@ -2,6 +2,7 @@ import { createObsFromControl } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
 import MapperStore from 'src/helpers/MapperStore';
 import { List } from 'immutable';
+import ObservationMapper from "../helpers/ObservationMapper";
 
 export class ObsGroupMapper {
 
@@ -51,5 +52,13 @@ export class ObsGroupMapper {
 
   getValue(){
     return undefined;
+  }
+
+  getData(record){
+    let obsGroup = record.dataSource;
+    obsGroup.groupMembers = (new ObservationMapper()).from(record);
+    obsGroup.voided = false;
+
+    return obsGroup;
   }
 }
