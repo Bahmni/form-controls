@@ -9,13 +9,13 @@ export class ObsGroupMapper {
     const obsGroups = createObsFromControl(formName, formVersion, control, bahmniObservations);
     return obsGroups.map(obsGroup => {
       if (obsGroup.groupMembers !== undefined) {
-        let groupMembers = new List();
+        let groupMembers = [];
         for (const ctrl of control.controls) {
           const mapper = MapperStore.getMapper(ctrl);
           groupMembers = groupMembers.concat(mapper.getInitialObject(formName, formVersion,
             ctrl, obsGroup.groupMembers));
         }
-        return obsGroup.set('groupMembers', groupMembers);
+        obsGroup.groupMembers = groupMembers;
       }
       return obsGroup;
     });
@@ -47,5 +47,9 @@ export class ObsGroupMapper {
 
   getObject(obsGroup) {
     return obsGroup.getObject(obsGroup);
+  }
+
+  getValue(){
+    return undefined;
   }
 }

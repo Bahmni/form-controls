@@ -16,7 +16,7 @@ export class ObsMapper {
   }
 
   getValue(obs) {
-    return ((this._hasNoValue(obs) || obs.isVoided()) ? undefined : obs.getValue());
+    return obs.value;
   }
 
   getObs(obs) {

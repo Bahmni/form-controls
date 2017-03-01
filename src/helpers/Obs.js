@@ -135,12 +135,12 @@ export class Obs extends ImmutableObs {
 
 export function obsFromMetadata(formNamespaceAndPath, metadata) {
   const { formNamespace, formFieldPath } = formNamespaceAndPath;
-  return new Obs({
+  return {
     concept: metadata.concept,
     formNamespace,
     formFieldPath,
     voided: true,
-  });
+  };
 }
 
 export function createObsFromControl(formName, formVersion, control, bahmniObservations) {
@@ -152,7 +152,7 @@ export function createObsFromControl(formName, formVersion, control, bahmniObser
   );
 
   if (observationsForControl.length > 0) {
-    return observationsForControl.map(obs => new Obs(obs));
+    return observationsForControl;
   }
 
   const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id);

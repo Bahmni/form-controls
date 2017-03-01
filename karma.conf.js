@@ -31,7 +31,6 @@ module.exports = function (config) {
       dir: 'coverage/',
       reporters: [
         {type: 'html'},
-        {type: 'text'},
         {type: 'text-summary'}
       ],
       check: {
