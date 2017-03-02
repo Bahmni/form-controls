@@ -18,11 +18,11 @@ const addMoreDecorator = Sup => class extends Sup {
   }
 
   onAddControl() {
-    this.props.onControlAdd(this.props.obs);
+    this.props.onControlAdd(this.props.formFieldPath);
   }
 
   onRemoveControl() {
-    this.props.onControlRemove(this.props.obs);
+    this.props.onControlRemove(this.props.formFieldPath);
   }
 
   _changeValue(obs, errors) {

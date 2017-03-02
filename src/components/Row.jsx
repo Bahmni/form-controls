@@ -16,7 +16,7 @@ export default class Row extends Component {
   getAddMoreControls(controls, className) {
     return controls.map((control, index) => (
       control.map(ctrl =>
-        <div className={`${className}-index${index}`} key={ index }>
+        <div className={`${className}-index${index}`} key={ ctrl.props.formFieldPath }>
           {ctrl}
         </div>
       )

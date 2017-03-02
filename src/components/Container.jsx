@@ -4,6 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 import filter from 'lodash/filter';
 import { controlStateFactory, getErrors } from 'src/ControlState';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
+import ControlRecordTreeMgr from 'src/helpers/ControlRecordTreeMgr';
 import addMoreDecorator from './AddMoreDecorator';
 import ObservationMapper from "../helpers/ObservationMapper";
 
@@ -30,24 +31,15 @@ export class Container extends addMoreDecorator(Component) {
     this.setState({ data, collapse: undefined });
   }
 
-  onControlAdd(obs) {
-    const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
-    const nextGroupMembers = this.updateGroupMembers(obs.groupMembers, nextFormFieldPath);
-    const obsUpdated = obs.cloneForAddMore(nextFormFieldPath, nextGroupMembers);
-    const clonedRecord = this.state.data
-      .getRecord(obs.formFieldPath)
-      .set('formFieldPath', nextFormFieldPath)
-      .set('obs', obsUpdated);
-    const data = this.state.data.setRecord(clonedRecord);
-    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-
-    this.setState({ data: updatedState.data });
+  onControlAdd(formFieldPath) {
+    const updatedRecordTree = ControlRecordTreeMgr.add(this.state.data, formFieldPath);
+    this.setState({ data: updatedRecordTree });
   }
 
-  onControlRemove(obs) {
-    const data = this._changeValue(obs, []).deleteRecord(obs);
-    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-    this.setState({ data: updatedState.data });
+  onControlRemove(formFieldPath) {
+    // const data = this._changeValue(obs, []).deleteRecord(obs);
+    // const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
+    // this.setState({ data: updatedState.data });
   }
 
   getValue() {
