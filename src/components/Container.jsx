@@ -44,7 +44,7 @@ export class Container extends addMoreDecorator(Component) {
 
   getValue() {
     const records = this.state.data;
-    let obs = (new ObservationMapper()).from(records);
+    const obs = (new ObservationMapper()).from(records);
     return {observations: obs}
   }
 

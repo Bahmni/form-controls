@@ -1,4 +1,5 @@
 import { createObsFromControl } from 'src/helpers/Obs';
+import { cloneDeep } from 'lodash';
 
 export class ObsMapper {
 
@@ -46,7 +47,11 @@ export class ObsMapper {
   }
 
   getData(record){
-    let obs = record.dataSource;
+    let obs = cloneDeep(record.dataSource);
+    if (obs.formFieldPath != record.formFieldPath) {
+      obs.uuid = undefined;
+      obs.formFieldPath = record.formFieldPath;
+    }
     obs.value = record.value;
     obs.voided = false;
 

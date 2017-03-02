@@ -1,7 +1,7 @@
 import { createObsFromControl } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
 import MapperStore from 'src/helpers/MapperStore';
-import { List } from 'immutable';
+import { cloneDeep } from 'lodash';
 import ObservationMapper from "../helpers/ObservationMapper";
 
 export class ObsGroupMapper {
@@ -55,7 +55,11 @@ export class ObsGroupMapper {
   }
 
   getData(record){
-    let obsGroup = record.dataSource;
+    let obsGroup = cloneDeep(record.dataSource);
+    if (obsGroup.formFieldPath != record.formFieldPath) {
+      obsGroup.uuid = undefined;
+      obsGroup.formFieldPath = record.formFieldPath;
+    }
     obsGroup.groupMembers = (new ObservationMapper()).from(record);
     obsGroup.voided = false;
 

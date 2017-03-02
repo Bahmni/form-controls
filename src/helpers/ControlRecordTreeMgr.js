@@ -23,20 +23,20 @@ export default class ControlRecordTreeMgr {
     return targetTree;
   }
 
-  addToRootTree(parentTree, targetTree, addedTree) {
-    if (parentTree === targetTree) {
-      return parentTree.set('children', parentTree.children.push(addedTree));
+  addToRootTree(rootTree, parentTree, addedTree) {
+    if (rootTree === parentTree) {
+      return rootTree.set('children', rootTree.children.push(addedTree));
     }
 
-    const tree = parentTree.children.map(childTree => {
+    const tree = rootTree.children.map(childTree => {
       if (childTree.children) {
-        const updatedChildTree = this.addToRootTree(childTree, targetTree, addedTree);
+        const updatedChildTree = this.addToRootTree(childTree, parentTree, addedTree);
         return updatedChildTree ? updatedChildTree : childTree;
       }
       return childTree;
     });
 
-    return parentTree.set('children', tree);
+    return rootTree.set('children', tree);
   }
 
   getBrotherTree(parentTree, formFieldPath) {
