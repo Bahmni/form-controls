@@ -61,4 +61,8 @@ export class ObsGroupMapper {
 
     return obsGroup;
   }
+
+  getChildren(obs){
+    return obs.groupMembers;
+  }
 }

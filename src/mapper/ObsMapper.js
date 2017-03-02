@@ -52,4 +52,8 @@ export class ObsMapper {
 
     return obs;
   }
+
+  getChildren(obs){
+    return [];
+  }
 }
