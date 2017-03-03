@@ -51,7 +51,7 @@ export default class ControlRecordTreeBuilder {
       if (r.formFieldPath === formFieldPath) {
         return r.set('value', value).set('errors', errors);
       }
-      return r.children ? ControlRecordTreeBuilder.update(r, formFieldPath, value) : r;
+      return r.children ? ControlRecordTreeBuilder.update(r, formFieldPath, value, errors) : r;
     });
     return recordTree.set('children', children);
   }
