@@ -16,7 +16,7 @@ import {ControlRecord} from "../../src/helpers/ControlRecordTreeBuilder";
 
 chai.use(chaiEnzyme());
 
-describe.only('Container', () => {
+describe('Container', () => {
 
   before(() => {
     componentStore.registerComponent('label', Label);

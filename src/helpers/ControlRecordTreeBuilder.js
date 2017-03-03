@@ -49,6 +49,7 @@ export default class ControlRecordTreeBuilder {
 
   getRecords(controls, formName, formVersion, currentLayerObs, allObs) {
     let recordList = new List();
+
     controls.forEach(control => {
       const mapper = MapperStore.getMapper(control);
 
@@ -63,6 +64,7 @@ export default class ControlRecordTreeBuilder {
           showAddMore: true,
           children: control.controls && this.getRecords(control.controls, formName, formVersion, mapper.getChildren(data), allObs),
         });
+
         recordList = recordList.push(record);
       });
     });

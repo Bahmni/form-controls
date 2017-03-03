@@ -117,7 +117,7 @@ describe('Control Record', () => {
       const formFieldPath = 'SingleObs.1/1-0';
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
 
-      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, formFieldPath, 1);
+      const updatedRecordTree = controlRecordTree.update(formFieldPath, 1);
 
       expect(updatedRecordTree.children.get(0).formFieldPath).to.equal(formFieldPath);
       expect(updatedRecordTree.children.get(0).value).to.equal(1);
@@ -128,7 +128,7 @@ describe('Control Record', () => {
       const formFieldPath = 'SingleObs.1/1-0';
 
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
-      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, formFieldPath, 1);
+      const updatedRecordTree = controlRecordTree.update(formFieldPath, 1);
 
       let obs = (new ObservationMapper()).from(updatedRecordTree);
       expect(obs.length).to.equal(1);
@@ -139,12 +139,131 @@ describe('Control Record', () => {
       const formFieldPath = 'SingleObs.1/1-0';
 
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, observation);
-      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, formFieldPath, 999);
+      const updatedRecordTree = controlRecordTree.update(formFieldPath, 999);
 
       let obs = (new ObservationMapper()).from(updatedRecordTree);
       expect(obs.length).to.equal(1);
       expect(obs[0].value).to.equal(999);
     })
+
+    it('should generate data from record when input obs is single section', () => {
+      const observations = [
+        {
+          "encounterDateTime": 1488424586000,
+          "visitStartDateTime": null,
+          "targetObsRelation": null,
+          "groupMembers": [],
+          "providers": [
+            {
+              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
+              "name": "Super Man",
+              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+            }
+          ],
+          "isAbnormal": null,
+          "duration": null,
+          "type": "Numeric",
+          "encounterUuid": "f42c18c1-45a7-450d-9d18-1df89fb0b57b",
+          "obsGroupUuid": null,
+          "creatorName": "Super Man",
+          "conceptSortWeight": 1,
+          "parentConceptUuid": null,
+          "hiNormal": null,
+          "lowNormal": null,
+          "formNamespace": "Bahmni",
+          "formFieldPath": "section.1/3-0",
+          "voided": false,
+          "voidReason": null,
+          "concept": {
+            "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "name": "HEIGHT",
+            "dataType": "Numeric",
+            "shortName": "HEIGHT",
+            "conceptClass": "Misc",
+            "hiNormal": null,
+            "lowNormal": null,
+            "set": false,
+            "mappings": []
+          },
+          "valueAsString": "23423.0",
+          "conceptUuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "unknown": false,
+          "uuid": "ed9ad526-c8f0-438a-a79d-be36e815ecf2",
+          "observationDateTime": "2017-03-02T03:16:26.000+0000",
+          "comment": null,
+          "conceptNameToDisplay": "HEIGHT",
+          "orderUuid": null,
+          "abnormal": null,
+          "value": 23423
+        }
+      ]
+
+      const metadata = {
+        "name": "section",
+        "id": 39,
+        "uuid": "befa88ab-163d-4934-8c8d-0c37ae58724d",
+        "controls": [
+          {
+            "type": "section",
+            "label": {
+              "type": "label",
+              "value": "Section"
+            },
+            "properties": {
+              "location": {
+                "column": 0,
+                "row": 0
+              }
+            },
+            "id": "1",
+            "controls": [
+              {
+                "type": "obsControl",
+                "label": {
+                  "type": "label",
+                  "value": "HEIGHT"
+                },
+                "properties": {
+                  "mandatory": false,
+                  "notes": false,
+                  "addMore": false,
+                  "hideLabel": false,
+                  "location": {
+                    "column": 0,
+                    "row": 0
+                  }
+                },
+                "id": "3",
+                "concept": {
+                  "name": "HEIGHT",
+                  "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                  "description": [],
+                  "datatype": "Numeric",
+                  "answers": [],
+                  "properties": {
+                    "allowDecimal": false
+                  }
+                },
+                "units": null,
+                "hiNormal": null,
+                "lowNormal": null,
+                "hiAbsolute": null,
+                "lowAbsolute": null
+              }
+            ]
+          }
+        ],
+        "version": "1"
+      }
+
+      const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, observations);
+
+      let obs = (new ObservationMapper()).from(controlRecordTree);
+
+      expect(obs.length).to.equal(1);
+      expect(obs[0].value).to.equal(23423);
+    })
+
   });
 
   describe('Multiple layer Record', () => {
@@ -300,9 +419,9 @@ describe('Control Record', () => {
     it('should update data from record when input obs is emtpy', () => {
       const emptyObservation = [];
       const expectedSubFormFieldPath = 'SingleGroup.3/4-0';
-
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
-      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, expectedSubFormFieldPath, 999);
+
+      const updatedRecordTree = controlRecordTree.update(expectedSubFormFieldPath, 999);
 
       const node = updatedRecordTree.children;
       const subNode = node.get(0).children;
@@ -313,134 +432,15 @@ describe('Control Record', () => {
     it('should generate data from record when input obs is emtpy', () => {
       const emptyObservation = [];
       const expectedSubFormFieldPath = 'SingleGroup.3/4-0';
-
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
-      const updatedRecordTree = ControlRecordTreeBuilder.update(controlRecordTree, expectedSubFormFieldPath, 999);
+      const updatedRecordTree = controlRecordTree.update(expectedSubFormFieldPath, 999);
 
       let obs = (new ObservationMapper()).from(updatedRecordTree);
 
       expect(obs.length).to.equal(1);
       expect(obs[0].groupMembers.length).to.equal(1);
       expect(obs[0].groupMembers[0].value).to.equal(999);
-    })
-
-    it.only('should generate data from record when input obs is section', () => {
-      const observations = [
-        {
-          "encounterDateTime": 1488424586000,
-          "visitStartDateTime": null,
-          "targetObsRelation": null,
-          "groupMembers": [],
-          "providers": [
-            {
-              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
-              "name": "Super Man",
-              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
-            }
-          ],
-          "isAbnormal": null,
-          "duration": null,
-          "type": "Numeric",
-          "encounterUuid": "f42c18c1-45a7-450d-9d18-1df89fb0b57b",
-          "obsGroupUuid": null,
-          "creatorName": "Super Man",
-          "conceptSortWeight": 1,
-          "parentConceptUuid": null,
-          "hiNormal": null,
-          "lowNormal": null,
-          "formNamespace": "Bahmni",
-          "formFieldPath": "section.1/3-0",
-          "voided": false,
-          "voidReason": null,
-          "concept": {
-            "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "name": "HEIGHT",
-            "dataType": "Numeric",
-            "shortName": "HEIGHT",
-            "conceptClass": "Misc",
-            "hiNormal": null,
-            "lowNormal": null,
-            "set": false,
-            "mappings": []
-          },
-          "valueAsString": "23423.0",
-          "conceptUuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          "unknown": false,
-          "uuid": "ed9ad526-c8f0-438a-a79d-be36e815ecf2",
-          "observationDateTime": "2017-03-02T03:16:26.000+0000",
-          "comment": null,
-          "conceptNameToDisplay": "HEIGHT",
-          "orderUuid": null,
-          "abnormal": null,
-          "value": 23423
-        }
-      ]
-
-      const metadata = {
-        "name": "section",
-        "id": 39,
-        "uuid": "befa88ab-163d-4934-8c8d-0c37ae58724d",
-        "controls": [
-          {
-            "type": "section",
-            "label": {
-              "type": "label",
-              "value": "Section"
-            },
-            "properties": {
-              "location": {
-                "column": 0,
-                "row": 0
-              }
-            },
-            "id": "1",
-            "controls": [
-              {
-                "type": "obsControl",
-                "label": {
-                  "type": "label",
-                  "value": "HEIGHT"
-                },
-                "properties": {
-                  "mandatory": false,
-                  "notes": false,
-                  "addMore": false,
-                  "hideLabel": false,
-                  "location": {
-                    "column": 0,
-                    "row": 0
-                  }
-                },
-                "id": "3",
-                "concept": {
-                  "name": "HEIGHT",
-                  "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                  "description": [],
-                  "datatype": "Numeric",
-                  "answers": [],
-                  "properties": {
-                    "allowDecimal": false
-                  }
-                },
-                "units": null,
-                "hiNormal": null,
-                "lowNormal": null,
-                "hiAbsolute": null,
-                "lowAbsolute": null
-              }
-            ]
-          }
-        ],
-        "version": "1"
-      }
-
-      const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, observations);
-
-      let obs = (new ObservationMapper()).from(controlRecordTree);
-
-      expect(obs.length).to.equal(1);
-      expect(obs[0].value).to.equal(23423);
-    })
+    });
 
     it('should generate data from record when input obs is nested section', () => {
       const observations = [{
