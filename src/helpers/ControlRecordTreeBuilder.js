@@ -46,10 +46,10 @@ export default class ControlRecordTreeBuilder {
     return new ControlRecord({children: records});
   }
 
-  static update(recordTree, formFieldPath, value) {
+  static update(recordTree, formFieldPath, value, errors) {
     const children = recordTree.children.map(r => {
       if (r.formFieldPath === formFieldPath) {
-        return r.set('value', value);
+        return r.set('value', value).set('errors', errors);
       }
       return r.children ? ControlRecordTreeBuilder.update(r, formFieldPath, value) : r;
     });

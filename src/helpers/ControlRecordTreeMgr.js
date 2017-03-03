@@ -1,4 +1,6 @@
 import {Util} from "./Util";
+import isEmpty from 'lodash/isEmpty';
+import constants from 'src/constants';
 
 export default class ControlRecordTreeMgr {
 
@@ -68,5 +70,19 @@ export default class ControlRecordTreeMgr {
     const brotherTree = treeMgr.getBrotherTree(rootTree, formFieldPath);
     const addedTree = treeMgr.generateNextTree(brotherTree);
     return treeMgr.addToRootTree(rootTree, parentTree, addedTree)
+  }
+
+  static getErrors(records) {
+    let errorArray = [];
+    const errors = records.get('errors');
+    if (errors && !isEmpty(errors.filter((err) => err.type === constants.errorTypes.error))) {
+      errorArray.push(errors);
+    }
+
+    if (records.children) {
+      return errorArray.concat(...records.children.map(r => ControlRecordTreeMgr.getErrors(r)));
+    }
+
+    return errorArray;
   }
 }

@@ -53,7 +53,7 @@ export class ObsMapper {
       obs.formFieldPath = record.formFieldPath;
     }
     obs.value = record.value;
-    obs.voided = false;
+    obs.voided = !record.value;
 
     return obs;
   }
