@@ -19,12 +19,12 @@ export const ControlRecord = new Record({
 
 export default class ControlRecordTreeBuilder {
 
-  getRecords(controls, formName, formVersion, bahmniObservations) {
+  getRecords(controls, formName, formVersion, currentLayerObs, allObs) {
     let recordList = new List();
     controls.forEach(control => {
       const mapper = MapperStore.getMapper(control);
 
-      const obsArray = mapper.getInitialObject(formName, formVersion, control, bahmniObservations);
+      const obsArray = mapper.getInitialObject(formName, formVersion, control, currentLayerObs, allObs);
       obsArray.forEach(data => {
         const record = new ControlRecord({
           formFieldPath: data.formFieldPath,
@@ -33,7 +33,7 @@ export default class ControlRecordTreeBuilder {
           control,
           enabled: false,
           showAddMore: true,
-          children: control.controls && this.getRecords(control.controls, formName, formVersion, mapper.getChildren(data)),
+          children: control.controls && this.getRecords(control.controls, formName, formVersion, mapper.getChildren(data), allObs),
         });
         recordList = recordList.push(record);
       });
@@ -42,7 +42,7 @@ export default class ControlRecordTreeBuilder {
   }
 
   build(metadata, observation) {
-    const records = this.getRecords(metadata.controls, metadata.name, metadata.version, observation);
+    const records = this.getRecords(metadata.controls, metadata.name, metadata.version, observation, observation);
     return new ControlRecord({children: records});
   }
 

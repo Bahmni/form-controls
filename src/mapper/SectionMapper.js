@@ -7,10 +7,11 @@ import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 import flattenDeep from 'lodash/flattenDeep';
 import MapperStore from 'src/helpers/MapperStore';
 import { getKeyPrefixForControl } from '../helpers/formNamespace';
+import ObservationMapper from "../helpers/ObservationMapper";
 
 export class SectionMapper {
 
-  getInitialObject(formName, formVersion, control, bahmniObservations) {
+  getInitialObject(formName, formVersion, control, currentLayerObs, bahmniObservations) {
     const obsList =
       this._getInitialObjectInternal(formName, formVersion, control, bahmniObservations);
 
@@ -65,12 +66,26 @@ export class SectionMapper {
     return obsListRecord.setObsList(obsList);
   }
 
+  getValue(obsList){
+    return undefined;
+  }
+
+  getData(record){
+    let r = (new ObservationMapper()).from(record);
+
+    return flattenDeep(r);
+  }
+
   getObject(obsListRecord) {
     const observations = [];
     obsListRecord.getObsList().forEach((obs) => {
       observations.push(obs.getObject(obs));
     });
 
-    return flattenDeep(observations);
+    return observations;
+  }
+
+  getChildren(data){
+    return data.obsList.toJS();
   }
 }

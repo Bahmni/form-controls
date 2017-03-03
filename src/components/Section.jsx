@@ -9,11 +9,8 @@ export class Section extends addMoreDecorator(Component) {
 
   constructor(props) {
     super(props);
-    const { formName, formVersion, obs, metadata, collapse } = this.props;
-    const observations = props.mapper.getObject(obs);
-    const originalData = controlStateFactory(metadata, observations, formName, formVersion);
-    const data = this.filterEmptyRecords(originalData);
-    this.state = { errors: [], data, collapse };
+    const { collapse } = this.props;
+    this.state = { errors: [], collapse };
     this.onChange = this.onChange.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
@@ -27,15 +24,8 @@ export class Section extends addMoreDecorator(Component) {
     }
   }
 
-  onChange(obs, errors) {
-    const bahmniRecord = this.state.data.getRecord(obs.formFieldPath)
-      .set('obs', obs)
-      .set('errors', errors);
-    const data = this.state.data.setRecord(bahmniRecord);
-    const updatedObs = this.props.mapper.setValue(this.props.obs, obs);
-    const updatedErrors = getErrors(data.getRecords());
-    this.setState({ data });
-    this.props.onValueChanged(updatedObs, updatedErrors);
+  onChange(formFieldPath, value, errors) {
+    this.props.onValueChanged(formFieldPath, value, errors);
   }
 
   onControlAdd(obs) {
@@ -67,7 +57,6 @@ export class Section extends addMoreDecorator(Component) {
     this.setState({ collapse });
   }
 
-
   render() {
     const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
     const childProps = {
@@ -80,7 +69,7 @@ export class Section extends addMoreDecorator(Component) {
       onControlRemove: this.onControlRemove,
     };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
-    const records = this.state.data.getActiveRecords();
+    const records = this.props.record.children;
     const sectionClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
