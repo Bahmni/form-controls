@@ -1,5 +1,7 @@
 import { Record, List } from 'immutable';
 import MapperStore from 'src/helpers/MapperStore';
+import constants from 'src/constants';
+import isEmpty from 'lodash/isEmpty';
 
 export const ControlRecord = new Record({
   control: undefined,
@@ -15,6 +17,32 @@ export const ControlRecord = new Record({
   getObject() {
     return this.mapper.getObject(this.obs);
   },
+
+  update(formFieldPath, value, errors) {
+    if (this.formFieldPath === formFieldPath) {
+      return this.set('value', value).set('errors', errors);
+    }
+
+    if (this.children) {
+      const childRecord = this.children.map(r => r.update(formFieldPath, value, errors) || r);
+      return this.set('children', childRecord);
+    }
+  },
+
+  getErrors() {
+    let errorArray = [];
+    const errors = this.get('errors');
+    if (errors && !isEmpty(errors.filter((err) => err.type === constants.errorTypes.error))) {
+      errorArray.push(errors);
+    }
+
+    if (this.children) {
+      return errorArray.concat(...this.children.map(r => r.getErrors()));
+    }
+
+    return errorArray;
+  }
+
 });
 
 export default class ControlRecordTreeBuilder {
@@ -44,15 +72,5 @@ export default class ControlRecordTreeBuilder {
   build(metadata, observation) {
     const records = this.getRecords(metadata.controls, metadata.name, metadata.version, observation, observation);
     return new ControlRecord({children: records});
-  }
-
-  static update(recordTree, formFieldPath, value) {
-    const children = recordTree.children.map(r => {
-      if (r.formFieldPath === formFieldPath) {
-        return r.set('value', value);
-      }
-      return r.children ? ControlRecordTreeBuilder.update(r, formFieldPath, value) : r;
-    });
-    return recordTree.set('children', children);
   }
 }

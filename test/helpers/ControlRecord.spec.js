@@ -1,7 +1,7 @@
 import ControlRecordTreeBuilder from "../../src/helpers/ControlRecordTreeBuilder";
 import ObservationMapper from "../../src/helpers/ObservationMapper";
 
-describe.only('Control Record', () => {
+describe('Control Record', () => {
 
   describe('Single Layer Record', () => {
 

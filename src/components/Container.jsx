@@ -26,8 +26,8 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   onValueChanged(formFieldPath, value, errors) {
-    const data = ControlRecordTreeBuilder.update(this.state.data, formFieldPath, value);
-    // const data = datathis._changeValue(obs, errors);
+    const data = this.state.data.update(formFieldPath, value, errors);
+    // const data = this._changeValue(obs, errors);
     this.setState({ data, collapse: undefined });
   }
 
@@ -44,8 +44,13 @@ export class Container extends addMoreDecorator(Component) {
 
   getValue() {
     const records = this.state.data;
-    const obs = (new ObservationMapper()).from(records);
-    return {observations: obs}
+    const observations = (new ObservationMapper()).from(records);
+    const errors = records.getErrors();
+
+    if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
+      return { observations };
+    }
+    return { errors }
   }
 
   /* eslint-disable no-param-reassign */
