@@ -26,7 +26,7 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   onValueChanged(formFieldPath, value, errors) {
-    const data = ControlRecordTreeBuilder.update(this.state.data, formFieldPath, value, errors);
+    const data = this.state.data.update(formFieldPath, value, errors);
     // const data = this._changeValue(obs, errors);
     this.setState({ data, collapse: undefined });
   }
@@ -45,7 +45,7 @@ export class Container extends addMoreDecorator(Component) {
   getValue() {
     const records = this.state.data;
     const observations = (new ObservationMapper()).from(records);
-    const errors = ControlRecordTreeMgr.getErrors(records);
+    const errors = records.getErrors();
 
     if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
       return { observations };

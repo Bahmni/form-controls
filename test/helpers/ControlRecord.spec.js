@@ -3,7 +3,7 @@ import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import { List } from 'immutable';
 import ObservationMapper from "../../src/helpers/ObservationMapper";
 
-describe.only('Control Record', () => {
+describe('Control Record', () => {
 
   describe('Single Layer Record', () => {
 
