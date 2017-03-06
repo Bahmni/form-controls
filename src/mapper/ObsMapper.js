@@ -7,17 +7,8 @@ export class ObsMapper {
     return createObsFromControl(formName, formVersion, control, bahmniObservations);
   }
 
-  _isNewVoidedObs(obs) {
-    return !obs.getUuid() && obs.isVoided();
-  }
-
-  _hasNoValue(obs) {
-    const value = obs.getValue();
-    return value === '' || value === undefined || value === null;
-  }
-
   getValue(obs) {
-    return { value: obs.value, comment: obs.comment};
+    return { value: obs.value, comment: obs.comment };
   }
 
   getData(record){

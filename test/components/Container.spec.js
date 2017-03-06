@@ -3,7 +3,6 @@ import { List } from 'immutable';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import sinon from 'sinon';
 import { Container } from 'components/Container.jsx';
 import { Label } from 'components/Label.jsx';
 import { TextBox } from 'components/TextBox.jsx';

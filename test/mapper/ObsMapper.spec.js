@@ -1,125 +1,101 @@
 import { ObsMapper } from 'src/mapper/ObsMapper';
-import sinon from 'sinon';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Obs } from 'src/helpers/Obs';
+import {ControlRecord} from "../../src/helpers/ControlRecordTreeBuilder";
 
 chai.use(chaiEnzyme());
 
 describe('ObsMapper', () => {
   const obs = {
-    getValue: sinon.stub(),
-    getUuid: sinon.stub(),
-    setValue: sinon.spy(),
-    void: sinon.spy(),
-    isVoided: sinon.stub(),
-    setComment: sinon.spy(),
-    getComment: sinon.stub(),
+    value: undefined,
+    comment: undefined,
   };
 
-  describe('getValue', () => {
-    it('should return undefined when obs value is empty', () => {
-      obs.getValue.returns('');
+  const mapper = new ObsMapper();
 
-      const mapper = new ObsMapper();
-      expect(mapper.getValue(obs)).to.eql(undefined);
-    });
+  const formName = 'SingleObs';
+  const formVersion = '1';
+  const pulseConcept = {
+    "answers": [],
+    "datatype": "Numeric",
+    "description": [],
+    "name": "Pulse",
+    "properties": {
+      "allowDecimal": true
+    },
+    "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+  };
+  const control = {
+    "concept": pulseConcept,
+    "hiAbsolute": null,
+    "hiNormal": 72,
+    "id": "1",
+    "label": {
+      "type": "label",
+      "value": "Pulse(/min)"
+    },
+    "lowAbsolute": null,
+    "lowNormal": 72,
+    "properties": {
+      "addMore": true,
+      "hideLabel": false,
+      "location": {
+        "column": 0,
+        "row": 0
+      },
+      "mandatory": true,
+      "notes": false
+    },
+    "type": "obsControl",
+    "units": "/min"
+  };
+  const observation = [
+    {
+      "concept": pulseConcept,
+      "formFieldPath": "SingleObs.1/1-0",
+      "formNamespace": "Bahmni",
+      "voided": true
+    }
+  ];
 
-    it('should return undefined when obs value is undefined', () => {
-      obs.getValue.returns(undefined);
+  it('should return value same as obs`s value', () => {
+    obs.value = 'test value';
 
-      const mapper = new ObsMapper();
-      expect(mapper.getValue(obs)).to.eql(undefined);
-    });
-
-    it('should return undefined when obs has value but is voided', () => {
-      obs.getValue.returns('someValue');
-      obs.isVoided.returns(true);
-
-      const mapper = new ObsMapper();
-      expect(mapper.getValue(obs)).to.eql(undefined);
-    });
-
-    it('should return value when obs has value', () => {
-      obs.getValue.returns('someValue');
-      obs.isVoided.returns(false);
-
-      const mapper = new ObsMapper();
-      expect(mapper.getValue(obs)).to.eql('someValue');
-    });
-
-    it('should return value when obs has value false', () => {
-      obs.getValue.returns(false);
-      obs.isVoided.returns(false);
-
-      const mapper = new ObsMapper();
-      expect(mapper.getValue(obs)).to.eql(false);
-    });
+    expect(mapper.getValue(obs).value).to.equal(obs.value);
   });
 
-  describe('getObs', () => {
-    it('should return undefined when value is empty', () => {
-      obs.getValue.returns('');
-      const mapper = new ObsMapper();
-      expect(mapper.getObs(obs)).to.eql(undefined);
+  it('should return comment same as obs`s comment', () => {
+    obs.comment = 'test comment';
+
+    expect(mapper.getValue(obs).comment).to.equal(obs.comment);
+  });
+
+  it('should return empty-children', () => {
+    expect(mapper.getChildren(obs).length).to.equal(0);
+  });
+
+  it('should return expected obsArray when getInitialObject be triggered', () => {
+    const obsArray = mapper.getInitialObject(formName, formVersion, control, observation);
+
+    expect(obsArray[0].concept).to.equal(pulseConcept);
+    expect(obsArray[0].formFieldPath).to.equal('SingleObs.1/1-0');
+  });
+
+  it('should convert obs from record when getData be triggered', () => {
+    const formFieldPath = 'SingleObs.1/1-0';
+    const record = new ControlRecord({
+      control,
+      formFieldPath,
+      value: {value: 1, comment: undefined},
+      dataSource: observation[0],
     });
 
-    it('should return undefined when value is undefined', () => {
-      obs.getValue.returns(undefined);
-      const mapper = new ObsMapper();
-      expect(mapper.getObs(obs)).to.eql(undefined);
-    });
+    const updatedObs = mapper.getData(record);
 
-    it('should return undefined when obs is voided and uuid is not present', () => {
-      obs.getValue.returns('someValue');
-      obs.isVoided.returns(true);
-      obs.getUuid.returns(undefined);
-      const mapper = new ObsMapper();
-      expect(mapper.getObs(obs)).to.eql(undefined);
-    });
-
-    it('should return value when obs is voided', () => {
-      obs.getValue.returns('someValue');
-      obs.isVoided.returns(true);
-      obs.getUuid.returns('someOldUuid');
-      const mapper = new ObsMapper();
-      expect(mapper.getObs(obs)).to.deep.eql(obs);
-    });
+    expect(updatedObs.value).to.equal(1);
+    expect(updatedObs.comment).to.equal(undefined);
+    expect(updatedObs.formFieldPath).to.equal(formFieldPath);
   });
 
-  it('should set the value to obs if value is present', () => {
-    const mapper = new ObsMapper();
-    mapper.setValue(obs, '123');
-    sinon.assert.calledOnce(obs.setValue.withArgs('123'));
-  });
-
-  it('should void the obs if value is not present', () => {
-    const mapper = new ObsMapper();
-    mapper.setValue(obs, undefined);
-    sinon.assert.calledOnce(obs.void);
-  });
-
-  it('should set comment to obs', () => {
-    const mapper = new ObsMapper();
-    mapper.setComment(obs, 'Some Comment');
-    sinon.assert.calledOnce(obs.setComment.withArgs('Some Comment'));
-  });
-
-  it('should get comment from obs', () => {
-    obs.getComment.returns('New Comment');
-    const mapper = new ObsMapper();
-    expect(mapper.getComment(obs)).to.eql('New Comment');
-  });
-
-  describe('getObject', () => {
-    it('should return final object', () => {
-      const mapper = new ObsMapper();
-      const observation = { value: '72', concept: { name: 'someName' } };
-      const updatedObs = new Obs(observation);
-
-      expect(mapper.getObject(updatedObs).value).to.deep.eql(observation.value);
-      expect(mapper.getObject(updatedObs).concept).to.deep.eql(observation.concept);
-      expect(mapper.getObject(updatedObs).uuid).to.deep.eql(undefined);
-    });
-  });
 });

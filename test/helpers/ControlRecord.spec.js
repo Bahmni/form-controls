@@ -136,7 +136,7 @@ describe('Control Record', () => {
       let obs = (new ObservationMapper()).from(updatedRecordTree);
       expect(obs.length).to.equal(1);
       expect(obs[0].value).to.equal(newValue.value);
-    })
+    });
 
     it('should generate data from record when input obs is not empty', () => {
       const formFieldPath = 'SingleObs.1/1-0';
@@ -200,7 +200,7 @@ describe('Control Record', () => {
           "abnormal": null,
           "value": 23423
         }
-      ]
+      ];
 
       const metadata = {
         "name": "section",
@@ -258,7 +258,7 @@ describe('Control Record', () => {
           }
         ],
         "version": "1"
-      }
+      };
 
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, observations);
 
