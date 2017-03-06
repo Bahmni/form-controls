@@ -61,7 +61,7 @@ export class ObsGroupMapper {
       obsGroup.formFieldPath = record.formFieldPath;
     }
     obsGroup.groupMembers = (new ObservationMapper()).from(record);
-    obsGroup.voided = false;
+    obsGroup.voided = obsGroup.groupMembers && obsGroup.groupMembers.filter(child => !child.voided).length === 0;
 
     return obsGroup;
   }
