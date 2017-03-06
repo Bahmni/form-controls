@@ -21,12 +21,12 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   onChange(value, errors) {
-    this.props.onValueChanged(this.props.formFieldPath, value, errors);
+    this.props.onValueChanged(this.props.formFieldPath, { value, comment: this.props.value.comment }, errors);
   }
 
   onCommentChange(comment) {
-    const updatedObs = this.props.mapper.setComment(this.props.value, comment);
-    this.props.onValueChanged(updatedObs);
+    this.props.onValueChanged(this.props.formFieldPath, { value: this.props.value.value, comment }, undefined);
+
   }
 
   displayObsControl(registeredComponent) {
@@ -39,7 +39,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       onChange: this.onChange,
       validate,
       validations,
-      value: this.props.value,
+      value: this.props.value.value,
       ...this._numericContext(metadata),
     });
   }
@@ -99,7 +99,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     const { mapper, metadata: { properties } } = this.props;
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
-      const comment = mapper.getComment(this.props.obs);
+      const comment = this.props.value.comment;
       return (
         <Comment comment={comment} onCommentChange={this.onCommentChange} />
       );

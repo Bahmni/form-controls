@@ -51,7 +51,7 @@ export class ObsGroupMapper {
   }
 
   getValue(){
-    return undefined;
+    return {};
   }
 
   getData(record){

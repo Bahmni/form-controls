@@ -17,15 +17,7 @@ export class ObsMapper {
   }
 
   getValue(obs) {
-    return obs.value;
-  }
-
-  setComment(obs, comment) {
-    return obs.setComment(comment);
-  }
-
-  getComment(obs) {
-    return obs.getComment();
+    return { value: obs.value, comment: obs.comment};
   }
 
   getData(record){
@@ -34,8 +26,9 @@ export class ObsMapper {
       obs.uuid = undefined;
       obs.formFieldPath = record.formFieldPath;
     }
-    obs.value = record.value;
-    obs.voided = !record.value;
+    obs.value = record.value.value;
+    obs.comment = record.value.comment;
+    obs.voided = !record.value.value;
 
     return obs;
   }

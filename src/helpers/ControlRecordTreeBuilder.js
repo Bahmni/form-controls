@@ -7,7 +7,7 @@ export const ControlRecord = new Record({
   control: undefined,
   formFieldPath: '',
   children: undefined,
-  value: undefined,
+  value: {},
   mapper: undefined,
   active: true,
   showAddMore: false,
