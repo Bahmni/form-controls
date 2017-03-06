@@ -49,6 +49,7 @@ describe('ObsListMapper', () => {
       const observations = [getObs('uuid1', '72'), getObs('uuid2', 'notes')];
       const initialObjectArray = mapper.getInitialObject(formName, formVersion,
         control, observations);
+
       expect(initialObjectArray.length).to.eql(1);
       expect(initialObjectArray[0].getObsList().size).to.eql(2);
       expect(initialObjectArray[0].getObs().concept).to.eql(concept);

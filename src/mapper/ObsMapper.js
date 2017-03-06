@@ -20,30 +20,12 @@ export class ObsMapper {
     return obs.value;
   }
 
-  getObs(obs) {
-    if (this._hasNoValue(obs) || this._isNewVoidedObs(obs)) {
-      return undefined;
-    }
-    return obs;
-  }
-
-  setValue(obs, value) {
-    if (value !== '' && value !== undefined) {
-      return obs.setValue(value);
-    }
-    return obs.void();
-  }
-
   setComment(obs, comment) {
     return obs.setComment(comment);
   }
 
   getComment(obs) {
     return obs.getComment();
-  }
-
-  getObject(obs) {
-    return obs.getObject(obs);
   }
 
   getData(record){

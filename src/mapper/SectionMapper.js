@@ -53,19 +53,6 @@ export class SectionMapper {
     return obsList;
   }
 
-  setValue(obsListRecord, obs) {
-    let obsList = obsListRecord.getObsList();
-    const index = obsList.findIndex(o => o.formFieldPath === obs.formFieldPath);
-
-    if (index === -1) {
-      obsList = obsList.push(obs);
-    }
-
-    obsList = obsList.setIn([index], obs);
-
-    return obsListRecord.setObsList(obsList);
-  }
-
   getValue(obsList){
     return undefined;
   }
@@ -74,15 +61,6 @@ export class SectionMapper {
     let r = (new ObservationMapper()).from(record);
 
     return flattenDeep(r);
-  }
-
-  getObject(obsListRecord) {
-    const observations = [];
-    obsListRecord.getObsList().forEach((obs) => {
-      observations.push(obs.getObject(obs));
-    });
-
-    return observations;
   }
 
   getChildren(data){
