@@ -162,7 +162,7 @@ describe('Container', () => {
         "type": "Numeric",
         "unknown": false,
         "uuid": "1c2b18ec-ad88-44e5-ae34-3b0e88240a93",
-        "value": 1,
+        "value": undefined,
         "valueAsString": "1.0",
         "visitStartDateTime": null,
         "voidReason": null,
@@ -205,6 +205,26 @@ describe('Container', () => {
 
       const obsControlRecord = wrapper.state().data.children.get(0);
       expect(obsControlRecord.value).to.equal(changedValue);
+    });
+
+    it('should update dataSource value when getValue is triggered', () => {
+      const wrapper = mount(
+        <Container
+          collapse
+          metadata={metadata}
+          observations={[]}
+          validate={false}
+        />
+      );
+      wrapper.setState({data: recordTree});
+
+      const previousValue = wrapper.state().data.children.get(0).get('dataSource').value;
+      expect(previousValue).to.equal(undefined);
+
+      const result = wrapper.instance().getValue();
+
+      const updatedValue = result.observations[0].value;
+      expect(updatedValue).to.equal(1);
     });
 
   });
@@ -380,7 +400,7 @@ describe('Container', () => {
         "type": "Numeric",
         "unknown": false,
         "uuid": "ff30ba63-bb45-404b-bb51-f686bbc15f49",
-        "value": 1,
+        "value": undefined,
         "valueAsString": "1.0",
         "visitStartDateTime": null,
         "voidReason": null,
@@ -608,8 +628,24 @@ describe('Container', () => {
       expect(obsControlRecord.value).to.equal(changedValue);
     });
 
+    it('should update dataSource value when getValue is triggered', () => {
+      const wrapper = mount(
+        <Container
+          collapse
+          metadata={metadata}
+          observations={[]}
+          validate={false}
+        />
+      );
+      wrapper.setState({data: recordTree});
 
+      const previousValue = wrapper.state().data.children.get(0).children.get(0).get('dataSource').value;
+      expect(previousValue).to.equal(undefined);
+
+      const result = wrapper.instance().getValue();
+
+      const updatedValue = result.observations[0].groupMembers[0].value;
+      expect(updatedValue).to.equal(1);
+    });
   });
-
-
 });
