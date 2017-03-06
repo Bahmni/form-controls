@@ -4,10 +4,8 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import { ObsControl } from 'components/ObsControl.jsx';
-import { Obs } from 'src/helpers/Obs';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';
-import { ObsMapper } from 'src/mapper/ObsMapper';
 
 chai.use(chaiEnzyme());
 
@@ -37,14 +35,14 @@ describe('ObsControl', () => {
     type: 'label',
   };
 
+  const domainValue = {};
+
   const properties = { location: { row: 0, column: 1 } };
   let onChangeSpy;
 
   beforeEach(() => {
     onChangeSpy = sinon.spy();
   });
-
-  const mapper = new ObsMapper();
 
   it('should render dummyControl', () => {
     const metadata = {
@@ -54,16 +52,14 @@ describe('ObsControl', () => {
       label,
       properties,
     };
-
-    const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);
+
     expect(wrapper).to.have.exactly(1).descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(wrapper).to.have.exactly(1).descendants('input');
@@ -82,12 +78,10 @@ describe('ObsControl', () => {
       options: [],
     };
 
-    const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);
@@ -105,12 +99,10 @@ describe('ObsControl', () => {
     };
     metadata.concept.answers = [];
 
-    const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);
@@ -126,15 +118,15 @@ describe('ObsControl', () => {
       label,
       properties: { mandatory: true },
     };
-    const observation = new Obs(metadata);
+
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);
+
     expect(wrapper.find('span').text()).to.eql('*');
     expect(wrapper.find('span')).to.have.className('form-builder-asterisk');
   });
@@ -148,16 +140,14 @@ describe('ObsControl', () => {
       properties,
     };
 
-    const observation = new Obs(metadata);
-
     const wrapper = shallow(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);
+
     expect(wrapper).to.have.exactly(1).descendants('div');
     expect(wrapper.find('div').at(0).text()).to.eql('<UnSupportedComponent />');
   });
@@ -171,19 +161,16 @@ describe('ObsControl', () => {
       properties,
     };
 
-    const observation = new Obs(metadata);
     const wrapper = shallow(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />
     );
-    const instance = wrapper.instance();
-    instance.onChange(true, []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(observation.setValue(true), []));
+    wrapper.instance().onChange(true, []);
+    sinon.assert.calledOnce(onChangeSpy.withArgs(wrapper.prop('formFieldPath'), {value: true, comment: wrapper.props('value').comment}, []));
   });
 
   it('should return the child control errors', () => {
@@ -194,21 +181,19 @@ describe('ObsControl', () => {
       label,
       properties,
     };
-    const observation = new Obs(metadata);
     const errors = [constants.validations.mandatory];
 
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />
     );
     const instance = wrapper.instance();
     instance.onChange(undefined, errors);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(observation.void(), errors));
+    sinon.assert.calledOnce(onChangeSpy.withArgs(wrapper.prop('formFieldPath'), {value: undefined, comment: wrapper.props('value').comment}, errors));
   });
 
   it('should render notes if notes property is enabled', () => {
@@ -220,13 +205,10 @@ describe('ObsControl', () => {
       properties: { notes: true },
     };
 
-    const observation = new Obs(metadata);
-
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />
@@ -244,13 +226,10 @@ describe('ObsControl', () => {
       properties: {},
     };
 
-    const observation = new Obs(metadata);
-
     const wrapper = shallow(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />
@@ -258,7 +237,7 @@ describe('ObsControl', () => {
     expect(wrapper).to.not.have.descendants('Comment');
   });
 
-  it('should return the obsControl value with comment', () => {
+  it('should return the obsControl with comment', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
@@ -267,20 +246,18 @@ describe('ObsControl', () => {
       properties,
     };
 
-    const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />
     );
-    const instance = wrapper.instance();
-    instance.onChange(true, []);
-    instance.onCommentChange('');
-    sinon.assert.calledOnce(onChangeSpy.withArgs(observation.setValue(true), []));
+
+    wrapper.instance().onCommentChange('Test Comment');
+
+    sinon.assert.calledOnce(onChangeSpy.withArgs(wrapper.prop('formFieldPath'), {value: wrapper.prop('value').value, comment: 'Test Comment'}, undefined));
   });
 
   it('should display the label based on property', () => {
@@ -293,12 +270,10 @@ describe('ObsControl', () => {
       properties,
     };
 
-    const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);
@@ -307,7 +282,7 @@ describe('ObsControl', () => {
     expect(wrapper).to.have.exactly(1).descendants('input');
   });
 
-  it('should not rerender ObsControl if properties doesn`t change', () => {
+  it('should not re-render ObsControl if properties doesn`t change', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
@@ -317,12 +292,10 @@ describe('ObsControl', () => {
     };
     metadata.properties.hideLabel = false;
 
-    const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);
@@ -330,7 +303,7 @@ describe('ObsControl', () => {
     expect(wrapper).to.have.exactly(1).descendants('Label');
 
     metadata.properties.hideLabel = true;
-    wrapper.setProps({ obs: observation });
+    wrapper.setProps({ value: domainValue });
     wrapper.setProps({ metadata });
 
     expect(wrapper).to.not.have.descendants('Label');
@@ -346,12 +319,10 @@ describe('ObsControl', () => {
     };
     metadata.properties.hideLabel = false;
 
-    const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);
@@ -359,8 +330,8 @@ describe('ObsControl', () => {
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl').props()).to.have.property('value', undefined);
 
-    const updatedObs = observation.setValue('abc');
-    wrapper.setProps({ obs: updatedObs });
+    const updatedValue = {value: 'abc', comment: wrapper.prop('value').comment};
+    wrapper.setProps({ value: updatedValue });
 
     expect(wrapper.find('DummyControl').props()).to.have.property('value', 'abc');
   });
@@ -379,12 +350,10 @@ describe('ObsControl', () => {
     };
     metadata.properties.hideLabel = false;
 
-    const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);
@@ -405,12 +374,10 @@ describe('ObsControl', () => {
       label,
       properties,
     };
-    const observation = new Obs(metadata);
     const wrapper = mount(
       <ObsControl
-        mapper={mapper}
         metadata={metadata}
-        obs={observation}
+        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
       />);

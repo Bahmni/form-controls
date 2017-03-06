@@ -30,7 +30,7 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayObsControl(registeredComponent) {
-    const { mapper, metadata, metadata: { concept }, validate } = this.props;
+    const { metadata, metadata: { concept }, validate } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
@@ -96,7 +96,7 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   showComment() {
-    const { mapper, metadata: { properties } } = this.props;
+    const { metadata: { properties } } = this.props;
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
       const comment = this.props.value.comment;
@@ -136,7 +136,6 @@ export class ObsControl extends addMoreDecorator(Component) {
 }
 
 ObsControl.propTypes = {
-  mapper: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,
@@ -148,13 +147,15 @@ ObsControl.propTypes = {
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
   }),
-  value: PropTypes.any.isRequired,
+  validate: PropTypes.bool.isRequired,
+  collapse: PropTypes.bool,
   onControlAdd: PropTypes.func,
   onControlRemove: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
   showAddMore: PropTypes.bool.isRequired,
   showRemove: PropTypes.bool.isRequired,
-  validate: PropTypes.bool.isRequired,
+  value: PropTypes.object.isRequired,
+  children: PropTypes.array,
 };
 
 ObsControl.defaultProps = {

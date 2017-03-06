@@ -34,10 +34,9 @@ export function getControls(controls, records, props) {
         metadata: control,
         value: record.value,
         formFieldPath: record.formFieldPath,
-        mapper: record.mapper,
         showAddMore: record.showAddMore,
         showRemove: record.showRemove,
-        record: record,
+        children: record.children,
         ...props,
       }));
       return components;

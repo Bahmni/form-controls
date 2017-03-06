@@ -10,7 +10,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
 
   constructor(props) {
     super(props);
-    const { formName, formVersion, obs, metadata, collapse, record } = this.props;
+    const { collapse } = this.props;
     this.state = { errors: [], collapse };
     this.onChange = this.onChange.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
@@ -74,7 +74,6 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     const childProps = { collapse, formName, formVersion, validate,
       onValueChanged: this.onChange, onControlAdd: this.onControlAdd, onControlRemove: this.onControlRemove };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
-    const records = this.props.record.children;
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
     const obsGroupClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
@@ -87,7 +86,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
         </legend>
           {this.showAddMore()}
           <div className={`obsGroup-controls ${obsGroupClass}`}>
-            { displayRowControls(groupedRowControls, records, childProps) }
+            { displayRowControls(groupedRowControls, this.props.children, childProps) }
           </div>
         </fieldset>
     );
@@ -95,10 +94,6 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
 }
 
 ObsGroupControl.propTypes = {
-  collapse: PropTypes.bool,
-  formName: PropTypes.string.isRequired,
-  formVersion: PropTypes.string.isRequired,
-  mapper: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,
@@ -111,13 +106,17 @@ ObsGroupControl.propTypes = {
     type: PropTypes.string.isRequired,
     controls: PropTypes.array,
   }),
-  obs: PropTypes.any.isRequired,
+  collapse: PropTypes.bool,
   onControlAdd: PropTypes.func,
   onControlRemove: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
   showAddMore: PropTypes.bool.isRequired,
   showRemove: PropTypes.bool.isRequired,
   validate: PropTypes.bool.isRequired,
+  formName: PropTypes.string.isRequired,
+  formVersion: PropTypes.string.isRequired,
+  value: PropTypes.object.isRequired,
+  children: PropTypes.array,
 };
 
 ObsGroupControl.defaultProps = {
