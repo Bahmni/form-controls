@@ -118,7 +118,7 @@ describe('Container', () => {
         "units": "/min"
       },
       formFieldPath: formFieldPath,
-      value: 1,
+      value: {value: 1, comment: undefined},
       dataSource: {
         "abnormal": null,
         "comment": null,
@@ -195,7 +195,7 @@ describe('Container', () => {
           validate={false}
         />
       );
-      const changedValue = '1';
+      const changedValue = {value: '1', comment:undefined};
 
       // const update = sinon.stub(wrapper.state().data, 'update').returns(recordTree);
 
@@ -406,7 +406,7 @@ describe('Container', () => {
         "voidReason": null,
         "voided": false
       },
-      value: 1
+      value: {value: 1, comment: undefined},
     });
     const childRecord = new ControlRecord({
       control: {
@@ -615,7 +615,7 @@ describe('Container', () => {
         />
       );
       const formFieldPath = 'SingleGroup.3/4-0';
-      const changedValue = '1';
+      const changedValue = {value: '1', comment:undefined};
 
       // const update = sinon.stub(wrapper.state().data, 'update').returns(recordTree);
 
