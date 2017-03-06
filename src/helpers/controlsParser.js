@@ -65,7 +65,7 @@ export function getGroupedControls(controls, property) {
 }
 
 export function displayRowControls(controls, records, childProps) {
-  const rows = map(controls, (rowControls, index) =>
+  return map(controls, (rowControls, index) =>
     <Row
       controls={rowControls}
       id={index}
@@ -74,5 +74,4 @@ export function displayRowControls(controls, records, childProps) {
       {...childProps}
     />
   );
-  return rows;
 }

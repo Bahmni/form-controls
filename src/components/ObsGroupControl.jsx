@@ -122,6 +122,7 @@ ObsGroupControl.propTypes = {
 ObsGroupControl.defaultProps = {
   showAddMore: false,
   showRemove: false,
+  children: [],
 };
 
 ComponentStore.registerComponent('obsGroupControl', ObsGroupControl);
