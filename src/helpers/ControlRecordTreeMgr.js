@@ -4,7 +4,7 @@ export default class ControlRecordTreeMgr {
 
   generateNextTree(brotherTree) {
     const nextFormFieldPath = `${brotherTree.formFieldPath.split('-')[0]}-${Util.increment(brotherTree.formFieldPath.split('-')[1])}`;
-    return brotherTree.set('formFieldPath', nextFormFieldPath).set('value', undefined);
+    return brotherTree.set('formFieldPath', nextFormFieldPath).set('value', {});
   }
 
   findParentTree(parentTree, formFieldPath) {
