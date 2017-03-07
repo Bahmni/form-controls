@@ -48,7 +48,11 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include: path.join(__dirname, 'src'),
-        loader: 'isparta'
+        loader: 'isparta',
+        exclude: [
+          /helpers\/ControlRecordTreeMgr\.js/,
+          /ControlState\.js/,
+        ],
       },
     ]
   },
