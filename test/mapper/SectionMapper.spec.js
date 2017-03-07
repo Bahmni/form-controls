@@ -161,7 +161,7 @@ describe('SectionMapper', () => {
           },
         },
         "formFieldPath": "section.1/3-0",
-        "value": "2",
+        "value": {value: '2', comment:undefined},
         "active": true,
         "dataSource": {
           "concept": {
@@ -226,7 +226,7 @@ describe('SectionMapper', () => {
           "lowAbsolute": null
         },
         "formFieldPath": "nested_section.3/4-0",
-        "value": 2,
+        "value": {value:2, comment: undefined},
         "active": true,
         "showAddMore": true,
         "showRemove": false,
@@ -276,7 +276,7 @@ describe('SectionMapper', () => {
           "abnormal": null,
           "orderUuid": null,
           "conceptNameToDisplay": "Pulse",
-          "value": 2
+          "value": {value:2, comment: undefined},
         }
       };
 
@@ -367,7 +367,7 @@ describe('SectionMapper', () => {
             "abnormal": null,
             "orderUuid": null,
             "conceptNameToDisplay": "Pulse",
-            "value": 2
+            "value": {value:2, comment: undefined},
           }]
         }
       };
@@ -399,7 +399,7 @@ describe('SectionMapper', () => {
           "lowAbsolute": null
         },
         "formFieldPath": "nested_section.3/2-0",
-        "value": 1,
+        "value": {value:1, comment: undefined},
         "active": true,
         "showAddMore": true,
         "showRemove": false,
@@ -448,7 +448,7 @@ describe('SectionMapper', () => {
           "abnormal": null,
           "orderUuid": null,
           "conceptNameToDisplay": "HEIGHT",
-          "value": 1
+          "value": {value:1, comment: undefined},
         }
       };
 
@@ -566,7 +566,7 @@ describe('SectionMapper', () => {
             "abnormal": null,
             "orderUuid": null,
             "conceptNameToDisplay": "HEIGHT",
-            "value": 1
+            "value": {value:1, comment: undefined},
           }, {
             "formFieldPath": "nested_section.3/3-0",
             "obsList": [{
@@ -614,7 +614,7 @@ describe('SectionMapper', () => {
               "abnormal": null,
               "orderUuid": null,
               "conceptNameToDisplay": "Pulse",
-              "value": 2
+              "value": {value:2, comment: undefined},
             }]
           }]
         }
