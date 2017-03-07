@@ -93,7 +93,6 @@ Section.propTypes = {
   collapse: PropTypes.bool,
   formName: PropTypes.string.isRequired,
   formVersion: PropTypes.string.isRequired,
-  mapper: PropTypes.object.isRequired,
   metadata: PropTypes.shape({
     id: PropTypes.string.isRequired,
     label: PropTypes.shape({
@@ -104,7 +103,6 @@ Section.propTypes = {
     type: PropTypes.string.isRequired,
     controls: PropTypes.array,
   }),
-  obs: PropTypes.any.isRequired,
   onValueChanged: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   children: PropTypes.any,

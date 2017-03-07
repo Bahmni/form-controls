@@ -117,7 +117,7 @@ describe('Container', () => {
         "units": "/min"
       },
       formFieldPath: formFieldPath,
-      value: {value: 1, comment: undefined},
+      value: {value: '1', comment: undefined},
       dataSource: {
         "abnormal": null,
         "comment": null,
@@ -223,7 +223,7 @@ describe('Container', () => {
       const result = wrapper.instance().getValue();
 
       const updatedValue = result.observations[0].value;
-      expect(updatedValue).to.equal(1);
+      expect(updatedValue).to.equal('1');
     });
 
   });
@@ -405,7 +405,7 @@ describe('Container', () => {
         "voidReason": null,
         "voided": false
       },
-      value: {value: 1, comment: undefined},
+      value: {value: '1', comment: undefined},
     });
     const childRecord = new ControlRecord({
       control: {
@@ -644,7 +644,7 @@ describe('Container', () => {
       const result = wrapper.instance().getValue();
 
       const updatedValue = result.observations[0].groupMembers[0].value;
-      expect(updatedValue).to.equal(1);
+      expect(updatedValue).to.equal('1');
     });
   });
 });
