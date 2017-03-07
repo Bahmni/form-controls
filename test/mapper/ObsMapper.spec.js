@@ -1,8 +1,7 @@
 import { ObsMapper } from 'src/mapper/ObsMapper';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { Obs } from 'src/helpers/Obs';
-import {ControlRecord} from "../../src/helpers/ControlRecordTreeBuilder";
+import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 
 chai.use(chaiEnzyme());
 
@@ -17,46 +16,46 @@ describe('ObsMapper', () => {
   const formName = 'SingleObs';
   const formVersion = '1';
   const pulseConcept = {
-    "answers": [],
-    "datatype": "Numeric",
-    "description": [],
-    "name": "Pulse",
-    "properties": {
-      "allowDecimal": true
+    answers: [],
+    datatype: 'Numeric',
+    description: [],
+    name: 'Pulse',
+    properties: {
+      allowDecimal: true,
     },
-    "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+    uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
   };
   const control = {
-    "concept": pulseConcept,
-    "hiAbsolute": null,
-    "hiNormal": 72,
-    "id": "1",
-    "label": {
-      "type": "label",
-      "value": "Pulse(/min)"
+    concept: pulseConcept,
+    hiAbsolute: null,
+    hiNormal: 72,
+    id: '1',
+    label: {
+      type: 'label',
+      value: 'Pulse(/min)',
     },
-    "lowAbsolute": null,
-    "lowNormal": 72,
-    "properties": {
-      "addMore": true,
-      "hideLabel": false,
-      "location": {
-        "column": 0,
-        "row": 0
+    lowAbsolute: null,
+    lowNormal: 72,
+    properties: {
+      addMore: true,
+      hideLabel: false,
+      location: {
+        column: 0,
+        row: 0,
       },
-      "mandatory": true,
-      "notes": false
+      mandatory: true,
+      notes: false,
     },
-    "type": "obsControl",
-    "units": "/min"
+    type: 'obsControl',
+    units: '/min',
   };
   const observation = [
     {
-      "concept": pulseConcept,
-      "formFieldPath": "SingleObs.1/1-0",
-      "formNamespace": "Bahmni",
-      "voided": true
-    }
+      concept: pulseConcept,
+      formFieldPath: 'SingleObs.1/1-0',
+      formNamespace: 'Bahmni',
+      voided: true,
+    },
   ];
 
   it('should return value same as obs`s value', () => {
@@ -87,7 +86,7 @@ describe('ObsMapper', () => {
     const record = new ControlRecord({
       control,
       formFieldPath,
-      value: {value: 1, comment: undefined},
+      value: { value: 1, comment: undefined },
       dataSource: observation[0],
     });
 
@@ -97,5 +96,4 @@ describe('ObsMapper', () => {
     expect(updatedObs.comment).to.equal(undefined);
     expect(updatedObs.formFieldPath).to.equal(formFieldPath);
   });
-
 });

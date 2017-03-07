@@ -21,12 +21,19 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   onChange(value, errors) {
-    this.props.onValueChanged(this.props.formFieldPath, { value, comment: this.props.value.comment }, errors);
+    this.props.onValueChanged(
+      this.props.formFieldPath,
+      { value, comment: this.props.value.comment },
+      errors)
+    ;
   }
 
   onCommentChange(comment) {
-    this.props.onValueChanged(this.props.formFieldPath, { value: this.props.value.value, comment }, undefined);
-
+    this.props.onValueChanged(
+      this.props.formFieldPath,
+      { value: this.props.value.value, comment },
+      undefined
+    );
   }
 
   displayObsControl(registeredComponent) {
@@ -136,6 +143,8 @@ export class ObsControl extends addMoreDecorator(Component) {
 }
 
 ObsControl.propTypes = {
+  children: PropTypes.array,
+  collapse: PropTypes.bool,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,
@@ -147,15 +156,13 @@ ObsControl.propTypes = {
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
   }),
-  validate: PropTypes.bool.isRequired,
-  collapse: PropTypes.bool,
   onControlAdd: PropTypes.func,
   onControlRemove: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
   showAddMore: PropTypes.bool.isRequired,
   showRemove: PropTypes.bool.isRequired,
+  validate: PropTypes.bool.isRequired,
   value: PropTypes.object.isRequired,
-  children: PropTypes.array,
 };
 
 ObsControl.defaultProps = {

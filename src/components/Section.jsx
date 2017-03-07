@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import classNames from 'classnames';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
-import { controlStateFactory, getErrors } from 'src/ControlState';
+import { getErrors } from 'src/ControlState';
 import addMoreDecorator from './AddMoreDecorator';
 
 export class Section extends addMoreDecorator(Component) {
@@ -39,7 +39,7 @@ export class Section extends addMoreDecorator(Component) {
     const data = this.state.data.setRecord(clonedRecord);
     const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
 
-    this.setState({data: updatedState.data});
+    this.setState({ data: updatedState.data });
   }
 
   onControlRemove(obs) {
@@ -90,6 +90,7 @@ export class Section extends addMoreDecorator(Component) {
 }
 
 Section.propTypes = {
+  children: PropTypes.any,
   collapse: PropTypes.bool,
   formName: PropTypes.string.isRequired,
   formVersion: PropTypes.string.isRequired,
@@ -105,13 +106,11 @@ Section.propTypes = {
   }),
   onValueChanged: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
-  children: PropTypes.any,
 };
 
 Section.defaultProps = {
   children: List.of([]),
 };
-
 
 
 ComponentStore.registerComponent('section', Section);

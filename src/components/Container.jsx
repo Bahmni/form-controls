@@ -2,11 +2,10 @@ import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from '../helpers/controlsParser';
 import isEmpty from 'lodash/isEmpty';
 import filter from 'lodash/filter';
-import { controlStateFactory, getErrors } from 'src/ControlState';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 import ControlRecordTreeMgr from 'src/helpers/ControlRecordTreeMgr';
 import addMoreDecorator from './AddMoreDecorator';
-import ObservationMapper from "../helpers/ObservationMapper";
+import ObservationMapper from '../helpers/ObservationMapper';
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
@@ -36,10 +35,7 @@ export class Container extends addMoreDecorator(Component) {
     this.setState({ data: updatedRecordTree });
   }
 
-  onControlRemove(formFieldPath) {
-    // const data = this._changeValue(obs, []).deleteRecord(obs);
-    // const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-    // this.setState({ data: updatedState.data });
+  onControlRemove() {
   }
 
   getValue() {
@@ -50,7 +46,7 @@ export class Container extends addMoreDecorator(Component) {
     if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
       return { observations };
     }
-    return { errors }
+    return { errors };
   }
 
   /* eslint-disable no-param-reassign */

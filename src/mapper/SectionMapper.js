@@ -7,7 +7,7 @@ import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 import flattenDeep from 'lodash/flattenDeep';
 import MapperStore from 'src/helpers/MapperStore';
 import { getKeyPrefixForControl } from '../helpers/formNamespace';
-import ObservationMapper from "../helpers/ObservationMapper";
+import ObservationMapper from '../helpers/ObservationMapper';
 
 export class SectionMapper {
 
@@ -53,17 +53,17 @@ export class SectionMapper {
     return obsList;
   }
 
-  getValue(obsList){
+  getValue() {
     return undefined;
   }
 
-  getData(record){
-    let r = (new ObservationMapper()).from(record);
+  getData(record) {
+    const r = (new ObservationMapper()).from(record);
 
     return flattenDeep(r);
   }
 
-  getChildren(data){
+  getChildren(data) {
     return data.obsList.toJS();
   }
 }

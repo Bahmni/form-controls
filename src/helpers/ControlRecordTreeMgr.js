@@ -1,9 +1,10 @@
-import {Util} from "./Util";
+import { Util } from './Util';
 
 export default class ControlRecordTreeMgr {
 
   generateNextTree(brotherTree) {
-    const nextFormFieldPath = `${brotherTree.formFieldPath.split('-')[0]}-${Util.increment(brotherTree.formFieldPath.split('-')[1])}`;
+    const nextSuffix = Util.increment(brotherTree.formFieldPath.split('-')[1]);
+    const nextFormFieldPath = `${brotherTree.formFieldPath.split('-')[0]}-${nextSuffix}`;
     return brotherTree.set('formFieldPath', nextFormFieldPath).set('value', {});
   }
 
@@ -31,7 +32,7 @@ export default class ControlRecordTreeMgr {
     const tree = rootTree.children.map(childTree => {
       if (childTree.children) {
         const updatedChildTree = this.addToRootTree(childTree, parentTree, addedTree);
-        return updatedChildTree ? updatedChildTree : childTree;
+        return updatedChildTree || childTree;
       }
       return childTree;
     });
@@ -42,17 +43,17 @@ export default class ControlRecordTreeMgr {
   getBrotherTree(parentTree, formFieldPath) {
     const prefix = formFieldPath.split('-')[0];
 
-    const isLatestBrotherTree = function (originalRecord, newRecord) {
-      return newRecord.formFieldPath.startsWith(prefix) &&
-        !originalRecord || originalRecord.formFieldPath.split('-')[1] < newRecord.formFieldPath.split('-')[1];
-    };
+    const isLatestBrotherTree = (originalRecord, newRecord) => (
+       newRecord.formFieldPath.startsWith(prefix) && !originalRecord ||
+        originalRecord.formFieldPath.split('-')[1] < newRecord.formFieldPath.split('-')[1]
+    );
 
     let latestSimilarTree = undefined;
 
     parentTree.children.forEach(childTree => {
       if (isLatestBrotherTree(latestSimilarTree, childTree)) {
         latestSimilarTree = childTree;
-      } else if(childTree.children) {
+      } else if (childTree.children) {
         const foundSimilarRecord = this.getBrotherTree(childTree, formFieldPath);
         if (foundSimilarRecord) {
           latestSimilarTree = foundSimilarRecord;
@@ -67,6 +68,6 @@ export default class ControlRecordTreeMgr {
     const parentTree = treeMgr.findParentTree(rootTree, formFieldPath);
     const brotherTree = treeMgr.getBrotherTree(rootTree, formFieldPath);
     const addedTree = treeMgr.generateNextTree(brotherTree);
-    return treeMgr.addToRootTree(rootTree, parentTree, addedTree)
+    return treeMgr.addToRootTree(rootTree, parentTree, addedTree);
   }
 }

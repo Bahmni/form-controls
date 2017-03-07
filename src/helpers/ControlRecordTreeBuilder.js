@@ -27,10 +27,11 @@ export const ControlRecord = new Record({
       const childRecord = this.children.map(r => r.update(formFieldPath, value, errors) || r);
       return this.set('children', childRecord);
     }
+    return null;
   },
 
   getErrors() {
-    let errorArray = [];
+    const errorArray = [];
     const errors = this.get('errors');
     if (errors && !isEmpty(errors.filter((err) => err.type === constants.errorTypes.error))) {
       errorArray.push(errors);
@@ -41,7 +42,7 @@ export const ControlRecord = new Record({
     }
 
     return errorArray;
-  }
+  },
 
 });
 
@@ -53,7 +54,13 @@ export default class ControlRecordTreeBuilder {
     controls.forEach(control => {
       const mapper = MapperStore.getMapper(control);
 
-      const obsArray = mapper.getInitialObject(formName, formVersion, control, currentLayerObs, allObs);
+      const obsArray = mapper.getInitialObject(
+        formName,
+        formVersion,
+        control,
+        currentLayerObs,
+        allObs
+      );
       obsArray.forEach(data => {
         const record = new ControlRecord({
           formFieldPath: data.formFieldPath,
@@ -62,7 +69,14 @@ export default class ControlRecordTreeBuilder {
           control,
           enabled: false,
           showAddMore: true,
-          children: control.controls && this.getRecords(control.controls, formName, formVersion, mapper.getChildren(data), allObs),
+          children: control.controls &&
+                    this.getRecords(
+                      control.controls,
+                      formName,
+                      formVersion,
+                      mapper.getChildren(data),
+                      allObs
+                    ),
         });
 
         recordList = recordList.push(record);
@@ -72,7 +86,13 @@ export default class ControlRecordTreeBuilder {
   }
 
   build(metadata, observation) {
-    const records = this.getRecords(metadata.controls, metadata.name, metadata.version, observation, observation);
-    return new ControlRecord({children: records});
+    const records = this.getRecords(
+      metadata.controls,
+      metadata.name,
+      metadata.version,
+      observation,
+      observation
+    );
+    return new ControlRecord({ children: records });
   }
 }

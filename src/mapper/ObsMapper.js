@@ -11,9 +11,9 @@ export class ObsMapper {
     return { value: obs.value, comment: obs.comment };
   }
 
-  getData(record){
-    let obs = cloneDeep(record.dataSource);
-    if (obs.formFieldPath != record.formFieldPath) {
+  getData(record) {
+    const obs = cloneDeep(record.dataSource);
+    if (obs.formFieldPath !== record.formFieldPath) {
       obs.uuid = undefined;
       obs.formFieldPath = record.formFieldPath;
     }
@@ -24,7 +24,7 @@ export class ObsMapper {
     return obs;
   }
 
-  getChildren(obs){
+  getChildren() {
     return [];
   }
 }

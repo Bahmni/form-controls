@@ -1,15 +1,14 @@
-import {SectionMapper} from "src/mapper/SectionMapper";
-import chaiEnzyme from "chai-enzyme";
-import chai, {expect} from "chai";
-import {ObsList} from "src/helpers/ObsList";
-import {Obs} from "src/helpers/Obs";
-import {createFormNamespaceAndPath} from "src/helpers/formNamespace";
-import sinon from "sinon";
-import MapperStore from "src/helpers/MapperStore";
-import {ObsGroupMapper} from "src/mapper/ObsGroupMapper";
-import {getKeyPrefixForControl} from "../../src/helpers/formNamespace";
-import {ControlRecord} from "../../src/helpers/ControlRecordTreeBuilder";
-import {List} from "immutable";
+import { SectionMapper } from 'src/mapper/SectionMapper';
+import chaiEnzyme from 'chai-enzyme';
+import chai, { expect } from 'chai';
+import { ObsList } from 'src/helpers/ObsList';
+import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
+import sinon from 'sinon';
+import MapperStore from 'src/helpers/MapperStore';
+import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
+import { getKeyPrefixForControl } from '../../src/helpers/formNamespace';
+import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
+import { List } from 'immutable';
 
 chai.use(chaiEnzyme());
 
@@ -45,7 +44,8 @@ describe('SectionMapper', () => {
 
   context('getInitialObject', () => {
     it('should return initial object when obs has no value', () => {
-      const initObjectArray = mapper.getInitialObject(formName, formVersion, sectionControl, null, []);
+      const initObjectArray = mapper.getInitialObject(
+        formName, formVersion, sectionControl, null, []);
 
       expect(initObjectArray.length).to.eql(1);
       expect(initObjectArray[0].getObsList().size).to.eql(0);
@@ -86,7 +86,8 @@ describe('SectionMapper', () => {
         concept,
       }];
 
-      const layer1 = mapper.getInitialObject(formName, formVersion, sectionLayer1, null, observations);
+      const layer1 = mapper.getInitialObject(
+        formName, formVersion, sectionLayer1, null, observations);
 
       expect(layer1.length).to.eql(1);
       const layer2 = layer1[0].getObsList().get(0).getObsList();
@@ -115,7 +116,8 @@ describe('SectionMapper', () => {
       }];
 
       const mapperStub = sinon.stub(MapperStore, 'getMapper').callsFake(() => new ObsGroupMapper());
-      const layer1 = mapper.getInitialObject(formName, formVersion, sectionLayer1, null, observations);
+      const layer1 = mapper.getInitialObject(
+        formName, formVersion, sectionLayer1, null, observations);
 
       expect(mapperStub.calledOnce).to.eql(true);
       expect(layer1.length).to.eql(1);
@@ -132,10 +134,10 @@ describe('SectionMapper', () => {
         formFieldPath: `${formFieldPathPrefix}-0`,
         concept,
       },
-        {
-          formFieldPath: `${formFieldPathPrefix}-1`,
-          concept,
-        }];
+      {
+        formFieldPath: `${formFieldPathPrefix}-1`,
+        concept,
+      }];
 
       const initObjectArray =
         mapper.getInitialObject(formName, formVersion, sectionControl, null, observations);
@@ -148,485 +150,485 @@ describe('SectionMapper', () => {
 
     it('should get flatten data from records given single layer control record', () => {
       const child = new ControlRecord({
-        "control": {
-          "type": "obsControl",
-          "properties": {},
-          "id": "3",
-          "concept": {
-            "name": "HEIGHT",
-            "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "description": [],
-            "datatype": "Numeric",
-            "answers": [],
+        control: {
+          type: 'obsControl',
+          properties: {},
+          id: '3',
+          concept: {
+            name: 'HEIGHT',
+            uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+            description: [],
+            datatype: 'Numeric',
+            answers: [],
           },
         },
-        "formFieldPath": "section.1/3-0",
-        "value": {value: '2', comment:undefined},
-        "active": true,
-        "dataSource": {
-          "concept": {
-            "name": "HEIGHT",
-            "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          }, "formNamespace": "Bahmni",
-          "formFieldPath": "section.1/3-0",
-        }
+        formFieldPath: 'section.1/3-0',
+        value: { value: '2', comment: undefined },
+        active: true,
+        dataSource: {
+          concept: {
+            name: 'HEIGHT',
+            uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+          }, formNamespace: 'Bahmni',
+          formFieldPath: 'section.1/3-0',
+        },
       });
 
-      let records = new ControlRecord({
-        "control": {
-          "type": "section",
-          "id": "1",
-          "controls": [{
-            "type": "obsControl",
-            "label": {"type": "label", "value": "HEIGHT"},
-            "id": "3",
-            "concept": {
-              "name": "HEIGHT",
-              "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      const records = new ControlRecord({
+        control: {
+          type: 'section',
+          id: '1',
+          controls: [{
+            type: 'obsControl',
+            label: { type: 'label', value: 'HEIGHT' },
+            id: '3',
+            concept: {
+              name: 'HEIGHT',
+              uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
             },
-          }]
+          }],
         },
-        "formFieldPath": "section.1/1-0",
-        "children": List.of(child),
-        "active": true,
-        "dataSource": {"formFieldPath": "section.1/1-0", "obsList": []}
+        formFieldPath: 'section.1/1-0',
+        children: List.of(child),
+        active: true,
+        dataSource: { formFieldPath: 'section.1/1-0', obsList: [] },
       });
 
       const data = mapper.getData(records);
 
       expect(data.length).to.equal(1);
-      expect(data[0].value).to.equal("2");
+      expect(data[0].value).to.equal('2');
     });
 
     it('should get flatten data from records given multiple layer control record', () => {
-      let controlRecord2 = {
-        "control": {
-          "type": "obsControl",
-          "label": {"type": "label", "value": "Pulse(/min)"},
-          "properties": {
-            "mandatory": false,
-            "notes": false,
-            "addMore": false,
-            "hideLabel": false,
-            "location": {"column": 0, "row": 0}
+      const controlRecord2 = {
+        control: {
+          type: 'obsControl',
+          label: { type: 'label', value: 'Pulse(/min)' },
+          properties: {
+            mandatory: false,
+            notes: false,
+            addMore: false,
+            hideLabel: false,
+            location: { column: 0, row: 0 },
           },
-          "id": "4",
-          "concept": {
-            "name": "Pulse",
-            "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-            "description": [],
-            "datatype": "Numeric",
-            "answers": [],
-            "properties": {"allowDecimal": true}
+          id: '4',
+          concept: {
+            name: 'Pulse',
+            uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+            description: [],
+            datatype: 'Numeric',
+            answers: [],
+            properties: { allowDecimal: true },
           },
-          "units": "/min",
-          "hiNormal": 72,
-          "lowNormal": 72,
-          "hiAbsolute": null,
-          "lowAbsolute": null
+          units: '/min',
+          hiNormal: 72,
+          lowNormal: 72,
+          hiAbsolute: null,
+          lowAbsolute: null,
         },
-        "formFieldPath": "nested_section.3/4-0",
-        "value": {value:2, comment: undefined},
-        "active": true,
-        "showAddMore": true,
-        "showRemove": false,
-        "errors": [],
-        "dataSource": {
-          "encounterDateTime": 1488762812000,
-          "visitStartDateTime": null,
-          "targetObsRelation": null,
-          "groupMembers": [],
-          "providers": [{
-            "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
-            "name": "Super Man",
-            "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+        formFieldPath: 'nested_section.3/4-0',
+        value: { value: 2, comment: undefined },
+        active: true,
+        showAddMore: true,
+        showRemove: false,
+        errors: [],
+        dataSource: {
+          encounterDateTime: 1488762812000,
+          visitStartDateTime: null,
+          targetObsRelation: null,
+          groupMembers: [],
+          providers: [{
+            uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
+            name: 'Super Man',
+            encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
           }],
-          "isAbnormal": null,
-          "duration": null,
-          "type": "Numeric",
-          "encounterUuid": "152b99b8-5f87-4386-a5bb-773d5588a443",
-          "obsGroupUuid": null,
-          "creatorName": "Super Man",
-          "conceptSortWeight": 1,
-          "parentConceptUuid": null,
-          "hiNormal": 72,
-          "lowNormal": 72,
-          "formNamespace": "Bahmni",
-          "formFieldPath": "nested_section.3/4-0",
-          "concept": {
-            "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-            "name": "Pulse",
-            "dataType": "Numeric",
-            "shortName": "Pulse",
-            "units": "/min",
-            "conceptClass": "Misc",
-            "hiNormal": 72,
-            "lowNormal": 72,
-            "set": false,
-            "mappings": []
+          isAbnormal: null,
+          duration: null,
+          type: 'Numeric',
+          encounterUuid: '152b99b8-5f87-4386-a5bb-773d5588a443',
+          obsGroupUuid: null,
+          creatorName: 'Super Man',
+          conceptSortWeight: 1,
+          parentConceptUuid: null,
+          hiNormal: 72,
+          lowNormal: 72,
+          formNamespace: 'Bahmni',
+          formFieldPath: 'nested_section.3/4-0',
+          concept: {
+            uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+            name: 'Pulse',
+            dataType: 'Numeric',
+            shortName: 'Pulse',
+            units: '/min',
+            conceptClass: 'Misc',
+            hiNormal: 72,
+            lowNormal: 72,
+            set: false,
+            mappings: [],
           },
-          "valueAsString": "2.0",
-          "voided": false,
-          "voidReason": null,
-          "conceptUuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-          "unknown": false,
-          "uuid": "cf638311-d39e-4daf-81db-5bb61c75cb15",
-          "observationDateTime": "2017-03-06T02:10:48.000+0000",
-          "comment": null,
-          "abnormal": null,
-          "orderUuid": null,
-          "conceptNameToDisplay": "Pulse",
-          "value": {value:2, comment: undefined},
-        }
+          valueAsString: '2.0',
+          voided: false,
+          voidReason: null,
+          conceptUuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+          unknown: false,
+          uuid: 'cf638311-d39e-4daf-81db-5bb61c75cb15',
+          observationDateTime: '2017-03-06T02:10:48.000+0000',
+          comment: null,
+          abnormal: null,
+          orderUuid: null,
+          conceptNameToDisplay: 'Pulse',
+          value: { value: 2, comment: undefined },
+        },
       };
 
-      let layer2Control = {
-        "type": "obsControl",
-        "label": {"type": "label", "value": "Pulse(/min)"},
-        "properties": {
-          "mandatory": false,
-          "notes": false,
-          "addMore": false,
-          "hideLabel": false,
-          "location": {"column": 0, "row": 0}
+      const layer2Control = {
+        type: 'obsControl',
+        label: { type: 'label', value: 'Pulse(/min)' },
+        properties: {
+          mandatory: false,
+          notes: false,
+          addMore: false,
+          hideLabel: false,
+          location: { column: 0, row: 0 },
         },
-        "id": "4",
-        "concept": {
-          "name": "Pulse",
-          "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-          "description": [],
-          "datatype": "Numeric",
-          "answers": [],
-          "properties": {"allowDecimal": true}
+        id: '4',
+        concept: {
+          name: 'Pulse',
+          uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+          description: [],
+          datatype: 'Numeric',
+          answers: [],
+          properties: { allowDecimal: true },
         },
-        "units": "/min",
-        "hiNormal": 72,
-        "lowNormal": 72,
-        "hiAbsolute": null,
-        "lowAbsolute": null
+        units: '/min',
+        hiNormal: 72,
+        lowNormal: 72,
+        hiAbsolute: null,
+        lowAbsolute: null,
       };
 
-      let layer2 = {
-        "control": {
-          "type": "section",
-          "label": {"type": "label", "value": "Section"},
-          "properties": {"location": {"column": 0, "row": 1}},
-          "id": "3",
-          "controls": [layer2Control]
+      const layer2 = {
+        control: {
+          type: 'section',
+          label: { type: 'label', value: 'Section' },
+          properties: { location: { column: 0, row: 1 } },
+          id: '3',
+          controls: [layer2Control],
         },
-        "formFieldPath": "nested_section.3/3-0",
-        "children": List.of(controlRecord2),
-        "active": true,
-        "showAddMore": true,
-        "showRemove": false,
-        "errors": [],
-        "dataSource": {
-          "formFieldPath": "nested_section.3/3-0",
-          "obsList": [{
-            "encounterDateTime": 1488762812000,
-            "visitStartDateTime": null,
-            "targetObsRelation": null,
-            "groupMembers": [],
-            "providers": [{
-              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
-              "name": "Super Man",
-              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+        formFieldPath: 'nested_section.3/3-0',
+        children: List.of(controlRecord2),
+        active: true,
+        showAddMore: true,
+        showRemove: false,
+        errors: [],
+        dataSource: {
+          formFieldPath: 'nested_section.3/3-0',
+          obsList: [{
+            encounterDateTime: 1488762812000,
+            visitStartDateTime: null,
+            targetObsRelation: null,
+            groupMembers: [],
+            providers: [{
+              uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
+              name: 'Super Man',
+              encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
             }],
-            "isAbnormal": null,
-            "duration": null,
-            "type": "Numeric",
-            "encounterUuid": "152b99b8-5f87-4386-a5bb-773d5588a443",
-            "obsGroupUuid": null,
-            "creatorName": "Super Man",
-            "conceptSortWeight": 1,
-            "parentConceptUuid": null,
-            "hiNormal": 72,
-            "lowNormal": 72,
-            "formNamespace": "Bahmni",
-            "formFieldPath": "nested_section.3/4-0",
-            "concept": {
-              "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-              "name": "Pulse",
-              "dataType": "Numeric",
-              "shortName": "Pulse",
-              "units": "/min",
-              "conceptClass": "Misc",
-              "hiNormal": 72,
-              "lowNormal": 72,
-              "set": false,
-              "mappings": []
+            isAbnormal: null,
+            duration: null,
+            type: 'Numeric',
+            encounterUuid: '152b99b8-5f87-4386-a5bb-773d5588a443',
+            obsGroupUuid: null,
+            creatorName: 'Super Man',
+            conceptSortWeight: 1,
+            parentConceptUuid: null,
+            hiNormal: 72,
+            lowNormal: 72,
+            formNamespace: 'Bahmni',
+            formFieldPath: 'nested_section.3/4-0',
+            concept: {
+              uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+              name: 'Pulse',
+              dataType: 'Numeric',
+              shortName: 'Pulse',
+              units: '/min',
+              conceptClass: 'Misc',
+              hiNormal: 72,
+              lowNormal: 72,
+              set: false,
+              mappings: [],
             },
-            "valueAsString": "2.0",
-            "voided": false,
-            "voidReason": null,
-            "conceptUuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-            "unknown": false,
-            "uuid": "cf638311-d39e-4daf-81db-5bb61c75cb15",
-            "observationDateTime": "2017-03-06T02:10:48.000+0000",
-            "comment": null,
-            "abnormal": null,
-            "orderUuid": null,
-            "conceptNameToDisplay": "Pulse",
-            "value": {value:2, comment: undefined},
-          }]
-        }
-      };
-
-      let obsControl1 = {
-        "control": {
-          "type": "obsControl",
-          "label": {"type": "label", "value": "HEIGHT"},
-          "properties": {
-            "mandatory": false,
-            "notes": false,
-            "addMore": false,
-            "hideLabel": false,
-            "location": {"column": 0, "row": 0}
-          },
-          "id": "2",
-          "concept": {
-            "name": "HEIGHT",
-            "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "description": [],
-            "datatype": "Numeric",
-            "answers": [],
-            "properties": {"allowDecimal": false}
-          },
-          "units": null,
-          "hiNormal": null,
-          "lowNormal": null,
-          "hiAbsolute": null,
-          "lowAbsolute": null
-        },
-        "formFieldPath": "nested_section.3/2-0",
-        "value": {value:1, comment: undefined},
-        "active": true,
-        "showAddMore": true,
-        "showRemove": false,
-        "errors": [],
-        "dataSource": {
-          "encounterDateTime": 1488762812000,
-          "visitStartDateTime": null,
-          "targetObsRelation": null,
-          "groupMembers": [],
-          "providers": [{
-            "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
-            "name": "Super Man",
-            "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+            valueAsString: '2.0',
+            voided: false,
+            voidReason: null,
+            conceptUuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+            unknown: false,
+            uuid: 'cf638311-d39e-4daf-81db-5bb61c75cb15',
+            observationDateTime: '2017-03-06T02:10:48.000+0000',
+            comment: null,
+            abnormal: null,
+            orderUuid: null,
+            conceptNameToDisplay: 'Pulse',
+            value: { value: 2, comment: undefined },
           }],
-          "isAbnormal": null,
-          "duration": null,
-          "type": "Numeric",
-          "encounterUuid": "152b99b8-5f87-4386-a5bb-773d5588a443",
-          "obsGroupUuid": null,
-          "creatorName": "Super Man",
-          "conceptSortWeight": 1,
-          "parentConceptUuid": null,
-          "hiNormal": null,
-          "lowNormal": null,
-          "formNamespace": "Bahmni",
-          "formFieldPath": "nested_section.3/2-0",
-          "concept": {
-            "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "name": "HEIGHT",
-            "dataType": "Numeric",
-            "shortName": "HEIGHT",
-            "conceptClass": "Misc",
-            "hiNormal": null,
-            "lowNormal": null,
-            "set": false,
-            "mappings": []
-          },
-          "valueAsString": "1.0",
-          "voided": false,
-          "voidReason": null,
-          "conceptUuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          "unknown": false,
-          "uuid": "95116466-74a0-4ecc-bc48-3b9917cb2d2a",
-          "observationDateTime": "2017-03-06T02:10:48.000+0000",
-          "comment": null,
-          "abnormal": null,
-          "orderUuid": null,
-          "conceptNameToDisplay": "HEIGHT",
-          "value": {value:1, comment: undefined},
-        }
+        },
       };
 
-      let layer1 = {
-        "control": {
-          "type": "section",
-          "label": {"type": "label", "value": "Section"},
-          "properties": {"location": {"column": 0, "row": 0}},
-          "id": "1",
-          "controls": [{
-            "type": "obsControl",
-            "label": {"type": "label", "value": "HEIGHT"},
-            "properties": {
-              "mandatory": false,
-              "notes": false,
-              "addMore": false,
-              "hideLabel": false,
-              "location": {"column": 0, "row": 0}
-            },
-            "id": "2",
-            "concept": {
-              "name": "HEIGHT",
-              "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "description": [],
-              "datatype": "Numeric",
-              "answers": [],
-              "properties": {"allowDecimal": false}
-            },
-            "units": null,
-            "hiNormal": null,
-            "lowNormal": null,
-            "hiAbsolute": null,
-            "lowAbsolute": null
-          }, {
-            "type": "section",
-            "label": {"type": "label", "value": "Section"},
-            "properties": {"location": {"column": 0, "row": 1}},
-            "id": "3",
-            "controls": [{
-              "type": "obsControl",
-              "label": {"type": "label", "value": "Pulse(/min)"},
-              "properties": {
-                "mandatory": false,
-                "notes": false,
-                "addMore": false,
-                "hideLabel": false,
-                "location": {"column": 0, "row": 0}
-              },
-              "id": "4",
-              "concept": {
-                "name": "Pulse",
-                "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-                "description": [],
-                "datatype": "Numeric",
-                "answers": [],
-                "properties": {"allowDecimal": true}
-              },
-              "units": "/min",
-              "hiNormal": 72,
-              "lowNormal": 72,
-              "hiAbsolute": null,
-              "lowAbsolute": null
-            }]
-          }]
+      const obsControl1 = {
+        control: {
+          type: 'obsControl',
+          label: { type: 'label', value: 'HEIGHT' },
+          properties: {
+            mandatory: false,
+            notes: false,
+            addMore: false,
+            hideLabel: false,
+            location: { column: 0, row: 0 },
+          },
+          id: '2',
+          concept: {
+            name: 'HEIGHT',
+            uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+            description: [],
+            datatype: 'Numeric',
+            answers: [],
+            properties: { allowDecimal: false },
+          },
+          units: null,
+          hiNormal: null,
+          lowNormal: null,
+          hiAbsolute: null,
+          lowAbsolute: null,
         },
-        "formFieldPath": "nested_section.3/1-0",
-        "children": List.of(obsControl1, layer2),
-        "active": true,
-        "showAddMore": true,
-        "showRemove": false,
-        "errors": [],
-        "dataSource": {
-          "formFieldPath": "nested_section.3/1-0",
-          "obsList": [{
-            "encounterDateTime": 1488762812000,
-            "visitStartDateTime": null,
-            "targetObsRelation": null,
-            "groupMembers": [],
-            "providers": [{
-              "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
-              "name": "Super Man",
-              "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
-            }],
-            "isAbnormal": null,
-            "duration": null,
-            "type": "Numeric",
-            "encounterUuid": "152b99b8-5f87-4386-a5bb-773d5588a443",
-            "obsGroupUuid": null,
-            "creatorName": "Super Man",
-            "conceptSortWeight": 1,
-            "parentConceptUuid": null,
-            "hiNormal": null,
-            "lowNormal": null,
-            "formNamespace": "Bahmni",
-            "formFieldPath": "nested_section.3/2-0",
-            "concept": {
-              "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "name": "HEIGHT",
-              "dataType": "Numeric",
-              "shortName": "HEIGHT",
-              "conceptClass": "Misc",
-              "hiNormal": null,
-              "lowNormal": null,
-              "set": false,
-              "mappings": []
+        formFieldPath: 'nested_section.3/2-0',
+        value: { value: 1, comment: undefined },
+        active: true,
+        showAddMore: true,
+        showRemove: false,
+        errors: [],
+        dataSource: {
+          encounterDateTime: 1488762812000,
+          visitStartDateTime: null,
+          targetObsRelation: null,
+          groupMembers: [],
+          providers: [{
+            uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
+            name: 'Super Man',
+            encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
+          }],
+          isAbnormal: null,
+          duration: null,
+          type: 'Numeric',
+          encounterUuid: '152b99b8-5f87-4386-a5bb-773d5588a443',
+          obsGroupUuid: null,
+          creatorName: 'Super Man',
+          conceptSortWeight: 1,
+          parentConceptUuid: null,
+          hiNormal: null,
+          lowNormal: null,
+          formNamespace: 'Bahmni',
+          formFieldPath: 'nested_section.3/2-0',
+          concept: {
+            uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+            name: 'HEIGHT',
+            dataType: 'Numeric',
+            shortName: 'HEIGHT',
+            conceptClass: 'Misc',
+            hiNormal: null,
+            lowNormal: null,
+            set: false,
+            mappings: [],
+          },
+          valueAsString: '1.0',
+          voided: false,
+          voidReason: null,
+          conceptUuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+          unknown: false,
+          uuid: '95116466-74a0-4ecc-bc48-3b9917cb2d2a',
+          observationDateTime: '2017-03-06T02:10:48.000+0000',
+          comment: null,
+          abnormal: null,
+          orderUuid: null,
+          conceptNameToDisplay: 'HEIGHT',
+          value: { value: 1, comment: undefined },
+        },
+      };
+
+      const layer1 = {
+        control: {
+          type: 'section',
+          label: { type: 'label', value: 'Section' },
+          properties: { location: { column: 0, row: 0 } },
+          id: '1',
+          controls: [{
+            type: 'obsControl',
+            label: { type: 'label', value: 'HEIGHT' },
+            properties: {
+              mandatory: false,
+              notes: false,
+              addMore: false,
+              hideLabel: false,
+              location: { column: 0, row: 0 },
             },
-            "valueAsString": "1.0",
-            "voided": false,
-            "voidReason": null,
-            "conceptUuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "unknown": false,
-            "uuid": "95116466-74a0-4ecc-bc48-3b9917cb2d2a",
-            "observationDateTime": "2017-03-06T02:10:48.000+0000",
-            "comment": null,
-            "abnormal": null,
-            "orderUuid": null,
-            "conceptNameToDisplay": "HEIGHT",
-            "value": {value:1, comment: undefined},
+            id: '2',
+            concept: {
+              name: 'HEIGHT',
+              uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+              description: [],
+              datatype: 'Numeric',
+              answers: [],
+              properties: { allowDecimal: false },
+            },
+            units: null,
+            hiNormal: null,
+            lowNormal: null,
+            hiAbsolute: null,
+            lowAbsolute: null,
           }, {
-            "formFieldPath": "nested_section.3/3-0",
-            "obsList": [{
-              "encounterDateTime": 1488762812000,
-              "visitStartDateTime": null,
-              "targetObsRelation": null,
-              "groupMembers": [],
-              "providers": [{
-                "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75",
-                "name": "Super Man",
-                "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66"
+            type: 'section',
+            label: { type: 'label', value: 'Section' },
+            properties: { location: { column: 0, row: 1 } },
+            id: '3',
+            controls: [{
+              type: 'obsControl',
+              label: { type: 'label', value: 'Pulse(/min)' },
+              properties: {
+                mandatory: false,
+                notes: false,
+                addMore: false,
+                hideLabel: false,
+                location: { column: 0, row: 0 },
+              },
+              id: '4',
+              concept: {
+                name: 'Pulse',
+                uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+                description: [],
+                datatype: 'Numeric',
+                answers: [],
+                properties: { allowDecimal: true },
+              },
+              units: '/min',
+              hiNormal: 72,
+              lowNormal: 72,
+              hiAbsolute: null,
+              lowAbsolute: null,
+            }],
+          }],
+        },
+        formFieldPath: 'nested_section.3/1-0',
+        children: List.of(obsControl1, layer2),
+        active: true,
+        showAddMore: true,
+        showRemove: false,
+        errors: [],
+        dataSource: {
+          formFieldPath: 'nested_section.3/1-0',
+          obsList: [{
+            encounterDateTime: 1488762812000,
+            visitStartDateTime: null,
+            targetObsRelation: null,
+            groupMembers: [],
+            providers: [{
+              uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
+              name: 'Super Man',
+              encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
+            }],
+            isAbnormal: null,
+            duration: null,
+            type: 'Numeric',
+            encounterUuid: '152b99b8-5f87-4386-a5bb-773d5588a443',
+            obsGroupUuid: null,
+            creatorName: 'Super Man',
+            conceptSortWeight: 1,
+            parentConceptUuid: null,
+            hiNormal: null,
+            lowNormal: null,
+            formNamespace: 'Bahmni',
+            formFieldPath: 'nested_section.3/2-0',
+            concept: {
+              uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+              name: 'HEIGHT',
+              dataType: 'Numeric',
+              shortName: 'HEIGHT',
+              conceptClass: 'Misc',
+              hiNormal: null,
+              lowNormal: null,
+              set: false,
+              mappings: [],
+            },
+            valueAsString: '1.0',
+            voided: false,
+            voidReason: null,
+            conceptUuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+            unknown: false,
+            uuid: '95116466-74a0-4ecc-bc48-3b9917cb2d2a',
+            observationDateTime: '2017-03-06T02:10:48.000+0000',
+            comment: null,
+            abnormal: null,
+            orderUuid: null,
+            conceptNameToDisplay: 'HEIGHT',
+            value: { value: 1, comment: undefined },
+          }, {
+            formFieldPath: 'nested_section.3/3-0',
+            obsList: [{
+              encounterDateTime: 1488762812000,
+              visitStartDateTime: null,
+              targetObsRelation: null,
+              groupMembers: [],
+              providers: [{
+                uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
+                name: 'Super Man',
+                encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
               }],
-              "isAbnormal": null,
-              "duration": null,
-              "type": "Numeric",
-              "encounterUuid": "152b99b8-5f87-4386-a5bb-773d5588a443",
-              "obsGroupUuid": null,
-              "creatorName": "Super Man",
-              "conceptSortWeight": 1,
-              "parentConceptUuid": null,
-              "hiNormal": 72,
-              "lowNormal": 72,
-              "formNamespace": "Bahmni",
-              "formFieldPath": "nested_section.3/4-0",
-              "concept": {
-                "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-                "name": "Pulse",
-                "dataType": "Numeric",
-                "shortName": "Pulse",
-                "units": "/min",
-                "conceptClass": "Misc",
-                "hiNormal": 72,
-                "lowNormal": 72,
-                "set": false,
-                "mappings": []
+              isAbnormal: null,
+              duration: null,
+              type: 'Numeric',
+              encounterUuid: '152b99b8-5f87-4386-a5bb-773d5588a443',
+              obsGroupUuid: null,
+              creatorName: 'Super Man',
+              conceptSortWeight: 1,
+              parentConceptUuid: null,
+              hiNormal: 72,
+              lowNormal: 72,
+              formNamespace: 'Bahmni',
+              formFieldPath: 'nested_section.3/4-0',
+              concept: {
+                uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+                name: 'Pulse',
+                dataType: 'Numeric',
+                shortName: 'Pulse',
+                units: '/min',
+                conceptClass: 'Misc',
+                hiNormal: 72,
+                lowNormal: 72,
+                set: false,
+                mappings: [],
               },
-              "valueAsString": "2.0",
-              "voided": false,
-              "voidReason": null,
-              "conceptUuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
-              "unknown": false,
-              "uuid": "cf638311-d39e-4daf-81db-5bb61c75cb15",
-              "observationDateTime": "2017-03-06T02:10:48.000+0000",
-              "comment": null,
-              "abnormal": null,
-              "orderUuid": null,
-              "conceptNameToDisplay": "Pulse",
-              "value": {value:2, comment: undefined},
-            }]
-          }]
-        }
+              valueAsString: '2.0',
+              voided: false,
+              voidReason: null,
+              conceptUuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+              unknown: false,
+              uuid: 'cf638311-d39e-4daf-81db-5bb61c75cb15',
+              observationDateTime: '2017-03-06T02:10:48.000+0000',
+              comment: null,
+              abnormal: null,
+              orderUuid: null,
+              conceptNameToDisplay: 'Pulse',
+              value: { value: 2, comment: undefined },
+            }],
+          }],
+        },
       };
 
       const root = new ControlRecord({
-        "formFieldPath": "",
-        "children": List.of(layer1),
-        "active": true,
-        "showAddMore": false,
-        "showRemove": false,
-        "errors": []
+        formFieldPath: '',
+        children: List.of(layer1),
+        active: true,
+        showAddMore: false,
+        showRemove: false,
+        errors: [],
       });
 
       const data = mapper.getData(root);
@@ -642,30 +644,30 @@ describe('SectionMapper', () => {
 
     it('should get observations for children records', () => {
       const data = new ObsList({
-        "formFieldPath": "section.1/1-0",
-        "obsList": List.of({
-            "groupMembers": [],
-            "formFieldPath": "section.1/3-0",
-            "concept": {
-              "uuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "name": "HEIGHT",
-              "dataType": "Numeric",
-              "shortName": "HEIGHT",
-              "conceptClass": "Misc",
-            },
-            "valueAsString": "2.0",
-            "voided": false,
-            "voidReason": null,
-            "conceptUuid": "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-            "unknown": false,
-            "uuid": "22a41779-e637-44b6-a827-34d6b8df7159",
-            "value": 2
-          }
-        )
+        formFieldPath: 'section.1/1-0',
+        obsList: List.of({
+          groupMembers: [],
+          formFieldPath: 'section.1/3-0',
+          concept: {
+            uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+            name: 'HEIGHT',
+            dataType: 'Numeric',
+            shortName: 'HEIGHT',
+            conceptClass: 'Misc',
+          },
+          valueAsString: '2.0',
+          voided: false,
+          voidReason: null,
+          conceptUuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+          unknown: false,
+          uuid: '22a41779-e637-44b6-a827-34d6b8df7159',
+          value: 2,
+        }
+        ),
       });
 
       expect(mapper.getChildren(data).length).to.equal(1);
       expect(mapper.getChildren(data)[0].value).to.equal(2);
-    })
+    });
   });
 });

@@ -2,23 +2,24 @@ import { createObsFromControl } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
 import MapperStore from 'src/helpers/MapperStore';
 import { cloneDeep } from 'lodash';
-import ObservationMapper from "../helpers/ObservationMapper";
+import ObservationMapper from '../helpers/ObservationMapper';
 
 export class ObsGroupMapper {
 
   getInitialObject(formName, formVersion, control, bahmniObservations) {
     const obsGroups = createObsFromControl(formName, formVersion, control, bahmniObservations);
     return obsGroups.map(obsGroup => {
-      if (obsGroup.groupMembers !== undefined) {
+      const updatedObsGroup = obsGroup;
+      if (updatedObsGroup.groupMembers !== undefined) {
         let groupMembers = [];
         for (const ctrl of control.controls) {
           const mapper = MapperStore.getMapper(ctrl);
           groupMembers = groupMembers.concat(mapper.getInitialObject(formName, formVersion,
-            ctrl, obsGroup.groupMembers));
+            ctrl, updatedObsGroup.groupMembers));
         }
-        obsGroup.groupMembers = groupMembers;
+        updatedObsGroup.groupMembers = groupMembers;
       }
-      return obsGroup;
+      return updatedObsGroup;
     });
   }
 
@@ -50,23 +51,24 @@ export class ObsGroupMapper {
     return obsGroup.getObject(obsGroup);
   }
 
-  getValue(){
+  getValue() {
     return {};
   }
 
-  getData(record){
-    let obsGroup = cloneDeep(record.dataSource);
-    if (obsGroup.formFieldPath != record.formFieldPath) {
+  getData(record) {
+    const obsGroup = cloneDeep(record.dataSource);
+    if (obsGroup.formFieldPath !== record.formFieldPath) {
       obsGroup.uuid = undefined;
       obsGroup.formFieldPath = record.formFieldPath;
     }
     obsGroup.groupMembers = (new ObservationMapper()).from(record);
-    obsGroup.voided = obsGroup.groupMembers && obsGroup.groupMembers.filter(child => !child.voided).length === 0;
+    obsGroup.voided = obsGroup.groupMembers &&
+                      obsGroup.groupMembers.filter(child => !child.voided).length === 0;
 
     return obsGroup;
   }
 
-  getChildren(obs){
+  getChildren(obs) {
     return obs.groupMembers;
   }
 }

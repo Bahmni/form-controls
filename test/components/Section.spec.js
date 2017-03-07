@@ -1,16 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React from 'react';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Section } from 'components/Section.jsx';
 import sinon from 'sinon';
-import { SectionMapper } from 'src/mapper/SectionMapper';
 import ComponentStore from 'src/helpers/componentStore';
 import { ObsControl } from 'components/ObsControl.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { List } from 'immutable';
 import { Label } from 'components/Label.jsx';
-import {ControlRecord} from "../../src/helpers/ControlRecordTreeBuilder";
+import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 
 chai.use(chaiEnzyme());
 
@@ -30,54 +29,54 @@ describe('Section', () => {
   });
 
   const obsConcept = {
-    "answers": [],
-    "datatype": "Numeric",
-    "description": [],
-    "name": "Pulse",
-    "properties": {
-      "allowDecimal": true
+    answers: [],
+    datatype: 'Numeric',
+    description: [],
+    name: 'Pulse',
+    properties: {
+      allowDecimal: true,
     },
-    "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+    uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
   };
   const metadata = {
-    "controls": [
+    controls: [
       {
-        "concept": obsConcept,
-        "hiAbsolute": null,
-        "hiNormal": 72,
-        "id": "2",
-        "label": {
-          "type": "label",
-          "value": "Pulse(/min)"
+        concept: obsConcept,
+        hiAbsolute: null,
+        hiNormal: 72,
+        id: '2',
+        label: {
+          type: 'label',
+          value: 'Pulse(/min)',
         },
-        "lowAbsolute": null,
-        "lowNormal": 72,
-        "properties": {
-          "addMore": true,
-          "hideLabel": false,
-          "location": {
-            "column": 0,
-            "row": 0
+        lowAbsolute: null,
+        lowNormal: 72,
+        properties: {
+          addMore: true,
+          hideLabel: false,
+          location: {
+            column: 0,
+            row: 0,
           },
-          "mandatory": true,
-          "notes": false
+          mandatory: true,
+          notes: false,
         },
-        "type": "obsControl",
-        "units": "/min"
-      }
+        type: 'obsControl',
+        units: '/min',
+      },
     ],
-    "id": "1",
-    "label": {
-      "type": "label",
-      "value": "Section"
+    id: '1',
+    label: {
+      type: 'label',
+      value: 'Section',
     },
-    "properties": {
-      "location": {
-        "column": 0,
-        "row": 0
-      }
+    properties: {
+      location: {
+        column: 0,
+        row: 0,
+      },
     },
-    "type": "section"
+    type: 'section',
   };
   const formName = 'Section_Test';
   const formVersion = '1';
@@ -85,35 +84,35 @@ describe('Section', () => {
   const obsFormFieldPath = 'Section_Test.1/2-0';
   const children = List.of(new ControlRecord({
     control: {
-      "concept": obsConcept,
-      "hiAbsolute": null,
-      "hiNormal": 72,
-      "id": "2",
-      "label": {
-        "type": "label",
-        "value": "Pulse(/min)"
+      concept: obsConcept,
+      hiAbsolute: null,
+      hiNormal: 72,
+      id: '2',
+      label: {
+        type: 'label',
+        value: 'Pulse(/min)',
       },
-      "lowAbsolute": null,
-      "lowNormal": 72,
-      "properties": {
-        "addMore": true,
-        "hideLabel": false,
-        "location": {
-          "column": 0,
-          "row": 0
+      lowAbsolute: null,
+      lowNormal: 72,
+      properties: {
+        addMore: true,
+        hideLabel: false,
+        location: {
+          column: 0,
+          row: 0,
         },
-        "mandatory": true,
-        "notes": false
+        mandatory: true,
+        notes: false,
       },
-      "type": "obsControl",
-      "units": "/min"
+      type: 'obsControl',
+      units: '/min',
     },
     formFieldPath: obsFormFieldPath,
     dataSource: {
-      "concept": obsConcept,
-      "formFieldPath": obsFormFieldPath,
-      "formNamespace": "Bahmni",
-      "voided": true
+      concept: obsConcept,
+      formFieldPath: obsFormFieldPath,
+      formNamespace: 'Bahmni',
+      voided: true,
     },
   }));
 
@@ -122,14 +121,14 @@ describe('Section', () => {
   it('should render section control collapse equal to true', () => {
     const wrapper = mount(
       <Section
+        children={children}
         collapse
+        formFieldPath={sectionFormFieldPath}
         formName={formName}
         formVersion={formVersion}
-        formFieldPath={sectionFormFieldPath}
         metadata={metadata}
         onValueChanged={onChangeSpy}
         validate={false}
-        children={children}
       />);
 
     expect(wrapper).to.have.exactly(1).descendants('ObsControl');
@@ -139,14 +138,14 @@ describe('Section', () => {
     ComponentStore.deRegisterComponent('obsControl');
     const wrapper = mount(
       <Section
+        children={children}
         collapse
+        formFieldPath={sectionFormFieldPath}
         formName={formName}
         formVersion={formVersion}
-        formFieldPath={sectionFormFieldPath}
         metadata={metadata}
         onValueChanged={onChangeSpy}
         validate={false}
-        children={children}
       />);
 
     expect(wrapper).to.not.have.descendants('obsControl');
@@ -156,14 +155,14 @@ describe('Section', () => {
   it('should collapse all child controls on click of collapse icon', () => {
     const wrapper = mount(
       <Section
+        children={children}
         collapse={false}
+        formFieldPath={sectionFormFieldPath}
         formName={formName}
         formVersion={formVersion}
-        formFieldPath={sectionFormFieldPath}
         metadata={metadata}
         onValueChanged={onChangeSpy}
         validate={false}
-        children={children}
       />);
 
     expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
@@ -180,14 +179,14 @@ describe('Section', () => {
   it('should collapse all child controls on change of collapse props', () => {
     const wrapper = mount(
       <Section
+        children={children}
         collapse={false}
+        formFieldPath={sectionFormFieldPath}
         formName={formName}
         formVersion={formVersion}
-        formFieldPath={sectionFormFieldPath}
         metadata={metadata}
         onValueChanged={onChangeSpy}
         validate={false}
-        children={children}
       />);
 
     expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
@@ -204,14 +203,14 @@ describe('Section', () => {
   it('should collapse all child controls on change of collapse state', () => {
     const wrapper = mount(
       <Section
+        children={children}
         collapse={false}
+        formFieldPath={sectionFormFieldPath}
         formName={formName}
         formVersion={formVersion}
-        formFieldPath={sectionFormFieldPath}
         metadata={metadata}
         onValueChanged={onChangeSpy}
         validate={false}
-        children={children}
       />);
 
     expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
@@ -229,21 +228,20 @@ describe('Section', () => {
   it('should call onValueChanged when onChange be triggered', () => {
     const wrapper = mount(
       <Section
+        children={children}
         collapse
+        formFieldPath={sectionFormFieldPath}
         formName={formName}
         formVersion={formVersion}
-        formFieldPath={sectionFormFieldPath}
         metadata={metadata}
         onValueChanged={onChangeSpy}
         validate={false}
-        children={children}
       />);
 
-    const updatedValue = {value:1, comment:undefined};
+    const updatedValue = { value: 1, comment: undefined };
     wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined);
 
     sinon.assert.calledOnce(
       onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined));
   });
-
 });

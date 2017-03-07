@@ -55,9 +55,9 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
 
     expect(wrapper).to.have.exactly(1).descendants('Label');
@@ -81,9 +81,9 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
 
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql([]);
@@ -102,9 +102,9 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
 
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql([]);
@@ -122,9 +122,9 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
 
     expect(wrapper.find('span').text()).to.eql('*');
@@ -143,9 +143,9 @@ describe('ObsControl', () => {
     const wrapper = shallow(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
 
     expect(wrapper).to.have.exactly(1).descendants('div');
@@ -164,13 +164,18 @@ describe('ObsControl', () => {
     const wrapper = shallow(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />
     );
     wrapper.instance().onChange(true, []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(wrapper.prop('formFieldPath'), {value: true, comment: wrapper.props('value').comment}, []));
+    sinon.assert.calledOnce(
+      onChangeSpy.withArgs(
+        wrapper.prop('formFieldPath'),
+        { value: true, comment: wrapper.props('value').comment },
+        []
+      ));
   });
 
   it('should return the child control errors', () => {
@@ -186,14 +191,19 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />
     );
     const instance = wrapper.instance();
     instance.onChange(undefined, errors);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(wrapper.prop('formFieldPath'), {value: undefined, comment: wrapper.props('value').comment}, errors));
+    sinon.assert.calledOnce(
+      onChangeSpy.withArgs(
+        wrapper.prop('formFieldPath'),
+        { value: undefined, comment: wrapper.props('value').comment },
+        errors
+      ));
   });
 
   it('should render notes if notes property is enabled', () => {
@@ -208,9 +218,9 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />
     );
 
@@ -229,9 +239,9 @@ describe('ObsControl', () => {
     const wrapper = shallow(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />
     );
     expect(wrapper).to.not.have.descendants('Comment');
@@ -249,15 +259,20 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />
     );
 
     wrapper.instance().onCommentChange('Test Comment');
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs(wrapper.prop('formFieldPath'), {value: wrapper.prop('value').value, comment: 'Test Comment'}, undefined));
+    sinon.assert.calledOnce(
+      onChangeSpy.withArgs(
+        wrapper.prop('formFieldPath'),
+        { value: wrapper.prop('value').value, comment: 'Test Comment' },
+        undefined
+      ));
   });
 
   it('should display the label based on property', () => {
@@ -273,9 +288,9 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
     expect(wrapper).to.have.exactly(1).not.to.have.descendants('Label');
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
@@ -295,9 +310,9 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
 
     expect(wrapper).to.have.exactly(1).descendants('Label');
@@ -322,15 +337,15 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl').props()).to.have.property('value', undefined);
 
-    const updatedValue = {value: 'abc', comment: wrapper.prop('value').comment};
+    const updatedValue = { value: 'abc', comment: wrapper.prop('value').comment };
     wrapper.setProps({ value: updatedValue });
 
     expect(wrapper.find('DummyControl').props()).to.have.property('value', 'abc');
@@ -353,9 +368,9 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
 
     expect(wrapper.find('DummyControl').props()).to.have.property('lowNormal', 72);
@@ -377,9 +392,9 @@ describe('ObsControl', () => {
     const wrapper = mount(
       <ObsControl
         metadata={metadata}
-        value={domainValue}
         onValueChanged={onChangeSpy}
         validate={false}
+        value={domainValue}
       />);
 
     const helperText = wrapper.instance().showHelperText();
