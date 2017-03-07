@@ -5,6 +5,7 @@ import { controlStateFactory, getErrors } from 'src/ControlState';
 import each from 'lodash/each';
 import classNames from 'classnames';
 import addMoreDecorator from './AddMoreDecorator';
+import { List } from 'immutable';
 
 export class ObsGroupControl extends addMoreDecorator(Component) {
 
@@ -116,13 +117,13 @@ ObsGroupControl.propTypes = {
   formName: PropTypes.string.isRequired,
   formVersion: PropTypes.string.isRequired,
   value: PropTypes.object.isRequired,
-  children: PropTypes.array,
+  children: PropTypes.any,
 };
 
 ObsGroupControl.defaultProps = {
   showAddMore: false,
   showRemove: false,
-  children: [],
+  children: List.of([]),
 };
 
 ComponentStore.registerComponent('obsGroupControl', ObsGroupControl);

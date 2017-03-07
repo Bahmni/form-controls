@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { List } from 'immutable';
 import classNames from 'classnames';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
@@ -69,7 +70,6 @@ export class Section extends addMoreDecorator(Component) {
       onControlRemove: this.onControlRemove,
     };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
-    const records = this.props.record.children;
     const sectionClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
@@ -82,7 +82,7 @@ export class Section extends addMoreDecorator(Component) {
             <strong>{label.value}</strong>
           </legend>
           <div className={`obsGroup-controls ${sectionClass}`} >
-            {displayRowControls(groupedRowControls, records, childProps)}
+            {displayRowControls(groupedRowControls, this.props.children, childProps)}
           </div>
         </fieldset>
     );
@@ -107,7 +107,13 @@ Section.propTypes = {
   obs: PropTypes.any.isRequired,
   onValueChanged: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
+  children: PropTypes.any,
 };
+
+Section.defaultProps = {
+  children: List.of([]),
+};
+
 
 
 ComponentStore.registerComponent('section', Section);
