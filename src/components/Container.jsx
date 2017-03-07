@@ -49,28 +49,9 @@ export class Container extends addMoreDecorator(Component) {
     return { errors };
   }
 
-  /* eslint-disable no-param-reassign */
-  _getObservations(observations) {
-    return filter([].concat(...observations), (obs) => {
-      if (!isEmpty(obs.groupMembers)) {
-        obs.groupMembers = this._getObservations(obs.groupMembers);
-      }
-      return this._isValidObs(obs);
-    });
-  }
-  /* eslint-disable no-param-reassign */
-
   // deprecated
   storeChildRef(ref) {
     if (ref) this.childControls[ref.props.id] = ref;
-  }
-
-  _isNewVoidedObs(obs) {
-    return !obs.uuid && obs.voided;
-  }
-
-  _isValidObs(obs) {
-    return !this._isNewVoidedObs(obs);
   }
 
   areAllVoided(observations) {

@@ -29,28 +29,10 @@ export class Section extends addMoreDecorator(Component) {
     this.props.onValueChanged(formFieldPath, value, errors);
   }
 
-  onControlAdd(obs) {
-    const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
-    const obsUpdated = obs.cloneForAddMore(nextFormFieldPath);
-    const clonedRecord = this.state.data
-      .getRecord(obs.formFieldPath)
-      .set('formFieldPath', nextFormFieldPath)
-      .set('obs', obsUpdated);
-    const data = this.state.data.setRecord(clonedRecord);
-    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-
-    this.setState({ data: updatedState.data });
+  onControlAdd() {
   }
 
-  onControlRemove(obs) {
-    const obsVoid = obs.void();
-    const updatedObs = this.props.mapper.setValue(this.props.obs, obsVoid);
-    const data = this._changeValue(obs, []).deleteRecord(obs);
-    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-    const updatedErrors = getErrors(data.getRecords());
-
-    this.setState({ data: updatedState.data });
-    this.props.onValueChanged(updatedObs, updatedErrors);
+  onControlRemove() {
   }
 
   _onCollapse() {

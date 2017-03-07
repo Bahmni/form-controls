@@ -31,37 +31,10 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     this.props.onValueChanged(formFieldPath, value, errors);
   }
 
-  onControlAdd(obs) {
-    const nextFormFieldPath = this.state.data.generateFormFieldPath(obs.formFieldPath);
-    const nextGroupMembers = this.updateGroupMembers(obs.groupMembers, nextFormFieldPath);
-    const obsUpdated = obs.cloneForAddMore(nextFormFieldPath, nextGroupMembers);
-    const clonedRecord = this.state.data
-      .getRecord(obs.formFieldPath)
-      .set('formFieldPath', nextFormFieldPath)
-      .set('obs', obsUpdated);
-    const data = this.state.data.setRecord(clonedRecord);
-    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-    const updatedObs = this._getObsGroup(this.props.obs, updatedState.data);
-    this.setState({ data: updatedState.data });
-
-    this.props.onValueChanged(updatedObs);
+  onControlAdd() {
   }
 
-  onControlRemove(obs) {
-    const updatedObs = this.props.mapper.setValue(this.props.obs, obs.void());
-    const data = this._changeValue(obs, []).deleteRecord(obs);
-    const updatedState = data.prepareRecordsForAddMore(obs.formFieldPath);
-    this.setState({ data: updatedState.data });
-
-    this.props.onValueChanged(updatedObs);
-  }
-
-  _getObsGroup(obs, data) {
-    let observations = obs.removeGroupMembers();
-    each(data.getRecords(), (record) => {
-      observations = observations.addGroupMember(record.obs);
-    });
-    return observations;
+  onControlRemove() {
   }
 
   _onCollapse() {

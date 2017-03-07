@@ -23,21 +23,6 @@ const addMoreDecorator = Sup => class extends Sup {
   onRemoveControl() {
     this.props.onControlRemove(this.props.formFieldPath);
   }
-
-  updateGroupMembers(obsGroupMembers, nextFormFieldPath) {
-    if (obsGroupMembers) {
-      const suffix = nextFormFieldPath.split('-')[1];
-      return obsGroupMembers.map(nextObs => {
-        const nextPath = `${nextObs.formFieldPath.split('-')[0]}-${suffix}`;
-        const updatedObs = nextObs
-          .set('formFieldPath', nextPath)
-          .set('uuid', undefined).void();
-        return updatedObs.set('groupMembers',
-          this.updateGroupMembers(updatedObs.groupMembers, nextFormFieldPath));
-      });
-    }
-    return null;
-  }
 };
 
 export default addMoreDecorator;
