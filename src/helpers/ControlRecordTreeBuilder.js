@@ -8,7 +8,6 @@ export const ControlRecord = new Record({
   formFieldPath: '',
   children: undefined,
   value: {},
-  mapper: undefined,
   active: true,
   showAddMore: false,
   showRemove: false,
@@ -67,7 +66,6 @@ export default class ControlRecordTreeBuilder {
           value: mapper.getValue(data),
           dataSource: data,
           control,
-          enabled: false,
           showAddMore: true,
           children: control.controls &&
                     this.getRecords(
