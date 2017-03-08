@@ -96,4 +96,70 @@ describe('ObsMapper', () => {
     expect(updatedObs.comment).to.equal(undefined);
     expect(updatedObs.formFieldPath).to.equal(formFieldPath);
   });
+
+  it('should get correct obs when given obs control with boolean type', () => {
+    const booleanConcept = {
+      "answers": [],
+      "datatype": "Boolean",
+      "name": "Smoking History",
+      "properties": {
+        "allowDecimal": null
+      },
+      "uuid": "c2a43174-c9db-4e54-8516-17372c83537f"
+    };
+    const booleanControl = {
+      "concept": booleanConcept,
+      "hiAbsolute": null,
+      "hiNormal": null,
+      "id": "23",
+      "label": {
+        "type": "label",
+        "value": "Smoking History"
+      },
+      "lowAbsolute": null,
+      "lowNormal": null,
+      "options": [
+        {
+          "name": "Yes",
+          "value": true
+        },
+        {
+          "name": "No",
+          "value": false
+        }
+      ],
+      "properties": {
+        "addMore": false,
+        "hideLabel": false,
+        "location": {
+          "column": 0,
+          "row": 0
+        },
+        "mandatory": true,
+        "notes": false
+      },
+      "type": "obsControl",
+      "units": null
+    };
+    const formFieldPath = 'ComplexTest.4/23-0';
+    const booleanDataSource = {
+      "concept": booleanConcept,
+      "formFieldPath": formFieldPath,
+      "formNamespace": "Bahmni",
+      "voided": true
+    };
+
+    const record = new ControlRecord({
+      control: booleanControl,
+      formFieldPath,
+      value: { value: false, comment: undefined },
+      dataSource: booleanDataSource,
+    });
+
+    const updatedObs = mapper.getData(record);
+
+    expect(updatedObs.value).to.equal(false);
+    expect(updatedObs.voided).to.equal(false);
+  })
+
 });
