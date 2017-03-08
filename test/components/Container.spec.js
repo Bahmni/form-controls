@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from 'immutable';
+import { Record, List } from 'immutable';
 import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
@@ -646,6 +646,123 @@ describe('Container', () => {
 
       const updatedValue = result.observations[0].groupMembers[0].value;
       expect(updatedValue).to.equal('1');
+    });
+
+    it('should both change when onValueChanged be triggered twice', () => {
+      const smokingHistoryConcept = {
+        answers: [],
+        datatype: 'Boolean',
+        name: 'Smoking History',
+        properties: {
+          allowDecimal: null,
+        },
+        uuid: 'c2a43174-c9db-4e54-8516-17372c83537f',
+      };
+      const pulseConcept = {
+        answers: [],
+        datatype: 'Numeric',
+        description: [],
+        name: 'Pulse',
+        properties: {
+          allowDecimal: true,
+        },
+        uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+      };
+      const updatedMetadata = {
+        controls: [
+          {
+            concept: smokingHistoryConcept,
+            hiAbsolute: null,
+            hiNormal: null,
+            id: '1',
+            label: {
+              type: 'label',
+              value: 'Smoking History',
+            },
+            lowAbsolute: null,
+            lowNormal: null,
+            options: [
+              {
+                name: 'Yes',
+                value: true,
+              },
+              {
+                name: 'No',
+                value: false,
+              },
+            ],
+            properties: {
+              addMore: false,
+              hideLabel: false,
+              location: {
+                column: 0,
+                row: 0,
+              },
+              mandatory: true,
+              notes: false,
+            },
+            type: 'obsControl',
+            units: null,
+          },
+          {
+            concept: pulseConcept,
+            hiAbsolute: null,
+            hiNormal: 72,
+            id: '2',
+            label: {
+              type: 'label',
+              value: 'Pulse(/min)',
+            },
+            lowAbsolute: null,
+            lowNormal: 72,
+            properties: {
+              addMore: false,
+              hideLabel: false,
+              location: {
+                column: 0,
+                row: 1,
+              },
+              mandatory: true,
+              notes: false,
+            },
+            type: 'obsControl',
+            units: '/min',
+          },
+        ],
+        id: 228,
+        name: 'Error2',
+        uuid: 'a4eb5bac-8c7a-43e6-9c75-cef0710991e5',
+        version: '1',
+      };
+
+      const wrapper = mount(
+        <Container
+          collapse
+          metadata={updatedMetadata}
+          observations={[]}
+          validate={false}
+        />
+      );
+
+      const Errors = new Record({
+        type: 'error',
+        message: 'mandatory',
+      });
+
+      // Wrapper will update state immediately, so save the function here
+      const originalStateFunc = wrapper.instance().setState.bind(wrapper.instance());
+      wrapper.instance().setState = (partialState) => {
+        // Simulate real react setState, when partialState is function, react will call it with latest state.
+        if (typeof partialState === 'function') {
+          originalStateFunc(partialState(wrapper.state()));
+        }
+      };
+
+      wrapper.instance().onValueChanged('Error2.1/1-0', {}, new Errors());
+      wrapper.instance().onValueChanged('Error2.1/2-0', {}, new Errors());
+
+      expect(wrapper.state().data.children.get(0).errors.length).not.to.equal(0);
+      expect(wrapper.state().data.children.get(1).errors.length).not.to.equal(0);
     });
   });
 });
