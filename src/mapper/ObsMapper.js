@@ -19,7 +19,7 @@ export class ObsMapper {
     }
     obs.value = record.value.value;
     obs.comment = record.value.comment;
-    obs.voided = !record.value.value;
+    obs.voided = record.value.value === undefined;
 
     return obs;
   }
