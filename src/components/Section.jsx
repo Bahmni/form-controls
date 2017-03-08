@@ -3,7 +3,6 @@ import { List } from 'immutable';
 import classNames from 'classnames';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
-import { getErrors } from 'src/ControlState';
 import addMoreDecorator from './AddMoreDecorator';
 
 export class Section extends addMoreDecorator(Component) {

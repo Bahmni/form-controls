@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { displayRowControls, getGroupedControls } from '../helpers/controlsParser';
 import isEmpty from 'lodash/isEmpty';
-import filter from 'lodash/filter';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 import ControlRecordTreeMgr from 'src/helpers/ControlRecordTreeMgr';
 import addMoreDecorator from './AddMoreDecorator';
