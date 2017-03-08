@@ -59,7 +59,9 @@ export class LabelDesigner extends Component {
   showDeleteButton() {
     if (this.props.deleteControl && this.props.showDeleteButton) {
       return (
-        <button onClick={this.props.deleteControl}>-</button>
+        <button className="remove-control-button" onClick={this.props.deleteControl}>
+          <i aria-hidden="true" className="fa fa-trash"></i>
+        </button>
       );
     }
     return null;
@@ -84,7 +86,7 @@ export class LabelDesigner extends Component {
       );
     }
     return (
-      <div onClick={(e) => this.stopEventPropagation(e) }>
+      <div className="control-wrapper-content" onClick={(e) => this.stopEventPropagation(e) }>
         <label
           onDoubleClick={ this.onDoubleClick }
         >

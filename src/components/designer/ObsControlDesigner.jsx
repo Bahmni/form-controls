@@ -133,7 +133,9 @@ export class ObsControlDesigner extends Component {
   showDeleteButton() {
     if (this.props.showDeleteButton) {
       return (
-        <button onClick={this.deleteButton}>-</button>
+        <button className="remove-control-button" onClick={this.deleteButton}>
+          <i aria-hidden="true" className="fa fa-trash"></i>
+        </button>
       );
     }
     return null;
@@ -160,7 +162,9 @@ export class ObsControlDesigner extends Component {
       );
     }
     return (
-      <div onClick={ (event) => this.props.onSelect(event, metadata) }>
+      <div className="control-wrapper-content"
+        onClick={ (event) => this.props.onSelect(event, metadata) }
+      >
         {this.showDeleteButton()}
         Select Obs Source
       </div>

@@ -141,7 +141,7 @@ describe('SectionDesigner', () => {
       wrapper.setProps({ showDeleteButton: true });
       const deleteButton = wrapper.find('button');
 
-      expect(deleteButton.text()).to.eql('-');
+      expect(deleteButton.text()).to.eql('');
     });
 
     it('should call deleteControl when delete button is clicked', () => {
