@@ -24,9 +24,12 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   onValueChanged(formFieldPath, value, errors) {
-    const data = this.state.data.update(formFieldPath, value, errors);
-    // const data = this._changeValue(obs, errors);
-    this.setState({ data, collapse: undefined });
+    this.setState((previousState) => (
+      { ...previousState,
+        data: previousState.data.update(formFieldPath, value, errors),
+        collapse: undefined,
+      }
+      ));
   }
 
   onControlAdd(formFieldPath) {
