@@ -19,7 +19,7 @@
     "deploy-storybook": "storybook-to-ghpages",
     "build-storybook": "build-storybook",
     "bump-up": "npm version patch -m 'Bumped to version %s'",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch --config webpack.dev.config.js"
   },
   "author": "bahmni@thoughtworks.com",
   "devDependencies": {
