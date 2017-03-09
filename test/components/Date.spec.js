@@ -40,11 +40,20 @@ describe('Date', () => {
     sinon.assert.calledOnce(onChangeSpy.withArgs('2016-12-31', []));
   });
 
-  it('should return undefined when value is empty string', () => {
+  it('should return undefined when value is undefined', () => {
     const wrapper = shallow(
       <Date onChange={onChangeSpy} validate={false} validations={[]} />
     );
     wrapper.find('input').simulate('change', { target: { value: undefined } });
+
+    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
+  });
+
+  it('should return undefined when value is empty string', () => {
+    const wrapper = shallow(
+      <Date onChange={onChangeSpy} validate={false} validations={[]} />
+    );
+    wrapper.find('input').simulate('change', { target: { value: '' } });
 
     sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
   });

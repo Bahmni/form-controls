@@ -33,7 +33,9 @@ export class Date extends Component {
   }
 
   handleChange(e) {
-    const value = e.target.value;
+    let value = e.target.value;
+    value = (value === '') ? undefined : value;
+
     const errors = this._getErrors(value);
     this.setState({ hasErrors: this._hasErrors(errors) });
     this.props.onChange(value, errors);
