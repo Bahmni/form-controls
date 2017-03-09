@@ -10,7 +10,7 @@
     "build-dev": "webpack --config webpack.dev.config.js",
     "pretest": "rimraf coverage/*",
     "test": "karma start",
-    "test:watch": "karma start --autoWatch=true --singleRun=false",
+    "test:watch": "karma start karma.tdd.conf.js",
     "posttest": "eslint --ext .js --ext .jsx ./src ./test",
     "eslintFix": "eslint --ext .js --ext .jsx ./src ./test --fix",
     "publish": "npm publish || true",
