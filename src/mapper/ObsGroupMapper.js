@@ -1,26 +1,12 @@
 import { createObsFromControl } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
-import MapperStore from 'src/helpers/MapperStore';
 import { cloneDeep } from 'lodash';
 import ObservationMapper from '../helpers/ObservationMapper';
 
 export class ObsGroupMapper {
 
   getInitialObject(formName, formVersion, control, bahmniObservations) {
-    const obsGroups = createObsFromControl(formName, formVersion, control, bahmniObservations);
-    return obsGroups.map(obsGroup => {
-      const updatedObsGroup = obsGroup;
-      if (updatedObsGroup.groupMembers !== undefined) {
-        let groupMembers = [];
-        for (const ctrl of control.controls) {
-          const mapper = MapperStore.getMapper(ctrl);
-          groupMembers = groupMembers.concat(mapper.getInitialObject(formName, formVersion,
-            ctrl, updatedObsGroup.groupMembers));
-        }
-        updatedObsGroup.groupMembers = groupMembers;
-      }
-      return updatedObsGroup;
-    });
+    return createObsFromControl(formName, formVersion, control, bahmniObservations);
   }
 
   setValue(obsGroup, obs) {
