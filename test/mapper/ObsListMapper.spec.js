@@ -1,149 +1,348 @@
 import { ObsListMapper } from 'src/mapper/ObsListMapper';
-import sinon from 'sinon';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
+import { ObsList } from "../../src/helpers/ObsList";
 import { List } from 'immutable';
-import { ObsList } from 'src/helpers/ObsList';
-import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
+import {ControlRecord} from "../../src/helpers/ControlRecordTreeBuilder";
 
 chai.use(chaiEnzyme());
 
-
 describe('ObsListMapper', () => {
-  const obs = {
-    getValue: sinon.stub(),
-    getUuid: sinon.stub(),
-    setValue: sinon.stub(),
-    void: sinon.stub(),
-    isVoided: sinon.stub(),
+
+  const formName = 'multipleSelect';
+  const formVersion = '1';
+  const multipleSelectConcept = {
+    "answers": [
+      {
+        "displayString": "Condoms",
+        "name": {
+          "conceptNameType": "FULLY_SPECIFIED",
+          "display": "Condoms",
+          "locale": "en",
+          "localePreferred": true,
+          "name": "Condoms",
+          "resourceVersion": "1.9",
+          "uuid": "305d616f-3a6b-40e6-8053-23f3735f2844"
+        },
+        "names": [
+          {
+            "conceptNameType": "FULLY_SPECIFIED",
+            "display": "Condoms",
+            "locale": "en",
+            "localePreferred": true,
+            "name": "Condoms",
+            "resourceVersion": "1.9",
+            "uuid": "305d616f-3a6b-40e6-8053-23f3735f2844"
+          }
+        ],
+        "resourceVersion": "1.9",
+        "uuid": "1fe0597e-470d-49bd-9d82-9c7b7342dab0"
+      },
+      {
+        "displayString": "Pills",
+        "name": {
+          "conceptNameType": "FULLY_SPECIFIED",
+          "display": "Pills",
+          "locale": "en",
+          "localePreferred": true,
+          "name": "Pills",
+          "resourceVersion": "1.9",
+          "uuid": "65da2a33-8ae7-4b71-b490-e484a8f6b3b2"
+        },
+        "names": [
+          {
+            "conceptNameType": "FULLY_SPECIFIED",
+            "display": "Pills",
+            "locale": "en",
+            "localePreferred": true,
+            "name": "Pills",
+            "resourceVersion": "1.9",
+            "uuid": "65da2a33-8ae7-4b71-b490-e484a8f6b3b2"
+          }
+        ],
+        "resourceVersion": "1.9",
+        "uuid": "ffa2244a-8729-47fc-9185-d62a7033b511"
+      },
+      {
+        "displayString": "Depo Provera",
+        "name": {
+          "conceptNameType": "FULLY_SPECIFIED",
+          "display": "Depo Provera",
+          "locale": "en",
+          "localePreferred": true,
+          "name": "Depo Provera",
+          "resourceVersion": "1.9",
+          "uuid": "3ef03635-1e07-4368-bd94-9dc14d9031fe"
+        },
+        "names": [
+          {
+            "conceptNameType": "FULLY_SPECIFIED",
+            "display": "Depo Provera",
+            "locale": "en",
+            "localePreferred": true,
+            "name": "Depo Provera",
+            "resourceVersion": "1.9",
+            "uuid": "3ef03635-1e07-4368-bd94-9dc14d9031fe"
+          }
+        ],
+        "resourceVersion": "1.9",
+        "uuid": "593959fa-7e93-4ab8-bf25-71574e87f56c"
+      },
+      {
+        "displayString": "Female sterilization",
+        "name": {
+          "conceptNameType": "FULLY_SPECIFIED",
+          "display": "Female sterilization",
+          "locale": "en",
+          "localePreferred": true,
+          "name": "Female sterilization",
+          "resourceVersion": "1.9",
+          "uuid": "15b02d66-4d17-4b78-8112-f2bc9b1101ef"
+        },
+        "names": [
+          {
+            "conceptNameType": "FULLY_SPECIFIED",
+            "display": "Female sterilization",
+            "locale": "en",
+            "localePreferred": true,
+            "name": "Female sterilization",
+            "resourceVersion": "1.9",
+            "uuid": "15b02d66-4d17-4b78-8112-f2bc9b1101ef"
+          }
+        ],
+        "resourceVersion": "1.9",
+        "uuid": "cdde742d-bce2-49da-94fd-8717040d914b"
+      },
+      {
+        "displayString": "Male sterilization",
+        "name": {
+          "conceptNameType": "FULLY_SPECIFIED",
+          "display": "Male sterilization",
+          "locale": "en",
+          "localePreferred": true,
+          "name": "Male sterilization",
+          "resourceVersion": "1.9",
+          "uuid": "881ea44f-a9db-4c48-b6dd-9a48a9536807"
+        },
+        "names": [
+          {
+            "conceptNameType": "FULLY_SPECIFIED",
+            "display": "Male sterilization",
+            "locale": "en",
+            "localePreferred": true,
+            "name": "Male sterilization",
+            "resourceVersion": "1.9",
+            "uuid": "881ea44f-a9db-4c48-b6dd-9a48a9536807"
+          }
+        ],
+        "resourceVersion": "1.9",
+        "uuid": "fd941da4-f45d-471e-a007-53867a6251ec"
+      },
+      {
+        "displayString": "Implant",
+        "name": {
+          "conceptNameType": "FULLY_SPECIFIED",
+          "display": "Implant",
+          "locale": "en",
+          "localePreferred": true,
+          "name": "Implant",
+          "resourceVersion": "1.9",
+          "uuid": "5e0305ae-d310-4a4c-9fda-26fd96ce4a90"
+        },
+        "names": [
+          {
+            "conceptNameType": "FULLY_SPECIFIED",
+            "display": "Implant",
+            "locale": "en",
+            "localePreferred": true,
+            "name": "Implant",
+            "resourceVersion": "1.9",
+            "uuid": "5e0305ae-d310-4a4c-9fda-26fd96ce4a90"
+          }
+        ],
+        "resourceVersion": "1.9",
+        "uuid": "66a6bacc-8ac0-4c2c-b44a-d62ca9a3e89b"
+      },
+      {
+        "displayString": "Intra Uterine Contraceptive Device",
+        "name": {
+          "conceptNameType": "FULLY_SPECIFIED",
+          "display": "Intra Uterine Contraceptive Device",
+          "locale": "en",
+          "localePreferred": true,
+          "name": "Intra Uterine Contraceptive Device",
+          "resourceVersion": "1.9",
+          "uuid": "f73455ea-0556-4107-b485-0a61aa7fa561"
+        },
+        "names": [
+          {
+            "conceptNameType": "SHORT",
+            "display": "IUCD",
+            "locale": "en",
+            "localePreferred": false,
+            "name": "IUCD",
+            "resourceVersion": "1.9",
+            "uuid": "6adb7900-0fe4-4f60-a6b2-f9d7e3bcca32"
+          },
+          {
+            "conceptNameType": "FULLY_SPECIFIED",
+            "display": "Intra Uterine Contraceptive Device",
+            "locale": "en",
+            "localePreferred": true,
+            "name": "Intra Uterine Contraceptive Device",
+            "resourceVersion": "1.9",
+            "uuid": "f73455ea-0556-4107-b485-0a61aa7fa561"
+          }
+        ],
+        "resourceVersion": "1.9",
+        "uuid": "fb5767ed-e228-4c34-91a6-9421f61879d2"
+      }
+    ],
+    "datatype": "Coded",
+    "description": [],
+    "name": "Accepted Family Planning methods",
+    "properties": {
+      "allowDecimal": null
+    },
+    "uuid": "7269aa2e-5901-41ab-a738-eb0b83ff1d78"
+  };
+  const multipleSelectControl = {
+    "concept": multipleSelectConcept,
+    "hiAbsolute": null,
+    "hiNormal": null,
+    "id": "2",
+    "label": {
+      "type": "label",
+      "value": "Accepted Family Planning methods"
+    },
+    "lowAbsolute": null,
+    "lowNormal": null,
+    "properties": {
+      "addMore": false,
+      "autoComplete": false,
+      "dropDown": false,
+      "hideLabel": false,
+      "location": {
+        "column": 0,
+        "row": 0
+      },
+      "mandatory": false,
+      "multiSelect": true,
+      "notes": false
+    },
+    "type": "obsControl",
+    "units": null
+  };
+  const formFieldPath = "multipleSelect.1/2-0";
+  const obs1 = {
+    "concept": multipleSelectConcept,
+    "formFieldPath": formFieldPath,
+    "formNamespace": "Bahmni",
+    "value": {
+      "conceptClass": "Misc",
+      "dataType": "N/A",
+      "hiNormal": null,
+      "lowNormal": null,
+      "mappings": [],
+      "name": "Pills",
+      "set": false,
+      "shortName": "Pills",
+      "uuid": "ffa2244a-8729-47fc-9185-d62a7033b511"
+    },
+    "voided": false
+  };
+  const obs2 = {
+    "concept": multipleSelectConcept,
+    "formFieldPath": formFieldPath,
+    "formNamespace": "Bahmni",
+    "value": {
+      "conceptClass": "Misc",
+      "dataType": "N/A",
+      "hiNormal": null,
+      "lowNormal": null,
+      "mappings": [],
+      "name": "Condoms",
+      "set": false,
+      "shortName": "Condoms",
+      "uuid": "1fe0597e-470d-49bd-9d82-9c7b7342dab0"
+    },
+    "voided": false
   };
 
-  const formName = 'someName';
-  const formVersion = '1';
-  const concept = { name: 'someConcept', uuid: 'uuid' };
-  const control = { id: 1, concept };
-  const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id);
-  const { formFieldPath } = formNamespaceAndPath;
-  let mapper;
+  const obsListData = new ObsList({
+    obsList: List.of(obs1, obs2),
+    formFieldPath,
+    obs: {
+      concept: multipleSelectConcept,
+      formFieldPath,
+      formNamespace: 'Bahmni',
+      voided: true,
+    }});
 
-  beforeEach(() => {
-    mapper = new ObsListMapper();
+  it('should get obsList when getInitialObject be triggered with empty observation', () => {
+    const emptyObservation = [];
+
+    const obsLists = new ObsListMapper().getInitialObject(formName, formVersion, multipleSelectControl, emptyObservation);
+
+    expect(obsLists[0].obsList.size).to.equal(0);
+    expect(obsLists[0].formFieldPath).to.equal(formFieldPath);
+    expect(obsLists[0].obs.concept).to.equal(multipleSelectConcept);
+    expect(obsLists[0].obs.formFieldPath).to.equal(formFieldPath);
+    expect(obsLists[0].obs.voided).to.equal(true);
   });
 
-  function getObs(uuid, value) {
-    return { formFieldPath, uuid, concept, value };
-  }
+  it('should get obsList when getInitialObject be triggered with observation', () => {
+    const observations = [obs1, obs2];
 
-  context('getInitialObject', () => {
-    it('should return initial object when obs has no value', () => {
-      expect(mapper.obs).to.eql(undefined);
+    const obsLists = new ObsListMapper().getInitialObject(formName, formVersion, multipleSelectControl, observations);
 
-      const initialObjectArray = mapper.getInitialObject(formName, formVersion, control, []);
-      expect(initialObjectArray.length).to.eql(1);
-      expect(initialObjectArray[0].getObsList().size).to.eql(0);
-      expect(initialObjectArray[0].getObs().concept).to.eql(concept);
-      expect(initialObjectArray[0].formFieldPath).to.eql(formFieldPath);
-    });
-
-    it('should return initial object with default values', () => {
-      const observations = [getObs('uuid1', '72'), getObs('uuid2', 'notes')];
-      const initialObjectArray = mapper.getInitialObject(formName, formVersion,
-        control, observations);
-
-      expect(initialObjectArray.length).to.eql(1);
-      expect(initialObjectArray[0].getObsList().size).to.eql(2);
-      expect(initialObjectArray[0].getObs().concept).to.eql(concept);
-      expect(initialObjectArray[0].formFieldPath).to.eql(formFieldPath);
-    });
+    expect(obsLists[0].obsList.size).to.equal(observations.length);
+    expect(obsLists[0].formFieldPath).to.equal(formFieldPath);
+    expect(obsLists[0].obs.concept).to.equal(multipleSelectConcept);
+    expect(obsLists[0].obs.formFieldPath).to.equal(formFieldPath);
+    expect(obsLists[0].obs.voided).to.equal(true);
   });
 
-  context('getValue', () => {
-    it('should return undefined if obslist is empty', () => {
-      expect(mapper.getValue(new ObsList())).to.eql(undefined);
-    });
+  it('should get value from record with obsList type when getValue be triggered', () => {
+    const value = new ObsListMapper().getValue(obsListData);
 
-    it('should return value when obsList having obs without value', () => {
-      obs.getValue.returns(undefined);
-      obs.isVoided.returns(false);
-
-      let obsList = new List();
-      obsList = obsList.push(obs);
-      expect(mapper.getValue(new ObsList({ obsList }))).to.deep.eql(undefined);
-
-      obs.getValue.returns(null);
-      expect(mapper.getValue(new ObsList({ obsList }))).to.deep.eql(undefined);
-    });
-
-    it('should return value when obsList having obs with value and is voided', () => {
-      obs.getValue.returns('72');
-      obs.isVoided.returns(true);
-
-      let obsList = new List();
-      obsList = obsList.push(obs);
-      expect(mapper.getValue(new ObsList({ obsList }))).to.deep.eql(undefined);
-    });
-
-    it('should return value when obsList having obs with value', () => {
-      obs.getValue.returns(concept);
-      obs.isVoided.returns(false);
-
-      let obsList = new List();
-      obsList = obsList.push(obs);
-      expect(mapper.getValue(new ObsList({ obsList }))).to.deep.eql([concept]);
-    });
+    expect(value.value.length).to.equal(obsListData.obsList.size);
   });
 
-  context('setValue', () => {
-    it('should return empty list when no values are set', () => {
-      const obsList = new List();
-      expect(mapper.setValue(new ObsList({ obsList }), undefined).getObsList().size).to.eql(0);
+  it('should get obs from record when getData be triggered', () => {
+    const record = new ControlRecord({
+      control: multipleSelectControl,
+      formFieldPath,
+      value: {
+        value: [
+          {
+          "conceptClass": "Misc",
+          "dataType": "N/A",
+          "hiNormal": null,
+          "lowNormal": null,
+          "mappings": [],
+          "name": "Pills",
+          "set": false,
+          "shortName": "Pills",
+          "uuid": "ffa2244a-8729-47fc-9185-d62a7033b511"
+        },
+          {
+          "conceptClass": "Misc",
+          "dataType": "N/A",
+          "hiNormal": null,
+          "lowNormal": null,
+          "mappings": [],
+          "name": "Condoms",
+          "set": false,
+          "shortName": "Condoms",
+          "uuid": "1fe0597e-470d-49bd-9d82-9c7b7342dab0"
+        },
+        ]},
+      dataSource: obsListData,
     });
 
-    it('should return updated obslist when values are set', () => {
-      obs.setValue.returns(concept);
-      const obsList = new List();
-      const updatedList = mapper.setValue(new ObsList({ obs, obsList }), [concept]);
-      expect(updatedList.getObsList().size).to.eql(1);
-      expect(updatedList.getObsList().get(0)).to.eql(concept);
-    });
+    const obsArray = new ObsListMapper().getData(record);
 
-    it('should return updated obslist when same values are set', () => {
-      let obsList = new List();
-      const observation = { value: { uuid: 'someId' } };
-      obsList = obsList.push(observation);
-      const updatedList = mapper.setValue(new ObsList({ obsList }), [{ uuid: 'someId' }]);
-      expect(updatedList.getObsList().size).to.eql(1);
-      expect(updatedList.getObsList().get(0)).to.eql(observation);
-    });
-
-    it('should return updated obslist when obs is voided', () => {
-      const voidedObs = { value: { uuid: 'someId' }, voided: true };
-      obs.getUuid.returns('someId');
-      obs.void.returns(voidedObs);
-      let obsList = new List();
-      obsList = obsList.push(obs);
-      const updatedList = mapper.setValue(new ObsList({ obsList }), undefined);
-      expect(updatedList.getObsList().size).to.eql(1);
-      expect(updatedList.getObsList().get(0)).to.eql(voidedObs);
-    });
-
-    it('should return empty list when value is selected and deselected', () => {
-      obs.getUuid.returns(undefined);
-      let obsList = new List();
-      obsList = obsList.push(obs);
-      const updatedList = mapper.setValue(new ObsList({ obsList }), undefined);
-      expect(updatedList.getObsList().size).to.eql(0);
-    });
-  });
-
-  context('getObject', () => {
-    it('should return final object', () => {
-      let observationList = new List();
-      observationList = observationList.push(obs);
-      const obsList = new ObsList({ obsList: observationList });
-
-      expect(mapper.getObject(obsList).length).to.eql(1);
-      expect(mapper.getObject(obsList)).to.eql([obs]);
-    });
+    expect(obsArray.length).to.equal(record.value.value.length);
   });
 });

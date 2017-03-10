@@ -3,7 +3,6 @@ import { List } from 'immutable';
 import filter from 'lodash/filter';
 import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
-import map from 'lodash/map';
 import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 import { obsFromMetadata } from 'src/helpers/Obs';
 import { ObsList } from 'src/helpers/ObsList';
@@ -49,30 +48,6 @@ export class ObsListMapper {
       }
     });
     return {value: isEmpty(updatedObsList) ? undefined : updatedObsList};
-  }
-
-  setValue(obsListRecord, values) {
-    let updatedList = new List();
-    const obsList = obsListRecord.getObsList();
-    map(values, (value) => {
-      const existingObs = obsList.find((obs) => obs.value && obs.value.uuid === value.uuid);
-      const updatedObs = existingObs || obsListRecord.getObs().setValue(value);
-      updatedList = updatedList.push(updatedObs);
-    });
-
-    obsList.forEach((obs) => {
-      if (!updatedList.includes(obs)) {
-        if (obs.getUuid()) {
-          const voidedObs = obs.void();
-          updatedList = updatedList.push(voidedObs);
-        }
-      }
-    });
-    return obsListRecord.setObsList(updatedList);
-  }
-
-  getObject(obsListRecord) {
-    return obsListRecord.getObsList().toJS();
   }
 
   getData(record) {
