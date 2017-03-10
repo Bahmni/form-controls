@@ -42,20 +42,23 @@ export class ObsListMapper {
   }
 
   getValue(obsListRecord) {
+    let comment = undefined;
     const updatedObsList = [];
     const obsList = obsListRecord.getObsList();
     obsList.forEach((obs) => {
       if (obs.value) {
         updatedObsList.push(obs.value);
+        comment = obs.comment;
       }
     });
-    return { value: isEmpty(updatedObsList) ? undefined : updatedObsList };
+    return { value: isEmpty(updatedObsList) ? undefined : updatedObsList, comment };
   }
 
-  buildObs(dataSource, value, uuid) {
+  buildObs(dataSource, value, uuid, comment) {
     const obs = cloneDeep(dataSource.obs);
     obs.uuid = uuid;
     obs.value = value;
+    obs.comment = comment;
     obs.voided = !value;
     return obs;
   }
@@ -73,7 +76,7 @@ export class ObsListMapper {
             (obs) => obs.value.uuid === value.uuid
           );
           const uuid = targetValue.size > 0 ? targetValue.get(0).uuid : undefined;
-          obsArray.push(this.buildObs(record.dataSource, value, uuid));
+          obsArray.push(this.buildObs(record.dataSource, value, uuid, record.value.comment));
         }
       );
     }
