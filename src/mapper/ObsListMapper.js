@@ -48,7 +48,7 @@ export class ObsListMapper {
     obsList.forEach((obs) => {
       if (obs.value) {
         updatedObsList.push(obs.value);
-        comment = obs.comment;
+        comment = comment || obs.comment;
       }
     });
     return { value: isEmpty(updatedObsList) ? undefined : updatedObsList, comment };

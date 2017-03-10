@@ -4,6 +4,7 @@ import chai, { expect } from 'chai';
 import { ObsList } from '../../src/helpers/ObsList';
 import { List } from 'immutable';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
+import { cloneDeep } from 'lodash';
 
 chai.use(chaiEnzyme());
 
@@ -360,5 +361,65 @@ describe('ObsListMapper', () => {
     expect(obsArray.length).to.equal(record.dataSource.obsList.size);
     expect(obsArray[0].voided).to.equal(true);
     expect(obsArray[1].voided).to.equal(true);
+  });
+
+  it('should save comment to obs when given record has comment', () => {
+    const record = new ControlRecord({
+      control: multipleSelectControl,
+      formFieldPath,
+      value: {
+        value: [
+          {
+            conceptClass: 'Misc',
+            dataType: 'N/A',
+            hiNormal: null,
+            lowNormal: null,
+            mappings: [],
+            name: 'Pills',
+            set: false,
+            shortName: 'Pills',
+            uuid: 'ffa2244a-8729-47fc-9185-d62a7033b511',
+          },
+          {
+            conceptClass: 'Misc',
+            dataType: 'N/A',
+            hiNormal: null,
+            lowNormal: null,
+            mappings: [],
+            name: 'Condoms',
+            set: false,
+            shortName: 'Condoms',
+            uuid: '1fe0597e-470d-49bd-9d82-9c7b7342dab0',
+          },
+        ],
+        comment: 'this is a comment',
+      },
+      dataSource: obsListData,
+    });
+
+    const obsArray = new ObsListMapper().getData(record);
+
+    expect(obsArray[0].comment).to.equal(record.value.comment);
+    expect(obsArray[1].comment).to.equal(record.value.comment);
+  });
+
+  it('should get value with comment when given record has comment', () => {
+    const obs1WithComment = cloneDeep(obs1);
+    obs1WithComment.comment = 'this is a comment';
+
+    const obsListDataWithComment = new ObsList({
+      obsList: List.of(obs1WithComment, obs2),
+      formFieldPath,
+      obs: {
+        concept: multipleSelectConcept,
+        formFieldPath,
+        formNamespace: 'Bahmni',
+        voided: true,
+      } });
+
+
+    const value = new ObsListMapper().getValue(obsListDataWithComment);
+
+    expect(value.comment).to.equal(obs1WithComment.comment);
   });
 });
