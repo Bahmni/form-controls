@@ -1,12 +1,12 @@
-import { createObsFromControl } from 'src/helpers/Obs';
-import { List } from 'immutable';
+import {createObsFromControl} from 'src/helpers/Obs';
+import {List} from 'immutable';
 import filter from 'lodash/filter';
 import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
-import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
-import { obsFromMetadata } from 'src/helpers/Obs';
-import { ObsList } from 'src/helpers/ObsList';
-import { getKeyPrefixForControl } from 'src/helpers/formNamespace';
+import {createFormNamespaceAndPath} from 'src/helpers/formNamespace';
+import {obsFromMetadata} from 'src/helpers/Obs';
+import {ObsList} from 'src/helpers/ObsList';
+import {getKeyPrefixForControl} from 'src/helpers/formNamespace';
 import {cloneDeep} from "lodash";
 
 export class ObsListMapper {
@@ -30,11 +30,13 @@ export class ObsListMapper {
 
       obs.formFieldPath = formFieldPath;
 
-      obsLists.push(new ObsList({ obsList, formFieldPath, obs }));
+      obsLists.push(new ObsList({obsList, formFieldPath, obs}));
     });
     if (obsLists.length === 0) {
-      return [new ObsList({ obsList: new List(),
-        formFieldPath: formNamespaceAndPath.formFieldPath, obs })];
+      return [new ObsList({
+        obsList: new List(),
+        formFieldPath: formNamespaceAndPath.formFieldPath, obs
+      })];
     }
     return obsLists;
   }
@@ -50,18 +52,34 @@ export class ObsListMapper {
     return {value: isEmpty(updatedObsList) ? undefined : updatedObsList};
   }
 
+  buildObs(dataSource, value, uuid) {
+    let obs = cloneDeep(dataSource.obs);
+    obs.uuid = uuid;
+    obs.value = value;
+    obs.voided = !value;
+    return obs;
+  }
+
+  findObs(valueList, uuid) {
+    return valueList && valueList.filter(value => value.uuid === uuid);
+  }
+
   getData(record) {
     let obsArray = [];
-    if (record.value.value) {
-      record.value.value.forEach(value => {
-        let obsList = cloneDeep(record.dataSource.obs);
-        obsList.value = value;
-        obsList.voided = false;
-        obsArray.push(obsList);
-      })
-    } else {
-      obsArray.push(cloneDeep(record.dataSource.obs));
-    }
+    record.value.value && record.value.value.forEach(
+      value => {
+        const targetValue = record.dataSource.obsList.filter((obs) => obs.value.uuid === value.uuid);
+        obsArray.push(this.buildObs(record.dataSource, value, targetValue && targetValue.uuid))
+      }
+    );
+
+    record.dataSource.obsList.forEach(obs => {
+      const foundObs = this.findObs(record.value.value, obs.value.uuid);
+      if (!foundObs || foundObs.length === 0) {
+        obsArray.push(this.buildObs(record.dataSource, undefined, obs.uuid));
+      }
+    });
+
     return obsArray;
   }
 }
