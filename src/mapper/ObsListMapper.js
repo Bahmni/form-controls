@@ -69,7 +69,8 @@ export class ObsListMapper {
     record.value.value && record.value.value.forEach(
       value => {
         const targetValue = record.dataSource.obsList.filter((obs) => obs.value.uuid === value.uuid);
-        obsArray.push(this.buildObs(record.dataSource, value, targetValue && targetValue.uuid))
+        const uuid = targetValue.size > 0 && targetValue.get(0).uuid;
+        obsArray.push(this.buildObs(record.dataSource, value, uuid))
       }
     );
 

@@ -345,4 +345,20 @@ describe('ObsListMapper', () => {
 
     expect(obsArray.length).to.equal(record.value.value.length);
   });
+
+  it('should get obs with voided when given record without value but saved before', () => {
+    const record = new ControlRecord({
+      control: multipleSelectControl,
+      formFieldPath,
+      value: { value: [] },
+      dataSource: obsListData,
+    });
+
+    debugger;
+    const obsArray = new ObsListMapper().getData(record);
+
+    expect(obsArray.length).to.equal(record.dataSource.obsList.size);
+    expect(obsArray[0].voided).to.equal(true);
+    expect(obsArray[1].voided).to.equal(true);
+  });
 });
