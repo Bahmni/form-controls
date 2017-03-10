@@ -1,13 +1,13 @@
-import {createObsFromControl} from 'src/helpers/Obs';
-import {List} from 'immutable';
+import { createObsFromControl } from 'src/helpers/Obs';
+import { List } from 'immutable';
 import filter from 'lodash/filter';
 import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
-import {createFormNamespaceAndPath} from 'src/helpers/formNamespace';
-import {obsFromMetadata} from 'src/helpers/Obs';
-import {ObsList} from 'src/helpers/ObsList';
-import {getKeyPrefixForControl} from 'src/helpers/formNamespace';
-import {cloneDeep} from "lodash";
+import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
+import { obsFromMetadata } from 'src/helpers/Obs';
+import { ObsList } from 'src/helpers/ObsList';
+import { getKeyPrefixForControl } from 'src/helpers/formNamespace';
+import { cloneDeep } from 'lodash';
 
 export class ObsListMapper {
 
@@ -30,12 +30,12 @@ export class ObsListMapper {
 
       obs.formFieldPath = formFieldPath;
 
-      obsLists.push(new ObsList({obsList, formFieldPath, obs}));
+      obsLists.push(new ObsList({ obsList, formFieldPath, obs }));
     });
     if (obsLists.length === 0) {
       return [new ObsList({
         obsList: new List(),
-        formFieldPath: formNamespaceAndPath.formFieldPath, obs
+        formFieldPath: formNamespaceAndPath.formFieldPath, obs,
       })];
     }
     return obsLists;
@@ -49,11 +49,11 @@ export class ObsListMapper {
         updatedObsList.push(obs.value);
       }
     });
-    return {value: isEmpty(updatedObsList) ? undefined : updatedObsList};
+    return { value: isEmpty(updatedObsList) ? undefined : updatedObsList };
   }
 
   buildObs(dataSource, value, uuid) {
-    let obs = cloneDeep(dataSource.obs);
+    const obs = cloneDeep(dataSource.obs);
     obs.uuid = uuid;
     obs.value = value;
     obs.voided = !value;
@@ -65,15 +65,18 @@ export class ObsListMapper {
   }
 
   getData(record) {
-    let obsArray = [];
-    record.value.value && record.value.value.forEach(
-      value => {
-        const targetValue = record.dataSource.obsList.filter((obs) => obs.value.uuid === value.uuid);
-        const uuid = targetValue.size > 0 && targetValue.get(0).uuid;
-        obsArray.push(this.buildObs(record.dataSource, value, uuid))
-      }
-    );
-
+    const obsArray = [];
+    if (record.value.value) {
+      record.value.value.forEach(
+        value => {
+          const targetValue = record.dataSource.obsList.filter(
+            (obs) => obs.value.uuid === value.uuid
+          );
+          const uuid = targetValue.size > 0 && targetValue.get(0).uuid;
+          obsArray.push(this.buildObs(record.dataSource, value, uuid));
+        }
+      );
+    }
     record.dataSource.obsList.forEach(obs => {
       const foundObs = this.findObs(record.value.value, obs.value.uuid);
       if (!foundObs || foundObs.length === 0) {
