@@ -72,7 +72,7 @@ export class ObsListMapper {
           const targetValue = record.dataSource.obsList.filter(
             (obs) => obs.value.uuid === value.uuid
           );
-          const uuid = targetValue.size > 0 && targetValue.get(0).uuid;
+          const uuid = targetValue.size > 0 ? targetValue.get(0).uuid : undefined;
           obsArray.push(this.buildObs(record.dataSource, value, uuid));
         }
       );
