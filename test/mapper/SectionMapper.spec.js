@@ -3,9 +3,6 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { ObsList } from 'src/helpers/ObsList';
 import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
-import sinon from 'sinon';
-import MapperStore from 'src/helpers/MapperStore';
-import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import { getKeyPrefixForControl } from '../../src/helpers/formNamespace';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import { List } from 'immutable';
@@ -48,7 +45,7 @@ describe('SectionMapper', () => {
         formName, formVersion, sectionControl, null, []);
 
       expect(initObjectArray.length).to.eql(1);
-      expect(initObjectArray[0].getObsList().size).to.eql(0);
+      expect(initObjectArray[0].getObsList().length).to.eql(0);
       expect(initObjectArray[0].formFieldPath).to.eql(sectionControlFormFieldPath);
     });
 
@@ -62,69 +59,8 @@ describe('SectionMapper', () => {
         mapper.getInitialObject(formName, formVersion, sectionControl, null, observations);
 
       expect(initObjectArray.length).to.eql(1);
-      expect(initObjectArray[0].getObsList().size).to.eql(1);
+      expect(initObjectArray[0].getObsList().length).to.eql(1);
       expect(initObjectArray[0].formFieldPath).to.eql(sectionControlFormFieldPath);
-    });
-
-    it('should return initial object with default value when section is nested', () => {
-      const sectionLayer2 = {
-        type: 'section',
-        id: '3',
-        controls: [obsControl],
-        properties: {},
-      };
-
-      const sectionLayer1 = {
-        type: 'section',
-        id: '1',
-        controls: [sectionLayer2],
-        properties: {},
-      };
-
-      const observations = [{
-        formFieldPath: obsControlFormFieldPath,
-        concept,
-      }];
-
-      const layer1 = mapper.getInitialObject(
-        formName, formVersion, sectionLayer1, null, observations);
-
-      expect(layer1.length).to.eql(1);
-      const layer2 = layer1[0].getObsList().get(0).getObsList();
-      expect(layer2.size).to.eql(1);
-      expect(layer2.get(0).formFieldPath).to.eql(obsControlFormFieldPath);
-    });
-
-    it('should use mapper store to fetch mapper for children', () => {
-      const obsControl2 = {
-        type: 'obsGroupControl',
-        id: '2',
-        concept,
-        properties: {},
-      };
-
-      const sectionLayer1 = {
-        type: 'section',
-        id: '1',
-        controls: [obsControl2],
-        properties: {},
-      };
-
-      const observations = [{
-        formFieldPath: obsControlFormFieldPath,
-        concept,
-      }];
-
-      const mapperStub = sinon.stub(MapperStore, 'getMapper').callsFake(() => new ObsGroupMapper());
-      const layer1 = mapper.getInitialObject(
-        formName, formVersion, sectionLayer1, null, observations);
-
-      expect(mapperStub.calledOnce).to.eql(true);
-      expect(layer1.length).to.eql(1);
-      const layer2 = layer1[0].getObsList();
-      expect(layer2.size).to.eql(1);
-      expect(layer2.get(0).formFieldPath).to.eql(obsControlFormFieldPath);
-      mapperStub.restore();
     });
 
     it('should return more than one obs when observations come from addMore controls', () => {
@@ -645,7 +581,7 @@ describe('SectionMapper', () => {
     it('should get observations for children records', () => {
       const data = new ObsList({
         formFieldPath: 'section.1/1-0',
-        obsList: List.of({
+        obsList: [{
           groupMembers: [],
           formFieldPath: 'section.1/3-0',
           concept: {
@@ -662,8 +598,7 @@ describe('SectionMapper', () => {
           unknown: false,
           uuid: '22a41779-e637-44b6-a827-34d6b8df7159',
           value: 2,
-        }
-        ),
+        }],
       });
 
       expect(mapper.getChildren(data).length).to.equal(1);

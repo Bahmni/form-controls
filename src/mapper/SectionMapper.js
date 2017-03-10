@@ -14,7 +14,7 @@ export class SectionMapper {
   }
 
   _getInitialObjectInternal(formName, formVersion, control, bahmniObservations) {
-    let obsList = bahmniObservations || new List();
+    const obsList = bahmniObservations || new List();
     const { formFieldPath } = createFormNamespaceAndPath(formName, formVersion, control.id);
     return new ObsList({ obsList, formFieldPath });
   }
