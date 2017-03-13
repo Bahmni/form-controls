@@ -5,7 +5,12 @@ export default class ControlRecordTreeMgr {
   generateNextTree(brotherTree) {
     const nextSuffix = Util.increment(brotherTree.formFieldPath.split('-')[1]);
     const nextFormFieldPath = `${brotherTree.formFieldPath.split('-')[0]}-${nextSuffix}`;
-    return brotherTree.set('formFieldPath', nextFormFieldPath).set('value', {});
+    let updatedTree = brotherTree;
+    if (brotherTree.children && brotherTree.children.size > 0) {
+      const clonedChildTree = brotherTree.children.map(r => this.generateNextTree(r));
+      updatedTree = brotherTree.set('children', clonedChildTree);
+    }
+    return updatedTree.set('formFieldPath', nextFormFieldPath).set('value', {});
   }
 
   findParentTree(parentTree, formFieldPath) {
@@ -25,7 +30,7 @@ export default class ControlRecordTreeMgr {
   }
 
   addToRootTree(rootTree, parentTree, addedTree) {
-    if (rootTree === parentTree) {
+      if (rootTree === parentTree) {
       return rootTree.set('children', rootTree.children.push(addedTree));
     }
 
