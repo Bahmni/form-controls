@@ -10,7 +10,7 @@ export default class ControlRecordTreeMgr {
       const clonedChildTree = brotherTree.children.map(r => this.generateNextTree(r));
       updatedTree = brotherTree.set('children', clonedChildTree);
     }
-    return updatedTree.set('formFieldPath', nextFormFieldPath).set('value', {});
+    return updatedTree.set('formFieldPath', nextFormFieldPath).set('value', {}).set('active', true);
   }
 
   findParentTree(parentTree, formFieldPath) {
@@ -69,31 +69,11 @@ export default class ControlRecordTreeMgr {
     return latestSimilarTree;
   }
 
-  deleteCurrentTree(parentTree, formFieldPath) {
-    const filteredChildren = parentTree.children.filter(childTree =>
-            childTree.formFieldPath !== formFieldPath
-        );
-
-    const updatedTree = parentTree.set('children', filteredChildren);
-
-    if (this.getBrotherTree(parentTree, formFieldPath)) {
-      return updatedTree;
-    }
-
-    return parentTree;
-  }
-
   static add(rootTree, formFieldPath) {
     const treeMgr = new ControlRecordTreeMgr();
     const parentTree = treeMgr.findParentTree(rootTree, formFieldPath);
     const brotherTree = treeMgr.getBrotherTree(rootTree, formFieldPath);
     const addedTree = treeMgr.generateNextTree(brotherTree);
     return treeMgr.addToRootTree(rootTree, parentTree, addedTree);
-  }
-
-  static remove(rootTree, formFieldPath) {
-    const treeMgr = new ControlRecordTreeMgr();
-    const parentTree = treeMgr.findParentTree(rootTree, formFieldPath);
-    return treeMgr.deleteCurrentTree(parentTree, formFieldPath);
   }
 }

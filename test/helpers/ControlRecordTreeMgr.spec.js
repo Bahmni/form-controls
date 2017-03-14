@@ -63,16 +63,4 @@ describe('ControlRecordTreeMgr', () => {
     expect(updatedRecordTree.children.get(0).formFieldPath).to.equal(formFieldPath);
     expect(updatedRecordTree.children.get(1).formFieldPath).to.equal(expectedFormFieldPath);
   });
-
-  it('should delete one to root tree when remove method be triggered', () => {
-    const rootRecordTree = new ControlRecord({ children: List.of(childRecordTree) });
-
-    const updatedRecordTree = ControlRecordTreeMgr.add(rootRecordTree, formFieldPath);
-    expect(updatedRecordTree.children.size).to.equal(2);
-    const updatedFormFieldPath = updatedRecordTree.children.get(1).formFieldPath;
-    const deletedRecordTree = ControlRecordTreeMgr.remove(updatedRecordTree, updatedFormFieldPath);
-
-    expect(deletedRecordTree.children.size).to.equal(1);
-    expect(deletedRecordTree.children.get(0).formFieldPath).to.equal(formFieldPath);
-  });
 });

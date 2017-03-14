@@ -38,8 +38,12 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   onControlRemove(formFieldPath) {
-    const updatedRecordTree = ControlRecordTreeMgr.remove(this.state.data, formFieldPath);
-    this.setState({ data: updatedRecordTree });
+    this.setState((previousState) => (
+      { ...previousState,
+        data: previousState.data.update(formFieldPath, {}, undefined, true),
+        collapse: undefined,
+      }
+    ));
   }
 
   getValue() {
@@ -76,7 +80,7 @@ export class Container extends addMoreDecorator(Component) {
       validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
-    const records = this.state.data.children.toArray();
+    const records = this.state.data.getActive().children.toArray();
     return (
       <div>{displayRowControls(groupedRowControls, records, childProps)}</div>
     );

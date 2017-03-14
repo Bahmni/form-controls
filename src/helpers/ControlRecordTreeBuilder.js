@@ -17,13 +17,13 @@ export const ControlRecord = new Record({
     return this.mapper.getObject(this.obs);
   },
 
-  update(formFieldPath, value, errors) {
+  update(formFieldPath, value, errors, isRemoved) {
     if (this.formFieldPath === formFieldPath) {
-      return this.set('value', value).set('errors', errors);
+      return (isRemoved ? this.set('active', false) : this).set('value', value).set('errors', errors);
     }
 
     if (this.children) {
-      const childRecord = this.children.map(r => r.update(formFieldPath, value, errors) || r);
+      const childRecord = this.children.map(r => r.update(formFieldPath, value, errors, isRemoved) || r);
       return this.set('children', childRecord);
     }
     return null;
@@ -43,6 +43,9 @@ export const ControlRecord = new Record({
     return errorArray;
   },
 
+  getActive() {
+    return this.active ? (this.children ? this.set('children', this.children.filter(r => r.active)) : this) : undefined;
+  }
 });
 
 export default class ControlRecordTreeBuilder {
