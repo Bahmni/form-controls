@@ -47,11 +47,12 @@ export default class ControlRecordTreeMgr {
 
   getBrotherTree(parentTree, formFieldPath) {
     const prefix = formFieldPath.split('-')[0];
+    const getSuffix = (record) => (Util.toInt(record.formFieldPath.split('-')[1]));
 
     const isLatestBrotherTree = (originalRecord, newRecord) => (
-       newRecord.formFieldPath.startsWith(prefix) && !originalRecord ||
-        originalRecord.formFieldPath.split('-')[1] < newRecord.formFieldPath.split('-')[1]
-    );
+            newRecord.formFieldPath.startsWith(prefix) && !originalRecord ||
+                getSuffix(originalRecord) < getSuffix(newRecord)
+        );
 
     let latestSimilarTree = undefined;
 
