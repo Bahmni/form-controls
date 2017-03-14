@@ -50,8 +50,8 @@ export default class ControlRecordTreeMgr {
     const getSuffix = (record) => (Util.toInt(record.formFieldPath.split('-')[1]));
 
     const isLatestBrotherTree = (originalRecord, newRecord) => (
-            newRecord.formFieldPath.startsWith(prefix) && !originalRecord ||
-                getSuffix(originalRecord) < getSuffix(newRecord)
+            newRecord.formFieldPath.startsWith(prefix) && (!originalRecord ||
+                getSuffix(originalRecord) < getSuffix(newRecord))
         );
 
     let latestSimilarTree = undefined;

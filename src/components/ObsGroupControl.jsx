@@ -30,10 +30,12 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     this.props.onValueChanged(formFieldPath, value, errors);
   }
 
-  onControlAdd() {
+  onControlAdd(formFieldPath) {
+    this.props.onControlAdd(formFieldPath);
   }
 
-  onControlRemove() {
+  onControlRemove(formFieldPath) {
+    this.props.onControlRemove(formFieldPath);
   }
 
   _onCollapse() {
