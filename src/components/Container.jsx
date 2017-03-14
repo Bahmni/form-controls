@@ -37,7 +37,9 @@ export class Container extends addMoreDecorator(Component) {
     this.setState({ data: updatedRecordTree });
   }
 
-  onControlRemove() {
+  onControlRemove(formFieldPath) {
+    const updatedRecordTree = ControlRecordTreeMgr.remove(this.state.data, formFieldPath);
+    this.setState({ data: updatedRecordTree });
   }
 
   getValue() {
