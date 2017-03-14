@@ -19,7 +19,9 @@ export const ControlRecord = new Record({
 
   update(formFieldPath, value, errors, isRemoved) {
     if (this.formFieldPath === formFieldPath) {
-      return (isRemoved ? this.set('active', false) : this).set('value', value).set('errors', errors);
+      return (Object.keys(value).length === 0 && isRemoved ? this.set('active', false) : this)
+        .set('value', value)
+        .set('errors', errors);
     }
 
     if (this.children) {
