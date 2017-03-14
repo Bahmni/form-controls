@@ -67,7 +67,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
         </legend>
           {this.showAddMore()}
           <div className={`obsGroup-controls ${obsGroupClass}`}>
-            { displayRowControls(groupedRowControls, this.props.children, childProps) }
+            { displayRowControls(groupedRowControls, this.props.children.toArray(), childProps) }
           </div>
         </fieldset>
     );
