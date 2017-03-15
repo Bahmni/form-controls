@@ -28,12 +28,12 @@ export class Section extends addMoreDecorator(Component) {
     this.props.onValueChanged(formFieldPath, value, errors);
   }
 
-  onControlAdd() {
+  onControlAdd(formFieldPath) {
     this.props.onControlAdd(formFieldPath);
   }
 
-  onControlRemove() {
-    this.props.onControlAdd(formFieldPath);
+  onControlRemove(formFieldPath) {
+    this.props.onControlRemove(formFieldPath);
 
   }
 
@@ -66,7 +66,7 @@ export class Section extends addMoreDecorator(Component) {
             <strong>{label.value}</strong>
           </legend>
           <div className={`obsGroup-controls ${sectionClass}`} >
-            {displayRowControls(groupedRowControls, this.props.children, childProps)}
+            {displayRowControls(groupedRowControls, this.props.children.toArray(), childProps)}
           </div>
         </fieldset>
     );
