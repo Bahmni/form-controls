@@ -25,7 +25,9 @@ export const ControlRecord = new Record({
     }
 
     if (this.children) {
-      const childRecord = this.children.map(r => r.update(formFieldPath, value, errors, isRemoved) || r);
+      const childRecord = this.children.map(
+        r => r.update(formFieldPath, value, errors, isRemoved) || r
+      );
       return this.set('children', childRecord);
     }
     return null;
@@ -46,7 +48,6 @@ export const ControlRecord = new Record({
   },
 
   getActive() {
-
     if (this.active) {
       if (this.children) {
         const activeRecords = this.set('children', this.children.filter(r => r.active));
@@ -61,7 +62,8 @@ export const ControlRecord = new Record({
       }
       return this;
     }
-  }
+    return null;
+  },
 });
 
 export default class ControlRecordTreeBuilder {
@@ -87,13 +89,13 @@ export default class ControlRecordTreeBuilder {
           control,
           showAddMore: true,
           children: control.controls &&
-                    this.getRecords(
-                      control.controls,
-                      formName,
-                      formVersion,
-                      mapper.getChildren(data),
-                      allObs
-                    ),
+          this.getRecords(
+            control.controls,
+            formName,
+            formVersion,
+            mapper.getChildren(data),
+            allObs
+          ),
         });
 
         recordList = recordList.push(record);

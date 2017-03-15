@@ -25,11 +25,12 @@ export class Container extends addMoreDecorator(Component) {
 
   onValueChanged(formFieldPath, value, errors) {
     this.setState((previousState) => (
-      { ...previousState,
+      {
+        ...previousState,
         data: previousState.data.update(formFieldPath, value, errors),
         collapse: undefined,
       }
-      ));
+    ));
   }
 
   onControlAdd(formFieldPath) {
@@ -39,7 +40,8 @@ export class Container extends addMoreDecorator(Component) {
 
   onControlRemove(formFieldPath) {
     this.setState((previousState) => (
-      { ...previousState,
+      {
+        ...previousState,
         data: previousState.data.update(formFieldPath, {}, undefined, true),
         collapse: undefined,
       }
