@@ -46,7 +46,21 @@ export const ControlRecord = new Record({
   },
 
   getActive() {
-    return this.active ? (this.children ? this.set('children', this.children.filter(r => r.active)) : this) : undefined;
+
+    if (this.active) {
+      if (this.children) {
+        const activeRecords = this.set('children', this.children.filter(r => r.active));
+
+        const updatedActiveChildren = activeRecords.children.map(child => {
+          if (child.children) {
+            return child.getActive();
+          }
+          return child;
+        });
+        return activeRecords.set('children', updatedActiveChildren);
+      }
+      return this;
+    }
   }
 });
 

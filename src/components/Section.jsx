@@ -29,9 +29,12 @@ export class Section extends addMoreDecorator(Component) {
   }
 
   onControlAdd() {
+    this.props.onControlAdd(formFieldPath);
   }
 
   onControlRemove() {
+    this.props.onControlAdd(formFieldPath);
+
   }
 
   _onCollapse() {
