@@ -54,12 +54,13 @@ export class ObsListMapper {
     return { value: isEmpty(updatedObsList) ? undefined : updatedObsList, comment };
   }
 
-  buildObs(dataSource, value, uuid, comment) {
-    const obs = cloneDeep(dataSource.obs);
+  buildObs(record, value, uuid, comment) {
+    const obs = cloneDeep(record.dataSource.obs);
     obs.uuid = uuid;
     obs.value = value;
     obs.comment = comment;
     obs.voided = !value;
+    obs.formFieldPath = record.formFieldPath;
     return obs;
   }
 
@@ -76,14 +77,14 @@ export class ObsListMapper {
             (obs) => obs.value.uuid === value.uuid
           );
           const uuid = targetValue.size > 0 ? targetValue.get(0).uuid : undefined;
-          obsArray.push(this.buildObs(record.dataSource, value, uuid, record.value.comment));
+          obsArray.push(this.buildObs(record, value, uuid, record.value.comment));
         }
       );
     }
     record.dataSource.obsList.forEach(obs => {
       const foundObs = this.findObs(record.value.value, obs.value.uuid);
       if (!foundObs || foundObs.length === 0) {
-        obsArray.push(this.buildObs(record.dataSource, undefined, obs.uuid));
+        obsArray.push(this.buildObs(record, undefined, obs.uuid));
       }
     });
 
