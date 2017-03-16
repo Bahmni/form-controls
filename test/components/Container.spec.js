@@ -2693,28 +2693,1036 @@ describe('Container', () => {
                expect(sectionTree.children.size).to.equal(2);
            });
 
-           // it('should remove one obs group when onControlAdd is triggered with obs group in section', () => {
-           //     const sectionRecord = new ControlRecord({
-           //         value: {},
-           //         formFieldPath: 'obsGroupInSection.2/1-0',
-           //         control:,
-           //         dataSource:,
-           //         children: List.of(obsGroupRecord)
-           //     });
-           //     const rootTree = new ControlRecord({children: List.of(sectionRecord)});
-           //     const wrapper = mount(
-           //         <Container
-           //             collapse
-           //             metadata={metadata}
-           //             observations={[]}
-           //             validate={false}
-           //         />
-           //     );
-           //     wrapper.setState({data: rootTree});
-           //     wrapper.instance().onControlAdd(addedFormFieldPath);
-           //
-           //     const updatedRootTree = wrapper.state().data;
-           // });
+           it('should remove one obs group when onControlAdd is triggered with obs group in section', () => {
+               let obsGroupConcept = {
+                   "datatype": "N/A",
+                   "name": "Pulse Data",
+                   "set": true,
+                   "setMembers": [
+                       {
+                           "answers": [],
+                           "datatype": "Numeric",
+                           "description": [],
+                           "hiAbsolute": null,
+                           "hiNormal": 72,
+                           "lowAbsolute": null,
+                           "lowNormal": 72,
+                           "name": "Pulse(/min)",
+                           "properties": {
+                               "allowDecimal": true
+                           },
+                           "units": "/min",
+                           "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+                       },
+                       {
+                           "answers": [],
+                           "datatype": "Boolean",
+                           "description": [],
+                           "hiAbsolute": null,
+                           "hiNormal": null,
+                           "lowAbsolute": null,
+                           "lowNormal": null,
+                           "name": "Pulse Abnormal",
+                           "properties": {
+                               "allowDecimal": null
+                           },
+                           "units": null,
+                           "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75"
+                       }
+                   ],
+                   "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+               };
+               const obsGroupRecord = new ControlRecord({
+                   value: {},
+                   formFieldPath: 'obsGroupInSection.2/2-0',
+                   control:{
+                       "concept": obsGroupConcept,
+                       "controls": [
+                           {
+                               "concept": {
+                                   "answers": [],
+                                   "datatype": "Numeric",
+                                   "description": [],
+                                   "hiAbsolute": null,
+                                   "hiNormal": 72,
+                                   "lowAbsolute": null,
+                                   "lowNormal": 72,
+                                   "name": "Pulse(/min)",
+                                   "properties": {
+                                       "allowDecimal": true
+                                   },
+                                   "units": "/min",
+                                   "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "hiAbsolute": null,
+                               "hiNormal": 72,
+                               "id": "3",
+                               "label": {
+                                   "type": "label",
+                                   "value": "Pulse(/min)"
+                               },
+                               "lowAbsolute": null,
+                               "lowNormal": 72,
+                               "properties": {
+                                   "addMore": false,
+                                   "hideLabel": false,
+                                   "location": {
+                                       "column": 0,
+                                       "row": 0
+                                   },
+                                   "mandatory": false,
+                                   "notes": false
+                               },
+                               "type": "obsControl",
+                               "units": "/min"
+                           },
+                           {
+                               "concept": {
+                                   "answers": [],
+                                   "datatype": "Boolean",
+                                   "description": [],
+                                   "hiAbsolute": null,
+                                   "hiNormal": null,
+                                   "lowAbsolute": null,
+                                   "lowNormal": null,
+                                   "name": "Pulse Abnormal",
+                                   "properties": {
+                                       "allowDecimal": null
+                                   },
+                                   "units": null,
+                                   "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "hiAbsolute": null,
+                               "hiNormal": null,
+                               "id": "4",
+                               "label": {
+                                   "type": "label",
+                                   "value": "Pulse Abnormal"
+                               },
+                               "lowAbsolute": null,
+                               "lowNormal": null,
+                               "options": [
+                                   {
+                                       "name": "Yes",
+                                       "value": true
+                                   },
+                                   {
+                                       "name": "No",
+                                       "value": false
+                                   }
+                               ],
+                               "properties": {
+                                   "addMore": false,
+                                   "hideLabel": false,
+                                   "location": {
+                                       "column": 0,
+                                       "row": 1
+                                   },
+                                   "mandatory": false,
+                                   "notes": false
+                               },
+                               "type": "obsControl",
+                               "units": null
+                           }
+                       ],
+                       "id": "2",
+                       "label": {
+                           "type": "label",
+                           "value": "Pulse Data"
+                       },
+                       "properties": {
+                           "abnormal": false,
+                           "addMore": true,
+                           "location": {
+                               "column": 0,
+                               "row": 0
+                           }
+                       },
+                       "type": "obsGroupControl"
+                   },
+                   dataSource:{
+                       "abnormal": null,
+                       "comment": null,
+                       "concept": {
+                           "conceptClass": "Concept Details",
+                           "dataType": "N/A",
+                           "hiNormal": null,
+                           "lowNormal": null,
+                           "mappings": [],
+                           "name": "Pulse Data",
+                           "set": true,
+                           "shortName": "Pulse",
+                           "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+                       },
+                       "conceptNameToDisplay": "Pulse",
+                       "conceptSortWeight": 1,
+                       "conceptUuid": "c36af094-3f10-11e4-adec-0800271c1b75",
+                       "creatorName": "Super Man",
+                       "duration": null,
+                       "encounterDateTime": 1489648411000,
+                       "encounterUuid": "708bcabf-34dd-42a8-a4fb-d3134323fe0c",
+                       "formFieldPath": "obsGroupInSection.2/2-0",
+                       "formNamespace": "Bahmni",
+                       "groupMembers": [
+                           {
+                               "abnormal": null,
+                               "comment": null,
+                               "concept": {
+                                   "conceptClass": "Misc",
+                                   "dataType": "Numeric",
+                                   "hiNormal": 72,
+                                   "lowNormal": 72,
+                                   "mappings": [],
+                                   "name": "Pulse",
+                                   "set": false,
+                                   "shortName": "Pulse",
+                                   "units": "/min",
+                                   "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "conceptNameToDisplay": "Pulse",
+                               "conceptSortWeight": 2,
+                               "conceptUuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
+                               "creatorName": "Super Man",
+                               "duration": null,
+                               "encounterDateTime": 1489648411000,
+                               "encounterUuid": "708bcabf-34dd-42a8-a4fb-d3134323fe0c",
+                               "formFieldPath": "obsGroupInSection.2/3-0",
+                               "formNamespace": "Bahmni",
+                               "groupMembers": [],
+                               "hiNormal": 72,
+                               "isAbnormal": null,
+                               "lowNormal": 72,
+                               "obsGroupUuid": "5cd662e4-bb94-4079-b484-a658634b4296",
+                               "observationDateTime": "2017-03-16T12:46:56.000+0530",
+                               "orderUuid": null,
+                               "parentConceptUuid": null,
+                               "providers": [
+                                   {
+                                       "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                       "name": "Super Man",
+                                       "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                   }
+                               ],
+                               "targetObsRelation": null,
+                               "type": "Numeric",
+                               "unknown": false,
+                               "uuid": "16716551-94a3-4147-ab14-35ee5d6159de",
+                               "value": 22,
+                               "valueAsString": "22.0",
+                               "visitStartDateTime": null,
+                               "voidReason": null,
+                               "voided": false
+                           },
+                           {
+                               "abnormal": null,
+                               "comment": null,
+                               "concept": {
+                                   "conceptClass": "Abnormal",
+                                   "dataType": "Boolean",
+                                   "hiNormal": null,
+                                   "lowNormal": null,
+                                   "mappings": [],
+                                   "name": "Pulse Abnormal",
+                                   "set": false,
+                                   "shortName": "Pulse Abnormal",
+                                   "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "conceptNameToDisplay": "Pulse Abnormal",
+                               "conceptSortWeight": 3,
+                               "conceptUuid": "c36c7c98-3f10-11e4-adec-0800271c1b75",
+                               "creatorName": "Super Man",
+                               "duration": null,
+                               "encounterDateTime": 1489648411000,
+                               "encounterUuid": "708bcabf-34dd-42a8-a4fb-d3134323fe0c",
+                               "formFieldPath": "obsGroupInSection.2/4-0",
+                               "formNamespace": "Bahmni",
+                               "groupMembers": [],
+                               "hiNormal": null,
+                               "isAbnormal": null,
+                               "lowNormal": null,
+                               "obsGroupUuid": "5cd662e4-bb94-4079-b484-a658634b4296",
+                               "observationDateTime": "2017-03-16T12:46:56.000+0530",
+                               "orderUuid": null,
+                               "parentConceptUuid": null,
+                               "providers": [
+                                   {
+                                       "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                       "name": "Super Man",
+                                       "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                   }
+                               ],
+                               "targetObsRelation": null,
+                               "type": "Boolean",
+                               "unknown": false,
+                               "uuid": "4623ee7b-f499-449b-8dea-e8b65a17a47d",
+                               "value": true,
+                               "valueAsString": "Yes",
+                               "visitStartDateTime": null,
+                               "voidReason": null,
+                               "voided": false
+                           }
+                       ],
+                       "hiNormal": null,
+                       "isAbnormal": null,
+                       "lowNormal": null,
+                       "obsGroupUuid": null,
+                       "observationDateTime": "2017-03-16T12:46:56.000+0530",
+                       "orderUuid": null,
+                       "parentConceptUuid": null,
+                       "providers": [
+                           {
+                               "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                               "name": "Super Man",
+                               "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                           }
+                       ],
+                       "targetObsRelation": null,
+                       "type": null,
+                       "unknown": false,
+                       "uuid": "5cd662e4-bb94-4079-b484-a658634b4296",
+                       "value": "22.0, true",
+                       "valueAsString": "22.0, true",
+                       "visitStartDateTime": null,
+                       "voidReason": null,
+                       "voided": false
+                   }
+               });
+
+               let removedFormFieldPath = 'obsGroupInSection.2/2-1';
+               const removedObsGroupRecord = new ControlRecord({
+                   value: {},
+                   formFieldPath: removedFormFieldPath,
+                   control:{
+                       "concept": obsGroupConcept,
+                       "controls": [
+                           {
+                               "concept": {
+                                   "answers": [],
+                                   "datatype": "Numeric",
+                                   "description": [],
+                                   "hiAbsolute": null,
+                                   "hiNormal": 72,
+                                   "lowAbsolute": null,
+                                   "lowNormal": 72,
+                                   "name": "Pulse(/min)",
+                                   "properties": {
+                                       "allowDecimal": true
+                                   },
+                                   "units": "/min",
+                                   "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "hiAbsolute": null,
+                               "hiNormal": 72,
+                               "id": "3",
+                               "label": {
+                                   "type": "label",
+                                   "value": "Pulse(/min)"
+                               },
+                               "lowAbsolute": null,
+                               "lowNormal": 72,
+                               "properties": {
+                                   "addMore": false,
+                                   "hideLabel": false,
+                                   "location": {
+                                       "column": 0,
+                                       "row": 0
+                                   },
+                                   "mandatory": false,
+                                   "notes": false
+                               },
+                               "type": "obsControl",
+                               "units": "/min"
+                           },
+                           {
+                               "concept": {
+                                   "answers": [],
+                                   "datatype": "Boolean",
+                                   "description": [],
+                                   "hiAbsolute": null,
+                                   "hiNormal": null,
+                                   "lowAbsolute": null,
+                                   "lowNormal": null,
+                                   "name": "Pulse Abnormal",
+                                   "properties": {
+                                       "allowDecimal": null
+                                   },
+                                   "units": null,
+                                   "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "hiAbsolute": null,
+                               "hiNormal": null,
+                               "id": "4",
+                               "label": {
+                                   "type": "label",
+                                   "value": "Pulse Abnormal"
+                               },
+                               "lowAbsolute": null,
+                               "lowNormal": null,
+                               "options": [
+                                   {
+                                       "name": "Yes",
+                                       "value": true
+                                   },
+                                   {
+                                       "name": "No",
+                                       "value": false
+                                   }
+                               ],
+                               "properties": {
+                                   "addMore": false,
+                                   "hideLabel": false,
+                                   "location": {
+                                       "column": 0,
+                                       "row": 1
+                                   },
+                                   "mandatory": false,
+                                   "notes": false
+                               },
+                               "type": "obsControl",
+                               "units": null
+                           }
+                       ],
+                       "id": "2",
+                       "label": {
+                           "type": "label",
+                           "value": "Pulse Data"
+                       },
+                       "properties": {
+                           "abnormal": false,
+                           "addMore": true,
+                           "location": {
+                               "column": 0,
+                               "row": 0
+                           }
+                       },
+                       "type": "obsGroupControl"
+                   },
+                   dataSource:{
+                       "abnormal": null,
+                       "comment": null,
+                       "concept": {
+                           "conceptClass": "Concept Details",
+                           "dataType": "N/A",
+                           "hiNormal": null,
+                           "lowNormal": null,
+                           "mappings": [],
+                           "name": "Pulse Data",
+                           "set": true,
+                           "shortName": "Pulse",
+                           "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+                       },
+                       "conceptNameToDisplay": "Pulse",
+                       "conceptSortWeight": 1,
+                       "conceptUuid": "c36af094-3f10-11e4-adec-0800271c1b75",
+                       "creatorName": "Super Man",
+                       "duration": null,
+                       "encounterDateTime": 1489648411000,
+                       "encounterUuid": "708bcabf-34dd-42a8-a4fb-d3134323fe0c",
+                       "formFieldPath": removedFormFieldPath,
+                       "formNamespace": "Bahmni",
+                       "groupMembers": [
+                           {
+                               "abnormal": null,
+                               "comment": null,
+                               "concept": {
+                                   "conceptClass": "Misc",
+                                   "dataType": "Numeric",
+                                   "hiNormal": 72,
+                                   "lowNormal": 72,
+                                   "mappings": [],
+                                   "name": "Pulse",
+                                   "set": false,
+                                   "shortName": "Pulse",
+                                   "units": "/min",
+                                   "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "conceptNameToDisplay": "Pulse",
+                               "conceptSortWeight": 2,
+                               "conceptUuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
+                               "creatorName": "Super Man",
+                               "duration": null,
+                               "encounterDateTime": 1489648411000,
+                               "encounterUuid": "708bcabf-34dd-42a8-a4fb-d3134323fe0c",
+                               "formFieldPath": "obsGroupInSection.2/3-1",
+                               "formNamespace": "Bahmni",
+                               "groupMembers": [],
+                               "hiNormal": 72,
+                               "isAbnormal": null,
+                               "lowNormal": 72,
+                               "obsGroupUuid": "34c86574-42b3-488d-9616-69408eb2796e",
+                               "observationDateTime": "2017-03-16T12:46:56.000+0530",
+                               "orderUuid": null,
+                               "parentConceptUuid": null,
+                               "providers": [
+                                   {
+                                       "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                       "name": "Super Man",
+                                       "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                   }
+                               ],
+                               "targetObsRelation": null,
+                               "type": "Numeric",
+                               "unknown": false,
+                               "uuid": "b43fdbb9-fe4c-47b7-9049-81041aa3ee3a",
+                               "value": 33,
+                               "valueAsString": "33.0",
+                               "visitStartDateTime": null,
+                               "voidReason": null,
+                               "voided": false
+                           },
+                           {
+                               "abnormal": null,
+                               "comment": null,
+                               "concept": {
+                                   "conceptClass": "Abnormal",
+                                   "dataType": "Boolean",
+                                   "hiNormal": null,
+                                   "lowNormal": null,
+                                   "mappings": [],
+                                   "name": "Pulse Abnormal",
+                                   "set": false,
+                                   "shortName": "Pulse Abnormal",
+                                   "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "conceptNameToDisplay": "Pulse Abnormal",
+                               "conceptSortWeight": 3,
+                               "conceptUuid": "c36c7c98-3f10-11e4-adec-0800271c1b75",
+                               "creatorName": "Super Man",
+                               "duration": null,
+                               "encounterDateTime": 1489648411000,
+                               "encounterUuid": "708bcabf-34dd-42a8-a4fb-d3134323fe0c",
+                               "formFieldPath": "obsGroupInSection.2/4-1",
+                               "formNamespace": "Bahmni",
+                               "groupMembers": [],
+                               "hiNormal": null,
+                               "isAbnormal": null,
+                               "lowNormal": null,
+                               "obsGroupUuid": "34c86574-42b3-488d-9616-69408eb2796e",
+                               "observationDateTime": "2017-03-16T12:46:56.000+0530",
+                               "orderUuid": null,
+                               "parentConceptUuid": null,
+                               "providers": [
+                                   {
+                                       "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                       "name": "Super Man",
+                                       "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                   }
+                               ],
+                               "targetObsRelation": null,
+                               "type": "Boolean",
+                               "unknown": false,
+                               "uuid": "b55dab85-8987-4199-94af-73a0f3aa3c5d",
+                               "value": false,
+                               "valueAsString": "No",
+                               "visitStartDateTime": null,
+                               "voidReason": null,
+                               "voided": false
+                           }
+                       ],
+                       "hiNormal": null,
+                       "isAbnormal": null,
+                       "lowNormal": null,
+                       "obsGroupUuid": null,
+                       "observationDateTime": "2017-03-16T12:46:56.000+0530",
+                       "orderUuid": null,
+                       "parentConceptUuid": null,
+                       "providers": [
+                           {
+                               "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                               "name": "Super Man",
+                               "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                           }
+                       ],
+                       "targetObsRelation": null,
+                       "type": null,
+                       "unknown": false,
+                       "uuid": "34c86574-42b3-488d-9616-69408eb2796e",
+                       "value": "false, 33.0",
+                       "valueAsString": "false, 33.0",
+                       "visitStartDateTime": null,
+                       "voidReason": null,
+                       "voided": false
+                   }
+               });
+               let concept = {
+                   "datatype": "N/A",
+                   "name": "Pulse Data",
+                   "set": true,
+                   "setMembers": [
+                       {
+                           "answers": [],
+                           "datatype": "Numeric",
+                           "description": [],
+                           "hiAbsolute": null,
+                           "hiNormal": 72,
+                           "lowAbsolute": null,
+                           "lowNormal": 72,
+                           "name": "Pulse(/min)",
+                           "properties": {
+                               "allowDecimal": true
+                           },
+                           "units": "/min",
+                           "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+                       },
+                       {
+                           "answers": [],
+                           "datatype": "Boolean",
+                           "description": [],
+                           "hiAbsolute": null,
+                           "hiNormal": null,
+                           "lowAbsolute": null,
+                           "lowNormal": null,
+                           "name": "Pulse Abnormal",
+                           "properties": {
+                               "allowDecimal": null
+                           },
+                           "units": null,
+                           "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75"
+                       }
+                   ],
+                   "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+               };
+               const sectionRecord = new ControlRecord({
+                   value: {},
+                   formFieldPath: 'obsGroupInSection.2/1-0',
+                   control:{
+                       "controls": [
+                           {
+                               "concept": concept,
+                               "controls": [
+                                   {
+                                       "concept": {
+                                           "answers": [],
+                                           "datatype": "Numeric",
+                                           "description": [],
+                                           "hiAbsolute": null,
+                                           "hiNormal": 72,
+                                           "lowAbsolute": null,
+                                           "lowNormal": 72,
+                                           "name": "Pulse(/min)",
+                                           "properties": {
+                                               "allowDecimal": true
+                                           },
+                                           "units": "/min",
+                                           "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+                                       },
+                                       "hiAbsolute": null,
+                                       "hiNormal": 72,
+                                       "id": "3",
+                                       "label": {
+                                           "type": "label",
+                                           "value": "Pulse(/min)"
+                                       },
+                                       "lowAbsolute": null,
+                                       "lowNormal": 72,
+                                       "properties": {
+                                           "addMore": false,
+                                           "hideLabel": false,
+                                           "location": {
+                                               "column": 0,
+                                               "row": 0
+                                           },
+                                           "mandatory": false,
+                                           "notes": false
+                                       },
+                                       "type": "obsControl",
+                                       "units": "/min"
+                                   },
+                                   {
+                                       "concept": {
+                                           "answers": [],
+                                           "datatype": "Boolean",
+                                           "description": [],
+                                           "hiAbsolute": null,
+                                           "hiNormal": null,
+                                           "lowAbsolute": null,
+                                           "lowNormal": null,
+                                           "name": "Pulse Abnormal",
+                                           "properties": {
+                                               "allowDecimal": null
+                                           },
+                                           "units": null,
+                                           "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75"
+                                       },
+                                       "hiAbsolute": null,
+                                       "hiNormal": null,
+                                       "id": "4",
+                                       "label": {
+                                           "type": "label",
+                                           "value": "Pulse Abnormal"
+                                       },
+                                       "lowAbsolute": null,
+                                       "lowNormal": null,
+                                       "options": [
+                                           {
+                                               "name": "Yes",
+                                               "value": true
+                                           },
+                                           {
+                                               "name": "No",
+                                               "value": false
+                                           }
+                                       ],
+                                       "properties": {
+                                           "addMore": false,
+                                           "hideLabel": false,
+                                           "location": {
+                                               "column": 0,
+                                               "row": 1
+                                           },
+                                           "mandatory": false,
+                                           "notes": false
+                                       },
+                                       "type": "obsControl",
+                                       "units": null
+                                   }
+                               ],
+                               "id": "2",
+                               "label": {
+                                   "type": "label",
+                                   "value": "Pulse Data"
+                               },
+                               "properties": {
+                                   "abnormal": false,
+                                   "addMore": true,
+                                   "location": {
+                                       "column": 0,
+                                       "row": 0
+                                   }
+                               },
+                               "type": "obsGroupControl"
+                           }
+                       ],
+                       "id": "1",
+                       "label": {
+                           "type": "label",
+                           "value": "Section"
+                       },
+                       "properties": {
+                           "location": {
+                               "column": 0,
+                               "row": 0
+                           }
+                       },
+                       "type": "section"
+                   },
+                   dataSource:{
+                       "formFieldPath": "obsGroupInSection.2/1-0",
+                       "obsList": [
+                           {
+                               "abnormal": null,
+                               "comment": null,
+                               "concept": {
+                                   "conceptClass": "Concept Details",
+                                   "dataType": "N/A",
+                                   "hiNormal": null,
+                                   "lowNormal": null,
+                                   "mappings": [],
+                                   "name": "Pulse Data",
+                                   "set": true,
+                                   "shortName": "Pulse",
+                                   "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "conceptNameToDisplay": "Pulse",
+                               "conceptSortWeight": 1,
+                               "conceptUuid": "c36af094-3f10-11e4-adec-0800271c1b75",
+                               "creatorName": "Super Man",
+                               "duration": null,
+                               "encounterDateTime": 1489654263000,
+                               "encounterUuid": "f9cda4a7-e7dd-418f-a14d-1cc99e18da83",
+                               "formFieldPath": "obsGroupInSection.2/2-1",
+                               "formNamespace": "Bahmni",
+                               "groupMembers": [
+                                   {
+                                       "abnormal": null,
+                                       "comment": null,
+                                       "concept": {
+                                           "conceptClass": "Misc",
+                                           "dataType": "Numeric",
+                                           "hiNormal": 72,
+                                           "lowNormal": 72,
+                                           "mappings": [],
+                                           "name": "Pulse",
+                                           "set": false,
+                                           "shortName": "Pulse",
+                                           "units": "/min",
+                                           "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+                                       },
+                                       "conceptNameToDisplay": "Pulse",
+                                       "conceptSortWeight": 2,
+                                       "conceptUuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
+                                       "creatorName": "Super Man",
+                                       "duration": null,
+                                       "encounterDateTime": 1489654263000,
+                                       "encounterUuid": "f9cda4a7-e7dd-418f-a14d-1cc99e18da83",
+                                       "formFieldPath": "obsGroupInSection.2/3-1",
+                                       "formNamespace": "Bahmni",
+                                       "groupMembers": [],
+                                       "hiNormal": 72,
+                                       "isAbnormal": null,
+                                       "lowNormal": 72,
+                                       "obsGroupUuid": "79537135-d445-40dc-8174-63f9ebd4d9d5",
+                                       "observationDateTime": "2017-03-16T14:21:03.000+0530",
+                                       "orderUuid": null,
+                                       "parentConceptUuid": null,
+                                       "providers": [
+                                           {
+                                               "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                               "name": "Super Man",
+                                               "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                           }
+                                       ],
+                                       "targetObsRelation": null,
+                                       "type": "Numeric",
+                                       "unknown": false,
+                                       "uuid": "036269eb-b5da-4f2b-b5da-87fa84b50a8e",
+                                       "value": 453,
+                                       "valueAsString": "453.0",
+                                       "visitStartDateTime": null,
+                                       "voidReason": null,
+                                       "voided": false
+                                   },
+                                   {
+                                       "abnormal": null,
+                                       "comment": null,
+                                       "concept": {
+                                           "conceptClass": "Abnormal",
+                                           "dataType": "Boolean",
+                                           "hiNormal": null,
+                                           "lowNormal": null,
+                                           "mappings": [],
+                                           "name": "Pulse Abnormal",
+                                           "set": false,
+                                           "shortName": "Pulse Abnormal",
+                                           "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75"
+                                       },
+                                       "conceptNameToDisplay": "Pulse Abnormal",
+                                       "conceptSortWeight": 3,
+                                       "conceptUuid": "c36c7c98-3f10-11e4-adec-0800271c1b75",
+                                       "creatorName": "Super Man",
+                                       "duration": null,
+                                       "encounterDateTime": 1489654263000,
+                                       "encounterUuid": "f9cda4a7-e7dd-418f-a14d-1cc99e18da83",
+                                       "formFieldPath": "obsGroupInSection.2/4-1",
+                                       "formNamespace": "Bahmni",
+                                       "groupMembers": [],
+                                       "hiNormal": null,
+                                       "isAbnormal": null,
+                                       "lowNormal": null,
+                                       "obsGroupUuid": "79537135-d445-40dc-8174-63f9ebd4d9d5",
+                                       "observationDateTime": "2017-03-16T14:21:03.000+0530",
+                                       "orderUuid": null,
+                                       "parentConceptUuid": null,
+                                       "providers": [
+                                           {
+                                               "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                               "name": "Super Man",
+                                               "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                           }
+                                       ],
+                                       "targetObsRelation": null,
+                                       "type": "Boolean",
+                                       "unknown": false,
+                                       "uuid": "022f2ffa-53fd-4170-a250-aaf8bf3eac69",
+                                       "value": true,
+                                       "valueAsString": "Yes",
+                                       "visitStartDateTime": null,
+                                       "voidReason": null,
+                                       "voided": false
+                                   }
+                               ],
+                               "hiNormal": null,
+                               "isAbnormal": null,
+                               "lowNormal": null,
+                               "obsGroupUuid": null,
+                               "observationDateTime": "2017-03-16T14:21:03.000+0530",
+                               "orderUuid": null,
+                               "parentConceptUuid": null,
+                               "providers": [
+                                   {
+                                       "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                       "name": "Super Man",
+                                       "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                   }
+                               ],
+                               "targetObsRelation": null,
+                               "type": null,
+                               "unknown": false,
+                               "uuid": "79537135-d445-40dc-8174-63f9ebd4d9d5",
+                               "value": "true, 453.0",
+                               "valueAsString": "true, 453.0",
+                               "visitStartDateTime": null,
+                               "voidReason": null,
+                               "voided": false
+                           },
+                           {
+                               "abnormal": null,
+                               "comment": null,
+                               "concept": {
+                                   "conceptClass": "Concept Details",
+                                   "dataType": "N/A",
+                                   "hiNormal": null,
+                                   "lowNormal": null,
+                                   "mappings": [],
+                                   "name": "Pulse Data",
+                                   "set": true,
+                                   "shortName": "Pulse",
+                                   "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+                               },
+                               "conceptNameToDisplay": "Pulse",
+                               "conceptSortWeight": 1,
+                               "conceptUuid": "c36af094-3f10-11e4-adec-0800271c1b75",
+                               "creatorName": "Super Man",
+                               "duration": null,
+                               "encounterDateTime": 1489654263000,
+                               "encounterUuid": "f9cda4a7-e7dd-418f-a14d-1cc99e18da83",
+                               "formFieldPath": "obsGroupInSection.2/2-0",
+                               "formNamespace": "Bahmni",
+                               "groupMembers": [
+                                   {
+                                       "abnormal": null,
+                                       "comment": null,
+                                       "concept": {
+                                           "conceptClass": "Misc",
+                                           "dataType": "Numeric",
+                                           "hiNormal": 72,
+                                           "lowNormal": 72,
+                                           "mappings": [],
+                                           "name": "Pulse",
+                                           "set": false,
+                                           "shortName": "Pulse",
+                                           "units": "/min",
+                                           "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+                                       },
+                                       "conceptNameToDisplay": "Pulse",
+                                       "conceptSortWeight": 2,
+                                       "conceptUuid": "c36bc411-3f10-11e4-adec-0800271c1b75",
+                                       "creatorName": "Super Man",
+                                       "duration": null,
+                                       "encounterDateTime": 1489654263000,
+                                       "encounterUuid": "f9cda4a7-e7dd-418f-a14d-1cc99e18da83",
+                                       "formFieldPath": "obsGroupInSection.2/3-0",
+                                       "formNamespace": "Bahmni",
+                                       "groupMembers": [],
+                                       "hiNormal": 72,
+                                       "isAbnormal": null,
+                                       "lowNormal": 72,
+                                       "obsGroupUuid": "3e57d387-2f30-40ea-ac54-7c21d432ce68",
+                                       "observationDateTime": "2017-03-16T14:21:03.000+0530",
+                                       "orderUuid": null,
+                                       "parentConceptUuid": null,
+                                       "providers": [
+                                           {
+                                               "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                               "name": "Super Man",
+                                               "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                           }
+                                       ],
+                                       "targetObsRelation": null,
+                                       "type": "Numeric",
+                                       "unknown": false,
+                                       "uuid": "8dcd50e7-edb8-417d-b47f-902c20abf892",
+                                       "value": 23,
+                                       "valueAsString": "23.0",
+                                       "visitStartDateTime": null,
+                                       "voidReason": null,
+                                       "voided": false
+                                   },
+                                   {
+                                       "abnormal": null,
+                                       "comment": null,
+                                       "concept": {
+                                           "conceptClass": "Abnormal",
+                                           "dataType": "Boolean",
+                                           "hiNormal": null,
+                                           "lowNormal": null,
+                                           "mappings": [],
+                                           "name": "Pulse Abnormal",
+                                           "set": false,
+                                           "shortName": "Pulse Abnormal",
+                                           "uuid": "c36c7c98-3f10-11e4-adec-0800271c1b75"
+                                       },
+                                       "conceptNameToDisplay": "Pulse Abnormal",
+                                       "conceptSortWeight": 3,
+                                       "conceptUuid": "c36c7c98-3f10-11e4-adec-0800271c1b75",
+                                       "creatorName": "Super Man",
+                                       "duration": null,
+                                       "encounterDateTime": 1489654263000,
+                                       "encounterUuid": "f9cda4a7-e7dd-418f-a14d-1cc99e18da83",
+                                       "formFieldPath": "obsGroupInSection.2/4-0",
+                                       "formNamespace": "Bahmni",
+                                       "groupMembers": [],
+                                       "hiNormal": null,
+                                       "isAbnormal": null,
+                                       "lowNormal": null,
+                                       "obsGroupUuid": "3e57d387-2f30-40ea-ac54-7c21d432ce68",
+                                       "observationDateTime": "2017-03-16T14:21:03.000+0530",
+                                       "orderUuid": null,
+                                       "parentConceptUuid": null,
+                                       "providers": [
+                                           {
+                                               "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                               "name": "Super Man",
+                                               "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                           }
+                                       ],
+                                       "targetObsRelation": null,
+                                       "type": "Boolean",
+                                       "unknown": false,
+                                       "uuid": "c96ff35e-1e19-4313-853f-d9370f6303ed",
+                                       "value": true,
+                                       "valueAsString": "Yes",
+                                       "visitStartDateTime": null,
+                                       "voidReason": null,
+                                       "voided": false
+                                   }
+                               ],
+                               "hiNormal": null,
+                               "isAbnormal": null,
+                               "lowNormal": null,
+                               "obsGroupUuid": null,
+                               "observationDateTime": "2017-03-16T14:21:03.000+0530",
+                               "orderUuid": null,
+                               "parentConceptUuid": null,
+                               "providers": [
+                                   {
+                                       "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                       "name": "Super Man",
+                                       "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                   }
+                               ],
+                               "targetObsRelation": null,
+                               "type": null,
+                               "unknown": false,
+                               "uuid": "3e57d387-2f30-40ea-ac54-7c21d432ce68",
+                               "value": "true, 23.0",
+                               "valueAsString": "true, 23.0",
+                               "visitStartDateTime": null,
+                               "voidReason": null,
+                               "voided": false
+                           }
+                       ]
+                   },
+                   children: List.of(obsGroupRecord, removedObsGroupRecord)
+               });
+               const rootTree = new ControlRecord({children: List.of(sectionRecord)});
+               const wrapper = mount(
+                   <Container
+                       collapse
+                       metadata={metadata}
+                       observations={[]}
+                       validate={false}
+                   />
+               );
+               wrapper.setState({data: rootTree});
+               wrapper.instance().onControlRemove(removedFormFieldPath);
+
+               const updatedRootTree = wrapper.state().data;
+               const sectionGroupTree = updatedRootTree.children.get(0);
+               expect(sectionGroupTree.children.get(0).active).to.equal(true);
+               expect(sectionGroupTree.children.get(1).active).to.equal(false);
+               expect(sectionGroupTree.children.get(1).formFieldPath).to.equal(removedFormFieldPath);
+           });
         });
     });
 });
