@@ -50,6 +50,7 @@ export class ObsGroupMapper {
     obsGroup.groupMembers = (new ObservationMapper()).from(record);
     obsGroup.voided = obsGroup.groupMembers &&
                       obsGroup.groupMembers.filter(child => !child.voided).length === 0;
+    obsGroup.inactive = !record.active;
 
     return obsGroup;
   }

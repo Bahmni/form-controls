@@ -420,4 +420,96 @@ describe('ObservationMapper', () => {
     expect(observations[0].formFieldPath).to.equal('multipleSelect.1/2-0');
     expect(observations[1].formFieldPath).to.equal('multipleSelect.1/2-0');
   });
+
+  it('should get inactive obs when given inactive record', () => {
+    const obsConcept = {
+      "answers": [],
+      "datatype": "Numeric",
+      "description": [],
+      "name": "Pulse",
+      "properties": {
+        "allowDecimal": true
+      },
+      "uuid": "c36bc411-3f10-11e4-adec-0800271c1b75"
+    };
+    const activeFormFieldPath = 'SingleObs.1/1-0';
+    const activeObsRecordTree = new ControlRecord({
+      control: {
+        "concept": obsConcept,
+        "hiAbsolute": null,
+        "hiNormal": 72,
+        "id": "1",
+        "label": {
+          "type": "label",
+          "value": "Pulse(/min)"
+        },
+        "lowAbsolute": null,
+        "lowNormal": 72,
+        "properties": {
+          "addMore": true,
+          "hideLabel": false,
+          "location": {
+            "column": 0,
+            "row": 0
+          },
+          "mandatory": true,
+          "notes": false
+        },
+        "type": "obsControl",
+        "units": "/min"
+      },
+      formFieldPath: activeFormFieldPath,
+      dataSource: {
+        "concept": obsConcept,
+        "formFieldPath": activeFormFieldPath,
+        "formNamespace": "Bahmni",
+        "voided": true
+      },
+    });
+    const inactiveFormFieldPath = 'SingleObs.1/1-1';
+    const inactiveObsRecordTree = new ControlRecord({
+      control: {
+        "concept": obsConcept,
+        "hiAbsolute": null,
+        "hiNormal": 72,
+        "id": "1",
+        "label": {
+          "type": "label",
+          "value": "Pulse(/min)"
+        },
+        "lowAbsolute": null,
+        "lowNormal": 72,
+        "properties": {
+          "addMore": true,
+          "hideLabel": false,
+          "location": {
+            "column": 0,
+            "row": 0
+          },
+          "mandatory": true,
+          "notes": false
+        },
+        "type": "obsControl",
+        "units": "/min"
+      },
+      formFieldPath: inactiveFormFieldPath,
+      dataSource: {
+        "concept": obsConcept,
+        "formFieldPath": activeFormFieldPath,
+        "formNamespace": "Bahmni",
+        "voided": true
+      },
+      active: false
+    });
+    const rootRecordTree = new ControlRecord({children: List.of(activeObsRecordTree, inactiveObsRecordTree)});
+
+    const observations = new ObservationMapper().from(rootRecordTree);
+
+    const activeObservation = observations[0];
+    expect(activeObservation.formFieldPath).to.equal(activeFormFieldPath);
+    expect(activeObservation.inactive).to.equal(false);
+    const inactiveObservation = observations[1];
+    expect(inactiveObservation.formFieldPath).to.equal(inactiveFormFieldPath);
+    expect(inactiveObservation.inactive).to.equal(true);
+  })
 });
