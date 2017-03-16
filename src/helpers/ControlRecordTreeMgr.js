@@ -45,14 +45,14 @@ export default class ControlRecordTreeMgr {
     return rootTree.set('children', tree);
   }
 
-  getBrotherTree(parentTree, formFieldPath) {
-    const prefix = formFieldPath.split('-')[0];
+  getBrotherTree(parentTree, targetFormFieldPath) {
+    const getPrefix = (formFieldPath) => (formFieldPath.split('-')[0]);
     const getSuffix = (record) => (Util.toInt(record.formFieldPath.split('-')[1]));
 
     const isLatestBrotherTree = (originalRecord, newRecord) => (
-            newRecord.formFieldPath.startsWith(prefix) && (!originalRecord ||
-                getSuffix(originalRecord) < getSuffix(newRecord))
-        );
+      (getPrefix(targetFormFieldPath) === getPrefix(newRecord.formFieldPath)) &&
+      (!originalRecord || (getSuffix(originalRecord) < getSuffix(newRecord)))
+    );
 
     let latestSimilarTree = undefined;
 
@@ -60,7 +60,7 @@ export default class ControlRecordTreeMgr {
       if (isLatestBrotherTree(latestSimilarTree, childTree)) {
         latestSimilarTree = childTree;
       } else if (childTree.children) {
-        const foundSimilarRecord = this.getBrotherTree(childTree, formFieldPath);
+        const foundSimilarRecord = this.getBrotherTree(childTree, targetFormFieldPath);
         if (foundSimilarRecord) {
           latestSimilarTree = foundSimilarRecord;
         }
