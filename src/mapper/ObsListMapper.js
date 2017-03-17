@@ -58,6 +58,7 @@ export class ObsListMapper {
     const obs = cloneDeep(record.dataSource.obs);
     obs.uuid = uuid;
     obs.value = value;
+    obs.inactive = !record.active;
     obs.comment = comment;
     obs.voided = !value;
     obs.formFieldPath = record.formFieldPath;
@@ -66,6 +67,18 @@ export class ObsListMapper {
 
   findObs(valueList, uuid) {
     return valueList && valueList.filter(value => value.uuid === uuid);
+  }
+
+  fillRemovedData(record, obsArray) {
+    const isAddMoreRecord = (record.dataSource.formFieldPath !== record.formFieldPath);
+    if (!isAddMoreRecord) {
+      record.dataSource.obsList.forEach(obs => {
+        const foundObs = this.findObs(record.value.value, obs.value.uuid);
+        if (!foundObs || foundObs.length === 0) {
+          obsArray.push(this.buildObs(record, undefined, obs.uuid));
+        }
+      });
+    }
   }
 
   getData(record) {
@@ -81,12 +94,7 @@ export class ObsListMapper {
         }
       );
     }
-    record.dataSource.obsList.forEach(obs => {
-      const foundObs = this.findObs(record.value.value, obs.value.uuid);
-      if (!foundObs || foundObs.length === 0) {
-        obsArray.push(this.buildObs(record, undefined, obs.uuid));
-      }
-    });
+    this.fillRemovedData(record, obsArray);
 
     return obsArray;
   }
