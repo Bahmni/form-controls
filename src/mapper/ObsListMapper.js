@@ -23,14 +23,16 @@ export class ObsListMapper {
     const obsLists = [];
     Object.keys(groupedObs).sort().forEach(formFieldPath => {
       let obsList = new List();
+      let inactive = false;
       for (const observation of groupedObs[formFieldPath]) {
         obsList = obsList.concat(createObsFromControl(formName,
           formVersion, control, [observation]));
+        inactive = observation.inactive;
       }
 
       obs.formFieldPath = formFieldPath;
 
-      obsLists.push(new ObsList({ obsList, formFieldPath, obs }));
+      obsLists.push(new ObsList({ obsList, formFieldPath, obs, inactive }));
     });
     if (obsLists.length === 0) {
       return [new ObsList({
@@ -69,11 +71,14 @@ export class ObsListMapper {
     return valueList && valueList.filter(value => value.uuid === uuid);
   }
 
-  fillRemovedData(record, obsArray) {
+  fillEmptyData(record, obsArray) {
     const isAddMoreRecord = (record.dataSource.formFieldPath !== record.formFieldPath);
     if (!isAddMoreRecord) {
       record.dataSource.obsList.forEach(obs => {
-        const foundObs = this.findObs(record.value.value, obs.value.uuid);
+        let foundObs = false;
+        if (record.active) {
+          foundObs = this.findObs(record.value.value, obs.value.uuid);
+        }
         if (!foundObs || foundObs.length === 0) {
           obsArray.push(this.buildObs(record, undefined, obs.uuid));
         }
@@ -94,7 +99,7 @@ export class ObsListMapper {
         }
       );
     }
-    this.fillRemovedData(record, obsArray);
+    this.fillEmptyData(record, obsArray);
 
     return obsArray;
   }
