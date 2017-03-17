@@ -76,7 +76,7 @@ export class ObsListMapper {
     if (!isAddMoreRecord) {
       record.dataSource.obsList.forEach(obs => {
         let foundObs = false;
-        if (record.active) {
+        if (obs.value) {
           foundObs = this.findObs(record.value.value, obs.value.uuid);
         }
         if (!foundObs || foundObs.length === 0) {
