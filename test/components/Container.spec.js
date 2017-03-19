@@ -3724,5 +3724,996 @@ describe('Container', () => {
                expect(sectionGroupTree.children.get(1).formFieldPath).to.equal(removedFormFieldPath);
            });
         });
+
+        describe('obsGroupInObsGroup', () => {
+           it('should add one obs group when onControlAdd is triggered with obs group in obs group', () => {
+               let concept = {
+                   "datatype": "N/A",
+                   "name": "Pulse Data",
+                   "set": true,
+                   "setMembers": [
+                       {
+                           "datatype": "N/A",
+                           "name": "testObsGroupConcept",
+                           "set": true,
+                           "setMembers": [
+                               {
+                                   "answers": [],
+                                   "datatype": "Numeric",
+                                   "description": [],
+                                   "hiAbsolute": null,
+                                   "hiNormal": null,
+                                   "lowAbsolute": null,
+                                   "lowNormal": null,
+                                   "name": "WEIGHT",
+                                   "properties": {
+                                       "allowDecimal": false
+                                   },
+                                   "units": null,
+                                   "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                               }
+                           ],
+                           "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+                       }
+                   ],
+                   "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+               };
+
+               let obsGroupInGroupConcept = {
+                   "datatype": "N/A",
+                   "name": "testObsGroupConcept",
+                   "set": true,
+                   "setMembers": [
+                       {
+                           "answers": [],
+                           "datatype": "Numeric",
+                           "description": [],
+                           "hiAbsolute": null,
+                           "hiNormal": null,
+                           "lowAbsolute": null,
+                           "lowNormal": null,
+                           "name": "WEIGHT",
+                           "properties": {
+                               "allowDecimal": false
+                           },
+                           "units": null,
+                           "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                       }
+                   ],
+                   "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+               };
+               let addFormFieldPath = '88.1/3-0';
+               const obsGroupInGroupRecord = new ControlRecord({
+                   value:{},
+                   formFieldPath: addFormFieldPath,
+                   control:{
+                       "concept": obsGroupInGroupConcept,
+                       "controls": [
+                           {
+                               "concept": {
+                                   "answers": [],
+                                   "datatype": "Numeric",
+                                   "description": [],
+                                   "hiAbsolute": null,
+                                   "hiNormal": null,
+                                   "lowAbsolute": null,
+                                   "lowNormal": null,
+                                   "name": "WEIGHT",
+                                   "properties": {
+                                       "allowDecimal": false
+                                   },
+                                   "units": null,
+                                   "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                               },
+                               "hiAbsolute": null,
+                               "hiNormal": null,
+                               "id": "2",
+                               "label": {
+                                   "type": "label",
+                                   "value": "WEIGHT"
+                               },
+                               "lowAbsolute": null,
+                               "lowNormal": null,
+                               "properties": {
+                                   "addMore": false,
+                                   "hideLabel": false,
+                                   "location": {
+                                       "column": 0,
+                                       "row": 0
+                                   },
+                                   "mandatory": false,
+                                   "notes": false
+                               },
+                               "type": "obsControl",
+                               "units": null
+                           }
+                       ],
+                       "id": "3",
+                       "label": {
+                           "type": "label",
+                           "value": "testObsGroupConcept"
+                       },
+                       "properties": {
+                           "abnormal": false,
+                           "addMore": true,
+                           "location": {
+                               "column": 0,
+                               "row": 0
+                           }
+                       },
+                       "type": "obsGroupControl"
+                   },
+                   dataSource:{
+                       "concept": obsGroupInGroupConcept,
+                       "formFieldPath": addFormFieldPath,
+                       "formNamespace": "Bahmni",
+                       "voided": true
+                   }
+               });
+               const obsGroupRecord = new ControlRecord({
+                   value: {},
+                   formFieldPath: '88.1/1-0',
+                   control:{
+                       "concept": concept,
+                       "controls": [
+                           {
+                               "concept": {
+                                   "datatype": "N/A",
+                                   "name": "testObsGroupConcept",
+                                   "set": true,
+                                   "setMembers": [
+                                       {
+                                           "answers": [],
+                                           "datatype": "Numeric",
+                                           "description": [],
+                                           "hiAbsolute": null,
+                                           "hiNormal": null,
+                                           "lowAbsolute": null,
+                                           "lowNormal": null,
+                                           "name": "WEIGHT",
+                                           "properties": {
+                                               "allowDecimal": false
+                                           },
+                                           "units": null,
+                                           "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                       }
+                                   ],
+                                   "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+                               },
+                               "controls": [
+                                   {
+                                       "concept": {
+                                           "answers": [],
+                                           "datatype": "Numeric",
+                                           "description": [],
+                                           "hiAbsolute": null,
+                                           "hiNormal": null,
+                                           "lowAbsolute": null,
+                                           "lowNormal": null,
+                                           "name": "WEIGHT",
+                                           "properties": {
+                                               "allowDecimal": false
+                                           },
+                                           "units": null,
+                                           "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                       },
+                                       "hiAbsolute": null,
+                                       "hiNormal": null,
+                                       "id": "2",
+                                       "label": {
+                                           "type": "label",
+                                           "value": "WEIGHT"
+                                       },
+                                       "lowAbsolute": null,
+                                       "lowNormal": null,
+                                       "properties": {
+                                           "addMore": false,
+                                           "hideLabel": false,
+                                           "location": {
+                                               "column": 0,
+                                               "row": 0
+                                           },
+                                           "mandatory": false,
+                                           "notes": false
+                                       },
+                                       "type": "obsControl",
+                                       "units": null
+                                   }
+                               ],
+                               "id": "3",
+                               "label": {
+                                   "type": "label",
+                                   "value": "testObsGroupConcept"
+                               },
+                               "properties": {
+                                   "abnormal": false,
+                                   "addMore": true,
+                                   "location": {
+                                       "column": 0,
+                                       "row": 0
+                                   }
+                               },
+                               "type": "obsGroupControl"
+                           }
+                       ],
+                       "id": "1",
+                       "label": {
+                           "type": "label",
+                           "value": "Pulse Data"
+                       },
+                       "properties": {
+                           "abnormal": false,
+                           "addMore": false,
+                           "location": {
+                               "column": 0,
+                               "row": 0
+                           }
+                       },
+                       "type": "obsGroupControl"
+                   },
+                   dataSource:{
+                       "concept": concept,
+                       "formFieldPath": "88.1/1-0",
+                       "formNamespace": "Bahmni",
+                       "voided": true
+                   },
+                   children: List.of(obsGroupInGroupRecord)
+               });
+               const rootTree = new ControlRecord({children: List.of(obsGroupRecord)});
+               const wrapper = mount(
+                   <Container
+                       collapse
+                       metadata={metadata}
+                       observations={[]}
+                       validate={false}
+                   />
+               );
+               wrapper.setState({data: rootTree});
+               wrapper.instance().onControlAdd(addFormFieldPath);
+
+               const updatedRootTree = wrapper.state().data;
+               const obsGroupTree = updatedRootTree.children.get(0);
+
+               expect(obsGroupTree.children.size).to.equal(2);
+           });
+
+            it('should remove one obs group when onControlRemove is triggered with obs group in obs group', () => {
+                let concept = {
+                    "datatype": "N/A",
+                    "name": "Pulse Data",
+                    "set": true,
+                    "setMembers": [
+                        {
+                            "datatype": "N/A",
+                            "name": "testObsGroupConcept",
+                            "set": true,
+                            "setMembers": [
+                                {
+                                    "answers": [],
+                                    "datatype": "Numeric",
+                                    "description": [],
+                                    "hiAbsolute": null,
+                                    "hiNormal": null,
+                                    "lowAbsolute": null,
+                                    "lowNormal": null,
+                                    "name": "WEIGHT",
+                                    "properties": {
+                                        "allowDecimal": false
+                                    },
+                                    "units": null,
+                                    "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                }
+                            ],
+                            "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+                        }
+                    ],
+                    "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+                };
+                let obsGroupConcept = {
+                    "datatype": "N/A",
+                    "name": "testObsGroupConcept",
+                    "set": true,
+                    "setMembers": [
+                        {
+                            "answers": [],
+                            "datatype": "Numeric",
+                            "description": [],
+                            "hiAbsolute": null,
+                            "hiNormal": null,
+                            "lowAbsolute": null,
+                            "lowNormal": null,
+                            "name": "WEIGHT",
+                            "properties": {
+                                "allowDecimal": false
+                            },
+                            "units": null,
+                            "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                        }
+                    ],
+                    "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+                };
+                const obsGroupRecordOne = new ControlRecord({
+                    value: {},
+                    formFieldPath: '88.1/3-1',
+                    control:{
+                        "concept": obsGroupConcept,
+                        "controls": [
+                            {
+                                "concept": {
+                                    "answers": [],
+                                    "datatype": "Numeric",
+                                    "description": [],
+                                    "hiAbsolute": null,
+                                    "hiNormal": null,
+                                    "lowAbsolute": null,
+                                    "lowNormal": null,
+                                    "name": "WEIGHT",
+                                    "properties": {
+                                        "allowDecimal": false
+                                    },
+                                    "units": null,
+                                    "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                },
+                                "hiAbsolute": null,
+                                "hiNormal": null,
+                                "id": "2",
+                                "label": {
+                                    "type": "label",
+                                    "value": "WEIGHT"
+                                },
+                                "lowAbsolute": null,
+                                "lowNormal": null,
+                                "properties": {
+                                    "addMore": false,
+                                    "hideLabel": false,
+                                    "location": {
+                                        "column": 0,
+                                        "row": 0
+                                    },
+                                    "mandatory": false,
+                                    "notes": false
+                                },
+                                "type": "obsControl",
+                                "units": null
+                            }
+                        ],
+                        "id": "3",
+                        "label": {
+                            "type": "label",
+                            "value": "testObsGroupConcept"
+                        },
+                        "properties": {
+                            "abnormal": false,
+                            "addMore": true,
+                            "location": {
+                                "column": 0,
+                                "row": 0
+                            }
+                        },
+                        "type": "obsGroupControl"
+                    },
+                    dataSource:{
+                        "abnormal": null,
+                        "comment": null,
+                        "concept": {
+                            "conceptClass": "Concept Details",
+                            "dataType": "N/A",
+                            "hiNormal": null,
+                            "lowNormal": null,
+                            "mappings": [],
+                            "name": "testObsGroupConcept",
+                            "set": true,
+                            "shortName": "testObsGroup",
+                            "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+                        },
+                        "conceptNameToDisplay": "testObsGroup",
+                        "conceptSortWeight": 2,
+                        "conceptUuid": "dbf61fc7-2371-423b-9832-18c5659d41a0",
+                        "creatorName": "Super Man",
+                        "duration": null,
+                        "encounterDateTime": 1489919402000,
+                        "encounterUuid": "0cf221ee-323b-4dc9-b62a-4ea7491b58f6",
+                        "formFieldPath": "88.1/3-1",
+                        "formNamespace": "Bahmni",
+                        "groupMembers": [
+                            {
+                                "abnormal": null,
+                                "comment": null,
+                                "concept": {
+                                    "conceptClass": "Misc",
+                                    "dataType": "Numeric",
+                                    "hiNormal": null,
+                                    "lowNormal": null,
+                                    "mappings": [],
+                                    "name": "WEIGHT",
+                                    "set": false,
+                                    "shortName": "WEIGHT",
+                                    "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                },
+                                "conceptNameToDisplay": "WEIGHT",
+                                "conceptSortWeight": 3,
+                                "conceptUuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                                "creatorName": "Super Man",
+                                "duration": null,
+                                "encounterDateTime": 1489919402000,
+                                "encounterUuid": "0cf221ee-323b-4dc9-b62a-4ea7491b58f6",
+                                "formFieldPath": "88.1/2-1",
+                                "formNamespace": "Bahmni",
+                                "groupMembers": [],
+                                "hiNormal": null,
+                                "isAbnormal": null,
+                                "lowNormal": null,
+                                "obsGroupUuid": "ae693dfb-f950-4694-a9c7-a8cf5694d19d",
+                                "observationDateTime": "2017-03-19T16:00:02.000+0530",
+                                "orderUuid": null,
+                                "parentConceptUuid": null,
+                                "providers": [
+                                    {
+                                        "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                        "name": "Super Man",
+                                        "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                    }
+                                ],
+                                "targetObsRelation": null,
+                                "type": "Numeric",
+                                "unknown": false,
+                                "uuid": "11f9ee1a-0803-4625-9bd0-4c0d119c952a",
+                                "value": 44,
+                                "valueAsString": "44.0",
+                                "visitStartDateTime": null,
+                                "voidReason": null,
+                                "voided": false
+                            }
+                        ],
+                        "hiNormal": null,
+                        "isAbnormal": null,
+                        "lowNormal": null,
+                        "obsGroupUuid": "2feb6b69-daee-4f7a-870c-a1df7acc12ba",
+                        "observationDateTime": "2017-03-19T16:00:02.000+0530",
+                        "orderUuid": null,
+                        "parentConceptUuid": null,
+                        "providers": [
+                            {
+                                "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                "name": "Super Man",
+                                "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                            }
+                        ],
+                        "targetObsRelation": null,
+                        "type": null,
+                        "unknown": false,
+                        "uuid": "ae693dfb-f950-4694-a9c7-a8cf5694d19d",
+                        "value": "44.0",
+                        "valueAsString": "44.0",
+                        "visitStartDateTime": null,
+                        "voidReason": null,
+                        "voided": false
+                    }
+                });
+                let removeFormFieldPath = '88.1/3-0';
+                const removeObsGroupRecord = new ControlRecord({
+                    value: {},
+                    formFieldPath: removeFormFieldPath,
+                    control:{
+                        "concept": obsGroupConcept,
+                        "controls": [
+                            {
+                                "concept": {
+                                    "answers": [],
+                                    "datatype": "Numeric",
+                                    "description": [],
+                                    "hiAbsolute": null,
+                                    "hiNormal": null,
+                                    "lowAbsolute": null,
+                                    "lowNormal": null,
+                                    "name": "WEIGHT",
+                                    "properties": {
+                                        "allowDecimal": false
+                                    },
+                                    "units": null,
+                                    "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                },
+                                "hiAbsolute": null,
+                                "hiNormal": null,
+                                "id": "2",
+                                "label": {
+                                    "type": "label",
+                                    "value": "WEIGHT"
+                                },
+                                "lowAbsolute": null,
+                                "lowNormal": null,
+                                "properties": {
+                                    "addMore": false,
+                                    "hideLabel": false,
+                                    "location": {
+                                        "column": 0,
+                                        "row": 0
+                                    },
+                                    "mandatory": false,
+                                    "notes": false
+                                },
+                                "type": "obsControl",
+                                "units": null
+                            }
+                        ],
+                        "id": "3",
+                        "label": {
+                            "type": "label",
+                            "value": "testObsGroupConcept"
+                        },
+                        "properties": {
+                            "abnormal": false,
+                            "addMore": true,
+                            "location": {
+                                "column": 0,
+                                "row": 0
+                            }
+                        },
+                        "type": "obsGroupControl"
+                    },
+                    dataSource: {
+                        "abnormal": null,
+                        "comment": null,
+                        "concept": {
+                            "conceptClass": "Concept Details",
+                            "dataType": "N/A",
+                            "hiNormal": null,
+                            "lowNormal": null,
+                            "mappings": [],
+                            "name": "testObsGroupConcept",
+                            "set": true,
+                            "shortName": "testObsGroup",
+                            "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+                        },
+                        "conceptNameToDisplay": "testObsGroup",
+                        "conceptSortWeight": 2,
+                        "conceptUuid": "dbf61fc7-2371-423b-9832-18c5659d41a0",
+                        "creatorName": "Super Man",
+                        "duration": null,
+                        "encounterDateTime": 1489919402000,
+                        "encounterUuid": "0cf221ee-323b-4dc9-b62a-4ea7491b58f6",
+                        "formFieldPath": removeFormFieldPath,
+                        "formNamespace": "Bahmni",
+                        "groupMembers": [
+                            {
+                                "abnormal": null,
+                                "comment": null,
+                                "concept": {
+                                    "conceptClass": "Misc",
+                                    "dataType": "Numeric",
+                                    "hiNormal": null,
+                                    "lowNormal": null,
+                                    "mappings": [],
+                                    "name": "WEIGHT",
+                                    "set": false,
+                                    "shortName": "WEIGHT",
+                                    "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                },
+                                "conceptNameToDisplay": "WEIGHT",
+                                "conceptSortWeight": 3,
+                                "conceptUuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                                "creatorName": "Super Man",
+                                "duration": null,
+                                "encounterDateTime": 1489919402000,
+                                "encounterUuid": "0cf221ee-323b-4dc9-b62a-4ea7491b58f6",
+                                "formFieldPath": "88.1/2-0",
+                                "formNamespace": "Bahmni",
+                                "groupMembers": [],
+                                "hiNormal": null,
+                                "isAbnormal": null,
+                                "lowNormal": null,
+                                "obsGroupUuid": "59acaf73-16ae-447d-bf72-a1bfd8374dd5",
+                                "observationDateTime": "2017-03-19T16:00:02.000+0530",
+                                "orderUuid": null,
+                                "parentConceptUuid": null,
+                                "providers": [
+                                    {
+                                        "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                        "name": "Super Man",
+                                        "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                    }
+                                ],
+                                "targetObsRelation": null,
+                                "type": "Numeric",
+                                "unknown": false,
+                                "uuid": "1a3e3fc7-b6e1-4c4c-ad4b-8f02c443c6a7",
+                                "value": 33,
+                                "valueAsString": "33.0",
+                                "visitStartDateTime": null,
+                                "voidReason": null,
+                                "voided": false
+                            }
+                        ],
+                        "hiNormal": null,
+                        "isAbnormal": null,
+                        "lowNormal": null,
+                        "obsGroupUuid": "2feb6b69-daee-4f7a-870c-a1df7acc12ba",
+                        "observationDateTime": "2017-03-19T16:00:02.000+0530",
+                        "orderUuid": null,
+                        "parentConceptUuid": null,
+                        "providers": [
+                            {
+                                "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                "name": "Super Man",
+                                "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                            }
+                        ],
+                        "targetObsRelation": null,
+                        "type": null,
+                        "unknown": false,
+                        "uuid": "59acaf73-16ae-447d-bf72-a1bfd8374dd5",
+                        "value": "33.0",
+                        "valueAsString": "33.0",
+                        "visitStartDateTime": null,
+                        "voidReason": null,
+                        "voided": false
+                    }
+                });
+                const obsGroupRecord = new ControlRecord({
+                    value: {},
+                    formFieldPath: '88.1/1-0',
+                    control:{
+                        "concept": concept,
+                        "controls": [
+                            {
+                                "concept": {
+                                    "datatype": "N/A",
+                                    "name": "testObsGroupConcept",
+                                    "set": true,
+                                    "setMembers": [
+                                        {
+                                            "answers": [],
+                                            "datatype": "Numeric",
+                                            "description": [],
+                                            "hiAbsolute": null,
+                                            "hiNormal": null,
+                                            "lowAbsolute": null,
+                                            "lowNormal": null,
+                                            "name": "WEIGHT",
+                                            "properties": {
+                                                "allowDecimal": false
+                                            },
+                                            "units": null,
+                                            "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                        }
+                                    ],
+                                    "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+                                },
+                                "controls": [
+                                    {
+                                        "concept": {
+                                            "answers": [],
+                                            "datatype": "Numeric",
+                                            "description": [],
+                                            "hiAbsolute": null,
+                                            "hiNormal": null,
+                                            "lowAbsolute": null,
+                                            "lowNormal": null,
+                                            "name": "WEIGHT",
+                                            "properties": {
+                                                "allowDecimal": false
+                                            },
+                                            "units": null,
+                                            "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                        },
+                                        "hiAbsolute": null,
+                                        "hiNormal": null,
+                                        "id": "2",
+                                        "label": {
+                                            "type": "label",
+                                            "value": "WEIGHT"
+                                        },
+                                        "lowAbsolute": null,
+                                        "lowNormal": null,
+                                        "properties": {
+                                            "addMore": false,
+                                            "hideLabel": false,
+                                            "location": {
+                                                "column": 0,
+                                                "row": 0
+                                            },
+                                            "mandatory": false,
+                                            "notes": false
+                                        },
+                                        "type": "obsControl",
+                                        "units": null
+                                    }
+                                ],
+                                "id": "3",
+                                "label": {
+                                    "type": "label",
+                                    "value": "testObsGroupConcept"
+                                },
+                                "properties": {
+                                    "abnormal": false,
+                                    "addMore": true,
+                                    "location": {
+                                        "column": 0,
+                                        "row": 0
+                                    }
+                                },
+                                "type": "obsGroupControl"
+                            }
+                        ],
+                        "id": "1",
+                        "label": {
+                            "type": "label",
+                            "value": "Pulse Data"
+                        },
+                        "properties": {
+                            "abnormal": false,
+                            "addMore": false,
+                            "location": {
+                                "column": 0,
+                                "row": 0
+                            }
+                        },
+                        "type": "obsGroupControl"
+                    },
+                    dataSource:{
+                        "abnormal": null,
+                        "comment": null,
+                        "concept": {
+                            "conceptClass": "Concept Details",
+                            "dataType": "N/A",
+                            "hiNormal": null,
+                            "lowNormal": null,
+                            "mappings": [],
+                            "name": "Pulse Data",
+                            "set": true,
+                            "shortName": "Pulse",
+                            "uuid": "c36af094-3f10-11e4-adec-0800271c1b75"
+                        },
+                        "conceptNameToDisplay": "Pulse",
+                        "conceptSortWeight": 1,
+                        "conceptUuid": "c36af094-3f10-11e4-adec-0800271c1b75",
+                        "creatorName": "Super Man",
+                        "duration": null,
+                        "encounterDateTime": 1489919402000,
+                        "encounterUuid": "0cf221ee-323b-4dc9-b62a-4ea7491b58f6",
+                        "formFieldPath": "88.1/1-0",
+                        "formNamespace": "Bahmni",
+                        "groupMembers": [
+                            {
+                                "abnormal": null,
+                                "comment": null,
+                                "concept": {
+                                    "conceptClass": "Concept Details",
+                                    "dataType": "N/A",
+                                    "hiNormal": null,
+                                    "lowNormal": null,
+                                    "mappings": [],
+                                    "name": "testObsGroupConcept",
+                                    "set": true,
+                                    "shortName": "testObsGroup",
+                                    "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+                                },
+                                "conceptNameToDisplay": "testObsGroup",
+                                "conceptSortWeight": 2,
+                                "conceptUuid": "dbf61fc7-2371-423b-9832-18c5659d41a0",
+                                "creatorName": "Super Man",
+                                "duration": null,
+                                "encounterDateTime": 1489919402000,
+                                "encounterUuid": "0cf221ee-323b-4dc9-b62a-4ea7491b58f6",
+                                "formFieldPath": "88.1/3-1",
+                                "formNamespace": "Bahmni",
+                                "groupMembers": [
+                                    {
+                                        "abnormal": null,
+                                        "comment": null,
+                                        "concept": {
+                                            "conceptClass": "Misc",
+                                            "dataType": "Numeric",
+                                            "hiNormal": null,
+                                            "lowNormal": null,
+                                            "mappings": [],
+                                            "name": "WEIGHT",
+                                            "set": false,
+                                            "shortName": "WEIGHT",
+                                            "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                        },
+                                        "conceptNameToDisplay": "WEIGHT",
+                                        "conceptSortWeight": 3,
+                                        "conceptUuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                                        "creatorName": "Super Man",
+                                        "duration": null,
+                                        "encounterDateTime": 1489919402000,
+                                        "encounterUuid": "0cf221ee-323b-4dc9-b62a-4ea7491b58f6",
+                                        "formFieldPath": "88.1/2-1",
+                                        "formNamespace": "Bahmni",
+                                        "groupMembers": [],
+                                        "hiNormal": null,
+                                        "isAbnormal": null,
+                                        "lowNormal": null,
+                                        "obsGroupUuid": "ae693dfb-f950-4694-a9c7-a8cf5694d19d",
+                                        "observationDateTime": "2017-03-19T16:00:02.000+0530",
+                                        "orderUuid": null,
+                                        "parentConceptUuid": null,
+                                        "providers": [
+                                            {
+                                                "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                                "name": "Super Man",
+                                                "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                            }
+                                        ],
+                                        "targetObsRelation": null,
+                                        "type": "Numeric",
+                                        "unknown": false,
+                                        "uuid": "11f9ee1a-0803-4625-9bd0-4c0d119c952a",
+                                        "value": 44,
+                                        "valueAsString": "44.0",
+                                        "visitStartDateTime": null,
+                                        "voidReason": null,
+                                        "voided": false
+                                    }
+                                ],
+                                "hiNormal": null,
+                                "isAbnormal": null,
+                                "lowNormal": null,
+                                "obsGroupUuid": "2feb6b69-daee-4f7a-870c-a1df7acc12ba",
+                                "observationDateTime": "2017-03-19T16:00:02.000+0530",
+                                "orderUuid": null,
+                                "parentConceptUuid": null,
+                                "providers": [
+                                    {
+                                        "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                        "name": "Super Man",
+                                        "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                    }
+                                ],
+                                "targetObsRelation": null,
+                                "type": null,
+                                "unknown": false,
+                                "uuid": "ae693dfb-f950-4694-a9c7-a8cf5694d19d",
+                                "value": "44.0",
+                                "valueAsString": "44.0",
+                                "visitStartDateTime": null,
+                                "voidReason": null,
+                                "voided": false
+                            },
+                            {
+                                "abnormal": null,
+                                "comment": null,
+                                "concept": {
+                                    "conceptClass": "Concept Details",
+                                    "dataType": "N/A",
+                                    "hiNormal": null,
+                                    "lowNormal": null,
+                                    "mappings": [],
+                                    "name": "testObsGroupConcept",
+                                    "set": true,
+                                    "shortName": "testObsGroup",
+                                    "uuid": "dbf61fc7-2371-423b-9832-18c5659d41a0"
+                                },
+                                "conceptNameToDisplay": "testObsGroup",
+                                "conceptSortWeight": 2,
+                                "conceptUuid": "dbf61fc7-2371-423b-9832-18c5659d41a0",
+                                "creatorName": "Super Man",
+                                "duration": null,
+                                "encounterDateTime": 1489919402000,
+                                "encounterUuid": "0cf221ee-323b-4dc9-b62a-4ea7491b58f6",
+                                "formFieldPath": removeFormFieldPath,
+                                "formNamespace": "Bahmni",
+                                "groupMembers": [
+                                    {
+                                        "abnormal": null,
+                                        "comment": null,
+                                        "concept": {
+                                            "conceptClass": "Misc",
+                                            "dataType": "Numeric",
+                                            "hiNormal": null,
+                                            "lowNormal": null,
+                                            "mappings": [],
+                                            "name": "WEIGHT",
+                                            "set": false,
+                                            "shortName": "WEIGHT",
+                                            "uuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                                        },
+                                        "conceptNameToDisplay": "WEIGHT",
+                                        "conceptSortWeight": 3,
+                                        "conceptUuid": "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                                        "creatorName": "Super Man",
+                                        "duration": null,
+                                        "encounterDateTime": 1489919402000,
+                                        "encounterUuid": "0cf221ee-323b-4dc9-b62a-4ea7491b58f6",
+                                        "formFieldPath": "88.1/2-0",
+                                        "formNamespace": "Bahmni",
+                                        "groupMembers": [],
+                                        "hiNormal": null,
+                                        "isAbnormal": null,
+                                        "lowNormal": null,
+                                        "obsGroupUuid": "59acaf73-16ae-447d-bf72-a1bfd8374dd5",
+                                        "observationDateTime": "2017-03-19T16:00:02.000+0530",
+                                        "orderUuid": null,
+                                        "parentConceptUuid": null,
+                                        "providers": [
+                                            {
+                                                "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                                "name": "Super Man",
+                                                "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                            }
+                                        ],
+                                        "targetObsRelation": null,
+                                        "type": "Numeric",
+                                        "unknown": false,
+                                        "uuid": "1a3e3fc7-b6e1-4c4c-ad4b-8f02c443c6a7",
+                                        "value": 33,
+                                        "valueAsString": "33.0",
+                                        "visitStartDateTime": null,
+                                        "voidReason": null,
+                                        "voided": false
+                                    }
+                                ],
+                                "hiNormal": null,
+                                "isAbnormal": null,
+                                "lowNormal": null,
+                                "obsGroupUuid": "2feb6b69-daee-4f7a-870c-a1df7acc12ba",
+                                "observationDateTime": "2017-03-19T16:00:02.000+0530",
+                                "orderUuid": null,
+                                "parentConceptUuid": null,
+                                "providers": [
+                                    {
+                                        "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                        "name": "Super Man",
+                                        "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                                    }
+                                ],
+                                "targetObsRelation": null,
+                                "type": null,
+                                "unknown": false,
+                                "uuid": "59acaf73-16ae-447d-bf72-a1bfd8374dd5",
+                                "value": "33.0",
+                                "valueAsString": "33.0",
+                                "visitStartDateTime": null,
+                                "voidReason": null,
+                                "voided": false
+                            }
+                        ],
+                        "hiNormal": null,
+                        "isAbnormal": null,
+                        "lowNormal": null,
+                        "obsGroupUuid": null,
+                        "observationDateTime": "2017-03-19T16:00:02.000+0530",
+                        "orderUuid": null,
+                        "parentConceptUuid": null,
+                        "providers": [
+                            {
+                                "encounterRoleUuid": "a0b03050-c99b-11e0-9572-0800200c9a66",
+                                "name": "Super Man",
+                                "uuid": "c1c26908-3f10-11e4-adec-0800271c1b75"
+                            }
+                        ],
+                        "targetObsRelation": null,
+                        "type": null,
+                        "unknown": false,
+                        "uuid": "2feb6b69-daee-4f7a-870c-a1df7acc12ba",
+                        "value": "33.0, 44.0",
+                        "valueAsString": "33.0, 44.0",
+                        "visitStartDateTime": null,
+                        "voidReason": null,
+                        "voided": false
+                    },
+                    children: List.of(obsGroupRecordOne, removeObsGroupRecord)
+                });
+                const rootTree = new ControlRecord({children: List.of(obsGroupRecord)});
+                const wrapper = mount(
+                    <Container
+                        collapse
+                        metadata={metadata}
+                        observations={[]}
+                        validate={false}
+                    />
+                );
+                wrapper.setState({data: rootTree});
+                wrapper.instance().onControlRemove(removeFormFieldPath);
+
+                const updatedRootTree = wrapper.state().data;
+                const obsGroupTree = updatedRootTree.children.get(0);
+
+                expect(obsGroupTree.children.get(0).active).to.equal(true);
+                expect(obsGroupTree.children.get(1).active).to.equal(false);
+                expect(obsGroupTree.children.get(1).formFieldPath).to.equal(removeFormFieldPath);
+            });
+        });
     });
 });
