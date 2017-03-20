@@ -34,6 +34,8 @@
     width: 197px !important;
     display: inline-block !important;
     box-sizing: border-box;
+    float: left;
+    margin-right: 10px;
     &.form-builder-error {
       border: none !important;
       background: none !important;
