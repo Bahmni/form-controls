@@ -1,7 +1,8 @@
 import { List } from 'immutable';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
+import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
+import { ControlRecord } from 'src/helpers/ControlRecordTreeBuilder';
 
 chai.use(chaiEnzyme());
 
@@ -180,5 +181,77 @@ describe('ControlRecordTreeBuilder', () => {
     const activeObsRecordTree = obsGroupRecordTree.children.get(0);
     expect(activeObsRecordTree.formFieldPath).to.equal(activeFormFieldPath);
     expect(activeObsRecordTree.active).to.equal(true);
+  });
+
+  it('should get inactive record form inactive observation', () => {
+    const obsConcept = {
+      answers: [],
+      datatype: 'Numeric',
+      description: [],
+      name: 'Pulse',
+      properties: {
+        allowDecimal: true,
+      },
+      uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+    };
+    const activeFormFieldPath = 'SingleObs.1/1-0';
+    const inactiveFormFieldPath = 'SingleObs.1/1-1';
+    const observations = [
+      {
+        concept: obsConcept,
+        formFieldPath: activeFormFieldPath,
+        formNamespace: 'Bahmni',
+        inactive: false,
+        voided: true,
+      },
+      {
+        concept: obsConcept,
+        formFieldPath: inactiveFormFieldPath,
+        formNamespace: 'Bahmni',
+        inactive: true,
+        voided: true,
+      },
+    ];
+    const metadata = {
+      controls: [
+        {
+          concept: obsConcept,
+          hiAbsolute: null,
+          hiNormal: 72,
+          id: '1',
+          label: {
+            type: 'label',
+            value: 'Pulse(/min)',
+          },
+          lowAbsolute: null,
+          lowNormal: 72,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: {
+              column: 0,
+              row: 0,
+            },
+            mandatory: true,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: '/min',
+        },
+      ],
+      id: 209,
+      name: 'SingleObs',
+      uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
+      version: '1',
+    };
+
+    const rootRecordTree = new ControlRecordTreeBuilder().build(metadata, observations);
+
+    const activeRecord = rootRecordTree.children.get(0);
+    expect(activeRecord.formFieldPath).to.equal(activeFormFieldPath);
+    expect(activeRecord.active).to.equal(true);
+    const inactiveRecord = rootRecordTree.children.get(1);
+    expect(inactiveRecord.formFieldPath).to.equal(inactiveFormFieldPath);
+    expect(inactiveRecord.active).to.equal(false);
   });
 });

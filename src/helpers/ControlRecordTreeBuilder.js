@@ -83,6 +83,7 @@ export default class ControlRecordTreeBuilder {
       );
       obsArray.forEach(data => {
         const record = new ControlRecord({
+          active: !data.inactive,
           formFieldPath: data.formFieldPath,
           value: mapper.getValue(data),
           dataSource: data,

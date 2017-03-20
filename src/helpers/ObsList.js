@@ -3,6 +3,7 @@ import { Record, List } from 'immutable';
 import flattenDeep from 'lodash/flattenDeep';
 
 export const ImmutableObsList = Record({
+  inactive: false,
   formFieldPath: undefined,
   obs: undefined,
   obsList: new List(),

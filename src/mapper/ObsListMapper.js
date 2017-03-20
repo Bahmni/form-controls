@@ -23,14 +23,16 @@ export class ObsListMapper {
     const obsLists = [];
     Object.keys(groupedObs).sort().forEach(formFieldPath => {
       let obsList = new List();
+      let inactive = false;
       for (const observation of groupedObs[formFieldPath]) {
         obsList = obsList.concat(createObsFromControl(formName,
           formVersion, control, [observation]));
+        inactive = observation.inactive;
       }
 
       obs.formFieldPath = formFieldPath;
 
-      obsLists.push(new ObsList({ obsList, formFieldPath, obs }));
+      obsLists.push(new ObsList({ obsList, formFieldPath, obs, inactive }));
     });
     if (obsLists.length === 0) {
       return [new ObsList({
@@ -54,17 +56,34 @@ export class ObsListMapper {
     return { value: isEmpty(updatedObsList) ? undefined : updatedObsList, comment };
   }
 
-  buildObs(dataSource, value, uuid, comment) {
-    const obs = cloneDeep(dataSource.obs);
+  buildObs(record, value, uuid, comment) {
+    const obs = cloneDeep(record.dataSource.obs);
     obs.uuid = uuid;
     obs.value = value;
+    obs.inactive = !record.active;
     obs.comment = comment;
     obs.voided = !value;
+    obs.formFieldPath = record.formFieldPath;
     return obs;
   }
 
   findObs(valueList, uuid) {
     return valueList && valueList.filter(value => value.uuid === uuid);
+  }
+
+  fillEmptyData(record, obsArray) {
+    const isAddMoreRecord = (record.dataSource.formFieldPath !== record.formFieldPath);
+    if (!isAddMoreRecord) {
+      record.dataSource.obsList.forEach(obs => {
+        let foundObs = false;
+        if (obs.value) {
+          foundObs = this.findObs(record.value.value, obs.value.uuid);
+        }
+        if (!foundObs || foundObs.length === 0) {
+          obsArray.push(this.buildObs(record, undefined, obs.uuid));
+        }
+      });
+    }
   }
 
   getData(record) {
@@ -76,16 +95,11 @@ export class ObsListMapper {
             (obs) => obs.value.uuid === value.uuid
           );
           const uuid = targetValue.size > 0 ? targetValue.get(0).uuid : undefined;
-          obsArray.push(this.buildObs(record.dataSource, value, uuid, record.value.comment));
+          obsArray.push(this.buildObs(record, value, uuid, record.value.comment));
         }
       );
     }
-    record.dataSource.obsList.forEach(obs => {
-      const foundObs = this.findObs(record.value.value, obs.value.uuid);
-      if (!foundObs || foundObs.length === 0) {
-        obsArray.push(this.buildObs(record.dataSource, undefined, obs.uuid));
-      }
-    });
+    this.fillEmptyData(record, obsArray);
 
     return obsArray;
   }

@@ -20,6 +20,7 @@ export class ObsMapper {
     obs.value = record.value.value;
     obs.comment = record.value.comment;
     obs.voided = record.value.value === undefined;
+    obs.inactive = !record.active;
 
     return obs;
   }
