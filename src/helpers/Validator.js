@@ -7,8 +7,10 @@ import { Error } from 'src/Error';
 
 export class Validator {
   static nonEmpty(value) {
-    if (value === false || value === 0 || value) return true;
-    return false;
+    if (value === undefined || value.length === 0) {
+      return false;
+    }
+    return true;
   }
 
   static mandatory(obsValue) {
