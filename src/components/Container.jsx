@@ -56,7 +56,7 @@ export class Container extends addMoreDecorator(Component) {
     if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
       return { observations };
     }
-    return { errors };
+    return { errors, observations };
   }
 
   // deprecated
