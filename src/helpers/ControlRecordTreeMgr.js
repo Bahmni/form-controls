@@ -1,19 +1,25 @@
-import {Util} from './Util';
-import {sortBy, last} from "lodash";
-import {List} from "immutable";
+import { Util } from './Util';
 
 export default class ControlRecordTreeMgr {
 
   generateNextTree(rootTree, formFieldPath) {
     let updatedTree = this.getBrotherTree(rootTree, formFieldPath);
     if (updatedTree.children && updatedTree.children.size > 0) {
-      const clonedChildTree = updatedTree.children.map(r => (
-        this.generateNextTree(rootTree, r.formFieldPath)
-      ));
+      const filteredTree = this.filterChildTree(updatedTree);
+      const clonedChildTree = filteredTree.map(r => (
+                this.generateNextTree(rootTree, r.formFieldPath)
+            ));
       updatedTree = updatedTree.set('children', clonedChildTree);
     }
     const nextFormFieldPath = this.generateFormFieldPath(updatedTree);
     return updatedTree.set('formFieldPath', nextFormFieldPath).set('value', {}).set('active', true);
+  }
+
+  filterChildTree(updatedTree) {
+    const getPrefix = (formFieldPath) => (formFieldPath.split('-')[0]);
+
+    return updatedTree.children.groupBy(r => getPrefix(r.formFieldPath))
+                      .map(x => x.first()).toList();
   }
 
   generateFormFieldPath(maxSuffixTree) {
@@ -58,9 +64,9 @@ export default class ControlRecordTreeMgr {
     const getSuffix = (record) => (Util.toInt(record.formFieldPath.split('-')[1]));
 
     const isLatestBrotherTree = (originalRecord, newRecord) => (
-      (getPrefix(targetFormFieldPath) === getPrefix(newRecord.formFieldPath)) &&
-      (!originalRecord || (getSuffix(originalRecord) < getSuffix(newRecord)))
-    );
+            (getPrefix(targetFormFieldPath) === getPrefix(newRecord.formFieldPath)) &&
+            (!originalRecord || (getSuffix(originalRecord) < getSuffix(newRecord)))
+        );
 
     let latestSimilarTree = undefined;
 
