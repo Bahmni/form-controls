@@ -1,92 +1,98 @@
 import chai from 'chai';
 import chaiEnzyme from 'chai-enzyme';
-import { DropTarget } from 'src/components/DropTarget.jsx';
+import {DropTarget} from 'src/components/DropTarget.jsx';
 import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
 describe('DropTarget', () => {
-  let eventData;
-  const testContext = { type: 'testType', data: { id: '123' } };
-  beforeEach(() => {
-    eventData = {
-      stopPropagation() {},
-      preventDefault: () => {
-      },
-      dataTransfer: {
-        getData: () => JSON.stringify(testContext),
-      },
-    };
-  });
+    let eventData;
+    const testContext = {type: 'testType', data: {id: '123'}};
+    beforeEach(() => {
+        eventData = {
+            stopPropagation() {
+            },
+            preventDefault: () => {
+            },
+            dataTransfer: {
+                getData: () => JSON.stringify(testContext),
+            },
+        };
+    });
 
-  afterEach(() => {
-    eventData = undefined;
-  });
+    afterEach(() => {
+        eventData = undefined;
+    });
 
-  it('should make a subclass a valid drop target', () => {
-    const dropTarget = new DropTarget();
-    const eventExpectation = sinon.mock(eventData).expects('preventDefault');
-    eventExpectation.twice();
+    it('should make a subclass a valid drop target', () => {
+        const dropTarget = new DropTarget();
+        const eventExpectation = sinon.mock(eventData).expects('preventDefault');
+        eventExpectation.twice();
 
-    dropTarget.onDragOver(eventData);
-    dropTarget.onDrop(eventData);
+        dropTarget.onDragOver(eventData);
+        dropTarget.onDrop(eventData);
 
-    eventExpectation.verify();
-    eventData.preventDefault.restore();
-  });
+        eventExpectation.verify();
+        eventData.preventDefault.restore();
+    });
 
-  it('should call processDrop when drop happens', () => {
-    const dropTarget = new DropTarget();
-    sinon.spy(dropTarget, 'processDrop');
+    it('should call processDrop when drop happens', () => {
+        const dropTarget = new DropTarget();
+        sinon.spy(dropTarget, 'processDrop');
 
-    dropTarget.onDrop(eventData);
+        dropTarget.onDrop(eventData);
 
-    sinon.assert.calledWith(dropTarget.processDrop, testContext);
-  });
+        sinon.assert.calledWith(dropTarget.processDrop, testContext);
+    });
 
-  it('should handle move by calling processMove', () => {
-    const dropTarget = new DropTarget();
-    sinon.spy(dropTarget, 'processMove');
-    eventData.dataTransfer.dropEffect = 'move';
+    it('should handle move by calling processMove', () => {
+        const dropTarget = new DropTarget();
+        sinon.spy(dropTarget, 'processMove');
+        eventData.dataTransfer.dropEffect = 'move';
 
-    dropTarget.notifyMove(eventData, testContext);
+        dropTarget.notifyMove(eventData, testContext);
 
-    sinon.assert.calledWith(dropTarget.processMove, testContext);
-    dropTarget.processMove.restore();
-  });
+        sinon.assert.calledWith(dropTarget.processMove, testContext);
+        dropTarget.processMove.restore();
+    });
 
+    it('should not move if drop did not happen successfully', () => {
+        const dropTarget = new DropTarget();
+        sinon.spy(dropTarget, 'processMove');
+        eventData.dataTransfer.dropEffect = 'none';
 
-  it('should not move if drop did not happen successfully', () => {
-    const dropTarget = new DropTarget();
-    sinon.spy(dropTarget, 'processMove');
-    eventData.dataTransfer.dropEffect = 'none';
+        dropTarget.notifyMove(eventData, testContext);
 
-    dropTarget.notifyMove(eventData, testContext);
+        sinon.assert.notCalled(dropTarget.processMove);
+        dropTarget.processMove.restore();
+    });
 
-    sinon.assert.notCalled(dropTarget.processMove);
-    dropTarget.processMove.restore();
-  });
-
-  it('should handle dragenter event with processDragEnter', () => {
-    const dropTarget = new DropTarget();
-    sinon.spy(dropTarget, 'processDragEnter');
-
-
-    dropTarget.onDragEnter(eventData);
-    sinon.assert.calledOnce(dropTarget.processDragEnter);
-    sinon.assert.calledWith(dropTarget.processDragEnter, eventData);
-    dropTarget.processDragEnter.restore();
-  });
+    it('should handle dragenter event with processDragEnter', () => {
+        const dropTarget = new DropTarget();
+        sinon.spy(dropTarget, 'processDragEnter');
 
 
-  it('should handle dragleave event with processDragLeave', () => {
-    const dropTarget = new DropTarget();
-    sinon.spy(dropTarget, 'processDragLeave');
+        dropTarget.onDragEnter(eventData);
+        sinon.assert.calledOnce(dropTarget.processDragEnter);
+        sinon.assert.calledWith(dropTarget.processDragEnter, eventData);
+        dropTarget.processDragEnter.restore();
+    });
 
-    dropTarget.onDragLeave(eventData);
+    it('should handle dragleave event with processDragLeave', () => {
+        const dropTarget = new DropTarget();
+        sinon.spy(dropTarget, 'processDragLeave');
 
-    sinon.assert.calledOnce(dropTarget.processDragLeave);
-    sinon.assert.calledWith(dropTarget.processDragLeave, eventData);
-    dropTarget.processDragLeave.restore();
-  });
+        dropTarget.onDragLeave(eventData);
+
+        sinon.assert.calledOnce(dropTarget.processDragLeave);
+        sinon.assert.calledWith(dropTarget.processDragLeave, eventData);
+        dropTarget.processDragLeave.restore();
+    });
+
+    // it('should fail when try to drag and drop controls to obsGroup', () => {
+    //     const dropTarget = new DropTarget();
+    //     sinon.spy(dropTarget, 'processDrop');
+    //
+    //     dropTarget.onDrop(eventData);
+    // });
 });

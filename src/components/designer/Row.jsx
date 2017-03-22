@@ -43,6 +43,7 @@ export class RowDesigner extends Component {
           ref={ this.cellReference }
           showDeleteButton={ this.props.showDeleteButton }
           wrapper={ this.props.wrapper }
+          dragAllowed = { this.props.dragAllowed }
         />);
     }
     return cells;

@@ -95,6 +95,7 @@ export class ObsGroupControlDesigner extends Component {
               minRows={0}
               ref={ this.storeGridRef }
               wrapper={this.props.wrapper}
+              dragAllowed={false}
             />
           </div>
         </fieldset>
