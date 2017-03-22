@@ -151,7 +151,7 @@ describe('NumericBox', () => {
     );
     const instance = wrapper.instance();
     const spy = sinon.spy(instance, 'componentDidUpdate');
-    wrapper.find('input').value = '22.';
+    wrapper.find('input').simulate('change', { target: { value: '22.' } });
 
     sinon.assert.notCalled(spy);
   });
