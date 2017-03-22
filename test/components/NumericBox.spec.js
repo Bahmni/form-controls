@@ -136,8 +136,26 @@ describe('NumericBox', () => {
         value={'22'}
       />
     );
+
     wrapper.setProps({ value: '10' });
     expect(wrapper.find('input')).to.have.value('10');
+  });
+
+  it('should not set the input value when the value of the numeric box is not calculated', () => {
+    const wrapper = mount(
+      <NumericBox
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+        value={'23'}
+      />
+    );
+    const instance = wrapper.instance();
+    const spy = sinon.spy(instance, 'updateInputByPropsValue');
+    wrapper.find('input').simulate('change', { target: { value: '23.5' } });
+    wrapper.find('input').simulate('change', { target: { value: '23.' } });
+
+    sinon.assert.notCalled(spy);
   });
 
   it('should not update component when the decimal point is input after a integer', () => {

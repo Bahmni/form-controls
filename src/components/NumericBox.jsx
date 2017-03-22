@@ -45,6 +45,12 @@ export class NumericBox extends Component {
     if (this._hasErrors(errors, constants.errorTypes.error)) {
       this.props.onChange(this.props.value, errors);
     }
+    if (this.input.value !== this.props.value) {
+      this.updateInputByPropsValue();
+    }
+  }
+
+  updateInputByPropsValue() {
     this.input.value = this.props.value;
   }
 
