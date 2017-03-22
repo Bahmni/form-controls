@@ -29,7 +29,11 @@ export class NumericBox extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.value !== nextProps.value ||
+    let valueToString;
+    if (this.props.value) {
+      valueToString = this.props.value.toString();
+    }
+    if (valueToString !== nextProps.value ||
       this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
