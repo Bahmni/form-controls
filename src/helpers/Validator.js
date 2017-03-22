@@ -7,7 +7,7 @@ import { Error } from 'src/Error';
 
 export class Validator {
   static nonEmpty(value) {
-    if (value === undefined || value.length === 0) {
+    if (value === undefined || value === null || value.length === 0) {
       return false;
     }
     return true;
