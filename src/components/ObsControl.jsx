@@ -37,7 +37,7 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayObsControl(registeredComponent) {
-    const { metadata, metadata: { concept }, validate } = this.props;
+    const { metadata, metadata: { concept }, validate, onEventTrigger } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
@@ -45,6 +45,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       properties: metadata.properties,
       options,
       onChange: this.onChange,
+      onEventTrigger,
       validate,
       validations,
       value: this.props.value.value,

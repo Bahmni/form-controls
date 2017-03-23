@@ -23,6 +23,13 @@ export class Container extends addMoreDecorator(Component) {
     this.setState({ collapse: nextProps.collapse });
   }
 
+  onEventTrigger(eventName, eventsScript) {
+    const eventFunc = eventsScript[eventName];
+    if (eventFunc) {
+
+    }
+  }
+
   onValueChanged(formFieldPath, value, errors) {
     this.setState((previousState) => (
       {
@@ -76,6 +83,7 @@ export class Container extends addMoreDecorator(Component) {
       formName,
       formVersion,
       ref: this.storeChildRef,
+      onEventTrigger: this.onEventTrigger,
       onValueChanged: this.onValueChanged,
       onControlAdd: this.onControlAdd,
       onControlRemove: this.onControlRemove,

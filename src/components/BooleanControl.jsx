@@ -19,13 +19,14 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { events, options, validations, validate } = this.props;
+    const { events, options, validations, validate, onEventTrigger } = this.props;
     const registeredComponent = ComponentStore.getRegisteredComponent('button');
     if (registeredComponent) {
       const initialValue = this._getValue(options, this.props.value);
       const childProps = {
         events,
         value: initialValue,
+        onEventTrigger,
         onValueChange: this.onValueChange,
         options,
         validate,
