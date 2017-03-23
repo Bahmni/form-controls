@@ -41,6 +41,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
+      events: metadata.events,
       properties: metadata.properties,
       options,
       onChange: this.onChange,

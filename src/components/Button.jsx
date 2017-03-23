@@ -42,6 +42,9 @@ export class Button extends Component {
     const errors = this._getErrors(value);
     this.setState({ hasErrors: this._hasErrors(errors) });
     this.props.onValueChange(value, errors);
+    if (this.props.onEventTrigger) {
+      this.props.onEventTrigger('onClick', this.props.events);
+    }
   }
 
   _getValue(valueSelected) {
@@ -106,8 +109,10 @@ export class Button extends Component {
 }
 
 Button.propTypes = {
+  events: PropTypes.object,
   multiSelect: PropTypes.bool,
   nameKey: PropTypes.string,
+  onEventTrigger: PropTypes.func,
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,

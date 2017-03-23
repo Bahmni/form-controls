@@ -257,96 +257,97 @@ describe('ControlRecordTreeBuilder', () => {
 
   it('should get record tree with events script when given metadata with events scripts', () => {
     const booleanObsConcept = {
-      "answers": [],
-      "datatype": "Boolean",
-      "description": [],
-      "name": "Tuberculosis, Need of Admission",
-      "properties": {
-        "allowDecimal": null
+      answers: [],
+      datatype: 'Boolean',
+      description: [],
+      name: 'Tuberculosis, Need of Admission',
+      properties: {
+        allowDecimal: null,
       },
-      "uuid": "c5cdd4e5-86e0-400c-9742-d73ffb323fa8",
-      "events": {"onClick": "function(){}"},
+      uuid: 'c5cdd4e5-86e0-400c-9742-d73ffb323fa8',
     };
     const textBoxConcept = {
-      "answers": [],
-      "datatype": "Text",
-      "description": [],
-      "name": "Chief Complaint Notes",
-      "properties": {
-        "allowDecimal": null
+      answers: [],
+      datatype: 'Text',
+      description: [],
+      name: 'Chief Complaint Notes',
+      properties: {
+        allowDecimal: null,
       },
-      "uuid": "c398a4be-3f10-11e4-adec-0800271c1b75"
+      uuid: 'c398a4be-3f10-11e4-adec-0800271c1b75',
     };
+    const events = { onClick: 'function(){}' };
     const metadata = {
-      "controls": [
+      controls: [
         {
-          "concept": booleanObsConcept,
-          "hiAbsolute": null,
-          "hiNormal": null,
-          "id": "5",
-          "label": {
-            "type": "label",
-            "value": "Tuberculosis, Need of Admission"
+          concept: booleanObsConcept,
+          events,
+          hiAbsolute: null,
+          hiNormal: null,
+          id: '5',
+          label: {
+            type: 'label',
+            value: 'Tuberculosis, Need of Admission',
           },
-          "lowAbsolute": null,
-          "lowNormal": null,
-          "options": [
+          lowAbsolute: null,
+          lowNormal: null,
+          options: [
             {
-              "name": "Yes",
-              "value": true
+              name: 'Yes',
+              value: true,
             },
             {
-              "name": "No",
-              "value": false
-            }
+              name: 'No',
+              value: false,
+            },
           ],
-          "properties": {
-            "addMore": false,
-            "hideLabel": false,
-            "location": {
-              "column": 0,
-              "row": 0
+          properties: {
+            addMore: false,
+            hideLabel: false,
+            location: {
+              column: 0,
+              row: 0,
             },
-            "mandatory": false,
-            "notes": false
+            mandatory: false,
+            notes: false,
           },
-          "type": "obsControl",
-          "units": null
+          type: 'obsControl',
+          units: null,
         },
         {
-          "concept": textBoxConcept,
-          "hiAbsolute": null,
-          "hiNormal": null,
-          "id": "2",
-          "label": {
-            "type": "label",
-            "value": "Chief Complaint Notes"
+          concept: textBoxConcept,
+          hiAbsolute: null,
+          hiNormal: null,
+          id: '2',
+          label: {
+            type: 'label',
+            value: 'Chief Complaint Notes',
           },
-          "lowAbsolute": null,
-          "lowNormal": null,
-          "properties": {
-            "addMore": false,
-            "hideLabel": false,
-            "location": {
-              "column": 0,
-              "row": 1
+          lowAbsolute: null,
+          lowNormal: null,
+          properties: {
+            addMore: false,
+            hideLabel: false,
+            location: {
+              column: 0,
+              row: 1,
             },
-            "mandatory": false,
-            "notes": false
+            mandatory: false,
+            notes: false,
           },
-          "type": "obsControl",
-          "units": null
-        }
+          type: 'obsControl',
+          units: null,
+        },
       ],
-      "id": 4,
-      "name": "3129",
-      "uuid": "940980e6-74e6-4f09-993d-60ddf42eb0e9",
-      "version": "3"
+      id: 4,
+      name: '3129',
+      uuid: '940980e6-74e6-4f09-993d-60ddf42eb0e9',
+      version: '3',
     };
 
     const obsRecordTree = new ControlRecordTreeBuilder().build(metadata, []);
 
     expect(obsRecordTree.children.get(0).control.concept.name).to.equal(booleanObsConcept.name);
-    expect(obsRecordTree.children.get(0).control.concept.events).to.equal(booleanObsConcept.events);
-  })
+    expect(obsRecordTree.children.get(0).control.events).to.equal(events);
+  });
 });

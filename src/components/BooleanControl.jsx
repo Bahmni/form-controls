@@ -19,11 +19,12 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { options, validations, validate } = this.props;
+    const { events, options, validations, validate } = this.props;
     const registeredComponent = ComponentStore.getRegisteredComponent('button');
     if (registeredComponent) {
       const initialValue = this._getValue(options, this.props.value);
       const childProps = {
+        events,
         value: initialValue,
         onValueChange: this.onValueChange,
         options,
@@ -43,7 +44,9 @@ export class BooleanControl extends Component {
 }
 
 BooleanControl.propTypes = {
+  events: PropTypes.object,
   onChange: PropTypes.func.isRequired,
+  onEventTrigger: PropTypes.func,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

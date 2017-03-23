@@ -220,7 +220,6 @@ describe('Button Component', () => {
     sinon.assert.calledOnce(valueChangeSpy.withArgs([], []));
   });
 
-
   it('should take value based on the valueKey specified', () => {
     const optionsWithoutValueKey = [
       { name: 'Yes' },
@@ -242,5 +241,40 @@ describe('Button Component', () => {
 
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(valueChangeSpy.withArgs(optionsWithoutValueKey[1], []));
+  });
+
+  it('should trigger callback when init button with events', () => {
+    const booleanOptions = [
+      {
+        name: 'Yes',
+        value: true,
+      },
+      {
+        name: 'No',
+        value: false,
+      },
+    ];
+    const eventTriggerSpy = sinon.spy();
+    const events = {
+      onClick: 'function(){if(form.get("Tuberculosis, Need of Admission").value === "Yes")' +
+      '{form.get("Chief Complaint Notes").set("enable", false)}}',
+    };
+    const wrapper = shallow(
+      <Button
+        events={events}
+        nameKey={'name'}
+        onEventTrigger={eventTriggerSpy}
+        onValueChange={valueChangeSpy}
+        options={booleanOptions}
+        validate
+        validations={[]}
+        valueKey={'value'}
+      />
+    );
+
+    const valueSelected = { name: 'Yes', value: true };
+    wrapper.instance().changeValue(valueSelected);
+
+    sinon.assert.calledOnce(eventTriggerSpy.withArgs('onClick', events));
   });
 });
