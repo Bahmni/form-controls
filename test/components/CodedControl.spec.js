@@ -56,7 +56,7 @@ describe('CodedControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(6);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(7);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
@@ -76,7 +76,7 @@ describe('CodedControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(6);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(7);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
@@ -176,7 +176,7 @@ describe('CodedControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(9);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(10);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);

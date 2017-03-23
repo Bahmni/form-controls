@@ -20,9 +20,11 @@ export class AutoComplete extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
+    const errors = this._getErrors(props.value) || [];
+    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
     this.state = {
       value: get(props, 'value'),
-      hasErrors: false,
+      hasErrors,
       options: [],
       noResultsText: '',
     };
@@ -34,6 +36,12 @@ export class AutoComplete extends Component {
     }
   }
 
+  componentDidMount() {
+    if(this.state.hasErrors) {
+      this.props.onValueChange(this.props.value, this._getErrors(this.props.value));
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const value = get(nextProps, 'value');
     const errors = this._getErrors(value);
@@ -42,14 +50,11 @@ export class AutoComplete extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (!isEqual(this.props.value, nextProps.value) ||
-      !isEqual(this.state.value, nextState.value) ||
+    return !isEqual(this.props.value, nextProps.value) || !isEqual(this.state.value, nextState.value) ||
       this.state.hasErrors !== nextState.hasErrors ||
       this.state.options !== nextState.options ||
-      this.state.noResultsText !== nextState.noResultsText) {
-      return true;
-    }
-    return false;
+      this.state.noResultsText !== nextState.noResultsText;
+
   }
 
   componentWillUpdate(nextState) {
@@ -127,6 +132,9 @@ export class AutoComplete extends Component {
     return !isEmpty(errors);
   }
 
+  _isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
+  }
 
   render() {
     const { autofocus, autoload, cache, disabled, labelKey, valueKey,

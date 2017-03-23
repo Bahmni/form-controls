@@ -37,11 +37,9 @@ export class NumericBox extends Component {
     if (this.props.value) {
       valueToString = this.props.value.toString();
     }
-    if (valueToString !== nextProps.value ||
-      this.state.hasErrors !== nextState.hasErrors) {
-      return true;
-    }
-    return false;
+    return valueToString !== nextProps.value ||
+      this.state.hasErrors !== nextState.hasErrors;
+
   }
 
   componentDidUpdate() {
@@ -71,6 +69,7 @@ export class NumericBox extends Component {
   _isCreateByAddMore() {
     return (this.props.formFieldPath.split('-')[1] !== '0');
   }
+
   _hasErrors(errors, errorType) {
     return !isEmpty(errors.filter((error) => error.type === errorType));
   }
