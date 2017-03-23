@@ -188,6 +188,7 @@ AutoComplete.propTypes = {
   autoload: PropTypes.bool,
   cache: PropTypes.bool,
   disabled: PropTypes.bool,
+  formFieldPath: PropTypes.string,
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
   multiSelect: PropTypes.bool,

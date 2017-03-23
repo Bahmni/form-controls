@@ -8,13 +8,21 @@ import Textarea from 'react-textarea-autosize';
 export class TextBox extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasErrors: false };
+    const errors = this._getErrors(props.value) || [];
+    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
+    this.state = { hasErrors };
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate) {
       const errors = this._getErrors(nextProps.value);
       this.setState({ hasErrors: this._hasErrors(errors) });
+    }
+  }
+
+  componentDidMount() {
+    if(this.state.hasErrors) {
+      this.props.onChange(this.props.value, this._getErrors(this.props.value));
     }
   }
 
@@ -41,6 +49,10 @@ export class TextBox extends Component {
     const validations = this.props.validations;
     const controlDetails = { validations, value };
     return Validator.getErrors(controlDetails);
+  }
+
+  _isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
   }
 
   handleChange(e) {
