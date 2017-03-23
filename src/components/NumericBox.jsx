@@ -69,7 +69,7 @@ export class NumericBox extends Component {
   }
 
   _isCreateByAddMore() {
-    return (this.props.formFieldPath.split('-')[1] === '0') ? false : true;
+    return (this.props.formFieldPath.split('-')[1] !== '0');
   }
   _hasErrors(errors, errorType) {
     return !isEmpty(errors.filter((error) => error.type === errorType));

@@ -12,7 +12,15 @@ import filter from 'lodash/filter';
 export class Button extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasErrors: false };
+    const errors = this._getErrors(props.value) || [];
+    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
+    this.state = { hasErrors };
+  }
+
+  componentDidMount() {
+    if(this.state.hasErrors) {
+      this.props.onValueChange(this.props.value, this._getErrors(this.props.value));
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -84,6 +92,10 @@ export class Button extends Component {
     return undefined;
   }
 
+  _isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
+  }
+
   displayButtons() {
     return map(this.props.options, (option, index) =>
       <button
@@ -106,6 +118,7 @@ export class Button extends Component {
 }
 
 Button.propTypes = {
+  formFieldPath: PropTypes.string,
   multiSelect: PropTypes.bool,
   nameKey: PropTypes.string,
   onValueChange: PropTypes.func.isRequired,
