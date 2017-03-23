@@ -88,6 +88,35 @@ describe('NumericBox', () => {
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
+  it('should check errors after mount if the formFieldPath suffix is not 0', () => {
+    const concept = {};
+    const wrapper = mount(
+      <NumericBox
+        concept={concept}
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+        formFieldPath="testForm.1/1-1"
+      />
+    );
+
+    expect(wrapper.find('input')).to.have.className('form-builder-error');
+  });
+
+  it('should not check errors after mount if the formFieldPath suffix is 0', () => {
+    const concept = {};
+    const wrapper = mount(
+      <NumericBox
+        concept={concept}
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+        formFieldPath="testForm.1/1-0"
+      />
+    );
+    expect(wrapper.find('input')).to.not.have.className('form-builder-error');
+  });
+
   it('should throw warning when the value is not in correct range', () => {
     const numericContext = { hiNormal: 50, lowNormal: 20 };
     const wrapper = mount(
