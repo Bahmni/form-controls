@@ -124,6 +124,7 @@ NumericBox.propTypes = {
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,
+  formFieldPath: PropTypes.string.isRequired,
 };
 
 ComponentStore.registerComponent('numeric', NumericBox);
