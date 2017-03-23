@@ -22,6 +22,7 @@ describe('NumericBox', () => {
         onChange={onChangeSpy}
         validate={false}
         validations={[]}
+        formFieldPath="test1.1-0"
       />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
@@ -37,6 +38,7 @@ describe('NumericBox', () => {
         onChange={onChangeSpy}
         validate={false} validations={[]}
         value={'50'}
+        formFieldPath="test1.1-0"
       />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
@@ -52,6 +54,7 @@ describe('NumericBox', () => {
         validate={false}
         validations={[]}
         value={'50'}
+        formFieldPath="test1.1-0"
       />
     );
     wrapper.find('input').simulate('change', { target: { value: '999' } });
@@ -66,6 +69,7 @@ describe('NumericBox', () => {
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
+        formFieldPath="test1.1-0"
       />
     );
     const allowDecimalError = new Error({ message: validations[0] });
@@ -82,6 +86,7 @@ describe('NumericBox', () => {
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
+        formFieldPath="test1.1-0"
       />
     );
     wrapper.setProps({ validate: true, value: '98.6' });
@@ -94,9 +99,10 @@ describe('NumericBox', () => {
       <NumericBox
         concept={concept}
         onChange={onChangeSpy}
-        validate={false}
+        validate={true}
         validations={validations}
-        formFieldPath="testForm.1/1-1"
+        formFieldPath="test1.1/1-1"
+        value='98.6'
       />
     );
 
@@ -111,7 +117,7 @@ describe('NumericBox', () => {
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
-        formFieldPath="testForm.1/1-0"
+        formFieldPath="test1.1/1-0"
       />
     );
     expect(wrapper.find('input')).to.not.have.className('form-builder-error');
@@ -125,6 +131,7 @@ describe('NumericBox', () => {
           onChange={onChangeSpy}
           validate={false}
           validations={validations}
+          formFieldPath="test1.1-0"
         />
     );
     const allowRangeWarning = new Error({
@@ -145,6 +152,7 @@ describe('NumericBox', () => {
         validate={false}
         validations={validations}
         value={'21'}
+        formFieldPath="test1.1-0"
       />
     );
     const allowRangeError = new Error({
@@ -163,6 +171,7 @@ describe('NumericBox', () => {
         validate={false}
         validations={validations}
         value={'22'}
+        formFieldPath="test1.1-0"
       />
     );
 
@@ -177,6 +186,7 @@ describe('NumericBox', () => {
         validate={false}
         validations={validations}
         value={'23'}
+        formFieldPath="test1.1-0"
       />
     );
     const instance = wrapper.instance();
@@ -194,6 +204,7 @@ describe('NumericBox', () => {
         validate={false}
         validations={validations}
         value={'22'}
+        formFieldPath="test1.1-0"
       />
     );
     const instance = wrapper.instance();

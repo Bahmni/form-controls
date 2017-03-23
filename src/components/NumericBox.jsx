@@ -12,11 +12,15 @@ export class NumericBox extends Component {
     this.defaultValidations = [constants.validations.allowRange, constants.validations.minMaxRange];
     const errors = this._getErrors(props.value) || [];
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
-    this.state = { hasErrors: false, hasWarnings };
+    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors, constants.errorTypes.error) : false;
+    this.state = { hasErrors, hasWarnings };
   }
 
   componentDidMount() {
     this.input.value = this.props.value;
+    if(this.state.hasErrors) {
+      this.props.onChange(this.props.value, this._getErrors(this.props.value));
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,6 +68,9 @@ export class NumericBox extends Component {
     this.props.onChange(value, errors);
   }
 
+  _isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] === '0') ? false : true;
+  }
   _hasErrors(errors, errorType) {
     return !isEmpty(errors.filter((error) => error.type === errorType));
   }
