@@ -20,7 +20,7 @@ export class SectionMapper {
   }
 
   getValue() {
-    return undefined;
+    return {};
   }
 
   getData(record) {
