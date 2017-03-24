@@ -9,9 +9,9 @@ export class BooleanControl extends Component {
     this.onValueChange = this.onValueChange.bind(this);
   }
 
-  onValueChange(value, errors, callback) {
+  onValueChange(value, errors, onActionDone) {
     const updatedValue = value ? value.value : undefined;
-    this.props.onChange(updatedValue, errors, callback);
+    this.props.onChange(updatedValue, errors, onActionDone);
   }
 
   _getValue(options, value) {

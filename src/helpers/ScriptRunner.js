@@ -1,18 +1,19 @@
 import ControlRecordTreeMgr from "./ControlRecordTreeMgr";
-class formHandler {
+
+class FormContext {
 
   constructor(formData) {
     this.formData = formData;
   }
 
-  isSameConcept(record, conceptName) {
+  hasContainConcept(record, conceptName) {
     const concept = record.control && record.control.concept;
     return concept && concept.name === conceptName;
   }
 
   findRecordsByConceptName(recordTree, conceptName) {
     let recordArray = [];
-    if (this.isSameConcept(recordTree, conceptName)) {
+    if (this.hasContainConcept(recordTree, conceptName)) {
       recordArray.push(recordTree);
     }
     recordTree.children && recordTree.children.forEach(r => {
@@ -41,14 +42,14 @@ class formHandler {
 
 }
 
-export default class EventHandler {
+export default class ScriptRunner {
 
-  constructor(recordTree) {
-    this.formMgr = new formHandler(recordTree);
+  constructor(formData) {
+    this.formContext = new FormContext(formData);
   }
 
-  run(eventJs) {
-    const form = this.formMgr;
+  execute(eventJs) {
+    const form = this.formContext;
     if (eventJs) {
       const executiveJs = '(' + eventJs + ')()';
       eval(executiveJs);

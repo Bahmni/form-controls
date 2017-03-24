@@ -264,7 +264,7 @@ describe('Button Component', () => {
         events={events}
         nameKey={'name'}
         onEventTrigger={eventTriggerSpy}
-        onValueChange={(value, errors, callback) => (callback())}
+        onValueChange={(value, errors, onActionDone) => (onActionDone())}
         options={booleanOptions}
         validate
         validations={[]}

@@ -3,7 +3,7 @@ import { displayRowControls, getGroupedControls } from '../helpers/controlsParse
 import isEmpty from 'lodash/isEmpty';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 import ControlRecordTreeMgr from 'src/helpers/ControlRecordTreeMgr';
-import EventHandler from 'src/helpers/EventHandler';
+import ScriptRunner from 'src/helpers/ScriptRunner';
 import addMoreDecorator from './AddMoreDecorator';
 import ObservationMapper from '../helpers/ObservationMapper';
 
@@ -26,21 +26,21 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   onEventTrigger(eventName, eventsScript) {
-    const eventJs = eventsScript[eventName];
-    if (eventJs) {
-      const updatedTree = new EventHandler(this.state.data).run(eventJs);
+    const script = eventsScript[eventName];
+    if (script) {
+      const updatedTree = new ScriptRunner(this.state.data).execute(script);
       this.setState({
         data: updatedTree,
       });
     }
   }
 
-  onValueChanged(formFieldPath, value, errors, callback) {
+  onValueChanged(formFieldPath, value, errors, onActionDone) {
     this.setState((previousState) => ({
         ...previousState,
         data: previousState.data.update(formFieldPath, value, errors),
         collapse: undefined,
-      }), callback);
+      }), onActionDone);
   }
 
   onControlAdd(formFieldPath) {
