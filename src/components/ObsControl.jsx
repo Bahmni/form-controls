@@ -20,12 +20,13 @@ export class ObsControl extends addMoreDecorator(Component) {
     this.onRemoveControl = this.onRemoveControl.bind(this);
   }
 
-  onChange(value, errors) {
+  onChange(value, errors, callback) {
     this.props.onValueChanged(
       this.props.formFieldPath,
       { value, comment: this.props.value.comment },
-      errors)
-    ;
+      errors,
+      callback,
+    );
   }
 
   onCommentChange(comment) {

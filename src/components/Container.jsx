@@ -3,6 +3,7 @@ import { displayRowControls, getGroupedControls } from '../helpers/controlsParse
 import isEmpty from 'lodash/isEmpty';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 import ControlRecordTreeMgr from 'src/helpers/ControlRecordTreeMgr';
+import EventHandler from 'src/helpers/EventHandler';
 import addMoreDecorator from './AddMoreDecorator';
 import ObservationMapper from '../helpers/ObservationMapper';
 
@@ -17,6 +18,7 @@ export class Container extends addMoreDecorator(Component) {
     this.onValueChanged = this.onValueChanged.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
     this.onControlRemove = this.onControlRemove.bind(this);
+    this.onEventTrigger = this.onEventTrigger.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -24,20 +26,21 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   onEventTrigger(eventName, eventsScript) {
-    const eventFunc = eventsScript[eventName];
-    if (eventFunc) {
-
+    const eventJs = eventsScript[eventName];
+    if (eventJs) {
+      const updatedTree = new EventHandler(this.state.data).run(eventJs);
+      this.setState({
+        data: updatedTree,
+      });
     }
   }
 
-  onValueChanged(formFieldPath, value, errors) {
-    this.setState((previousState) => (
-      {
+  onValueChanged(formFieldPath, value, errors, callback) {
+    this.setState((previousState) => ({
         ...previousState,
         data: previousState.data.update(formFieldPath, value, errors),
         collapse: undefined,
-      }
-    ));
+      }), callback);
   }
 
   onControlAdd(formFieldPath) {

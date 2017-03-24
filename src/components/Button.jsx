@@ -13,6 +13,7 @@ export class Button extends Component {
   constructor(props) {
     super(props);
     this.state = { hasErrors: false };
+    this.completedFunc = this.completedFunc.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,14 +38,17 @@ export class Button extends Component {
     }
   }
 
+  completedFunc() {
+    if (this.props.onEventTrigger && this.props.events) {
+      this.props.onEventTrigger('onClick', this.props.events);
+    }
+  }
+
   changeValue(valueSelected) {
     const value = this._getValue(valueSelected);
     const errors = this._getErrors(value);
     this.setState({ hasErrors: this._hasErrors(errors) });
-    this.props.onValueChange(value, errors);
-    if (this.props.onEventTrigger && this.props.events) {
-      this.props.onEventTrigger('onClick', this.props.events);
-    }
+    this.props.onValueChange(value, errors, this.completedFunc);
   }
 
   _getValue(valueSelected) {
