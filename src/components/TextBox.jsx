@@ -57,6 +57,7 @@ export class TextBox extends Component {
       <Textarea
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
         defaultValue={this.props.value}
+        disabled={!this.props.enabled}
         onChange={(e) => this.handleChange(e)}
       />
         </div>
@@ -65,6 +66,7 @@ export class TextBox extends Component {
 }
 
 TextBox.propTypes = {
+  enabled: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

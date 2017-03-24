@@ -38,10 +38,11 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayObsControl(registeredComponent) {
-    const { metadata, metadata: { concept }, validate, onEventTrigger } = this.props;
+    const { enabled, metadata, metadata: { concept }, validate, onEventTrigger } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
+      enabled,
       events: metadata.events,
       properties: metadata.properties,
       options,
@@ -148,6 +149,7 @@ export class ObsControl extends addMoreDecorator(Component) {
 ObsControl.propTypes = {
   children: PropTypes.array,
   collapse: PropTypes.bool,
+  enabled: PropTypes.bool,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
     displayType: PropTypes.string,

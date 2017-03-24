@@ -30,6 +30,7 @@ export function getControls(controls, records, props) {
         recordsForControl = setupAddRemoveButtonsForAddMore(recordsForControl);
       }
       const components = recordsForControl.map((record) => createReactComponent(registeredControl, {
+        enabled: record.enabled,
         key: control.id,
         metadata: control,
         value: record.value,

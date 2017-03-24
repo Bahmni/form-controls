@@ -9,6 +9,7 @@ export const ControlRecord = new Record({
   children: undefined,
   value: {},
   active: true,
+  enabled: true,
   showAddMore: false,
   showRemove: false,
   errors: [],

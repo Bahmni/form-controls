@@ -94,6 +94,7 @@ export class Button extends Component {
   displayButtons() {
     return map(this.props.options, (option, index) =>
       <button
+        disabled={!this.props.enabled}
         className={classNames('fl', { active: this._isActive(option) })}
         key={index}
         onClick={() => this.changeValue(option)}
@@ -113,6 +114,7 @@ export class Button extends Component {
 }
 
 Button.propTypes = {
+  enabled: PropTypes.bool,
   events: PropTypes.object,
   multiSelect: PropTypes.bool,
   nameKey: PropTypes.string,
