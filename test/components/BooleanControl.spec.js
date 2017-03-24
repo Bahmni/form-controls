@@ -40,7 +40,6 @@ describe('BooleanControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(8);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(options);

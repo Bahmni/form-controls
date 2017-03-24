@@ -39,8 +39,8 @@ export class Button extends Component {
   }
 
   onActionDone() {
-    if (this.props.onEventTrigger && this.props.events) {
-      this.props.onEventTrigger('onClick', this.props.events);
+    if (this.props.onEventTrigger) {
+      this.props.onEventTrigger('onClick');
     }
   }
 
@@ -115,7 +115,6 @@ export class Button extends Component {
 
 Button.propTypes = {
   enabled: PropTypes.bool,
-  events: PropTypes.object,
   multiSelect: PropTypes.bool,
   nameKey: PropTypes.string,
   onEventTrigger: PropTypes.func,

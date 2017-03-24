@@ -91,4 +91,12 @@ export default class ControlRecordTreeMgr {
 
     return null;
   }
+
+  static find(rootTree, formFieldPath) {
+    const parentTree = new ControlRecordTreeMgr().findParentTree(rootTree, formFieldPath);
+    if (parentTree) {
+      const filteredList = parentTree.children.filter(r => r.formFieldPath === formFieldPath);
+      return filteredList.get(0);
+    }
+  }
 }

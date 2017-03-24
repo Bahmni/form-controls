@@ -18,6 +18,10 @@ export const ControlRecord = new Record({
     return this.mapper.getObject(this.obs);
   },
 
+  getEventScripts() {
+    return this.control ? this.control.events : {};
+  },
+
   getValue() {
     const value = this.value.value;
     if (value != undefined && this.control && this.control.options) {

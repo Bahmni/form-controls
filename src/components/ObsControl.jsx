@@ -18,6 +18,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     this.onCommentChange = this.onCommentChange.bind(this);
     this.onAddControl = this.onAddControl.bind(this);
     this.onRemoveControl = this.onRemoveControl.bind(this);
+    this.onEventTrigger = this.onEventTrigger.bind(this);
   }
 
   onChange(value, errors, onActionDone) {
@@ -38,16 +39,15 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayObsControl(registeredComponent) {
-    const { enabled, metadata, metadata: { concept }, validate, onEventTrigger } = this.props;
+    const { enabled, metadata, metadata: { concept }, validate } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
       enabled,
-      events: metadata.events,
       properties: metadata.properties,
       options,
       onChange: this.onChange,
-      onEventTrigger,
+      onEventTrigger: this.onEventTrigger,
       validate,
       validations,
       value: this.props.value.value,

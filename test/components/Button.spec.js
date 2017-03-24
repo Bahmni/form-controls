@@ -275,6 +275,6 @@ describe('Button Component', () => {
     const valueSelected = { name: 'Yes', value: true };
     wrapper.instance().changeValue(valueSelected);
 
-    sinon.assert.calledOnce(eventTriggerSpy.withArgs('onClick', events));
+    sinon.assert.calledOnce(eventTriggerSpy.withArgs('onClick'));
   });
 });
