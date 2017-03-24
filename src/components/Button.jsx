@@ -128,6 +128,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
+  enabled: true,
   valueKey: 'value',
   nameKey: 'name',
 };

@@ -73,4 +73,8 @@ TextBox.propTypes = {
   value: PropTypes.string,
 };
 
+TextBox.defaultProps = {
+  enabled: true,
+};
+
 ComponentStore.registerComponent('text', TextBox);

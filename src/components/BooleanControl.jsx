@@ -56,4 +56,8 @@ BooleanControl.propTypes = {
   value: PropTypes.any,
 };
 
+BooleanControl.defaultProps = {
+  enabled: true,
+};
+
 ComponentStore.registerComponent('boolean', BooleanControl);
