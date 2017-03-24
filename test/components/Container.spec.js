@@ -467,6 +467,113 @@ describe('Container', () => {
       expect(result.errors).is.not.equal(undefined);
       expect(result.observations).is.not.equal(undefined);
     });
+
+    it('should change state when onEventTrigger is triggered', () => {
+      const booleanConcept = {
+        "answers": [],
+        "datatype": "Boolean",
+        "description": [],
+        "name": "Tuberculosis, Need of Admission",
+        "properties": {
+          "allowDecimal": null
+        },
+        "uuid": "c5cdd4e5-86e0-400c-9742-d73ffb323fa8"
+      };
+      const textBoxConcept = {
+        "answers": [],
+        "datatype": "Text",
+        "description": [],
+        "name": "Chief Complaint Notes",
+        "properties": {
+          "allowDecimal": null
+        },
+        "uuid": "c398a4be-3f10-11e4-adec-0800271c1b75"
+      };
+      const events = {
+        "onClick": "function(){if(form.get(\"Tuberculosis, Need of Admission\").value === \"Yes\"){form.get(\"Chief Complaint Notes\").set(\"enable\", false)}}"
+      };
+      const eventMetadata = {
+        "controls": [
+          {
+            "concept": booleanConcept,
+            "events": events,
+            "hiAbsolute": null,
+            "hiNormal": null,
+            "id": "5",
+            "label": {
+              "type": "label",
+              "value": "Tuberculosis, Need of Admission"
+            },
+            "lowAbsolute": null,
+            "lowNormal": null,
+            "options": [
+              {
+                "name": "Yes",
+                "value": true
+              },
+              {
+                "name": "No",
+                "value": false
+              }
+            ],
+            "properties": {
+              "addMore": true,
+              "hideLabel": false,
+              "location": {
+                "column": 0,
+                "row": 0
+              },
+              "mandatory": true,
+              "notes": false
+            },
+            "type": "obsControl",
+            "units": null
+          },
+          {
+            "concept": textBoxConcept,
+            "hiAbsolute": null,
+            "hiNormal": null,
+            "id": "2",
+            "label": {
+              "type": "label",
+              "value": "Chief Complaint Notes"
+            },
+            "lowAbsolute": null,
+            "lowNormal": null,
+            "properties": {
+              "addMore": false,
+              "hideLabel": false,
+              "location": {
+                "column": 0,
+                "row": 1
+              },
+              "mandatory": false,
+              "notes": false
+            },
+            "type": "obsControl",
+            "units": null
+          }
+        ],
+        "id": 5,
+        "name": "3129",
+        "uuid": "6a3b4de9-5e21-46b4-addb-4ad9518e587b",
+        "version": "4"
+      };
+      const wrapper = shallow(
+        <Container
+          collapse
+          metadata={eventMetadata}
+          observations={[]}
+          validate={false}
+        />
+      );
+      wrapper.instance().onValueChanged('3129.4/5-0', {value: true}, undefined);
+
+      wrapper.instance().onEventTrigger('onClick', events);
+
+      const textBoxRecord = wrapper.state().data.children.get(1);
+      expect(textBoxRecord.enabled).to.equal(false);
+    });
   });
 
   describe('Multiple layer', () => {
