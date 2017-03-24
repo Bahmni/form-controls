@@ -76,4 +76,19 @@ export default class ControlRecordTreeMgr {
     const addedTree = treeMgr.generateNextTree(brotherTree);
     return treeMgr.addToRootTree(rootTree, parentTree, addedTree);
   }
+
+  static update(rootTree, nodeTree) {
+    if (rootTree.formFieldPath === nodeTree.formFieldPath) {
+      return nodeTree;
+    }
+
+    if (rootTree.children) {
+      const updatedChild = rootTree.children.map(r => (
+        ControlRecordTreeMgr.update(r, nodeTree) || r
+      ));
+      return rootTree.set('children', updatedChild);
+    }
+
+    return null;
+  }
 }

@@ -18,6 +18,17 @@ export const ControlRecord = new Record({
     return this.mapper.getObject(this.obs);
   },
 
+  getValue() {
+    const value = this.value.value;
+    if (value != undefined && this.control && this.control.options) {
+      const opt = this.control.options.filter(opt => opt.value === value);
+      if (opt && opt.length > 0) {
+        return opt[0].name;
+      }
+    }
+    return value;
+  },
+
   update(formFieldPath, value, errors, isRemoved) {
     if (this.formFieldPath === formFieldPath) {
       return (Object.keys(value).length === 0 && isRemoved ? this.set('active', false) : this)
