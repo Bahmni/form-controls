@@ -23,7 +23,13 @@ describe('Button Component', () => {
 
   it('should render button component', () => {
     const wrapper = shallow(
-      <Button onValueChange={valueChangeSpy} options={options} validate={false} validations={[]} />
+      <Button
+        formFieldPath="test1.1/1-0"
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+      />
     );
     expect(wrapper).to.have.exactly(2).descendants('button');
 
@@ -39,6 +45,7 @@ describe('Button Component', () => {
   it('should render button with default value', () => {
     const wrapper = shallow(
      <Button
+       formFieldPath="test1.1/1-0"
        onValueChange={valueChangeSpy}
        options={options}
        validate={false}
@@ -50,9 +57,38 @@ describe('Button Component', () => {
     expect(wrapper.find('button').at(1)).to.have.className('fl');
   });
 
+  it('should check errors after mount if the formFieldPath suffix is not 0', () => {
+    const wrapper = shallow(
+      <Button
+        formFieldPath="test1.1/1-1"
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate
+        validations={[constants.validations.mandatory]}
+      />
+    );
+
+    expect(wrapper.find('div')).to.have.className('form-builder-error');
+  });
+
+  it('should not check errors after mount if the formFieldPath suffix is 0', () => {
+    const wrapper = shallow(
+      <Button
+        formFieldPath="test1.1/1-0"
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    expect(wrapper.find('div')).to.not.have.className('form-builder-error');
+  });
+
   it('should change the value on click', () => {
     const wrapper = shallow(
       <Button
+        formFieldPath="test1.1/1-0"
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
@@ -73,7 +109,13 @@ describe('Button Component', () => {
 
   it('should change the value to undefined if double clicked', () => {
     const wrapper = shallow(
-      <Button onValueChange={valueChangeSpy} options={options} validate={false} validations={[]} />
+      <Button
+        formFieldPath="test1.1/1-0"
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+      />
     );
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(valueChangeSpy.withArgs(options[1], []));
@@ -88,6 +130,7 @@ describe('Button Component', () => {
     const validations = [constants.validations.mandatory];
     const wrapper = shallow(
       <Button
+        formFieldPath="test1.1/1-0"
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
@@ -106,6 +149,7 @@ describe('Button Component', () => {
   it('should not reRender if value is same', () => {
     const wrapper = shallow(
       <Button
+        formFieldPath="test1.1/1-0"
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
@@ -129,6 +173,7 @@ describe('Button Component', () => {
     onChangeMock.expects('onValueChange').once().withArgs(undefined, [{ errorType: 'mandatory' }]);
     const wrapper = mount(
       <Button
+        formFieldPath="test1.1/1-0"
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
@@ -144,6 +189,7 @@ describe('Button Component', () => {
   it('should reRender on change of value', () => {
     const wrapper = shallow(
       <Button
+        formFieldPath="test1.1/1-0"
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
@@ -168,6 +214,7 @@ describe('Button Component', () => {
   it('should render button with multiple values', () => {
     const wrapper = shallow(
       <Button
+        formFieldPath="test1.1/1-0"
         multiSelect
         onValueChange={valueChangeSpy}
         options={options}
@@ -183,6 +230,7 @@ describe('Button Component', () => {
   it('should change the value on click for multiselect', () => {
     const wrapper = shallow(
       <Button
+        formFieldPath="test1.1/1-0"
         multiSelect
         onValueChange={valueChangeSpy}
         options={options}
@@ -205,6 +253,7 @@ describe('Button Component', () => {
   it('should return empty array when chosen value is deselected', () => {
     const wrapper = shallow(
       <Button
+        formFieldPath="test1.1/1-0"
         multiSelect
         onValueChange={valueChangeSpy}
         options={options}
@@ -229,6 +278,7 @@ describe('Button Component', () => {
 
     const wrapper = shallow(
         <Button
+          formFieldPath="test1.1/1-0"
           onValueChange={valueChangeSpy}
           options={optionsWithoutValueKey}
           validate={false}

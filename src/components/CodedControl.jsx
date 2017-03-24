@@ -50,8 +50,9 @@ export class CodedControl extends Component {
   }
 
   _getChildProps(displayType) {
-    const { value, validate, validations, properties: { multiSelect } } = this.props;
+    const { formFieldPath, value, validate, validations, properties: { multiSelect } } = this.props;
     const props = {
+      formFieldPath,
       value: this._getValue(value, multiSelect),
       onValueChange: this.onValueChange,
       options: this._getOptionsRepresentation(this.props.options, multiSelect),
@@ -89,6 +90,7 @@ export class CodedControl extends Component {
 }
 
 CodedControl.propTypes = {
+  formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   properties: PropTypes.object.isRequired,

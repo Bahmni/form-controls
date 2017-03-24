@@ -120,6 +120,10 @@
         box-sizing: border-box;
         resize: vertical;
         margin:0 10px 5px 0;
+        &.form-builder-error {
+          outline: 2px solid $error;
+          background: $errorBg;
+        }
       }
       .form-builder-tooltip-wrap {
         display: inline-block;

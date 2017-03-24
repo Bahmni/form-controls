@@ -12,11 +12,16 @@ export class NumericBox extends Component {
     this.defaultValidations = [constants.validations.allowRange, constants.validations.minMaxRange];
     const errors = this._getErrors(props.value) || [];
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
-    this.state = { hasErrors: false, hasWarnings };
+    const hasErrors = this._isCreateByAddMore() ?
+      this._hasErrors(errors, constants.errorTypes.error) : false;
+    this.state = { hasErrors, hasWarnings };
   }
 
   componentDidMount() {
     this.input.value = this.props.value;
+    if (this.state.hasErrors) {
+      this.props.onChange(this.props.value, this._getErrors(this.props.value));
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,11 +38,8 @@ export class NumericBox extends Component {
     if (this.props.value) {
       valueToString = this.props.value.toString();
     }
-    if (valueToString !== nextProps.value ||
-      this.state.hasErrors !== nextState.hasErrors) {
-      return true;
-    }
-    return false;
+    return valueToString !== nextProps.value ||
+      this.state.hasErrors !== nextState.hasErrors;
   }
 
   componentDidUpdate() {
@@ -62,6 +64,10 @@ export class NumericBox extends Component {
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
     this.setState({ hasErrors, hasWarnings });
     this.props.onChange(value, errors);
+  }
+
+  _isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
   }
 
   _hasErrors(errors, errorType) {
@@ -116,6 +122,7 @@ export class NumericBox extends Component {
 }
 
 NumericBox.propTypes = {
+  formFieldPath: PropTypes.string.isRequired,
   hiAbsolute: PropTypes.number,
   hiNormal: PropTypes.number,
   lowAbsolute: PropTypes.number,
