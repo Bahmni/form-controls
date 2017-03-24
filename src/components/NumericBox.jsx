@@ -12,13 +12,14 @@ export class NumericBox extends Component {
     this.defaultValidations = [constants.validations.allowRange, constants.validations.minMaxRange];
     const errors = this._getErrors(props.value) || [];
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
-    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors, constants.errorTypes.error) : false;
+    const hasErrors = this._isCreateByAddMore() ?
+      this._hasErrors(errors, constants.errorTypes.error) : false;
     this.state = { hasErrors, hasWarnings };
   }
 
   componentDidMount() {
     this.input.value = this.props.value;
-    if(this.state.hasErrors) {
+    if (this.state.hasErrors) {
       this.props.onChange(this.props.value, this._getErrors(this.props.value));
     }
   }
@@ -39,7 +40,6 @@ export class NumericBox extends Component {
     }
     return valueToString !== nextProps.value ||
       this.state.hasErrors !== nextState.hasErrors;
-
   }
 
   componentDidUpdate() {
@@ -122,6 +122,7 @@ export class NumericBox extends Component {
 }
 
 NumericBox.propTypes = {
+  formFieldPath: PropTypes.string.isRequired,
   hiAbsolute: PropTypes.number,
   hiNormal: PropTypes.number,
   lowAbsolute: PropTypes.number,
@@ -130,7 +131,6 @@ NumericBox.propTypes = {
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,
-  formFieldPath: PropTypes.string.isRequired,
 };
 
 ComponentStore.registerComponent('numeric', NumericBox);

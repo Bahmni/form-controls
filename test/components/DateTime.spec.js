@@ -22,7 +22,8 @@ describe('DateTime', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
-        validations={[]} />
+        validations={[]}
+      />
     );
     expect(wrapper).to.have.exactly(2).descendants('input');
     expect(wrapper.find('input').at(0).props().type).to.eql('date');

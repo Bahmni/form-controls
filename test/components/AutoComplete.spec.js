@@ -51,7 +51,7 @@ describe('AutoComplete', () => {
 
   context('when component is asynchronous', () => {
     it('should render asynchronous AutoComplete', () => {
-      const wrapper = mount(<AutoComplete formFieldPath="test1.1/1-0"/>);
+      const wrapper = mount(<AutoComplete formFieldPath="test1.1/1-0" />);
       expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
       expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
       expect(wrapper.find('Select').props().minimumInput).to.be.eql(2);
@@ -84,7 +84,13 @@ describe('AutoComplete', () => {
 
   context('when component is not asynchronous', () => {
     it('should render AutoComplete', () => {
-      const wrapper = mount(<AutoComplete asynchronous={false} formFieldPath="test1.1/1-0" options={options} />);
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          formFieldPath="test1.1/1-0"
+          options={options}
+        />
+      );
       expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
       expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
       expect(wrapper.find('Select').props().minimumInput).to.be.eql(2);
@@ -153,8 +159,8 @@ describe('AutoComplete', () => {
       const wrapper = shallow(
         <AutoComplete
           asynchronous={false}
-          formFieldPath="test1.1/1-0"
           disabled
+          formFieldPath="test1.1/1-0"
           options={options}
           value={options[0]}
         />);

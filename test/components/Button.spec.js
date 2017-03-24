@@ -63,7 +63,7 @@ describe('Button Component', () => {
         formFieldPath="test1.1/1-1"
         onValueChange={valueChangeSpy}
         options={options}
-        validate={true}
+        validate
         validations={[constants.validations.mandatory]}
       />
     );

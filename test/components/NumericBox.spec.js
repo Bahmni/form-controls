@@ -19,10 +19,10 @@ describe('NumericBox', () => {
     const wrapper = shallow(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={[]}
-        formFieldPath="test1.1-0"
       />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
@@ -35,10 +35,10 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false} validations={[]}
         value={'50'}
-        formFieldPath="test1.1-0"
       />
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
@@ -50,11 +50,11 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={[]}
         value={'50'}
-        formFieldPath="test1.1-0"
       />
     );
     wrapper.find('input').simulate('change', { target: { value: '999' } });
@@ -66,10 +66,10 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
-        formFieldPath="test1.1-0"
       />
     );
     const allowDecimalError = new Error({ message: validations[0] });
@@ -83,10 +83,10 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
-        formFieldPath="test1.1-0"
       />
     );
     wrapper.setProps({ validate: true, value: '98.6' });
@@ -98,11 +98,11 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
-        onChange={onChangeSpy}
-        validate={true}
-        validations={validations}
         formFieldPath="test1.1/1-1"
-        value='98.6'
+        onChange={onChangeSpy}
+        validate
+        validations={validations}
+        value="98.6"
       />
     );
 
@@ -114,10 +114,10 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
-        formFieldPath="test1.1/1-0"
       />
     );
     expect(wrapper.find('input')).to.not.have.className('form-builder-error');
@@ -128,10 +128,10 @@ describe('NumericBox', () => {
     const wrapper = mount(
         <NumericBox
           {...numericContext}
+          formFieldPath="test1.1-0"
           onChange={onChangeSpy}
           validate={false}
           validations={validations}
-          formFieldPath="test1.1-0"
         />
     );
     const allowRangeWarning = new Error({
@@ -148,11 +148,11 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         {...numericContext}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
         value={'21'}
-        formFieldPath="test1.1-0"
       />
     );
     const allowRangeError = new Error({
@@ -167,11 +167,11 @@ describe('NumericBox', () => {
   it('should set the input value when the value of the numeric box is calculated', () => {
     const wrapper = mount(
       <NumericBox
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
         value={'22'}
-        formFieldPath="test1.1-0"
       />
     );
 
@@ -182,11 +182,11 @@ describe('NumericBox', () => {
   it('should not set the input value when the value of the numeric box is not calculated', () => {
     const wrapper = mount(
       <NumericBox
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
         value={'23'}
-        formFieldPath="test1.1-0"
       />
     );
     const instance = wrapper.instance();
@@ -200,11 +200,11 @@ describe('NumericBox', () => {
   it('should not update component when the decimal point is input after a integer', () => {
     const wrapper = mount(
       <NumericBox
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
         value={'22'}
-        formFieldPath="test1.1-0"
       />
     );
     const instance = wrapper.instance();

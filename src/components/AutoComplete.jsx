@@ -37,7 +37,7 @@ export class AutoComplete extends Component {
   }
 
   componentDidMount() {
-    if(this.state.hasErrors) {
+    if (this.state.hasErrors) {
       this.props.onValueChange(this.props.value, this._getErrors(this.props.value));
     }
   }
@@ -50,11 +50,11 @@ export class AutoComplete extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return !isEqual(this.props.value, nextProps.value) || !isEqual(this.state.value, nextState.value) ||
+    return !isEqual(this.props.value, nextProps.value) ||
+      !isEqual(this.state.value, nextState.value) ||
       this.state.hasErrors !== nextState.hasErrors ||
       this.state.options !== nextState.options ||
       this.state.noResultsText !== nextState.noResultsText;
-
   }
 
   componentWillUpdate(nextState) {

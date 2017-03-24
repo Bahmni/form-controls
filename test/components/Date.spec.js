@@ -18,7 +18,12 @@ describe('Date', () => {
 
   it('should render Date', () => {
     const wrapper = shallow(
-      <Date onChange={onChangeSpy} validate={false} validations={[]} formFieldPath="test1.1/1-0"/>
+      <Date
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
     );
     expect(wrapper).to.have.descendants('input');
     expect(wrapper.find('input').props().type).to.eql('date');
@@ -26,14 +31,26 @@ describe('Date', () => {
 
   it('should render Date with default value', () => {
     const wrapper = shallow(
-      <Date onChange={onChangeSpy} validate={false} validations={[]} value={'2016-12-29'} formFieldPath="test1.1/1-0"/>
+      <Date
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+        value={'2016-12-29'}
+      />
     );
     expect(wrapper.find('input').props().defaultValue).to.be.eql('2016-12-29');
   });
 
   it('should get user entered value of the date', () => {
     const wrapper = shallow(
-      <Date onChange={onChangeSpy} validate={false} validations={[]} value={'2016-12-29'} formFieldPath="test1.1/1-0"/>
+      <Date
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+        value={'2016-12-29'}
+      />
     );
     wrapper.find('input').simulate('change', { target: { value: '2016-12-31' } });
 
@@ -42,7 +59,12 @@ describe('Date', () => {
 
   it('should return undefined when value is undefined', () => {
     const wrapper = shallow(
-      <Date onChange={onChangeSpy} validate={false} validations={[]} formFieldPath="test1.1/1-0"/>
+      <Date
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
     );
     wrapper.find('input').simulate('change', { target: { value: undefined } });
 
@@ -51,7 +73,12 @@ describe('Date', () => {
 
   it('should return undefined when value is empty string', () => {
     const wrapper = shallow(
-      <Date formFieldPath="test1.1/1-0" onChange={onChangeSpy} validate={false} validations={[]} />
+      <Date
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
     );
     wrapper.find('input').simulate('change', { target: { value: '' } });
 

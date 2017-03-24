@@ -90,6 +90,7 @@ export class CodedControl extends Component {
 }
 
 CodedControl.propTypes = {
+  formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   properties: PropTypes.object.isRequired,

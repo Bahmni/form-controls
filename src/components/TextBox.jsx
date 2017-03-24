@@ -13,16 +13,16 @@ export class TextBox extends Component {
     this.state = { hasErrors };
   }
 
+  componentDidMount() {
+    if (this.state.hasErrors) {
+      this.props.onChange(this.props.value, this._getErrors(this.props.value));
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate) {
       const errors = this._getErrors(nextProps.value);
       this.setState({ hasErrors: this._hasErrors(errors) });
-    }
-  }
-
-  componentDidMount() {
-    if(this.state.hasErrors) {
-      this.props.onChange(this.props.value, this._getErrors(this.props.value));
     }
   }
 
@@ -77,6 +77,7 @@ export class TextBox extends Component {
 }
 
 TextBox.propTypes = {
+  formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

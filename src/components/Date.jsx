@@ -12,8 +12,8 @@ export class Date extends Component {
     this.state = { hasErrors };
   }
 
-  componentDidMount(){
-    if(this.state.hasErrors) {
+  componentDidMount() {
+    if (this.state.hasErrors) {
       this.props.onChange(this.props.value, this._getErrors(this.props.value));
     }
   }
@@ -28,7 +28,6 @@ export class Date extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     return this.props.value !== nextProps.value ||
       this.state.hasErrors !== nextState.hasErrors;
-
   }
 
   componentDidUpdate() {
