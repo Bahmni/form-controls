@@ -207,6 +207,7 @@ AutoComplete.defaultProps = {
   autoload: false,
   cache: false,
   disabled: false,
+  formFieldPath: '-0',
   labelKey: 'display',
   minimumInput: 2,
   multiSelect: false,
