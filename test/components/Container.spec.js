@@ -1223,11 +1223,11 @@ describe('Container', () => {
         uuid: 'c398a4be-3f10-11e4-adec-0800271c1b75',
       };
       const events = {
-        onClick: `function() {
-                    if (form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
-                      form.set('Chief Complaint Notes', 0, 'enabled', false)
+        onClick: `function(){
+                    if(form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
+                      form.get('Chief Complaint Notes').setEnabled(false);
                     } else {
-                      form.set('Chief Complaint Notes', 0, 'enabled', true)
+                      form.get('Chief Complaint Notes').setEnabled(true);
                     }
                   }`,
       };

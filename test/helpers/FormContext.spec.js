@@ -161,30 +161,30 @@ describe('FormContext', () => {
   it('should get first suitable record when given concept name without position', () => {
     const formContext = new FormContext(recordTree);
 
-    const targetRecord = formContext.get(booleanConceptName);
+    const targetRecordWrapper = formContext.get(booleanConceptName);
 
-    expect(targetRecord.formFieldPath).to.equal(formFieldPathInPosition0);
+    expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal(formFieldPathInPosition0);
   });
 
   it('should get assign suitable record when given concept name with position', () => {
     const formContext = new FormContext(recordTree);
 
-    const targetRecord = formContext.get(booleanConceptName, 1);
+    const targetRecordWrapper = formContext.get(booleanConceptName, 1);
 
-    expect(targetRecord.formFieldPath).to.equal(formFieldPathInPosition1);
+    expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal(formFieldPathInPosition1);
   });
 
   it('should set record disabled when given set api triggered', () => {
     const formContext = new FormContext(recordTree);
 
-    const originalRootTree = formContext.getData();
+    const originalRootTree = formContext.getRecords();
     const originalRecord = originalRootTree.children.get(0);
     expect(originalRecord.formFieldPath).to.equal(formFieldPathInPosition0);
     expect(originalRecord.enabled).to.equal(true);
 
-    formContext.set(booleanConceptName, 0, 'enabled', false);
+    formContext.get(booleanConceptName, 0).setEnabled(false);
 
-    const updatedRootTree = formContext.getData();
+    const updatedRootTree = formContext.getRecords();
     const targetRecord = updatedRootTree.children.get(0);
     expect(targetRecord.formFieldPath).to.equal(formFieldPathInPosition0);
     expect(targetRecord.enabled).to.equal(false);

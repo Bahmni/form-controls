@@ -22,6 +22,10 @@ export const ControlRecord = new Record({
     return this.control && this.control.events;
   },
 
+  getConceptName() {
+    return this.control && this.control.concept.name;
+  },
+
   getValue() {
     const value = this.value.value;
     if (value !== undefined && this.control && this.control.options) {

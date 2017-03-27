@@ -306,13 +306,13 @@ describe('Button Component', () => {
     ];
     const eventTriggerSpy = sinon.spy();
     const events = {
-      onClick: `function() {
-                    if (form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
-                      form.set('Chief Complaint Notes', 0, 'enabled', false)
-                    } else {
-                      form.set('Chief Complaint Notes', 0, 'enabled', true)
-                    }
-                  }`,
+      onClick: `function(){
+                  if(form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
+                    form.get('Chief Complaint Notes').setEnabled(false);
+                  } else {
+                    form.get('Chief Complaint Notes').setEnabled(true);
+                  }
+                }`,
     };
     const wrapper = shallow(
       <Button

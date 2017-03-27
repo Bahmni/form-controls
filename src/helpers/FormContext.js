@@ -1,45 +1,33 @@
-import ControlRecordTreeMgr from './ControlRecordTreeMgr';
+import ControlRecordWrapper from './ControlRecordWrapper';
 
 export default class FormContext {
 
-  constructor(formData) {
-    this.formData = formData;
+  constructor(formRecords) {
+    this.wrapper = new ControlRecordWrapper(formRecords);
+    this.rootRecord = formRecords;
   }
 
-  hasContainConcept(record, conceptName) {
-    const concept = record.control && record.control.concept;
-    return concept && concept.name === conceptName;
-  }
-
-  findRecordsByConceptName(recordTree, conceptName) {
-    let recordArray = [];
-    if (this.hasContainConcept(recordTree, conceptName)) {
-      recordArray.push(recordTree);
+  find(recordTree, conceptName) {
+    let records = [];
+    if (recordTree.getConceptName() === conceptName) {
+      records.push(recordTree);
     }
     if (recordTree.children) {
       recordTree.children.forEach(r => {
-        const filteredArray = this.findRecordsByConceptName(r, conceptName);
-        recordArray = recordArray.concat(filteredArray);
+        const filteredRecords = this.find(r, conceptName);
+        records = records.concat(filteredRecords);
       });
     }
-    return recordArray;
+    return records;
   }
 
   get(conceptName, position = 0) {
-    const recordArray = this.findRecordsByConceptName(this.formData, conceptName);
-    return recordArray[position];
+    const currentRecord = this.find(this.rootRecord, conceptName)[position];
+    return this.wrapper.set(currentRecord);
   }
 
-  set(conceptName, position, key, value) {
-    const currentTree = this.get(conceptName, position);
-    if (currentTree) {
-      const updatedCurrentTree = currentTree.set(key, value);
-      this.formData = ControlRecordTreeMgr.update(this.formData, updatedCurrentTree);
-    }
-  }
-
-  getData() {
-    return this.formData;
+  getRecords() {
+    return this.wrapper.getRecords();
   }
 
 }

@@ -2,8 +2,8 @@ import FormContext from './FormContext';
 
 export default class ScriptRunner {
 
-  constructor(formData) {
-    this.formContext = new FormContext(formData);
+  constructor(formRecords) {
+    this.formContext = new FormContext(formRecords);
   }
 
   execute(eventJs) {
@@ -13,7 +13,7 @@ export default class ScriptRunner {
       /* eslint-disable */
       eval(executiveJs);
     }
-    return form.getData();
+    return form.getRecords();
   }
 
 }
