@@ -34,17 +34,17 @@ export class RowDesigner extends Component {
     const cells = [];
     for (let i = 0; i < columns; ++i) {
       cells.push(
-        <CellDesigner
-          cellData={ get(this.cellData, i, []) }
-          idGenerator={ this.props.idGenerator }
-          key={i}
-          location={{ column: i, row: this.props.rowPosition }}
-          onChange={ this.changeHandler }
-          ref={ this.cellReference }
-          showDeleteButton={ this.props.showDeleteButton }
-          wrapper={ this.props.wrapper }
-          dragAllowed = { this.props.dragAllowed }
-        />);
+                <CellDesigner
+                  cellData={ get(this.cellData, i, []) }
+                  dragAllowed={ this.props.dragAllowed }
+                  idGenerator={ this.props.idGenerator }
+                  key={i}
+                  location={{ column: i, row: this.props.rowPosition }}
+                  onChange={ this.changeHandler }
+                  ref={ this.cellReference }
+                  showDeleteButton={ this.props.showDeleteButton }
+                  wrapper={ this.props.wrapper }
+                />);
     }
     return cells;
   }
@@ -57,17 +57,18 @@ export class RowDesigner extends Component {
 
   render() {
     return (
-        <div className={`form-builder-row row${this.props.rowPosition}`}
-          onChange={ this.changeHandler }
-        >
-          { this.createCells() }
-        </div>
+            <div className={`form-builder-row row${this.props.rowPosition}`}
+              onChange={ this.changeHandler }
+            >
+                { this.createCells() }
+            </div>
     );
   }
 }
 
 RowDesigner.propTypes = {
   columns: PropTypes.number,
+  dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   rowData: PropTypes.array.isRequired,

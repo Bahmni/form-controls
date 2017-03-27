@@ -90,12 +90,12 @@ export class ObsGroupControlDesigner extends Component {
           <div className="obsGroup-controls">
             <Grid
               controls={ metadata.controls }
+              dragAllowed={false}
               idGenerator={this.props.idGenerator}
               isShowDeleteButton={false}
               minRows={0}
               ref={ this.storeGridRef }
               wrapper={this.props.wrapper}
-              dragAllowed={false}
             />
           </div>
         </fieldset>
