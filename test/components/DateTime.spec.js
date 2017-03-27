@@ -18,7 +18,12 @@ describe('DateTime', () => {
 
   it('should render DateTime', () => {
     const wrapper = shallow(
-      <DateTime onChange={onChangeSpy} validate={false} validations={[]} />
+      <DateTime
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
     );
     expect(wrapper).to.have.exactly(2).descendants('input');
     expect(wrapper.find('input').at(0).props().type).to.eql('date');
@@ -28,6 +33,7 @@ describe('DateTime', () => {
   it('should render Datetime with default value', () => {
     const wrapper = shallow(
       <DateTime
+        formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={[]}
@@ -40,7 +46,12 @@ describe('DateTime', () => {
 
   it('should get user entered value of the date time', () => {
     const wrapper = mount(
-      <DateTime onChange={onChangeSpy} validate={false} validations={[]} />
+      <DateTime
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
     );
     const error = new Error({ message: 'Incorrect Date Time' });
     wrapper.find('input').at(0).simulate('change', { target: { value: '2016-12-31' } });
@@ -53,7 +64,12 @@ describe('DateTime', () => {
 
   it('should return undefined when value is empty string', () => {
     const wrapper = shallow(
-      <DateTime onChange={onChangeSpy} validate={false} validations={[]} />
+      <DateTime
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
     );
     wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
     wrapper.find('input').at(1).simulate('change', { target: { value: '' } });
@@ -66,6 +82,7 @@ describe('DateTime', () => {
 
     const wrapper = shallow(
       <DateTime
+        formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
@@ -88,6 +105,7 @@ describe('DateTime', () => {
 
     const wrapper = mount(
       <DateTime
+        formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
@@ -104,6 +122,7 @@ describe('DateTime', () => {
   it('should render DateTime on change of props', () => {
     const wrapper = shallow(
       <DateTime
+        formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={[]}
@@ -113,5 +132,33 @@ describe('DateTime', () => {
     wrapper.setProps({ validate: true, value: '2016-12-31 10:10' });
     expect(wrapper.find('input').at(0).props().defaultValue).to.be.eql('2016-12-31');
     expect(wrapper.find('input').at(1).props().defaultValue).to.be.eql('10:10');
+  });
+
+  it('should check errors after mount if the formFieldPath suffix is not 0', () => {
+    const validations = [constants.validations.mandatory];
+    const wrapper = mount(
+      <DateTime
+        formFieldPath="test1.1/1-1"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+      />
+    );
+
+    expect(wrapper.find('input').at(0)).to.have.className('form-builder-error');
+  });
+
+  it('should not check errors after mount if the formFieldPath suffix is 0', () => {
+    const validations = [constants.validations.mandatory];
+    const wrapper = mount(
+      <DateTime
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+      />
+    );
+
+    expect(wrapper.find('input').at(0)).to.not.have.className('form-builder-error');
   });
 });

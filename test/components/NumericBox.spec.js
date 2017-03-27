@@ -19,6 +19,7 @@ describe('NumericBox', () => {
     const wrapper = shallow(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={[]}
@@ -34,6 +35,7 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false} validations={[]}
         value={'50'}
@@ -48,6 +50,7 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={[]}
@@ -63,6 +66,7 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
@@ -79,6 +83,7 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         concept={concept}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
@@ -88,11 +93,42 @@ describe('NumericBox', () => {
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
+  it('should check errors after mount if the formFieldPath suffix is not 0', () => {
+    const concept = {};
+    const wrapper = mount(
+      <NumericBox
+        concept={concept}
+        formFieldPath="test1.1/1-1"
+        onChange={onChangeSpy}
+        validate
+        validations={validations}
+        value="98.6"
+      />
+    );
+
+    expect(wrapper.find('input')).to.have.className('form-builder-error');
+  });
+
+  it('should not check errors after mount if the formFieldPath suffix is 0', () => {
+    const concept = {};
+    const wrapper = mount(
+      <NumericBox
+        concept={concept}
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+      />
+    );
+    expect(wrapper.find('input')).to.not.have.className('form-builder-error');
+  });
+
   it('should throw warning when the value is not in correct range', () => {
     const numericContext = { hiNormal: 50, lowNormal: 20 };
     const wrapper = mount(
         <NumericBox
           {...numericContext}
+          formFieldPath="test1.1-0"
           onChange={onChangeSpy}
           validate={false}
           validations={validations}
@@ -112,6 +148,7 @@ describe('NumericBox', () => {
     const wrapper = mount(
       <NumericBox
         {...numericContext}
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
@@ -130,6 +167,7 @@ describe('NumericBox', () => {
   it('should set the input value when the value of the numeric box is calculated', () => {
     const wrapper = mount(
       <NumericBox
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
@@ -144,6 +182,7 @@ describe('NumericBox', () => {
   it('should not set the input value when the value of the numeric box is not calculated', () => {
     const wrapper = mount(
       <NumericBox
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
@@ -161,6 +200,7 @@ describe('NumericBox', () => {
   it('should not update component when the decimal point is input after a integer', () => {
     const wrapper = mount(
       <NumericBox
+        formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}

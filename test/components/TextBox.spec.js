@@ -18,7 +18,12 @@ describe('TextBox', () => {
 
   it('should render TextBox', () => {
     const wrapper = mount(
-      <TextBox onChange={onChangeSpy} validate={false} validations={[]} />
+      <TextBox
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
     );
     expect(wrapper).to.have.descendants('textarea');
     expect(wrapper.find('textarea').props().defaultValue).to.eql(undefined);
@@ -26,14 +31,26 @@ describe('TextBox', () => {
 
   it('should render TextBox with default value', () => {
     const wrapper = mount(
-      <TextBox onChange={onChangeSpy} validate={false} validations={[]} value={'defaultText'} />
+      <TextBox
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+        value={'defaultText'}
+      />
     );
     expect(wrapper.find('textarea').props().defaultValue).to.be.eql('defaultText');
   });
 
   it('should get user entered value of the text box', () => {
     const wrapper = mount(
-      <TextBox onChange={onChangeSpy} validate={false} validations={[]} value={'defalutText'} />
+      <TextBox
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+        value={'defalutText'}
+      />
     );
     wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
 
@@ -42,7 +59,12 @@ describe('TextBox', () => {
 
   it('should return undefined when value is empty string', () => {
     const wrapper = mount(
-      <TextBox onChange={onChangeSpy} validate={false} validations={[]} />
+      <TextBox
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
     );
     wrapper.find('textarea').simulate('change', { target: { value: '  ' } });
 
@@ -54,6 +76,7 @@ describe('TextBox', () => {
 
     const wrapper = mount(
       <TextBox
+        formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
@@ -71,6 +94,7 @@ describe('TextBox', () => {
 
     const wrapper = mount(
       <TextBox
+        formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={validations}
@@ -86,6 +110,7 @@ describe('TextBox', () => {
   it('should render TextBox on change of props', () => {
     const wrapper = mount(
       <TextBox
+        formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
         validations={[]}
@@ -94,5 +119,33 @@ describe('TextBox', () => {
     );
     wrapper.setProps({ value: 'someText' });
     expect(wrapper.find('textarea').props().defaultValue).to.be.eql('someText');
+  });
+
+  it('should check errors after mount if the formFieldPath suffix is not 0', () => {
+    const validations = [constants.validations.mandatory];
+    const wrapper = mount(
+      <TextBox
+        formFieldPath="test1.1/1-1"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+      />
+    );
+
+    expect(wrapper.find('textarea')).to.have.className('form-builder-error');
+  });
+
+  it('should not check errors after mount if the formFieldPath suffix is 0', () => {
+    const validations = [constants.validations.mandatory];
+    const wrapper = mount(
+      <TextBox
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={validations}
+      />
+    );
+
+    expect(wrapper.find('textarea')).to.not.have.className('form-builder-error');
   });
 });

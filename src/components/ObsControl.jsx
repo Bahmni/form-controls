@@ -38,7 +38,7 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayObsControl(registeredComponent) {
-    const { enabled, metadata, metadata: { concept }, validate } = this.props;
+    const { enabled, metadata, metadata: { concept }, validate, formFieldPath } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
@@ -48,6 +48,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       onChange: this.onChange,
       onEventTrigger: this.onEventTrigger,
       validate,
+      formFieldPath,
       validations,
       value: this.props.value.value,
       ...this._numericContext(metadata),

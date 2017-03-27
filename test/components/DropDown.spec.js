@@ -18,7 +18,7 @@ describe('DropDown', () => {
 
 
   it('should render DropDown', () => {
-    const wrapper = mount(<DropDown options={options} />);
+    const wrapper = mount(<DropDown formFieldPath="test1.1/1-0" options={options} />);
     expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
     expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
     expect(wrapper.find('Select').props().options).to.be.eql(options);
@@ -27,6 +27,7 @@ describe('DropDown', () => {
   it('should render DropDown with default value', () => {
     const wrapper = mount(
       <DropDown
+        formFieldPath="test1.1/1-0"
         options={options}
         value={options[0]}
       />);
@@ -38,6 +39,7 @@ describe('DropDown', () => {
     const onSelectSpy = sinon.spy();
     const wrapper = mount(
       <DropDown
+        formFieldPath="test1.1/1-0"
         onValueChange={onSelectSpy}
         options={options}
       />);
@@ -51,6 +53,7 @@ describe('DropDown', () => {
     const onValueChange = sinon.spy();
     const wrapper = mount(
       <DropDown
+        formFieldPath="test1.1/1-0"
         onValueChange={onValueChange}
         options={options}
       />);
@@ -62,6 +65,7 @@ describe('DropDown', () => {
   it('should change value on change of props', () => {
     const wrapper = mount(
       <DropDown
+        formFieldPath="test1.1/1-0"
         options={options}
         value={options[0]}
       />);
@@ -73,6 +77,7 @@ describe('DropDown', () => {
     const wrapper = mount(
       <DropDown
         disabled
+        formFieldPath="test1.1/1-0"
         options={options}
         value={options[0]}
       />);
@@ -84,6 +89,7 @@ describe('DropDown', () => {
     const validations = [constants.validations.mandatory];
     const wrapper = mount(
       <DropDown
+        formFieldPath="test1.1/1-0"
         onValueChange={onValueChange}
         options={options}
         validations={validations}

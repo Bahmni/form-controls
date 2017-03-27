@@ -574,8 +574,8 @@ describe('SectionMapper', () => {
       expect(data[1].value).to.equal(2);
     });
 
-    it('should return no value when call getValue', () => {
-      expect(mapper.getValue()).to.eql(undefined);
+    it('should return null object when call getValue', () => {
+      expect(mapper.getValue()).to.eql({});
     });
 
     it('should get observations for children records', () => {

@@ -18,6 +18,11 @@ describe('Validator', () => {
       expect(errors[0]).to.deep.eql(mandatoryValidationError);
     });
 
+    it('should get mandatory validation error when value is null', () => {
+      const errors = Validator.getErrors({ validations, value: null });
+      expect(errors[0]).to.deep.eql(mandatoryValidationError);
+    });
+
     it('should get mandatory validation error when value is empty', () => {
       const errors = Validator.getErrors({ validations, value: '' });
       expect(errors[0]).to.deep.eql(mandatoryValidationError);

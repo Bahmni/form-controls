@@ -10,7 +10,15 @@ export class DateTime extends Component {
     super(props);
     this.dateValue = props.value ? props.value.split(' ')[0] : '';
     this.timeValue = props.value ? props.value.split(' ')[1] : '';
-    this.state = { hasErrors: false };
+    const errors = this._getAllErrors();
+    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
+    this.state = { hasErrors };
+  }
+
+  componentDidMount() {
+    if (this.state.hasErrors) {
+      this.props.onChange(this.props.value, this._getAllErrors());
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,6 +65,10 @@ export class DateTime extends Component {
 
   _hasErrors(errors) {
     return !isEmpty(errors);
+  }
+
+  _isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
   }
 
   _getAllErrors() {
@@ -107,6 +119,7 @@ export class DateTime extends Component {
 }
 
 DateTime.propTypes = {
+  formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
