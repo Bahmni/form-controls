@@ -19,7 +19,7 @@ export const ControlRecord = new Record({
   },
 
   getEventScripts() {
-    return this.control ? this.control.events : {};
+    return this.control && this.control.events;
   },
 
   getValue() {

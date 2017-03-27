@@ -27,7 +27,7 @@ export class Container extends addMoreDecorator(Component) {
 
   onEventTrigger(sender, eventName) {
     const eventScripts = ControlRecordTreeMgr.find(this.state.data, sender).getEventScripts();
-    const script = eventScripts[eventName];
+    const script = eventScripts && eventScripts[eventName];
     if (script) {
       const updatedTree = new ScriptRunner(this.state.data).execute(script);
       this.setState({
