@@ -391,6 +391,83 @@ describe('Container', () => {
       expect(wrapper.state().data.children.get(1).active).to.equal(false);
     });
 
+    it('should return observation even when given records with errors', () => {
+      const concept = {
+        answers: [],
+        datatype: 'Numeric',
+        description: [],
+        name: 'HEIGHT',
+        properties: {
+          allowDecimal: false,
+        },
+        uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      };
+      const heightMetadata = {
+        controls: [
+          {
+            concept,
+            hiAbsolute: null,
+            hiNormal: null,
+            id: '1',
+            label: {
+              type: 'label',
+              value: 'HEIGHT',
+            },
+            lowAbsolute: null,
+            lowNormal: null,
+            properties: {
+              addMore: false,
+              hideLabel: false,
+              location: {
+                column: 0,
+                row: 0,
+              },
+              mandatory: false,
+              notes: false,
+            },
+            type: 'obsControl',
+            units: null,
+          },
+        ],
+        id: 284,
+        name: '3383',
+        uuid: 'c60ea8ad-17ef-4968-9733-82b846513d78',
+        version: '3',
+      };
+      const obsFormFieldPath = '3383.3/1-0';
+      const Errors = new Record({
+        type: 'error',
+        message: 'allowDecimal',
+      });
+      const obsRecord = new ControlRecord({
+        control: concept,
+        formFieldPath: obsFormFieldPath,
+        value: { value: '11.1' },
+        errors: [new Errors()],
+        dataSource: {
+          concept,
+          formFieldPath: obsFormFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+        },
+      });
+      const rootRecord = new ControlRecord({ children: List.of(obsRecord) });
+      const wrapper = mount(
+        <Container
+          collapse
+          metadata={heightMetadata}
+          observations={[]}
+          validate={false}
+        />
+      );
+      wrapper.setState({ data: rootRecord });
+
+      const result = wrapper.instance().getValue();
+
+      expect(result.errors).is.not.equal(undefined);
+      expect(result.observations).is.not.equal(undefined);
+    });
+
     it('should add one obsGroup when onControlAdd is triggered with obsGroup in container', () => {
       const concept = {
         datatype: 'N/A',

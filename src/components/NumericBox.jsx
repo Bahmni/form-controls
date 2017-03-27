@@ -12,11 +12,16 @@ export class NumericBox extends Component {
     this.defaultValidations = [constants.validations.allowRange, constants.validations.minMaxRange];
     const errors = this._getErrors(props.value) || [];
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
-    this.state = { hasErrors: false, hasWarnings };
+    const hasErrors = this._isCreateByAddMore() ?
+      this._hasErrors(errors, constants.errorTypes.error) : false;
+    this.state = { hasErrors, hasWarnings };
   }
 
   componentDidMount() {
     this.input.value = this.props.value;
+    if (this.state.hasErrors) {
+      this.props.onChange(this.props.value, this._getErrors(this.props.value));
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -29,11 +34,12 @@ export class NumericBox extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.value !== nextProps.value ||
-      this.state.hasErrors !== nextState.hasErrors) {
-      return true;
+    let valueToString;
+    if (this.props.value) {
+      valueToString = this.props.value.toString();
     }
-    return false;
+    return valueToString !== nextProps.value ||
+      this.state.hasErrors !== nextState.hasErrors;
   }
 
   componentDidUpdate() {
@@ -41,6 +47,12 @@ export class NumericBox extends Component {
     if (this._hasErrors(errors, constants.errorTypes.error)) {
       this.props.onChange(this.props.value, errors);
     }
+    if (this.input.value !== this.props.value) {
+      this.updateInputByPropsValue();
+    }
+  }
+
+  updateInputByPropsValue() {
     this.input.value = this.props.value;
   }
 
@@ -52,6 +64,10 @@ export class NumericBox extends Component {
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
     this.setState({ hasErrors, hasWarnings });
     this.props.onChange(value, errors);
+  }
+
+  _isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
   }
 
   _hasErrors(errors, errorType) {
@@ -106,6 +122,7 @@ export class NumericBox extends Component {
 }
 
 NumericBox.propTypes = {
+  formFieldPath: PropTypes.string.isRequired,
   hiAbsolute: PropTypes.number,
   hiNormal: PropTypes.number,
   lowAbsolute: PropTypes.number,

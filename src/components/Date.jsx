@@ -7,7 +7,15 @@ import isEmpty from 'lodash/isEmpty';
 export class Date extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasErrors: false };
+    const errors = this._getErrors(props.value) || [];
+    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
+    this.state = { hasErrors };
+  }
+
+  componentDidMount() {
+    if (this.state.hasErrors) {
+      this.props.onChange(this.props.value, this._getErrors(this.props.value));
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -18,11 +26,8 @@ export class Date extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.value !== nextProps.value ||
-      this.state.hasErrors !== nextState.hasErrors) {
-      return true;
-    }
-    return false;
+    return this.props.value !== nextProps.value ||
+      this.state.hasErrors !== nextState.hasErrors;
   }
 
   componentDidUpdate() {
@@ -39,6 +44,10 @@ export class Date extends Component {
     const errors = this._getErrors(value);
     this.setState({ hasErrors: this._hasErrors(errors) });
     this.props.onChange(value, errors);
+  }
+
+  _isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
   }
 
   _hasErrors(errors) {
@@ -64,6 +73,7 @@ export class Date extends Component {
 }
 
 Date.propTypes = {
+  formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

@@ -15,7 +15,7 @@
       .label-wrap {
         float: left;
         width: 230px;
-        padding-right: 15px;
+        padding-right: 30px;
         font-size: 12px;
         margin-top: 5px;
         text-align: right;
@@ -26,7 +26,8 @@
         .form-builder-asterisk {
           position: absolute;
           color: $red;
-          top: auto;
+          top: 0;
+          right: 20px;
         }
       }
       input {
@@ -119,10 +120,16 @@
         box-sizing: border-box;
         resize: vertical;
         margin:0 10px 5px 0;
+        &.form-builder-error {
+          outline: 2px solid $error;
+          background: $errorBg;
+        }
       }
       .form-builder-tooltip-wrap {
         display: inline-block;
-        padding-left: 10px;
+        position: absolute;
+        top: 0;
+        right: 2px;
         .form-builder-tooltip-trigger {
           cursor: pointer;
           display: inline-block;
@@ -234,6 +241,11 @@
       box-sizing: border-box;
       border-radius: 5px;
       position: relative;
+      > .form-builder-clone {
+        position: absolute;
+        right: 20px;
+        top: -7px;
+      }
     }
   }
 }
@@ -252,4 +264,8 @@
 
 .closing-group-controls {
   display: none;
+}
+.concept-set-group .form-builder-row .form-builder-column .form-builder-fieldset > .form-builder-clone {
+  right: 10px;
+  top: -14px;
 }
