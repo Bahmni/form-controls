@@ -8,9 +8,11 @@ chai.use(chaiEnzyme());
 describe('DropTarget', () => {
   let eventData;
   const testContext = { type: 'testType', data: { id: '123' } };
+
   beforeEach(() => {
     eventData = {
-      stopPropagation() {},
+      stopPropagation() {
+      },
       preventDefault: () => {
       },
       dataTransfer: {
@@ -55,7 +57,6 @@ describe('DropTarget', () => {
     dropTarget.processMove.restore();
   });
 
-
   it('should not move if drop did not happen successfully', () => {
     const dropTarget = new DropTarget();
     sinon.spy(dropTarget, 'processMove');
@@ -78,7 +79,6 @@ describe('DropTarget', () => {
     dropTarget.processDragEnter.restore();
   });
 
-
   it('should handle dragleave event with processDragLeave', () => {
     const dropTarget = new DropTarget();
     sinon.spy(dropTarget, 'processDragLeave');
@@ -90,3 +90,4 @@ describe('DropTarget', () => {
     dropTarget.processDragLeave.restore();
   });
 });
+

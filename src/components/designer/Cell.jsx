@@ -8,7 +8,7 @@ import isEqual from 'lodash/isEqual';
 import ComponentStore from 'src/helpers/componentStore';
 
 const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
-const defaultCellControl = React.createElement(() => <div className="cell" ></div>);
+const defaultCellControl = React.createElement(() => <div className="cell"></div>);
 
 export class CellDesigner extends DropTarget {
   constructor(props) {
@@ -27,6 +27,7 @@ export class CellDesigner extends DropTarget {
   deleteControl() {
     this.setState({ data: [] });
   }
+
   _setActiveClass(active = false) {
     this.className = classNames('form-builder-column', { active });
   }
@@ -49,6 +50,9 @@ export class CellDesigner extends DropTarget {
   }
 
   processDrop(metadata) {
+    if (this.props.dragAllowed === false) {
+      return;
+    }
     const oldLocation = metadata.properties.location;
     const currentLocation = this.props.location;
     CellDesigner.dropLoc = Object.assign({}, this.props.location);
@@ -75,19 +79,19 @@ export class CellDesigner extends DropTarget {
       return defaultCellControl;
     }
     return data.map((metadata, key) =>
-      React.createElement(this.props.wrapper,
-        {
-          key,
-          idGenerator: this.props.idGenerator,
-          metadata,
-          parentRef: this,
-          ref: this.storeChildRef,
-          wrapper: this.props.wrapper,
-          deleteControl: this.deleteControl,
-          showDeleteButton: this.props.showDeleteButton,
-        }
-      )
-    );
+            React.createElement(this.props.wrapper,
+              {
+                key,
+                idGenerator: this.props.idGenerator,
+                metadata,
+                parentRef: this,
+                ref: this.storeChildRef,
+                wrapper: this.props.wrapper,
+                deleteControl: this.deleteControl,
+                showDeleteButton: this.props.showDeleteButton,
+              }
+            )
+        );
   }
 
   changeHandler(cellLocation) {
@@ -108,15 +112,15 @@ export class CellDesigner extends DropTarget {
 
   render() {
     return (
-      <div
-        className={ this.className }
-        onDragEnter={ this.onDragEnter }
-        onDragLeave={ this.onDragLeave }
-        onDragOver={ this.onDragOver }
-        onDrop={ this.onDrop }
-      >
-        { this.getComponents() }
-      </div>
+            <div
+              className={ this.className }
+              onDragEnter={ this.onDragEnter }
+              onDragLeave={ this.onDragLeave }
+              onDragOver={ this.onDragOver }
+              onDrop={ this.onDrop }
+            >
+                { this.getComponents() }
+            </div>
     );
   }
 }
@@ -128,6 +132,7 @@ CellDesigner.dropLoc = {
 
 CellDesigner.propTypes = {
   cellData: PropTypes.array.isRequired,
+  dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
   location: PropTypes.shape({
     column: PropTypes.number,

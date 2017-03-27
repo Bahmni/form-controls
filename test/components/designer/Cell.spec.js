@@ -37,14 +37,15 @@ describe('Cell', () => {
   it('should be a drop target', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
-      <CellDesigner
-        cellData={[]}
-        idGenerator={idGenerator}
-        location={location}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[]}
+              idGenerator={idGenerator}
+              location={location}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
 
     const cell = cellDesigner.find('.form-builder-column');
     expect(cell).to.have.prop('onDrop');
@@ -58,14 +59,15 @@ describe('Cell', () => {
   it('should set data to null when deleteControl called', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
-      <CellDesigner
-        cellData={[]}
-        idGenerator={idGenerator}
-        location={location}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[]}
+              idGenerator={idGenerator}
+              location={location}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
 
     cellDesigner.instance().deleteControl();
 
@@ -75,14 +77,15 @@ describe('Cell', () => {
   it('should call appropriate processDrop when a component is dropped', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
-      <CellDesigner
-        cellData={[]}
-        idGenerator={idGenerator}
-        location={location}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[]}
+              idGenerator={idGenerator}
+              location={location}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
 
     const cell = cellDesigner.find('.form-builder-column');
     const cellDesignerInstance = cellDesigner.instance();
@@ -97,14 +100,15 @@ describe('Cell', () => {
   it('should render the dropped component', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = mount(
-      <CellDesigner
-        cellData={[]}
-        idGenerator={idGenerator}
-        location={location}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[]}
+              idGenerator={idGenerator}
+              location={location}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
 
     const cell = cellDesigner.find('.form-builder-column');
 
@@ -116,23 +120,25 @@ describe('Cell', () => {
   it('should remove the dropped component when moved to different cell', () => {
     const idGenerator = new IDGenerator();
     const cell1 = mount(
-      <CellDesigner
-        cellData={[metadata]}
-        idGenerator={idGenerator}
-        location={ { row: 0, location: 0 } }
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[metadata]}
+              idGenerator={idGenerator}
+              location={ { row: 0, location: 0 } }
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
     const cell2 = mount(
-      <CellDesigner
-        cellData={[]}
-        idGenerator={idGenerator}
-        location={{ row: 0, location: 1 }}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[]}
+              idGenerator={idGenerator}
+              location={{ row: 0, location: 1 }}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
 
     const metadataClone = Object.assign({}, metadata, {
       id: '1234',
@@ -153,14 +159,15 @@ describe('Cell', () => {
   it('should update the components location to that of cells when dropped', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = mount(
-      <CellDesigner
-        cellData={[]}
-        idGenerator={idGenerator}
-        location={{ column: 10, row: 1 }}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[]}
+              idGenerator={idGenerator}
+              location={{ column: 10, row: 1 }}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
     const cell = cellDesigner.find('.form-builder-column');
 
     cell.props().onDrop(eventData);
@@ -182,14 +189,14 @@ describe('Cell', () => {
 
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
-      <CellDesigner
-        cellData={[]}
-        idGenerator={idGenerator}
-        location={location}
-        onChange={onChange.onChange}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[]}
+              idGenerator={idGenerator}
+              location={location}
+              onChange={onChange.onChange}
+              wrapper={ TestComponent }
+            />
+        );
 
     const cell = cellDesigner.find('.form-builder-column');
     cell.props().onDrop(eventData);
@@ -200,14 +207,15 @@ describe('Cell', () => {
   it('should not remove the dropped component when moved to the same cell', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = mount(
-      <CellDesigner
-        cellData={[]}
-        idGenerator={idGenerator}
-        location={location}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[]}
+              idGenerator={idGenerator}
+              location={location}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
     const metadataClone = Object.assign({}, metadata, {
       properties: {
         location: { row: 0, column: 1 },
@@ -225,14 +233,15 @@ describe('Cell', () => {
   it('should pass appropriate props to children', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = mount(
-      <CellDesigner
-        cellData={[metadata]}
-        idGenerator={idGenerator}
-        location={location}
-        onChange={() => {}}
-        wrapper={ TestComponent }
-      />
-    );
+            <CellDesigner
+              cellData={[metadata]}
+              idGenerator={idGenerator}
+              location={location}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
 
     const child = cellDesigner.find('.form-builder-column').children().at(0);
     expect(child.prop('idGenerator')).to.equal(idGenerator); // reference equality
@@ -241,20 +250,36 @@ describe('Cell', () => {
     expect(child.prop('metadata')).to.eql(metadata);
   });
 
-  // it.skip('should remove controls when remove function is called', () => {
-  //   const idGenerator = new IDGenerator();
-  //   const cellDesigner = mount(
-  //     <CellDesigner
-  //       cellData={[metadata]}
-  //       idGenerator={idGenerator}
-  //       location={location}
-  //       onChange={() => {}}
-  //       wrapper={ TestComponent }
-  //     />
-  //   );
-  //
-  //   cellDesigner.find('button').simulate('click');
-  //   const instance = cellDesigner.instance();
-  //   expect(instance.state.data.length).to.eql(0);
-  // });
+  it('should fail when try to drag and drop controls to obsGroup', () => {
+    const context =
+      {
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'Label',
+        },
+        properties: {
+          addMore: false,
+          hideLabel: false,
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+      };
+    const idGenerator = new IDGenerator();
+    const wrapper = mount(
+            <CellDesigner
+              cellData={[]}
+              dragAllowed = { false }
+              idGenerator={idGenerator}
+              location={location}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
+    wrapper.instance().processDrop(context);
+
+    expect(wrapper.state('data')).to.eql([]);
+  });
 });
