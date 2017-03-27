@@ -20,6 +20,9 @@ export default class ControlRecordWrapper {
   }
 
   setValue(value) {
+    if (!this.currentRecord) {
+      return;
+    }
     this.currentRecord = this.currentRecord.set('value', {
       value,
       comment: this.currentRecord.comment,
@@ -32,6 +35,9 @@ export default class ControlRecordWrapper {
   }
 
   setEnabled(isEnabled) {
+    if (!this.currentRecord) {
+      return;
+    }
     this.currentRecord = this.currentRecord.set('enabled', isEnabled);
     this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, this.currentRecord);
   }
