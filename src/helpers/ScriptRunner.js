@@ -1,4 +1,4 @@
-import FormContext from "./FormContext";
+import FormContext from './FormContext';
 
 export default class ScriptRunner {
 
@@ -10,9 +10,10 @@ export default class ScriptRunner {
     const form = this.formContext;
     if (eventJs) {
       const executiveJs = `(${eventJs})()`;
+      /* eslint-disable */
       eval(executiveJs);
     }
     return form.getData();
   }
 
-};
+}

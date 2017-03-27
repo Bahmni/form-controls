@@ -470,94 +470,100 @@ describe('Container', () => {
 
     it('should change state when onEventTrigger is triggered', () => {
       const booleanConcept = {
-        "answers": [],
-        "datatype": "Boolean",
-        "description": [],
-        "name": "Tuberculosis, Need of Admission",
-        "properties": {
-          "allowDecimal": null
+        answers: [],
+        datatype: 'Boolean',
+        description: [],
+        name: 'Tuberculosis, Need of Admission',
+        properties: {
+          allowDecimal: null,
         },
-        "uuid": "c5cdd4e5-86e0-400c-9742-d73ffb323fa8"
+        uuid: 'c5cdd4e5-86e0-400c-9742-d73ffb323fa8',
       };
       const textBoxConcept = {
-        "answers": [],
-        "datatype": "Text",
-        "description": [],
-        "name": "Chief Complaint Notes",
-        "properties": {
-          "allowDecimal": null
+        answers: [],
+        datatype: 'Text',
+        description: [],
+        name: 'Chief Complaint Notes',
+        properties: {
+          allowDecimal: null,
         },
-        "uuid": "c398a4be-3f10-11e4-adec-0800271c1b75"
+        uuid: 'c398a4be-3f10-11e4-adec-0800271c1b75',
       };
       const events = {
-        "onClick": "function(){if(form.get('Tuberculosis, Need of Admission').getValue() === 'Yes'){form.set('Chief Complaint Notes', 0, 'enabled', false)}else{form.set('Chief Complaint Notes', 0, 'enabled', true)}}",
+        onClick: `function() {
+                    if (form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
+                      form.set('Chief Complaint Notes', 0, 'enabled', false)
+                    } else {
+                      form.set('Chief Complaint Notes', 0, 'enabled', true)
+                    }
+                  }`,
       };
       const eventMetadata = {
-        "controls": [
+        controls: [
           {
-            "concept": booleanConcept,
-            "events": events,
-            "hiAbsolute": null,
-            "hiNormal": null,
-            "id": "5",
-            "label": {
-              "type": "label",
-              "value": "Tuberculosis, Need of Admission"
+            concept: booleanConcept,
+            events,
+            hiAbsolute: null,
+            hiNormal: null,
+            id: '5',
+            label: {
+              type: 'label',
+              value: 'Tuberculosis, Need of Admission',
             },
-            "lowAbsolute": null,
-            "lowNormal": null,
-            "options": [
+            lowAbsolute: null,
+            lowNormal: null,
+            options: [
               {
-                "name": "Yes",
-                "value": true
+                name: 'Yes',
+                value: true,
               },
               {
-                "name": "No",
-                "value": false
-              }
+                name: 'No',
+                value: false,
+              },
             ],
-            "properties": {
-              "addMore": true,
-              "hideLabel": false,
-              "location": {
-                "column": 0,
-                "row": 0
+            properties: {
+              addMore: true,
+              hideLabel: false,
+              location: {
+                column: 0,
+                row: 0,
               },
-              "mandatory": true,
-              "notes": false
+              mandatory: true,
+              notes: false,
             },
-            "type": "obsControl",
-            "units": null
+            type: 'obsControl',
+            units: null,
           },
           {
-            "concept": textBoxConcept,
-            "hiAbsolute": null,
-            "hiNormal": null,
-            "id": "2",
-            "label": {
-              "type": "label",
-              "value": "Chief Complaint Notes"
+            concept: textBoxConcept,
+            hiAbsolute: null,
+            hiNormal: null,
+            id: '2',
+            label: {
+              type: 'label',
+              value: 'Chief Complaint Notes',
             },
-            "lowAbsolute": null,
-            "lowNormal": null,
-            "properties": {
-              "addMore": false,
-              "hideLabel": false,
-              "location": {
-                "column": 0,
-                "row": 1
+            lowAbsolute: null,
+            lowNormal: null,
+            properties: {
+              addMore: false,
+              hideLabel: false,
+              location: {
+                column: 0,
+                row: 1,
               },
-              "mandatory": false,
-              "notes": false
+              mandatory: false,
+              notes: false,
             },
-            "type": "obsControl",
-            "units": null
-          }
+            type: 'obsControl',
+            units: null,
+          },
         ],
-        "id": 5,
-        "name": "3129",
-        "uuid": "6a3b4de9-5e21-46b4-addb-4ad9518e587b",
-        "version": "4"
+        id: 5,
+        name: '3129',
+        uuid: '6a3b4de9-5e21-46b4-addb-4ad9518e587b',
+        version: '4',
       };
       const wrapper = shallow(
         <Container
@@ -568,7 +574,7 @@ describe('Container', () => {
         />
       );
       const targetFormFieldPath = '3129.4/5-0';
-      wrapper.instance().onValueChanged(targetFormFieldPath, {value: true}, undefined);
+      wrapper.instance().onValueChanged(targetFormFieldPath, { value: true }, undefined);
 
       wrapper.instance().onEventTrigger(targetFormFieldPath, 'onClick');
 

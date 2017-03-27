@@ -26,8 +26,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       this.props.formFieldPath,
       { value, comment: this.props.value.comment },
       errors,
-      onActionDone,
-    );
+      onActionDone);
   }
 
   onCommentChange(comment) {

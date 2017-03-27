@@ -98,5 +98,6 @@ export default class ControlRecordTreeMgr {
       const filteredList = parentTree.children.filter(r => r.formFieldPath === formFieldPath);
       return filteredList.get(0);
     }
+    return null;
   }
 }

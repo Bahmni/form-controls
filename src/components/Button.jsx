@@ -94,8 +94,8 @@ export class Button extends Component {
   displayButtons() {
     return map(this.props.options, (option, index) =>
       <button
-        disabled={!this.props.enabled}
         className={classNames('fl', { active: this._isActive(option) })}
+        disabled={!this.props.enabled}
         key={index}
         onClick={() => this.changeValue(option)}
       >

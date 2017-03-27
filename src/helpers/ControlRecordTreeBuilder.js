@@ -24,10 +24,10 @@ export const ControlRecord = new Record({
 
   getValue() {
     const value = this.value.value;
-    if (value != undefined && this.control && this.control.options) {
-      const opt = this.control.options.filter(opt => opt.value === value);
-      if (opt && opt.length > 0) {
-        return opt[0].name;
+    if (value !== undefined && this.control && this.control.options) {
+      const [concept] = this.control.options.filter(opt => opt.value === value);
+      if (concept) {
+        return concept.name;
       }
     }
     return value;

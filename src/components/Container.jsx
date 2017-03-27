@@ -38,10 +38,10 @@ export class Container extends addMoreDecorator(Component) {
 
   onValueChanged(formFieldPath, value, errors, onActionDone) {
     this.setState((previousState) => ({
-        ...previousState,
-        data: previousState.data.update(formFieldPath, value, errors),
-        collapse: undefined,
-      }), onActionDone);
+      ...previousState,
+      data: previousState.data.update(formFieldPath, value, errors),
+      collapse: undefined,
+    }), onActionDone);
   }
 
   onControlAdd(formFieldPath) {

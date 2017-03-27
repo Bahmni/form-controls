@@ -1,4 +1,4 @@
-import ControlRecordTreeMgr from "./ControlRecordTreeMgr";
+import ControlRecordTreeMgr from './ControlRecordTreeMgr';
 
 export default class FormContext {
 
@@ -16,14 +16,16 @@ export default class FormContext {
     if (this.hasContainConcept(recordTree, conceptName)) {
       recordArray.push(recordTree);
     }
-    recordTree.children && recordTree.children.forEach(r => {
-      const filteredArray = this.findRecordsByConceptName(r, conceptName);
-      recordArray = recordArray.concat(filteredArray);
-    });
+    if (recordTree.children) {
+      recordTree.children.forEach(r => {
+        const filteredArray = this.findRecordsByConceptName(r, conceptName);
+        recordArray = recordArray.concat(filteredArray);
+      });
+    }
     return recordArray;
   }
 
-  get(conceptName, position=0) {
+  get(conceptName, position = 0) {
     const recordArray = this.findRecordsByConceptName(this.formData, conceptName);
     return recordArray[position];
   }
