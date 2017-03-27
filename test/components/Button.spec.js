@@ -306,12 +306,18 @@ describe('Button Component', () => {
     ];
     const eventTriggerSpy = sinon.spy();
     const events = {
-      onClick: 'function(){if(form.get("Tuberculosis, Need of Admission").value === "Yes")' +
-      '{form.get("Chief Complaint Notes").set("enable", false)}}',
+      onClick: `function() {
+                    if (form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
+                      form.set('Chief Complaint Notes', 0, 'enabled', false)
+                    } else {
+                      form.set('Chief Complaint Notes', 0, 'enabled', true)
+                    }
+                  }`,
     };
     const wrapper = shallow(
       <Button
         events={events}
+        formFieldPath="test1.1/1-0"
         nameKey={'name'}
         onEventTrigger={eventTriggerSpy}
         onValueChange={(_value, _errors, onActionDone) => (onActionDone())}

@@ -46,8 +46,8 @@ export class BooleanControl extends Component {
 }
 
 BooleanControl.propTypes = {
-  formFieldPath: PropTypes.string,
   enabled: PropTypes.bool,
+  formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   onEventTrigger: PropTypes.func,
   options: PropTypes.array.isRequired,
