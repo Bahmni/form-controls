@@ -8,6 +8,7 @@ chai.use(chaiEnzyme());
 describe('DropTarget', () => {
     let eventData;
     const testContext = {type: 'testType', data: {id: '123'}};
+
     beforeEach(() => {
         eventData = {
             stopPropagation() {
@@ -88,11 +89,6 @@ describe('DropTarget', () => {
         sinon.assert.calledWith(dropTarget.processDragLeave, eventData);
         dropTarget.processDragLeave.restore();
     });
-
-    // it('should fail when try to drag and drop controls to obsGroup', () => {
-    //     const dropTarget = new DropTarget();
-    //     sinon.spy(dropTarget, 'processDrop');
-    //
-    //     dropTarget.onDrop(eventData);
-    // });
 });
+
+
