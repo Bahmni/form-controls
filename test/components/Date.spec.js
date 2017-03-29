@@ -165,4 +165,32 @@ describe('Date', () => {
     wrapper.setProps({ value: '2016-12-31' });
     expect(wrapper.find('input').props().defaultValue).to.be.eql('2016-12-31');
   });
+
+  it('should show as disabled when date is set to be disabled', () => {
+    const metadata = {value: 'A date control', type: 'date'};
+
+    const wrapper = shallow(
+      <Date
+        formFieldPath="test1.1/1-0"
+        metadata={metadata}
+        enabled={false}
+      />
+    );
+
+    expect(wrapper.find('input').props().disabled).to.eql(true);
+  });
+
+  it('should show as enabled when date is set to be enabled', () => {
+    const metadata = {value: 'A date control', type: 'date'};
+
+    const wrapper = shallow(
+      <Date
+        formFieldPath="test1.1/1-0"
+        metadata={metadata}
+        enabled={true}
+      />
+    );
+
+    expect(wrapper.find('input').props().disabled).to.eql(false);
+  });
 });
