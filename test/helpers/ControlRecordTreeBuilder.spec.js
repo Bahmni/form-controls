@@ -350,4 +350,17 @@ describe('ControlRecordTreeBuilder', () => {
     expect(obsRecordTree.children.get(0).control.concept.name).to.equal(booleanObsConcept.name);
     expect(obsRecordTree.children.get(0).control.events).to.equal(events);
   });
+
+  it('should get concept name from the record tree when the root has concept', () => {
+    const conceptName = 'Smoking History';
+    const concept = {
+      name: conceptName,
+    };
+    const obsRecordTree = new ControlRecord({
+      control: {
+        concept: concept,
+      },
+    });
+    expect(obsRecordTree.getConceptName()).to.equal(conceptName);
+  });
 });
