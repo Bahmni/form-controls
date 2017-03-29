@@ -14,10 +14,18 @@ describe('Label', () => {
     expect(wrapper.find('label').text()).to.eql('History Notes');
   });
 
-  it.only('should render the value of label as grey when the label is belong to disable class', () => {
+  it('should set label to class disable when the props of enabled is false', () => {
     const metadata = {value: 'History Notes', type: 'label'};
 
     const wrapper = shallow(<Label metadata={metadata} enabled={false}/>);
-    expect(wrapper.find('.disable').text()).to.eql('History Notes')
+    expect(wrapper.find('.disable')).to.have.length(1);
+    expect(wrapper.find('.disable').text()).to.eql('History Notes');
+  });
+
+  it('should not set label to class disable when the props of enabled is true', () => {
+    const metadata = {value: 'History Notes', type: 'label'};
+
+    const wrapper = shallow(<Label metadata={metadata} enabled={true}/>);
+    expect(wrapper.find('.disable')).to.have.length(0);
   });
 });
