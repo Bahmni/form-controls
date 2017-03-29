@@ -363,4 +363,14 @@ describe('ControlRecordTreeBuilder', () => {
     });
     expect(obsRecordTree.getConceptName()).to.equal(conceptName);
   });
+
+  it('should get label name from the record tree when the root has label', () => {
+    const labelName = 'something';
+    const obsRecordTree = new ControlRecord({
+      control: {
+        value: labelName,
+      },
+    });
+    expect(obsRecordTree.getLabelName()).to.equal(labelName);
+  });
 });
