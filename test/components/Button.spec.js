@@ -333,4 +333,24 @@ describe('Button Component', () => {
 
     sinon.assert.calledOnce(eventTriggerSpy.withArgs('onClick'));
   });
+
+  it('should update component when the value of enable is changed', () => {
+    const wrapper = mount(
+      <Button
+        enabled
+        formFieldPath="test1.1-0"
+        onChange={() => {}}
+        onValueChange={() => {}}
+        options={[]}
+        validate={false}
+        validations={[]}
+      />
+    );
+    const instance = wrapper.instance();
+    const componentUpdatedSpy = sinon.spy(instance, 'componentDidUpdate');
+
+    wrapper.setProps({ enabled: false });
+
+    sinon.assert.calledOnce(componentUpdatedSpy);
+  });
 });
