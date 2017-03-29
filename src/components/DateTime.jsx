@@ -31,7 +31,8 @@ export class DateTime extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.props.value !== nextProps.value ||
+    if (this.props.enabled !== nextProps.enabled ||
+        this.props.value !== nextProps.value ||
       this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
@@ -104,12 +105,14 @@ export class DateTime extends Component {
         <input
           className={classNames({ 'form-builder-error': this.state.hasErrors })}
           defaultValue={this.dateValue}
+          disabled={!this.props.enabled}
           onChange={(e) => this.handleDateChange(e)}
           type="date"
         />
         <input
           className={classNames({ 'form-builder-error': this.state.hasErrors })}
           defaultValue={this.timeValue}
+          disabled={!this.props.enabled}
           onChange={(e) => this.handleTimeChange(e)}
           type="time"
         />

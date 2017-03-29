@@ -30,6 +30,15 @@ export class Date extends Component {
       this.state.hasErrors !== nextState.hasErrors;
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+      if (this.props.enabled !== nextProps.enabled ||
+          this.props.value !== nextProps.value ||
+          this.state.hasErrors !== nextState.hasErrors) {
+          return true;
+      }
+      return false;
+  }
+
   componentDidUpdate() {
     const errors = this._getErrors(this.props.value);
     if (this._hasErrors(errors)) {
@@ -65,6 +74,7 @@ export class Date extends Component {
       <input
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
         defaultValue={this.props.value}
+        disabled={!this.props.enabled}
         onChange={(e) => this.handleChange(e)}
         type="date"
       />
@@ -73,6 +83,7 @@ export class Date extends Component {
 }
 
 Date.propTypes = {
+  enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
