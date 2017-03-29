@@ -21,9 +21,7 @@ export const ControlRecord = new Record({
   getEventScripts() {
     return this.control && this.control.events;
   },
-  isControl(){
-    return this.control;
-  },
+
   getConceptName() {
     return this.control && this.control.concept && this.control.concept.name;
   },

@@ -7,16 +7,14 @@ export default class FormContext {
     this.rootRecord = formRecords;
   }
 
+  getName(recordTree) {
+    return recordTree.getConceptName() || recordTree.getLabelName();
+  }
+
   find(recordTree, name) {
     let records = [];
-    if (recordTree.isControl()) {
-      let conceptName = recordTree.getConceptName();
-      if (!conceptName) {
-          conceptName = recordTree.getLabelName();
-      }
-      if (conceptName === name) {
-          records.push(recordTree);
-      }
+    if (this.getName(recordTree) === name) {
+      records.push(recordTree);
     }
     if (recordTree.children) {
       recordTree.children.forEach(r => {
