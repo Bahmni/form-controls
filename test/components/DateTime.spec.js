@@ -161,4 +161,34 @@ describe('DateTime', () => {
 
     expect(wrapper.find('input').at(0)).to.not.have.className('form-builder-error');
   });
+
+  it('should show as disabled when datetime is set to be disabled', () => {
+    const wrapper = shallow(
+      <DateTime
+        enabled={false}
+        formFieldPath="test1.1/1-0"
+        onChange={() => {}}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    expect(wrapper.find('input').at(0).props().disabled).to.eql(true);
+    expect(wrapper.find('input').at(1).props().disabled).to.eql(true);
+  });
+
+  it('should show as enabled when datetime is set to be enabled', () => {
+    const wrapper = shallow(
+      <DateTime
+        enabled={true}
+        formFieldPath="test1.1/1-0"
+        onChange={() => {}}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    expect(wrapper.find('input').at(0).props().disabled).to.eql(false);
+    expect(wrapper.find('input').at(1).props().disabled).to.eql(false);
+  });
 });

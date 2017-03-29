@@ -167,13 +167,13 @@ describe('Date', () => {
   });
 
   it('should show as disabled when date is set to be disabled', () => {
-    const metadata = {value: 'A date control', type: 'date'};
-
     const wrapper = shallow(
       <Date
-        formFieldPath="test1.1/1-0"
-        metadata={metadata}
         enabled={false}
+        formFieldPath="test1.1/1-0"
+        onChange={() => {}}
+        validate={false}
+        validations={[]}
       />
     );
 
@@ -181,13 +181,13 @@ describe('Date', () => {
   });
 
   it('should show as enabled when date is set to be enabled', () => {
-    const metadata = {value: 'A date control', type: 'date'};
-
     const wrapper = shallow(
       <Date
-        formFieldPath="test1.1/1-0"
-        metadata={metadata}
         enabled={true}
+        formFieldPath="test1.1/1-0"
+        onChange={() => {}}
+        validate={false}
+        validations={[]}
       />
     );
 
