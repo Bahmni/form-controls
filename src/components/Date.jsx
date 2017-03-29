@@ -31,12 +31,12 @@ export class Date extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-      if (this.props.enabled !== nextProps.enabled ||
+    if (this.props.enabled !== nextProps.enabled ||
           this.props.value !== nextProps.value ||
           this.state.hasErrors !== nextState.hasErrors) {
-          return true;
-      }
-      return false;
+      return true;
+    }
+    return false;
   }
 
   componentDidUpdate() {

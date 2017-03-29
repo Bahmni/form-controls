@@ -122,6 +122,7 @@ export class DateTime extends Component {
 }
 
 DateTime.propTypes = {
+  enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,

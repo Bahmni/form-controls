@@ -39,7 +39,8 @@ export class NumericBox extends Component {
       valueToString = this.props.value.toString();
     }
     return valueToString !== nextProps.value ||
-      this.state.hasErrors !== nextState.hasErrors;
+      this.state.hasErrors !== nextState.hasErrors ||
+      this.props.enabled !== nextProps.enabled;
   }
 
   componentDidUpdate() {
@@ -93,7 +94,8 @@ export class NumericBox extends Component {
         <div className="fl">
           <input
             className={ classNames({ 'form-builder-error': this.state.hasErrors },
-                { 'form-builder-warning': this.state.hasWarnings }) }
+              { 'form-builder-warning': this.state.hasWarnings }) }
+            disabled={ !this.props.enabled }
             onChange={ (e) => this.handleChange(e) }
             ref={(elem) => {
               this.input = elem;
@@ -110,6 +112,7 @@ export class NumericBox extends Component {
       <div className="fl">
         <input
           className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
+          disabled={ !this.props.enabled }
           onChange={ (e) => this.handleChange(e) }
           ref={(elem) => {
             this.input = elem;
@@ -122,6 +125,7 @@ export class NumericBox extends Component {
 }
 
 NumericBox.propTypes = {
+  enabled: PropTypes.bool,
   formFieldPath: PropTypes.string.isRequired,
   hiAbsolute: PropTypes.number,
   hiNormal: PropTypes.number,

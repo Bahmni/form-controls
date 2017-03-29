@@ -213,4 +213,82 @@ describe('NumericBox', () => {
 
     sinon.assert.notCalled(spy);
   });
+
+  it('should show as disabled when NumericBox is set to be disabled', () => {
+    const wrapper = shallow(
+      <NumericBox
+        enabled={false}
+        formFieldPath="test1.1/1-0"
+        onChange={() => {}}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    expect(wrapper.find('input').props().disabled).to.eql(true);
+  });
+
+  it('should show as enabled when NumericBox is set to be enabled', () => {
+    const wrapper = shallow(
+      <NumericBox
+        enabled
+        formFieldPath="test1.1/1-0"
+        onChange={() => {}}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    expect(wrapper.find('input').props().disabled).to.eql(false);
+  });
+
+  it('should show as disabled when NumericBox with range is set to be disabled', () => {
+    const wrapper = shallow(
+      <NumericBox
+        enabled={false}
+        formFieldPath="test1.1/1-0"
+        hiNormal={20}
+        lowNormal={10}
+        onChange={() => {}}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    expect(wrapper.find('input').props().disabled).to.eql(true);
+  });
+
+  it('should show as enable when NumericBox with range is set to be enable', () => {
+    const wrapper = shallow(
+      <NumericBox
+        enabled
+        formFieldPath="test1.1/1-0"
+        hiNormal={20}
+        lowNormal={10}
+        onChange={() => {}}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    expect(wrapper.find('input').props().disabled).to.eql(false);
+  });
+
+  it('should update component when the value of enable is changed', () => {
+    const wrapper = mount(
+      <NumericBox
+        enabled
+        formFieldPath="test1.1-0"
+        onChange={() => {}}
+        validate={false}
+        validations={[]}
+      />
+    );
+    const instance = wrapper.instance();
+    const componentUpdatedSpy = sinon.spy(instance, 'componentDidUpdate');
+
+    wrapper.setProps({ enabled: false });
+
+    sinon.assert.calledOnce(componentUpdatedSpy);
+  });
 });

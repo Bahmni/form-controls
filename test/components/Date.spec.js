@@ -183,7 +183,7 @@ describe('Date', () => {
   it('should show as enabled when date is set to be enabled', () => {
     const wrapper = shallow(
       <Date
-        enabled={true}
+        enabled
         formFieldPath="test1.1/1-0"
         onChange={() => {}}
         validate={false}
