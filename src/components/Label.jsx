@@ -7,11 +7,12 @@ import classNames from 'classnames';
 
 
 export class Label extends Component {
-    constructor(props) {
-      super(props);
-    }
-    render() {
-      return <label className={classNames({ 'disable': !this.props.enabled })}>{this.props.metadata.value}</label>;
+  render() {
+    return (<label className={
+      classNames({ disable: !this.props.enabled })
+    }>
+      {this.props.metadata.value}
+    </label>);
   }
 }
 
@@ -24,7 +25,7 @@ Label.propTypes = {
 };
 
 Label.defaultProps = {
-    enabled: true,
+  enabled: true,
 };
 
 ComponentStore.registerComponent('label', Label);

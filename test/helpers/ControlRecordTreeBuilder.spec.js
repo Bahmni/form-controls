@@ -358,7 +358,7 @@ describe('ControlRecordTreeBuilder', () => {
     };
     const obsRecordTree = new ControlRecord({
       control: {
-        concept: concept,
+        concept,
       },
     });
     expect(obsRecordTree.getConceptName()).to.equal(conceptName);

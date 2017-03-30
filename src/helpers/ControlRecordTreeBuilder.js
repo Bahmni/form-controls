@@ -25,7 +25,8 @@ export const ControlRecord = new Record({
   getConceptName() {
     return this.control && this.control.concept && this.control.concept.name;
   },
-  getLabelName(){
+
+  getLabelName() {
     return this.control && this.control.value;
   },
 
