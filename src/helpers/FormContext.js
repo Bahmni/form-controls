@@ -27,6 +27,11 @@ export default class FormContext {
 
   get(name, index = 0) {
     const currentRecord = this.find(this.rootRecord, name)[index];
+    if (!currentRecord) {
+      const message = `name[${name}] and position[${index}]`;
+      /* eslint-disable */
+      console.warn(`[FormEventHandler] Control with ${message} is not exist`);
+    }
     return this.wrapper.set(currentRecord);
   }
 
