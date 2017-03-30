@@ -23,7 +23,11 @@ export const ControlRecord = new Record({
   },
 
   getConceptName() {
-    return this.control && this.control.concept.name;
+    return this.control && this.control.concept && this.control.concept.name;
+  },
+
+  getLabelName() {
+    return this.control && this.control.value;
   },
 
   getValue() {

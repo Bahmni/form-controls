@@ -350,4 +350,47 @@ describe('ControlRecordTreeBuilder', () => {
     expect(obsRecordTree.children.get(0).control.concept.name).to.equal(booleanObsConcept.name);
     expect(obsRecordTree.children.get(0).control.events).to.equal(events);
   });
+
+  it('should get concept name from the record tree when the root has concept', () => {
+    const conceptName = 'Smoking History';
+    const concept = {
+      name: conceptName,
+    };
+    const obsRecordTree = new ControlRecord({
+      control: {
+        concept,
+      },
+    });
+    expect(obsRecordTree.getConceptName()).to.equal(conceptName);
+  });
+
+  it('should get undefined from the record tree when the root does not have concept', () => {
+    const labelName = 'something';
+    const obsRecordTree = new ControlRecord({
+      control: {
+        value: labelName,
+      },
+    });
+    expect(obsRecordTree.getConceptName()).to.equal(undefined);
+  });
+
+  it('should get undefined for concept name when given root doesn\'t have control', () => {
+    const obsRecordTree = new ControlRecord({});
+    expect(obsRecordTree.getConceptName()).to.equal(undefined);
+  });
+
+  it('should get undefined for label name when given root doesn\'t have control', () => {
+    const obsRecordTree = new ControlRecord({});
+    expect(obsRecordTree.getLabelName()).to.equal(undefined);
+  });
+
+  it('should get label name from the record tree when the root has label', () => {
+    const labelName = 'something';
+    const obsRecordTree = new ControlRecord({
+      control: {
+        value: labelName,
+      },
+    });
+    expect(obsRecordTree.getLabelName()).to.equal(labelName);
+  });
 });

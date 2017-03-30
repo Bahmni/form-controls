@@ -7,22 +7,26 @@ export default class FormContext {
     this.rootRecord = formRecords;
   }
 
-  find(recordTree, conceptName) {
+  getName(recordTree) {
+    return recordTree.getConceptName() || recordTree.getLabelName();
+  }
+
+  find(recordTree, name) {
     let records = [];
-    if (recordTree.getConceptName() === conceptName) {
+    if (this.getName(recordTree) === name) {
       records.push(recordTree);
     }
     if (recordTree.children) {
       recordTree.children.forEach(r => {
-        const filteredRecords = this.find(r, conceptName);
+        const filteredRecords = this.find(r, name);
         records = records.concat(filteredRecords);
       });
     }
     return records;
   }
 
-  get(conceptName, position = 0) {
-    const currentRecord = this.find(this.rootRecord, conceptName)[position];
+  get(name, index = 0) {
+    const currentRecord = this.find(this.rootRecord, name)[index];
     return this.wrapper.set(currentRecord);
   }
 

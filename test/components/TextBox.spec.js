@@ -148,4 +148,32 @@ describe('TextBox', () => {
 
     expect(wrapper.find('textarea')).to.not.have.className('form-builder-error');
   });
+
+  it('should check disabled attribute when enabled prop is false', () => {
+    const wrapper = mount(
+      <TextBox
+        enabled={false}
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    expect(wrapper.find('textarea').props().disabled).to.equal(true);
+  });
+
+  it('should not check disabled attribute when enabled prop is true', () => {
+    const wrapper = mount(
+      <TextBox
+        enabled
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    expect(wrapper.find('textarea').props().disabled).to.equal(false);
+  });
 });

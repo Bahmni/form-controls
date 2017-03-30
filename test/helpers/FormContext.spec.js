@@ -189,4 +189,16 @@ describe('FormContext', () => {
     expect(targetRecord.formFieldPath).to.equal(formFieldPathInPosition0);
     expect(targetRecord.enabled).to.equal(false);
   });
+
+  it('should get label name of the record does not have the concept name ' +
+    'and has value as label name', () => {
+    const labelName = 'something';
+    const obsRecordTree = new ControlRecord({
+      control: {
+        value: labelName,
+      },
+    });
+    const formContext = new FormContext(obsRecordTree);
+    expect(formContext.getName(obsRecordTree)).to.equal(labelName);
+  });
 });
