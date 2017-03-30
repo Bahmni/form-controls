@@ -53,6 +53,13 @@
           outline: 2px solid $error;
           background: $errorBg;
         }
+        &[disabled] {
+          background: #eee;
+          border: #ccc 1px solid;
+          color: #ccc;
+          font-style: normal;
+          cursor: not-allowed;
+        }
       }
       .form-builder-valid-range {
         color: $gray600;
@@ -123,6 +130,13 @@
         &.form-builder-error {
           outline: 2px solid $error;
           background: $errorBg;
+        }
+        &[disabled] {
+          background: #eee;
+          border: #ccc 1px solid;
+          color: #ccc;
+          font-style: normal;
+          cursor: not-allowed;
         }
       }
       .form-builder-tooltip-wrap {
