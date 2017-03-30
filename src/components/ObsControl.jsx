@@ -69,7 +69,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     if (!hideLabel) {
       return (
-            <Label metadata={label} />
+            <Label enabled={this.props.enabled} metadata={label} />
       );
     }
     return null;
@@ -171,6 +171,7 @@ ObsControl.propTypes = {
 };
 
 ObsControl.defaultProps = {
+  enabled: true,
   showAddMore: false,
   showRemove: false,
 };
