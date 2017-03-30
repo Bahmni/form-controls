@@ -208,7 +208,7 @@ describe('FormContext', () => {
     const formContext = new FormContext(recordTree);
 
     formContext.get(booleanConceptName);
-    console.warn.restore();
+    warningSpy.restore();
 
     sinon.assert.notCalled(warningSpy);
   });
@@ -218,7 +218,7 @@ describe('FormContext', () => {
     const formContext = new FormContext(recordTree);
 
     formContext.get('Inexistent control');
-    console.warn.restore();
+    warningSpy.restore();
 
     sinon.assert.called(warningSpy);
   });
