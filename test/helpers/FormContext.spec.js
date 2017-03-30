@@ -1,6 +1,7 @@
 import { List } from 'immutable';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
+import sinon from 'sinon';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import FormContext from '../../src/helpers/FormContext';
 
@@ -200,5 +201,25 @@ describe('FormContext', () => {
     });
     const formContext = new FormContext(obsRecordTree);
     expect(formContext.getName(obsRecordTree)).to.equal(labelName);
+  });
+
+  it('should not given warning message when control with name and position is existed', () => {
+    const warningSpy = sinon.spy(console, 'warn');
+    const formContext = new FormContext(recordTree);
+
+    formContext.get(booleanConceptName);
+    console.warn.restore();
+
+    sinon.assert.notCalled(warningSpy);
+  });
+
+  it('should given warning message when control with name and position is not exist', () => {
+    const warningSpy = sinon.spy(console, 'warn');
+    const formContext = new FormContext(recordTree);
+
+    formContext.get('Inexistent control');
+    console.warn.restore();
+
+    sinon.assert.called(warningSpy);
   });
 });
