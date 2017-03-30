@@ -47,6 +47,7 @@ describe('CodedControl', () => {
   it('should render Dummy Control of displayType button by default', () => {
     const wrapper = shallow(
       <CodedControl
+        enabled
         onChange={onChangeSpy}
         options={options}
         properties={{}}
@@ -56,11 +57,12 @@ describe('CodedControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(7);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(8);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(expectedOptions);
+    expect(wrapper.find('DummyControl')).to.have.prop('enabled').to.deep.eql(true);
   });
 
   it('should render Dummy Control with default value', () => {
@@ -76,7 +78,7 @@ describe('CodedControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(7);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(8);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
@@ -176,7 +178,7 @@ describe('CodedControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(10);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(11);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
