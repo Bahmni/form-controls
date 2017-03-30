@@ -80,6 +80,43 @@ describe('AutoComplete', () => {
       wrapper.find('Select').props().onFocus();
       sinon.assert.calledOnce(loadOptionsSpy);
     });
+
+    it('should show as disabled when AutoComplete is set to be disabled', () => {
+      const wrapper = mount(
+        <AutoComplete
+          enabled={false}
+          formFieldPath="test1.1/1-0"
+        />
+      );
+
+      expect(wrapper.find('Select').props().disabled).to.eql(true);
+    });
+
+    it('should show as enable when AutoComplete is set to be enable', () => {
+      const wrapper = mount(
+        <AutoComplete
+          enabled
+          formFieldPath="test1.1/1-0"
+        />
+      );
+
+      expect(wrapper.find('Select').props().disabled).to.eql(false);
+    });
+
+    it('should update component when the value of enable is changed', () => {
+      const wrapper = mount(
+        <AutoComplete
+          enabled
+          formFieldPath="test1.1-0"
+        />
+      );
+      const instance = wrapper.instance();
+      const componentUpdatedSpy = sinon.spy(instance, 'componentDidUpdate');
+
+      wrapper.setProps({ enabled: false });
+
+      sinon.assert.calledOnce(componentUpdatedSpy);
+    });
   });
 
   context('when component is not asynchronous', () => {

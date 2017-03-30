@@ -54,7 +54,8 @@ export class AutoComplete extends Component {
       !isEqual(this.state.value, nextState.value) ||
       this.state.hasErrors !== nextState.hasErrors ||
       this.state.options !== nextState.options ||
-      this.state.noResultsText !== nextState.noResultsText;
+      this.state.noResultsText !== nextState.noResultsText ||
+      this.props.enabled !== nextProps.enabled;
   }
 
   componentWillUpdate(nextState) {
