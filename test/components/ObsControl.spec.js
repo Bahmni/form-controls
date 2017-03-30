@@ -401,4 +401,53 @@ describe('ObsControl', () => {
 
     expect(helperText).to.not.equal(null);
   });
+
+  describe('enable or disable obs control', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Text'),
+      label,
+      properties,
+      options: [],
+    };
+
+    it('should make label disabled when given obs control with enabled is false', () => {
+      const wrapper = mount(
+        <ObsControl
+          enabled={false}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={domainValue}
+        />);
+
+      expect(wrapper.find('Label').props().enabled).to.equal(false);
+    });
+
+    it('should make label enabled when given obs control with enabled is true', () => {
+      const wrapper = mount(
+        <ObsControl
+          enabled
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={domainValue}
+        />);
+
+      expect(wrapper.find('Label').props().enabled).to.equal(true);
+    });
+
+    it('should make label enabled when given obs control without enabled', () => {
+      const wrapper = mount(
+        <ObsControl
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={domainValue}
+        />);
+
+      expect(wrapper.find('Label').props().enabled).to.equal(true);
+    });
+  });
 });
