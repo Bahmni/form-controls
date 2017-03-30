@@ -155,16 +155,16 @@ describe('AutoComplete', () => {
       expect(instance.getValue()).to.eql([options[1]]);
     });
 
-    it('should pass disabled value from props to the Select Component', () => {
+    it('should pass enabled value from props to the Select Component', () => {
       const wrapper = shallow(
         <AutoComplete
           asynchronous={false}
-          disabled
+          enabled
           formFieldPath="test1.1/1-0"
           options={options}
           value={options[0]}
         />);
-      expect(wrapper.find('Select').props().disabled).to.be.eql(true);
+      expect(wrapper.find('Select').props().disabled).to.be.eql(false);
     });
 
     it('should run the validations for autoComplete', () => {

@@ -17,7 +17,7 @@ export class DropDown extends PureComponent {
 
 DropDown.propTypes = {
   autofocus: PropTypes.bool,
-  disabled: PropTypes.bool,
+  enabled: PropTypes.bool,
   labelKey: PropTypes.string,
   onValueChange: PropTypes.func,
   options: PropTypes.array,
@@ -29,7 +29,7 @@ DropDown.propTypes = {
 
 DropDown.defaultProps = {
   autofocus: false,
-  disabled: false,
+  enabled: true,
   labelKey: 'display',
   valueKey: 'uuid',
   searchable: false,
