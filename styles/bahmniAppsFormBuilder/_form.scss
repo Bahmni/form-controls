@@ -283,3 +283,11 @@
   right: 10px;
   top: -14px;
 }
+
+.Select.is-disabled > .Select-control {
+  background: #eee;
+  border: #ccc 1px solid;
+  color: #ccc;
+  font-style: normal;
+  cursor: not-allowed;
+}
