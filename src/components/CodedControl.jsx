@@ -50,7 +50,14 @@ export class CodedControl extends Component {
   }
 
   _getChildProps(displayType) {
-    const { enabled, formFieldPath, value, validate, validations, properties: { multiSelect } } = this.props;
+    const {
+      enabled,
+      formFieldPath,
+      value,
+      validate,
+      validations,
+      properties: { multiSelect },
+    } = this.props;
     const props = {
       enabled,
       formFieldPath,
