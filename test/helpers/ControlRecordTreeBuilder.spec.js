@@ -374,6 +374,16 @@ describe('ControlRecordTreeBuilder', () => {
     expect(obsRecordTree.getConceptName()).to.equal(undefined);
   });
 
+  it('should get undefined for concept name when given root doesn\'t have control', () => {
+    const obsRecordTree = new ControlRecord({});
+    expect(obsRecordTree.getConceptName()).to.equal(undefined);
+  });
+
+  it('should get undefined for label name when given root doesn\'t have control', () => {
+    const obsRecordTree = new ControlRecord({});
+    expect(obsRecordTree.getLabelName()).to.equal(undefined);
+  });
+
   it('should get label name from the record tree when the root has label', () => {
     const labelName = 'something';
     const obsRecordTree = new ControlRecord({
