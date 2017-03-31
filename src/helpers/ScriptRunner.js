@@ -7,13 +7,13 @@ export default class ScriptRunner {
   }
 
   execute(eventJs) {
-    const form = this.formContext;
+    const formContext = this.formContext;
     if (eventJs) {
-      const executiveJs = `(${eventJs})()`;
+      const executiveJs = `(${eventJs})(formContext)`;
       /* eslint-disable */
       eval(executiveJs);
     }
-    return form.getRecords();
+    return formContext.getRecords();
   }
 
 }

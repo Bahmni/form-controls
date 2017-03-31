@@ -23,7 +23,7 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   onValueChangeDone() {
     if (this.props.onEventTrigger) {
-      this.props.onEventTrigger(this.props.formFieldPath, 'onValueChange')
+      this.props.onEventTrigger(this.props.formFieldPath, 'onValueChange');
     }
   }
 
