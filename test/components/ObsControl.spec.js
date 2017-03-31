@@ -412,6 +412,24 @@ describe('ObsControl', () => {
       options: [],
     };
 
+    it('should trigger event when value changed', () => {
+      const eventTriggerSpy = sinon.spy();
+      const wrapper = shallow(
+        <ObsControl
+          metadata={metadata}
+          onEventTrigger={eventTriggerSpy}
+          onValueChanged={(uuid, _value, _errors, onValueChangeDone) => onValueChangeDone()}
+          validate={false}
+          value={domainValue}
+        />
+      );
+
+      wrapper.instance().onChange('value','error');
+
+      sinon.assert.calledOnce(eventTriggerSpy);
+    });
+
+
     it('should make label disabled when given obs control with enabled is false', () => {
       const wrapper = mount(
         <ObsControl

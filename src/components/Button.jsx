@@ -15,7 +15,6 @@ export class Button extends Component {
     const errors = this._getErrors(props.value) || [];
     const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
     this.state = { hasErrors };
-    this.onActionDone = this.onActionDone.bind(this);
   }
 
   componentDidMount() {
@@ -47,17 +46,11 @@ export class Button extends Component {
     }
   }
 
-  onActionDone() {
-    if (this.props.onEventTrigger) {
-      this.props.onEventTrigger('onClick');
-    }
-  }
-
   changeValue(valueSelected) {
     const value = this._getValue(valueSelected);
     const errors = this._getErrors(value);
     this.setState({ hasErrors: this._hasErrors(errors) });
-    this.props.onValueChange(value, errors, this.onActionDone);
+    this.props.onValueChange(value, errors);
   }
 
   _getValue(valueSelected) {
@@ -131,7 +124,6 @@ Button.propTypes = {
   formFieldPath: PropTypes.string,
   multiSelect: PropTypes.bool,
   nameKey: PropTypes.string,
-  onEventTrigger: PropTypes.func,
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,

@@ -23,10 +23,6 @@ const addMoreDecorator = Sup => class extends Sup {
   onRemoveControl() {
     this.props.onControlRemove(this.props.formFieldPath);
   }
-
-  onEventTrigger(eventName) {
-    this.props.onEventTrigger(this.props.formFieldPath, eventName);
-  }
 };
 
 export default addMoreDecorator;

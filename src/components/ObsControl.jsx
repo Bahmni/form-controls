@@ -18,15 +18,21 @@ export class ObsControl extends addMoreDecorator(Component) {
     this.onCommentChange = this.onCommentChange.bind(this);
     this.onAddControl = this.onAddControl.bind(this);
     this.onRemoveControl = this.onRemoveControl.bind(this);
-    this.onEventTrigger = this.onEventTrigger.bind(this);
+    this.onValueChangeDone = this.onValueChangeDone.bind(this);
   }
 
-  onChange(value, errors, onActionDone) {
+  onValueChangeDone() {
+    if (this.props.onEventTrigger) {
+      this.props.onEventTrigger(this.props.formFieldPath, 'onValueChange')
+    }
+  }
+
+  onChange(value, errors) {
     this.props.onValueChanged(
       this.props.formFieldPath,
       { value, comment: this.props.value.comment },
       errors,
-      onActionDone);
+      this.onValueChangeDone);
   }
 
   onCommentChange(comment) {

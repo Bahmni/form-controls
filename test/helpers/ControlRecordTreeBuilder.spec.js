@@ -276,7 +276,7 @@ describe('ControlRecordTreeBuilder', () => {
       },
       uuid: 'c398a4be-3f10-11e4-adec-0800271c1b75',
     };
-    const events = { onClick: 'function(){}' };
+    const events = { onValueChange: 'function(){}' };
     const metadata = {
       controls: [
         {

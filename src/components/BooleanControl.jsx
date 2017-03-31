@@ -9,9 +9,9 @@ export class BooleanControl extends Component {
     this.onValueChange = this.onValueChange.bind(this);
   }
 
-  onValueChange(value, errors, onActionDone) {
+  onValueChange(value, errors) {
     const updatedValue = value ? value.value : undefined;
-    this.props.onChange(updatedValue, errors, onActionDone);
+    this.props.onChange(updatedValue, errors);
   }
 
   _getValue(options, value) {
@@ -19,7 +19,7 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { formFieldPath, enabled, options, validations, validate, onEventTrigger } = this.props;
+    const { formFieldPath, enabled, options, validations, validate } = this.props;
     const registeredComponent = ComponentStore.getRegisteredComponent('button');
     if (registeredComponent) {
       const initialValue = this._getValue(options, this.props.value);
@@ -27,7 +27,6 @@ export class BooleanControl extends Component {
         enabled,
         formFieldPath,
         value: initialValue,
-        onEventTrigger,
         onValueChange: this.onValueChange,
         options,
         validate,
@@ -49,7 +48,6 @@ BooleanControl.propTypes = {
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  onEventTrigger: PropTypes.func,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
