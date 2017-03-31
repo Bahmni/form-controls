@@ -259,7 +259,7 @@ describe('Section', () => {
         validate={false}
       />);
 
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active disabled');
     expect(wrapper.find('div').at(0).props().className)
       .to.eql('obsGroup-controls active-group-controls disabled');
   });
@@ -278,15 +278,15 @@ describe('Section', () => {
         validate={false}
       />);
 
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active disabled');
     expect(wrapper.find('div').at(0).props().className)
       .to.eql('obsGroup-controls active-group-controls disabled');
 
     wrapper.setProps({collapse: true});
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active disabled');
 
     wrapper.find('legend').simulate('click');
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active disabled');
   });
 
   it('should call onValueChanged when onChange be triggered', () => {
