@@ -276,4 +276,22 @@ describe('ObsGroupControl', () => {
 
     sinon.assert.calledOnce(onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined));
   });
+
+  it('should disable children in obsGroup when obsGroup is set disable', () => {
+    const wrapper = mount(
+      <ObsGroupControl
+        children={children}
+        collapse={false}
+        enabled
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+        value={emptyValue}
+      />
+    );
+    wrapper.setProps({ enabled: false });
+    expect(wrapper.find('Row').at(0).props().enabled).to.eql(false);
+  });
 });
