@@ -264,6 +264,31 @@ describe('Section', () => {
       .to.eql('obsGroup-controls active-group-controls disabled');
   });
 
+  it('should disable collapse/expand when Section is set to be disabled', () => {
+    const wrapper = mount(
+      <Section
+        enabled={false}
+        children={children}
+        collapse={false}
+        formFieldPath={sectionFormFieldPath}
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+    expect(wrapper.find('div').at(0).props().className)
+      .to.eql('obsGroup-controls active-group-controls disabled');
+
+    wrapper.setProps({collapse: true});
+    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+
+    wrapper.find('legend').simulate('click');
+    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+  });
+
   it('should call onValueChanged when onChange be triggered', () => {
     const wrapper = mount(
       <Section

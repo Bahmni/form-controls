@@ -18,7 +18,8 @@ export class Section extends addMoreDecorator(Component) {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.collapse !== undefined && (nextProps.collapse !== this.props.collapse ||
+    if (nextProps.collapse !== undefined && nextProps.enabled &&
+      (nextProps.collapse !== this.props.collapse ||
       nextProps.collapse !== this.state.collapse)) {
       this.setState({ collapse: nextProps.collapse });
     }
@@ -37,8 +38,11 @@ export class Section extends addMoreDecorator(Component) {
   }
 
   _onCollapse() {
-    const collapse = !this.state.collapse;
-    this.setState({ collapse });
+    if(this.props.enabled)
+    {
+      const collapse = !this.state.collapse;
+      this.setState({ collapse });
+    }
   }
 
   render() {
