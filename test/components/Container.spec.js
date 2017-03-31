@@ -1223,7 +1223,7 @@ describe('Container', () => {
         uuid: 'c398a4be-3f10-11e4-adec-0800271c1b75',
       };
       const events = {
-        onClick: `function(){
+        onValueChange: `function(){
                     if(form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
                       form.get('Chief Complaint Notes').setEnabled(false);
                     } else {
@@ -1309,7 +1309,7 @@ describe('Container', () => {
       const targetFormFieldPath = '3129.4/5-0';
       wrapper.instance().onValueChanged(targetFormFieldPath, { value: true }, undefined);
 
-      wrapper.instance().onEventTrigger(targetFormFieldPath, 'onClick');
+      wrapper.instance().onEventTrigger(targetFormFieldPath, 'onValueChange');
 
       const textBoxRecord = wrapper.state().data.children.get(1);
       expect(textBoxRecord.enabled).to.equal(false);

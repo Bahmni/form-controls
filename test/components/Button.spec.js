@@ -293,47 +293,6 @@ describe('Button Component', () => {
     sinon.assert.calledOnce(valueChangeSpy.withArgs(optionsWithoutValueKey[1], []));
   });
 
-  it('should trigger callback when init button with events', () => {
-    const booleanOptions = [
-      {
-        name: 'Yes',
-        value: true,
-      },
-      {
-        name: 'No',
-        value: false,
-      },
-    ];
-    const eventTriggerSpy = sinon.spy();
-    const events = {
-      onClick: `function(){
-                  if(form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
-                    form.get('Chief Complaint Notes').setEnabled(false);
-                  } else {
-                    form.get('Chief Complaint Notes').setEnabled(true);
-                  }
-                }`,
-    };
-    const wrapper = shallow(
-      <Button
-        events={events}
-        formFieldPath="test1.1/1-0"
-        nameKey={'name'}
-        onEventTrigger={eventTriggerSpy}
-        onValueChange={(_value, _errors, onActionDone) => (onActionDone())}
-        options={booleanOptions}
-        validate
-        validations={[]}
-        valueKey={'value'}
-      />
-    );
-
-    const valueSelected = { name: 'Yes', value: true };
-    wrapper.instance().changeValue(valueSelected);
-
-    sinon.assert.calledOnce(eventTriggerSpy.withArgs('onClick'));
-  });
-
   it('should update component when the value of enable is changed', () => {
     const wrapper = mount(
       <Button
