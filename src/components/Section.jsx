@@ -42,9 +42,10 @@ export class Section extends addMoreDecorator(Component) {
   }
 
   render() {
-    const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
+    const { collapse, enabled, formName, formVersion, metadata: { label }, validate } = this.props;
     const childProps = {
       collapse,
+      enabled,
       formName,
       formVersion,
       validate,
@@ -75,6 +76,7 @@ export class Section extends addMoreDecorator(Component) {
 Section.propTypes = {
   children: PropTypes.any,
   collapse: PropTypes.bool,
+  enabled: PropTypes.bool,
   formName: PropTypes.string.isRequired,
   formVersion: PropTypes.string.isRequired,
   metadata: PropTypes.shape({

@@ -134,6 +134,23 @@ describe('Section', () => {
     expect(wrapper).to.have.exactly(1).descendants('ObsControl');
   });
 
+  it('should pass enabled property to its child component', () => {
+    const wrapper = mount(
+      <Section
+        children={children}
+        collapse
+        enabled={false}
+        formFieldPath={sectionFormFieldPath}
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper.find('ObsControl')).to.have.prop('enabled').to.deep.eql(false);
+  });
+
   it('should render section control with only the registered controls', () => {
     ComponentStore.deRegisterComponent('obsControl');
     const wrapper = mount(
