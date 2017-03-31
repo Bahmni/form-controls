@@ -172,6 +172,7 @@ describe('Section', () => {
   it('should collapse all child controls on click of collapse icon', () => {
     const wrapper = mount(
       <Section
+        enabled
         children={children}
         collapse={false}
         formFieldPath={sectionFormFieldPath}
@@ -196,6 +197,7 @@ describe('Section', () => {
   it('should collapse all child controls on change of collapse props', () => {
     const wrapper = mount(
       <Section
+        enabled
         children={children}
         collapse={false}
         formFieldPath={sectionFormFieldPath}
@@ -220,6 +222,7 @@ describe('Section', () => {
   it('should collapse all child controls on change of collapse state', () => {
     const wrapper = mount(
       <Section
+        enabled
         children={children}
         collapse={false}
         formFieldPath={sectionFormFieldPath}
@@ -240,6 +243,25 @@ describe('Section', () => {
     expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
     expect(wrapper.find('div').at(0).props().className)
       .to.eql('obsGroup-controls closing-group-controls');
+  });
+
+  it('should show as disabled when Section is set to be disabled', () => {
+    const wrapper = mount(
+      <Section
+        enabled={false}
+        children={children}
+        collapse={false}
+        formFieldPath={sectionFormFieldPath}
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+    expect(wrapper.find('div').at(0).props().className)
+      .to.eql('obsGroup-controls active-group-controls disabled');
   });
 
   it('should call onValueChanged when onChange be triggered', () => {

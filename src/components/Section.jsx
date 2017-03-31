@@ -54,8 +54,9 @@ export class Section extends addMoreDecorator(Component) {
       onControlRemove: this.onControlRemove,
     };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
-    const sectionClass =
-      this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
+    const   sectionClass =
+      (this.state.collapse ? 'closing-group-controls' : 'active-group-controls')
+        + (this.props.enabled ? '' : ' disabled');
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
 
     return (
