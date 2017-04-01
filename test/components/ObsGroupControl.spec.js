@@ -294,4 +294,23 @@ describe('ObsGroupControl', () => {
     wrapper.setProps({ enabled: false });
     expect(wrapper.find('Row').at(0).props().enabled).to.eql(false);
   });
+
+  it('should show as disabled when obsGroup is set to be disabled', () => {
+    const wrapper = mount(
+      <ObsGroupControl
+        children={children}
+        collapse={false}
+        enabled
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+        value={emptyValue}
+      />
+    );
+    wrapper.setProps({ enabled: false });
+    expect(wrapper.find('legend').at(0).props().className).
+    to.eql('form-builder-toggle active disabled');
+  });
 });

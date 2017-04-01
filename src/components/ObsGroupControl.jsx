@@ -59,15 +59,16 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
     const obsGroupClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
+    const disableClass = this.props.enabled ? '' : ' disabled';
     return (
         <fieldset className="form-builder-fieldset">
-          <legend className={toggleClass} onClick={ this._onCollapse}>
+          <legend className={`${toggleClass}${disableClass}`} onClick={ this._onCollapse}>
             <i className="fa fa-caret-down"></i>
             <i className="fa fa-caret-right"></i>
           <strong>{label.value}</strong>
         </legend>
           {this.showAddMore()}
-          <div className={`obsGroup-controls ${obsGroupClass}`}>
+          <div className={`obsGroup-controls ${obsGroupClass}${disableClass}`}>
             { displayRowControls(groupedRowControls, this.props.children.toArray(), childProps) }
           </div>
         </fieldset>
