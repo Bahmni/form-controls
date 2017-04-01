@@ -104,17 +104,17 @@ export class DateTime extends Component {
       <div>
         <input
           className={classNames({ 'form-builder-error': this.state.hasErrors })}
-          defaultValue={this.dateValue}
           disabled={!this.props.enabled}
           onChange={(e) => this.handleDateChange(e)}
           type="date"
+          value={this.dateValue}
         />
         <input
           className={classNames({ 'form-builder-error': this.state.hasErrors })}
-          defaultValue={this.timeValue}
           disabled={!this.props.enabled}
           onChange={(e) => this.handleTimeChange(e)}
           type="time"
+          value={this.timeValue}
         />
       </div>
     );
