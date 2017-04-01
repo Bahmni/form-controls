@@ -39,6 +39,18 @@ export default class ControlRecordWrapper {
       return;
     }
     this.currentRecord = this.currentRecord.set('enabled', isEnabled);
+    this.update();
+  }
+
+  setHidden(hidden){
+    if (!this.currentRecord){
+      return;
+    }
+    this.currentRecord = this.currentRecord.set('hidden', hidden);
+    this.update();
+  }
+
+  update() {
     this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, this.currentRecord);
   }
 }
