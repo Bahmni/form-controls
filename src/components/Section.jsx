@@ -18,8 +18,7 @@ export class Section extends addMoreDecorator(Component) {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.collapse !== undefined && nextProps.enabled &&
-      (nextProps.collapse !== this.props.collapse ||
+    if (nextProps.collapse !== undefined && (nextProps.collapse !== this.props.collapse ||
       nextProps.collapse !== this.state.collapse)) {
       this.setState({ collapse: nextProps.collapse });
     }
@@ -38,11 +37,8 @@ export class Section extends addMoreDecorator(Component) {
   }
 
   _onCollapse() {
-    if(this.props.enabled)
-    {
-      const collapse = !this.state.collapse;
-      this.setState({ collapse });
-    }
+    const collapse = !this.state.collapse;
+    this.setState({ collapse });
   }
 
   render() {
@@ -58,7 +54,7 @@ export class Section extends addMoreDecorator(Component) {
       onControlRemove: this.onControlRemove,
     };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
-    const   sectionClass =
+    const sectionClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
     const disableClass = this.props.enabled ? '' : ' disabled';
