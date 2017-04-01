@@ -310,7 +310,24 @@ describe('ObsGroupControl', () => {
       />
     );
     wrapper.setProps({ enabled: false });
-    expect(wrapper.find('legend').at(0).props().className).
-    to.eql('form-builder-toggle active disabled');
+    expect(wrapper.find('legend')).to.have.className('disabled');
+  });
+
+  it('should show as enabled when obsGroup is set to be enabled', () => {
+    const wrapper = mount(
+      <ObsGroupControl
+        children={children}
+        collapse={false}
+        enabled
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+        value={emptyValue}
+      />
+    );
+    wrapper.setProps({ enabled: true });
+    expect(wrapper.find('legend')).to.not.have.className('disabled');
   });
 });
