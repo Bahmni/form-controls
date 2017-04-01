@@ -23,6 +23,7 @@ export default class ControlRecordWrapper {
     if (!this.currentRecord) {
       return;
     }
+    value = this.currentRecord.setValue(value);
     this.currentRecord = this.currentRecord.set('value', {
       value,
       comment: this.currentRecord.comment,
