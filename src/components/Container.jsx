@@ -21,6 +21,14 @@ export class Container extends addMoreDecorator(Component) {
     this.onEventTrigger = this.onEventTrigger.bind(this);
   }
 
+  componentWillMount() {
+    const initScript = this.props.metadata.events && this.props.metadata.events.onFormInit;
+    if (initScript) {
+      const updatedTree = new ScriptRunner(this.state.data).execute(initScript);
+      this.setState({ data: updatedTree });
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     this.setState({ collapse: nextProps.collapse });
   }
