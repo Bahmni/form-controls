@@ -32,10 +32,6 @@ export const ControlRecord = new Record({
     return this.control && this.control.value;
   },
 
-  getDataType() {
-    return this.control && this.control.concept && this.control.concept.datatype;
-  },
-
   setValue(value) {
     if (this.datatypeMapper) {
       return this.datatypeMapper.setValue(this.control, value);
