@@ -2,7 +2,7 @@ import { Record, List } from 'immutable';
 import MapperStore from 'src/helpers/MapperStore';
 import constants from 'src/constants';
 import isEmpty from 'lodash/isEmpty';
-import DatatypeStore from "./DatatypeStore";
+import DatatypeStore from './DatatypeStore';
 
 export const ControlRecord = new Record({
   datatypeMapper: undefined,

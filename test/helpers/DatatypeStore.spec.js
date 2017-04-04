@@ -1,17 +1,16 @@
-import {expect} from 'chai';
-import DatatypeStore from "../../src/helpers/DatatypeStore";
-import BooleanControlMapper from "../../src/mapper/BooleanControlMapper";
-import CodedControlMapper from "../../src/mapper/CodedControlMapper";
+import { expect } from 'chai';
+import DatatypeStore from '../../src/helpers/DatatypeStore';
+import BooleanControlMapper from '../../src/mapper/BooleanControlMapper';
+import CodedControlMapper from '../../src/mapper/CodedControlMapper';
 
 
 describe('DatatypeStore', () => {
-
   it('should get undefined when given obs control\'s type is not boolean or coded', () => {
     const obsControls = [
-      {'concept': {'datatype': 'Text'}},
-      {'concept': {'datatype': 'Date'}},
-      {'concept': {'datatype': 'Datetime'}},
-      {'concept': {'datatype': 'Numeric'}},
+      { concept: { datatype: 'Text' } },
+      { concept: { datatype: 'Date' } },
+      { concept: { datatype: 'Datetime' } },
+      { concept: { datatype: 'Numeric' } },
     ];
 
     obsControls.forEach(obsControl => {
@@ -23,8 +22,8 @@ describe('DatatypeStore', () => {
 
   it('should get boolean control mapper when given boolean obs control', () => {
     const booleanObsControl = {
-      "concept": {
-        "datatype": "Boolean",
+      concept: {
+        datatype: 'Boolean',
       },
     };
 
@@ -36,8 +35,8 @@ describe('DatatypeStore', () => {
 
   it('should get coded control mapper when given coded obs control', () => {
     const codedObsControl = {
-      "concept": {
-        "datatype": "Coded",
+      concept: {
+        datatype: 'Coded',
       },
     };
 
@@ -45,6 +44,5 @@ describe('DatatypeStore', () => {
 
     expect(datatypeMapper instanceof CodedControlMapper).to.equal(true);
   });
-
 });
 

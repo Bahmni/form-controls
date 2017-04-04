@@ -1,9 +1,9 @@
-import BooleanControlMapper from "../mapper/BooleanControlMapper";
-import CodedControlMapper from "../mapper/CodedControlMapper";
+import BooleanControlMapper from '../mapper/BooleanControlMapper';
+import CodedControlMapper from '../mapper/CodedControlMapper';
 
 const obsControlMapper = {
-  'Boolean': new BooleanControlMapper(),
-  'Coded': new CodedControlMapper(),
+  Boolean: new BooleanControlMapper(),
+  Coded: new CodedControlMapper(),
 };
 
 class DatatypeStore {

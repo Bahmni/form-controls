@@ -1,31 +1,30 @@
 import { expect } from 'chai';
-import BooleanControlMapper from "../../src/mapper/BooleanControlMapper";
+import BooleanControlMapper from '../../src/mapper/BooleanControlMapper';
 
 
 describe('BooleanControlMapper', () => {
-
   const booleanObsControl = {
-    "concept": {
-      "answers": [],
-      "datatype": "Boolean",
-      "name": "Smoking History",
-      "uuid": "c2a43174-c9db-4e54-8516-17372c83537f"
+    concept: {
+      answers: [],
+      datatype: 'Boolean',
+      name: 'Smoking History',
+      uuid: 'c2a43174-c9db-4e54-8516-17372c83537f',
     },
-    "label": {
-      "type": "label",
-      "value": "Smoking History"
+    label: {
+      type: 'label',
+      value: 'Smoking History',
     },
-    "options": [
+    options: [
       {
-        "name": "Yes",
-        "value": true
+        name: 'Yes',
+        value: true,
       },
       {
-        "name": "No",
-        "value": false
-      }
+        name: 'No',
+        value: false,
+      },
     ],
-    "type": "obsControl",
+    type: 'obsControl',
   };
 
   const mapper = new BooleanControlMapper();
@@ -45,6 +44,5 @@ describe('BooleanControlMapper', () => {
 
     expect(value).to.equal(true);
   });
-
 });
 
