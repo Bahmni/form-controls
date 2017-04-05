@@ -39,7 +39,7 @@ export { IDGenerator } from 'src/helpers/idGenerator';
 export { DescriptorParser } from 'src/helpers/descriptorParser';
 export { default as ComponentStore } from 'src/helpers/componentStore';
 
-export { mapperStore as ValueMapperStore } from 'src/helpers/ValueMapperStore';
+// -------------------------- mappers ---------------------
 export { BooleanValueMapper } from 'src/mapper/BooleanValueMapper';
 export { CodedValueMapper } from 'src/mapper/CodedValueMapper';
 
