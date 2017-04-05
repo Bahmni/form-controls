@@ -1,3 +1,12 @@
+/*
+  It's a temporary way to put the import here.
+  so that register in value mapper will be triggered.
+*/
+
+/* eslint-disable */
+import { BooleanValueMapper } from '../mapper/BooleanValueMapper';
+import { CodedValueMapper } from '../mapper/CodedValueMapper';
+
 class ComponentStore {
   constructor() {
     if (!window.componentStore) {

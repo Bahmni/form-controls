@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import CodedControlMapper from '../../src/mapper/CodedControlMapper';
+import { CodedValueMapper } from '../../src/mapper/CodedValueMapper';
 
-describe('CodedControlMapper', () => {
+describe('CodedValueMapper', () => {
   const codedObsControl = {
     concept: {
       answers: [
@@ -25,7 +25,7 @@ describe('CodedControlMapper', () => {
     type: 'obsControl',
   };
 
-  const mapper = new CodedControlMapper();
+  const mapper = new CodedValueMapper();
 
   it('should get value when given option value', () => {
     const name = 'Breech';

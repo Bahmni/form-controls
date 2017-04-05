@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import BooleanControlMapper from '../../src/mapper/BooleanControlMapper';
+import { BooleanValueMapper } from '../../src/mapper/BooleanValueMapper';
 
 
-describe('BooleanControlMapper', () => {
+describe('BooleanValueMapper', () => {
   const booleanObsControl = {
     concept: {
       answers: [],
@@ -27,7 +27,7 @@ describe('BooleanControlMapper', () => {
     type: 'obsControl',
   };
 
-  const mapper = new BooleanControlMapper();
+  const mapper = new BooleanValueMapper();
 
   it('should get value when given option value', () => {
     const originalValue = false;

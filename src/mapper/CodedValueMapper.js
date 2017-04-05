@@ -1,5 +1,6 @@
+import ValueMapperStore from '../helpers/ValueMapperStore';
 
-export default class CodedControlMapper {
+export class CodedValueMapper {
 
   getValue(control, value) {
     return value && value.displayString;
@@ -11,3 +12,6 @@ export default class CodedControlMapper {
   }
 
 }
+
+
+ValueMapperStore.registerValueMapper('Coded', new CodedValueMapper());

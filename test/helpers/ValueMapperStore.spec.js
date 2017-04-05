@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import DatatypeStore from '../../src/helpers/DatatypeStore';
-import BooleanControlMapper from '../../src/mapper/BooleanControlMapper';
-import CodedControlMapper from '../../src/mapper/CodedControlMapper';
+import ValueMapperStore from '../../src/helpers/ValueMapperStore';
+import { BooleanValueMapper } from '../../src/mapper/BooleanValueMapper';
+import { CodedValueMapper } from '../../src/mapper/CodedValueMapper';
 
 
-describe('DatatypeStore', () => {
+describe('ValueMapperStore', () => {
   it('should get undefined when given obs control\'s type is not boolean or coded', () => {
     const obsControls = [
       { concept: { datatype: 'Text' } },
@@ -14,7 +14,7 @@ describe('DatatypeStore', () => {
     ];
 
     obsControls.forEach(obsControl => {
-      const datatypeMapper = DatatypeStore.getMapper(obsControl);
+      const datatypeMapper = ValueMapperStore.getMapper(obsControl);
 
       expect(datatypeMapper).to.equal(undefined);
     });
@@ -27,9 +27,9 @@ describe('DatatypeStore', () => {
       },
     };
 
-    const datatypeMapper = DatatypeStore.getMapper(booleanObsControl);
+    const datatypeMapper = ValueMapperStore.getMapper(booleanObsControl);
 
-    expect(datatypeMapper instanceof BooleanControlMapper).to.equal(true);
+    expect(datatypeMapper instanceof BooleanValueMapper).to.equal(true);
   });
 
 
@@ -40,9 +40,9 @@ describe('DatatypeStore', () => {
       },
     };
 
-    const datatypeMapper = DatatypeStore.getMapper(codedObsControl);
+    const datatypeMapper = ValueMapperStore.getMapper(codedObsControl);
 
-    expect(datatypeMapper instanceof CodedControlMapper).to.equal(true);
+    expect(datatypeMapper instanceof CodedValueMapper).to.equal(true);
   });
 });
 

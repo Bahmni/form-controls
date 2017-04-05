@@ -1,6 +1,6 @@
+import ValueMapperStore from '../helpers/ValueMapperStore';
 
-
-export default class BooleanControlMapper {
+export class BooleanValueMapper {
 
   getValue(control, value) {
     const [option] = control.options.filter(opt => opt.value === value);
@@ -13,3 +13,5 @@ export default class BooleanControlMapper {
   }
 
 }
+
+ValueMapperStore.registerValueMapper('Boolean', new BooleanValueMapper());
