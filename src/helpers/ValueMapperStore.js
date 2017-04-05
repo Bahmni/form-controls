@@ -2,7 +2,11 @@
 class ValueMapperStore {
 
   constructor() {
-    this.mapperList = {};
+    if (!window.valueMapperStore) {
+      window.valueMapperStore = this;
+      this.mapperList = {};
+    }
+    return window.valueMapperStore;
   }
 
   getMapper(control) {
@@ -17,4 +21,4 @@ class ValueMapperStore {
 }
 
 
-export default new ValueMapperStore();
+export default (new ValueMapperStore);
