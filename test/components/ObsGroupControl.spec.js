@@ -330,4 +330,40 @@ describe('ObsGroupControl', () => {
     wrapper.setProps({ enabled: true });
     expect(wrapper.find('legend')).to.not.have.className('disabled');
   });
+
+  it('should show as hidden when obsGroup is set to be hidden', () => {
+    const wrapper = mount(
+      <ObsGroupControl
+        children={children}
+        collapse={false}
+        hidden
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+        value={emptyValue}
+      />
+    );
+    wrapper.setProps({ hidden: true });
+    expect(wrapper.find('fieldset')).to.have.className('hidden');
+  });
+
+  it('should show as display when obsGroup is set not to be hidden', () => {
+    const wrapper = mount(
+      <ObsGroupControl
+        children={children}
+        collapse={false}
+        hidden
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+        value={emptyValue}
+      />
+    );
+    wrapper.setProps({ hidden: false });
+    expect(wrapper.find('fieldset')).to.not.have.className('hidden');
+  });
 });
