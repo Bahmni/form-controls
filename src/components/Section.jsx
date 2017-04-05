@@ -42,9 +42,10 @@ export class Section extends addMoreDecorator(Component) {
   }
 
   render() {
-    const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
+    const { collapse, enabled, formName, formVersion, metadata: { label }, validate } = this.props;
     const childProps = {
       collapse,
+      enabled,
       formName,
       formVersion,
       validate,
@@ -56,15 +57,16 @@ export class Section extends addMoreDecorator(Component) {
     const sectionClass =
       this.state.collapse ? 'closing-group-controls' : 'active-group-controls';
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
+    const disableClass = this.props.enabled ? '' : ' disabled';
 
     return (
         <fieldset className="form-builder-fieldset">
-          <legend className={toggleClass} onClick={ this._onCollapse}>
+          <legend className={`${toggleClass}${disableClass}`} onClick={ this._onCollapse}>
             <i className="fa fa-caret-down"></i>
             <i className="fa fa-caret-right"></i>
             <strong>{label.value}</strong>
           </legend>
-          <div className={`obsGroup-controls ${sectionClass}`} >
+          <div className={`obsGroup-controls ${sectionClass}${disableClass}`} >
             {displayRowControls(groupedRowControls, this.props.children.toArray(), childProps)}
           </div>
         </fieldset>
@@ -75,6 +77,7 @@ export class Section extends addMoreDecorator(Component) {
 Section.propTypes = {
   children: PropTypes.any,
   collapse: PropTypes.bool,
+  enabled: PropTypes.bool,
   formName: PropTypes.string.isRequired,
   formVersion: PropTypes.string.isRequired,
   metadata: PropTypes.shape({

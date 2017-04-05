@@ -29,7 +29,7 @@ export const ControlRecord = new Record({
   },
 
   getLabelName() {
-    return this.control && this.control.value;
+    return this.control && (this.control.value || this.control.label.value);
   },
 
   setValue(value) {

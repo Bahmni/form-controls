@@ -134,6 +134,23 @@ describe('Section', () => {
     expect(wrapper).to.have.exactly(1).descendants('ObsControl');
   });
 
+  it('should pass enabled property to its child component', () => {
+    const wrapper = mount(
+      <Section
+        children={children}
+        collapse
+        enabled={false}
+        formFieldPath={sectionFormFieldPath}
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper.find('ObsControl')).to.have.prop('enabled').to.deep.eql(false);
+  });
+
   it('should render section control with only the registered controls', () => {
     ComponentStore.deRegisterComponent('obsControl');
     const wrapper = mount(
@@ -157,6 +174,7 @@ describe('Section', () => {
       <Section
         children={children}
         collapse={false}
+        enabled
         formFieldPath={sectionFormFieldPath}
         formName={formName}
         formVersion={formVersion}
@@ -181,6 +199,7 @@ describe('Section', () => {
       <Section
         children={children}
         collapse={false}
+        enabled
         formFieldPath={sectionFormFieldPath}
         formName={formName}
         formVersion={formVersion}
@@ -205,6 +224,7 @@ describe('Section', () => {
       <Section
         children={children}
         collapse={false}
+        enabled
         formFieldPath={sectionFormFieldPath}
         formName={formName}
         formVersion={formVersion}
@@ -223,6 +243,25 @@ describe('Section', () => {
     expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
     expect(wrapper.find('div').at(0).props().className)
       .to.eql('obsGroup-controls closing-group-controls');
+  });
+
+  it('should show as disabled when Section is set to be disabled', () => {
+    const wrapper = mount(
+      <Section
+        children={children}
+        collapse={false}
+        enabled={false}
+        formFieldPath={sectionFormFieldPath}
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active disabled');
+    expect(wrapper.find('div').at(0).props().className)
+      .to.eql('obsGroup-controls active-group-controls disabled');
   });
 
   it('should call onValueChanged when onChange be triggered', () => {
