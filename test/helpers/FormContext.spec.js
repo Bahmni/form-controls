@@ -214,12 +214,12 @@ describe('FormContext', () => {
   });
 
   it('should given warning message when control with name and position is not exist', () => {
-    const warningSpy = sinon.spy(console, 'warn');
+    const warningStub = sinon.stub(console, 'warn');
     const formContext = new FormContext(recordTree);
 
     formContext.get('Inexistent control');
-    warningSpy.restore();
+    warningStub.restore();
 
-    sinon.assert.called(warningSpy);
+    sinon.assert.calledOnce(warningStub);
   });
 });
