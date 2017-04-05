@@ -90,7 +90,8 @@ describe('ControlRecordTreeMgr', () => {
     });
     const obsTree = new ControlRecord({ children: List.of(obsRecord, mixedChildRecord) });
 
-    const brotherTree = new ControlRecordTreeMgr().getBrotherTree(obsTree, expectedFormFieldPath);
+    const brotherTree = new ControlRecordTreeMgr()
+                              .getLatestBrotherTree(obsTree, expectedFormFieldPath);
 
     expect(brotherTree.formFieldPath).to.equal(expectedFormFieldPath);
   });

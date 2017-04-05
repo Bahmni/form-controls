@@ -20,15 +20,16 @@ export default class ControlRecordWrapper {
   }
 
   setValue(value) {
-    if (!this.currentRecord) {
-      return;
-    }
-    const updatedValue = this.currentRecord.setValue(value);
-    this.currentRecord = this.currentRecord.set('value', {
-      value: updatedValue,
-      comment: this.currentRecord.comment,
+    const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
+
+    brotherTrees.forEach(r => {
+      const updatedValue = r.setValue(value);
+      this.currentRecord = r.set('value', {
+        value: updatedValue,
+        comment: this.currentRecord.comment,
+      });
+      this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, this.currentRecord);
     });
-    this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, this.currentRecord);
   }
 
   getEnabled() {
@@ -36,10 +37,11 @@ export default class ControlRecordWrapper {
   }
 
   setEnabled(isEnabled) {
-    if (!this.currentRecord) {
-      return;
-    }
-    this.currentRecord = this.currentRecord.set('enabled', isEnabled);
-    this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, this.currentRecord);
+    const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
+
+    brotherTrees.forEach(r => {
+      this.currentRecord = r.set('enabled', isEnabled);
+      this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, this.currentRecord);
+    });
   }
 }

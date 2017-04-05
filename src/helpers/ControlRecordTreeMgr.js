@@ -1,9 +1,10 @@
 import { Util } from './Util';
+import sortBy from 'lodash/sortBy';
 
 export default class ControlRecordTreeMgr {
 
   generateNextTree(rootTree, formFieldPath) {
-    let updatedTree = this.getBrotherTree(rootTree, formFieldPath);
+    let updatedTree = this.getLatestBrotherTree(rootTree, formFieldPath);
     if (updatedTree.children && updatedTree.children.size > 0) {
       const filteredTree = this.filterChildTree(updatedTree);
       const clonedChildTree = filteredTree.map(r => (
@@ -59,29 +60,27 @@ export default class ControlRecordTreeMgr {
     return rootTree.set('children', tree);
   }
 
-  getBrotherTree(parentTree, targetFormFieldPath) {
+  getLatestBrotherTree(parentTree, targetFormFieldPath) {
+    const brotherTrees = this.getBrotherTrees(parentTree, targetFormFieldPath);
+    const sortedTrees = sortBy(brotherTrees, (t) => Util.toInt(t.formFieldPath.split('-')[1]));
+    return sortedTrees[sortedTrees.length - 1];
+  }
+
+  getBrotherTrees(parentTree, targetFormFieldPath) {
+    let brotherTrees = [];
     const getPrefix = (formFieldPath) => (formFieldPath.split('-')[0]);
-    const getSuffix = (record) => (Util.toInt(record.formFieldPath.split('-')[1]));
 
-    const isLatestBrotherTree = (originalRecord, newRecord) => (
-            (getPrefix(targetFormFieldPath) === getPrefix(newRecord.formFieldPath)) &&
-            (!originalRecord || (getSuffix(originalRecord) < getSuffix(newRecord)))
-        );
+    if (getPrefix(parentTree.formFieldPath) === getPrefix(targetFormFieldPath)) {
+      brotherTrees.push(parentTree);
+    }
 
-    let latestSimilarTree = undefined;
+    if (parentTree.children) {
+      parentTree.children.forEach(childTree => {
+        brotherTrees = brotherTrees.concat(this.getBrotherTrees(childTree, targetFormFieldPath));
+      });
+    }
 
-    parentTree.children.forEach(childTree => {
-      if (isLatestBrotherTree(latestSimilarTree, childTree)) {
-        latestSimilarTree = childTree;
-      }
-      if (childTree.children) {
-        const foundSimilarRecord = this.getBrotherTree(childTree, targetFormFieldPath);
-        if (foundSimilarRecord && isLatestBrotherTree(latestSimilarTree, foundSimilarRecord)) {
-          latestSimilarTree = foundSimilarRecord;
-        }
-      }
-    });
-    return latestSimilarTree;
+    return brotherTrees;
   }
 
   static add(rootTree, formFieldPath) {
@@ -113,5 +112,12 @@ export default class ControlRecordTreeMgr {
       return filteredList.get(0);
     }
     return null;
+  }
+
+  static getBrothers(rootTree, targetTree) {
+    if (targetTree) {
+      return new ControlRecordTreeMgr().getBrotherTrees(rootTree, targetTree.formFieldPath);
+    }
+    return [];
   }
 }
