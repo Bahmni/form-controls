@@ -56,4 +56,26 @@ describe('AddMore', () => {
     wrapper.find('button').at(1).simulate('click');
     sinon.assert.calledOnce(onRemoveSpy);
   });
+
+  it('should enable plus & remove buttons when enabled is true', () => {
+    const onAddSpy = sinon.spy();
+    const onRemoveSpy = sinon.spy();
+    const wrapper = mount(<AddMore canAdd canRemove
+                                   onAdd={onAddSpy} onRemove={onRemoveSpy}
+    />);
+
+    expect(wrapper.find('button').at(0).props().disabled).to.equal(false);
+    expect(wrapper.find('button').at(1).props().disabled).to.equal(false);
+  });
+
+  it('should disable plus & remove buttons when enabled is false', () => {
+    const onAddSpy = sinon.spy();
+    const onRemoveSpy = sinon.spy();
+    const wrapper = mount(<AddMore canAdd canRemove enabled={false}
+                                   onAdd={onAddSpy} onRemove={onRemoveSpy}
+    />);
+
+    expect(wrapper.find('button').at(0).props().disabled).to.equal(true);
+    expect(wrapper.find('button').at(1).props().disabled).to.equal(true);
+  });
 });
