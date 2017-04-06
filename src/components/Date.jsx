@@ -26,14 +26,9 @@ export class Date extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.props.value !== nextProps.value ||
-      this.state.hasErrors !== nextState.hasErrors;
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
     if (this.props.enabled !== nextProps.enabled ||
-          this.props.value !== nextProps.value ||
-          this.state.hasErrors !== nextState.hasErrors) {
+            this.props.value !== nextProps.value ||
+            this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
     return false;
@@ -71,13 +66,13 @@ export class Date extends Component {
 
   render() {
     return (
-      <input
-        className={classNames({ 'form-builder-error': this.state.hasErrors })}
-        defaultValue={this.props.value}
-        disabled={!this.props.enabled}
-        onChange={(e) => this.handleChange(e)}
-        type="date"
-      />
+            <input
+              className={classNames({ 'form-builder-error': this.state.hasErrors })}
+              defaultValue={this.props.value}
+              disabled={!this.props.enabled}
+              onChange={(e) => this.handleChange(e)}
+              type="date"
+            />
     );
   }
 }
