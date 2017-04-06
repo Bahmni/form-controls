@@ -3,15 +3,13 @@
 
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
-import classNames from 'classnames';
 
 
 export class Label extends Component {
   render() {
     const disableClass = this.props.enabled ? '' : 'disabled-label';
-    const hiddenClass = this.props.hidden ? 'hidden': '';
     return (<label
-      className={`${hiddenClass}${disableClass}`}
+      className={`${disableClass}`}
     >
       {this.props.metadata.value}
     </label>);

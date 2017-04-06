@@ -23,8 +23,9 @@ export default class ControlRecordWrapper {
     if (!this.currentRecord) {
       return;
     }
+    const updatedValue = this.currentRecord.setValue(value);
     this.currentRecord = this.currentRecord.set('value', {
-      value,
+      value: updatedValue,
       comment: this.currentRecord.comment,
     });
     this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, this.currentRecord);
@@ -42,8 +43,8 @@ export default class ControlRecordWrapper {
     this.update();
   }
 
-  setHidden(hidden){
-    if (!this.currentRecord){
+  setHidden(hidden) {
+    if (!this.currentRecord) {
       return;
     }
     this.currentRecord = this.currentRecord.set('hidden', hidden);

@@ -44,7 +44,7 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayObsControl(registeredComponent) {
-    const { hidden, enabled, metadata, metadata: { concept }, validate, formFieldPath } = this.props;
+    const { hidden,enabled, metadata, metadata: { concept }, validate, formFieldPath } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
@@ -76,7 +76,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     if (!hideLabel) {
       return (
-            <Label enabled={this.props.enabled} metadata={label} />
+            <Label enabled={this.props.enabled} hidden={this.props.hidden} metadata={label} />
       );
     }
     return null;
@@ -131,7 +131,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
     if (registeredComponent) {
       return (
-        <div className={classNames('form-field-wrap clearfix', { 'hidden': this.props.hidden })}>
+        <div className="form-field-wrap clearfix">
           <div className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
