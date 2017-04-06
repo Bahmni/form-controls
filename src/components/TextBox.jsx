@@ -65,13 +65,14 @@ export class TextBox extends Component {
   }
 
   render() {
+    const defaultValue = this.props.value || '';
     return (
         <div className="obs-comment-section-wrap">
       <Textarea
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
-        defaultValue={this.props.value}
         disabled={!this.props.enabled}
         onChange={(e) => this.handleChange(e)}
+        value={defaultValue}
       />
         </div>
     );

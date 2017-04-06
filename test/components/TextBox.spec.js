@@ -39,7 +39,7 @@ describe('TextBox', () => {
         value={'defaultText'}
       />
     );
-    expect(wrapper.find('textarea').props().defaultValue).to.be.eql('defaultText');
+    expect(wrapper.find('textarea').props().value).to.be.eql('defaultText');
   });
 
   it('should get user entered value of the text box', () => {
@@ -118,7 +118,7 @@ describe('TextBox', () => {
       />
     );
     wrapper.setProps({ value: 'someText' });
-    expect(wrapper.find('textarea').props().defaultValue).to.be.eql('someText');
+    expect(wrapper.find('textarea').props().value).to.be.eql('someText');
   });
 
   it('should check errors after mount if the formFieldPath suffix is not 0', () => {

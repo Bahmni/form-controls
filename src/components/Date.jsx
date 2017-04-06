@@ -70,13 +70,14 @@ export class Date extends Component {
   }
 
   render() {
+    const defaultValue = this.props.value || '';
     return (
       <input
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
-        defaultValue={this.props.value}
         disabled={!this.props.enabled}
         onChange={(e) => this.handleChange(e)}
         type="date"
+        value={defaultValue}
       />
     );
   }

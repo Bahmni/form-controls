@@ -2,8 +2,10 @@ import { Record, List } from 'immutable';
 import MapperStore from 'src/helpers/MapperStore';
 import constants from 'src/constants';
 import isEmpty from 'lodash/isEmpty';
+import ValueMapperStore from './ValueMapperStore';
 
 export const ControlRecord = new Record({
+  valueMapper: undefined,
   control: undefined,
   formFieldPath: '',
   children: undefined,
@@ -30,13 +32,17 @@ export const ControlRecord = new Record({
     return this.control && (this.control.value || this.control.label.value);
   },
 
+  setValue(value) {
+    if (this.valueMapper) {
+      return this.valueMapper.setValue(this.control, value);
+    }
+    return value;
+  },
+
   getValue() {
     const value = this.value.value;
-    if (value !== undefined && this.control && this.control.options) {
-      const [concept] = this.control.options.filter(opt => opt.value === value);
-      if (concept) {
-        return concept.name;
-      }
+    if (this.valueMapper) {
+      return this.valueMapper.getValue(this.control, value);
     }
     return value;
   },
@@ -107,6 +113,7 @@ export default class ControlRecordTreeBuilder {
       );
       obsArray.forEach(data => {
         const record = new ControlRecord({
+          valueMapper: ValueMapperStore.getMapper(control),
           active: !data.inactive,
           formFieldPath: data.formFieldPath,
           value: mapper.getValue(data),

@@ -1,3 +1,4 @@
+
 class ComponentStore {
   constructor() {
     if (!window.componentStore) {
