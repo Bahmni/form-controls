@@ -44,10 +44,11 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayObsControl(registeredComponent) {
-    const { enabled, metadata, metadata: { concept }, validate, formFieldPath } = this.props;
+    const { hidden,enabled, metadata, metadata: { concept }, validate, formFieldPath } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
+      hidden,
       enabled,
       properties: metadata.properties,
       options,
@@ -75,7 +76,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     if (!hideLabel) {
       return (
-            <Label enabled={this.props.enabled} metadata={label} />
+            <Label enabled={this.props.enabled} hidden={this.props.hidden} metadata={label} />
       );
     }
     return null;
@@ -178,6 +179,7 @@ ObsControl.propTypes = {
 
 ObsControl.defaultProps = {
   enabled: true,
+  hidden: false,
   showAddMore: false,
   showRemove: false,
 };
