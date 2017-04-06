@@ -151,6 +151,22 @@ describe('Section', () => {
     expect(wrapper.find('ObsControl')).to.have.prop('enabled').to.deep.eql(false);
   });
 
+  it('should set enabled as true by default', () => {
+    const wrapper = mount(
+      <Section
+        children={children}
+        collapse
+        formFieldPath={sectionFormFieldPath}
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper.find('Section')).to.have.prop('enabled').to.deep.eql(true);
+  });
+
   it('should render section control with only the registered controls', () => {
     ComponentStore.deRegisterComponent('obsControl');
     const wrapper = mount(
