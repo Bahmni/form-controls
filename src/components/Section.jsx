@@ -96,6 +96,7 @@ Section.propTypes = {
 
 Section.defaultProps = {
   children: List.of([]),
+  enabled: true,
 };
 
 

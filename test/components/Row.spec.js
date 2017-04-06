@@ -86,6 +86,24 @@ describe('Row', () => {
       expect(wrapper.find('DummyControl').at(0)).to.have.prop('validate').to.eql(false);
     });
 
+    it('should pass enabled value of records when parent\'s enabled value is true', () => {
+      const records1 = [{ id: 'someId', enabled: false, control: { id: '101' } }];
+      const wrapper = mount(
+        <Row
+          controls={controls}
+          enabled
+          formName={formName}
+          formVersion={formVersion}
+          id={0}
+          onValueChanged={onChangeSpy}
+          records={records1}
+          validate={false}
+        />
+      );
+
+      expect(wrapper.find('DummyControl').at(0)).to.have.prop('enabled').to.eql(false);
+    });
+
     it('should not render rows when controls is empty', () => {
       const wrapper = shallow(
         <Row
