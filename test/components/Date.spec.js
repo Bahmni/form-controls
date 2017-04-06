@@ -39,7 +39,7 @@ describe('Date', () => {
         value={'2016-12-29'}
       />
     );
-    expect(wrapper.find('input').props().defaultValue).to.be.eql('2016-12-29');
+    expect(wrapper.find('input').props().value).to.be.eql('2016-12-29');
   });
 
   it('should get user entered value of the date', () => {
@@ -163,7 +163,7 @@ describe('Date', () => {
       />
     );
     wrapper.setProps({ value: '2016-12-31' });
-    expect(wrapper.find('input').props().defaultValue).to.be.eql('2016-12-31');
+    expect(wrapper.find('input').props().value).to.be.eql('2016-12-31');
   });
 
   it('should show as disabled when date is set to be disabled', () => {

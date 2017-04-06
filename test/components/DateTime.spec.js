@@ -40,8 +40,8 @@ describe('DateTime', () => {
         value={'2016-12-29 22:30'}
       />
     );
-    expect(wrapper.find('input').at(0).props().defaultValue).to.be.eql('2016-12-29');
-    expect(wrapper.find('input').at(1).props().defaultValue).to.be.eql('22:30');
+    expect(wrapper.find('input').at(0).props().value).to.be.eql('2016-12-29');
+    expect(wrapper.find('input').at(1).props().value).to.be.eql('22:30');
   });
 
   it('should get user entered value of the date time', () => {
@@ -130,8 +130,8 @@ describe('DateTime', () => {
       />
     );
     wrapper.setProps({ validate: true, value: '2016-12-31 10:10' });
-    expect(wrapper.find('input').at(0).props().defaultValue).to.be.eql('2016-12-31');
-    expect(wrapper.find('input').at(1).props().defaultValue).to.be.eql('10:10');
+    expect(wrapper.find('input').at(0).props().value).to.be.eql('2016-12-31');
+    expect(wrapper.find('input').at(1).props().value).to.be.eql('10:10');
   });
 
   it('should check errors after mount if the formFieldPath suffix is not 0', () => {

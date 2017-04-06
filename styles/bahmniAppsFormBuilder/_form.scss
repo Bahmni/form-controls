@@ -225,7 +225,6 @@
       left: 10px;
       &.form-builder-toggle{
         cursor: pointer;
-        background: $gray400;
         i {
           width: 1.25em;
           text-align: center;
@@ -246,6 +245,18 @@
             display: inline-block;
             width: 1.2em;
           }
+          &.disabled{
+            background: #eee;
+            border: #ccc 1px solid;
+            color: grey;
+            font-style: normal;
+          }
+        }
+        &.disabled{
+          background: #eee;
+          border: #ccc 1px solid;
+          color: grey;
+          font-style: normal;
         }
       }
     }
@@ -285,6 +296,14 @@
 }
 
 .Select.is-disabled > .Select-control {
+  background: #eee;
+  border: #ccc 1px solid;
+  color: #ccc;
+  font-style: normal;
+  cursor: not-allowed;
+}
+
+.disabled {
   background: #eee;
   border: #ccc 1px solid;
   color: #ccc;
