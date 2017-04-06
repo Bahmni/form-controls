@@ -12,6 +12,7 @@ export const ControlRecord = new Record({
   value: {},
   active: true,
   enabled: true,
+  hidden: false,
   showAddMore: false,
   showRemove: false,
   errors: [],

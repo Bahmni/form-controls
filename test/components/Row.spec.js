@@ -120,4 +120,20 @@ describe('Row', () => {
       expect(wrapper).to.be.blank();
     });
   });
+
+  it('should hide the row when control is hidden', () => {
+    records[0].hidden = true;
+    const wrapper = shallow(
+      <Row
+        controls={controls}
+        formName={formName}
+        formVersion={formVersion}
+        id={0}
+        onValueChanged={onChangeSpy}
+        records={records}
+        validate={false}
+      />
+    );
+    expect(wrapper.find('.form-builder-column').at(0)).to.have.className('hidden');
+  });
 });

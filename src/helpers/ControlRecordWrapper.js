@@ -11,6 +11,11 @@ export default class ControlRecordWrapper {
     return this;
   }
 
+  update(updatedRecord) {
+    const currentRecord = this.set(updatedRecord).currentRecord;
+    this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, currentRecord);
+  }
+
   getRecords() {
     return this.rootRecord;
   }
@@ -23,12 +28,11 @@ export default class ControlRecordWrapper {
     const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
 
     brotherTrees.forEach(r => {
-      const updatedValue = r.setValue(value);
-      this.currentRecord = r.set('value', {
-        value: updatedValue,
+      const updatedRecord = r.set('value', {
+        value: r.setValue(value),
         comment: this.currentRecord.comment,
       });
-      this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, this.currentRecord);
+      this.update(updatedRecord);
     });
   }
 
@@ -40,8 +44,21 @@ export default class ControlRecordWrapper {
     const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
 
     brotherTrees.forEach(r => {
-      this.currentRecord = r.set('enabled', isEnabled);
-      this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, this.currentRecord);
+      const updatedRecord = r.set('enabled', isEnabled);
+      this.update(updatedRecord);
+    });
+  }
+
+  getHidden() {
+    return this.currentRecord && this.currentRecord.hidden;
+  }
+
+  setHidden(hidden) {
+    const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
+
+    brotherTrees.forEach(r => {
+      const updatedRecord = r.set('hidden', hidden);
+      this.update(updatedRecord);
     });
   }
 }
