@@ -16,7 +16,7 @@ export default class ControlRecordWrapper {
   }
 
   getValue() {
-    return this.currentRecord.getValue();
+    return this.currentRecord && this.currentRecord.getValue();
   }
 
   setValue(value) {
@@ -33,7 +33,7 @@ export default class ControlRecordWrapper {
   }
 
   getEnabled() {
-    return this.currentRecord.enabled;
+    return this.currentRecord && this.currentRecord.enabled;
   }
 
   setEnabled(isEnabled) {
