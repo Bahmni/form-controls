@@ -61,8 +61,10 @@ export const ControlRecord = new Record({
   getErrors() {
     const errorArray = [];
     const errors = this.get('errors');
-    if (errors && !isEmpty(errors.filter((err) => err.type === constants.errorTypes.error))) {
-      errorArray.push(errors);
+    let filteredErrors = errors.filter((err) => err.type === constants.errorTypes.error);
+    let filteredMandatoryErrors = filteredErrors.filter((err) => err.message !== constants.validations.mandatory || err.message === constants.validations.mandatory && this.enabled && !this.hidden);
+    if (errors && !isEmpty(filteredMandatoryErrors)) {
+      errorArray.push(filteredMandatoryErrors);
     }
 
     if (this.children) {
