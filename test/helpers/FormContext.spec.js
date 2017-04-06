@@ -191,6 +191,22 @@ describe('FormContext', () => {
     expect(targetRecord.enabled).to.equal(false);
   });
 
+  it('should set record hidden when given set api triggered', () => {
+    const formContext = new FormContext(recordTree);
+
+    const originalRootTree = formContext.getRecords();
+    const originalRecord = originalRootTree.children.get(0);
+    expect(originalRecord.formFieldPath).to.equal(formFieldPathInPosition0);
+    expect(originalRecord.hidden).to.equal(false);
+
+    formContext.get(booleanConceptName, 0).setHidden(true);
+
+    const updatedRootTree = formContext.getRecords();
+    const targetRecord = updatedRootTree.children.get(0);
+    expect(targetRecord.formFieldPath).to.equal(formFieldPathInPosition0);
+    expect(targetRecord.hidden).to.equal(true);
+  });
+
   it('should get label name of the record does not have the concept name ' +
     'and has value as label name', () => {
     const labelName = 'something';
