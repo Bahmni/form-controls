@@ -5,7 +5,10 @@ export class AddMore extends Component {
   showAdd() {
     if (this.props.canAdd) {
       return (
-          <button className="form-builder-add-more" disabled={ !this.props.enabled } onClick={ this.props.onAdd } >
+          <button className="form-builder-add-more"
+            disabled={ !this.props.enabled }
+            onClick={ this.props.onAdd }
+          >
             <i className="fa fa-plus"></i>
           </button>
       );
@@ -16,7 +19,10 @@ export class AddMore extends Component {
   showDelete() {
     if (this.props.canRemove) {
       return (
-          <button className="form-builder-remove" disabled={ !this.props.enabled } onClick={ this.props.onRemove } >
+          <button className="form-builder-remove"
+            disabled={ !this.props.enabled }
+            onClick={ this.props.onRemove }
+          >
             <i className="fa fa-remove"></i>
           </button>
       );
@@ -35,9 +41,9 @@ export class AddMore extends Component {
 }
 
 AddMore.propTypes = {
-  enabled: PropTypes.bool,
   canAdd: PropTypes.bool.isRequired,
   canRemove: PropTypes.bool.isRequired,
+  enabled: PropTypes.bool,
   onAdd: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
 };

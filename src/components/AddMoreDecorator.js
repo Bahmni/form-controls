@@ -8,8 +8,11 @@ const addMoreDecorator = Sup => class extends Sup {
     const isAddMoreEnabled = find(properties, (value, key) => (key === 'addMore' && value));
     if (isAddMoreEnabled) {
       return (
-        <AddMore enabled={ this.props.enabled } canAdd={ this.props.showAddMore } canRemove={ this.props.showRemove }
-          onAdd={this.onAddControl} onRemove={this.onRemoveControl}
+        <AddMore canAdd={ this.props.showAddMore }
+          canRemove={ this.props.showRemove }
+          enabled={ this.props.enabled }
+          onAdd={this.onAddControl}
+          onRemove={this.onRemoveControl}
         />
       );
     }

@@ -61,7 +61,7 @@ describe('AddMore', () => {
     const onAddSpy = sinon.spy();
     const onRemoveSpy = sinon.spy();
     const wrapper = mount(<AddMore canAdd canRemove
-                                   onAdd={onAddSpy} onRemove={onRemoveSpy}
+      onAdd={onAddSpy} onRemove={onRemoveSpy}
     />);
 
     expect(wrapper.find('button').at(0).props().disabled).to.equal(false);
@@ -72,7 +72,7 @@ describe('AddMore', () => {
     const onAddSpy = sinon.spy();
     const onRemoveSpy = sinon.spy();
     const wrapper = mount(<AddMore canAdd canRemove enabled={false}
-                                   onAdd={onAddSpy} onRemove={onRemoveSpy}
+      onAdd={onAddSpy} onRemove={onRemoveSpy}
     />);
 
     expect(wrapper.find('button').at(0).props().disabled).to.equal(true);

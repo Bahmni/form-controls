@@ -1307,9 +1307,10 @@ describe('Container', () => {
         />
       );
       const targetFormFieldPath = '3129.4/5-0';
-      wrapper.instance().onValueChanged(targetFormFieldPath, { value: true }, undefined);
 
-      wrapper.instance().onEventTrigger(targetFormFieldPath, 'onValueChange');
+      const instance = wrapper.instance();
+      instance.onValueChanged(targetFormFieldPath, { value: true }, undefined);
+      instance.onEventTrigger(targetFormFieldPath, 'onValueChange');
 
       const textBoxRecord = wrapper.state().data.children.get(1);
       expect(textBoxRecord.enabled).to.equal(false);
