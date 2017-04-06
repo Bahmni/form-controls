@@ -43,8 +43,8 @@ export default class ControlRecordWrapper {
     this.update();
   }
 
-  setHidden(hidden){
-    if (!this.currentRecord){
+  setHidden(hidden) {
+    if (!this.currentRecord) {
       return;
     }
     this.currentRecord = this.currentRecord.set('hidden', hidden);

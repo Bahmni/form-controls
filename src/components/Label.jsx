@@ -3,7 +3,6 @@
 
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
-import classNames from 'classnames';
 
 
 export class Label extends Component {

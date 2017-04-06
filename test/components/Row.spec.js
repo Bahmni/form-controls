@@ -134,6 +134,6 @@ describe('Row', () => {
         validate={false}
       />
     );
-    expect(wrapper.find('.form-builder-column').at(0)).to.have.className('hidden');;
-  })
+    expect(wrapper.find('.form-builder-column').at(0)).to.have.className('hidden');
+  });
 });

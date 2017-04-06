@@ -18,7 +18,9 @@ export default class Row extends Component {
   getAddMoreControls(controls, className) {
     return controls.map((control, index) => (
       control.map(ctrl =>
-        <div className={classNames(`${className}-index${index}`, {'hidden': ctrl.props.hidden})} key={ ctrl.props.formFieldPath }>
+        <div className={classNames(`${className}-index${index}`, { hidden: ctrl.props.hidden })}
+          key={ ctrl.props.formFieldPath }
+        >
           {ctrl}
         </div>
       )
