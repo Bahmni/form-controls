@@ -432,7 +432,7 @@ describe('ObsControl', () => {
         />
       );
 
-      wrapper.instance().onChange('value','error');
+      wrapper.instance().onChange('value', 'error');
 
       sinon.assert.calledOnce(eventTriggerSpy);
     });

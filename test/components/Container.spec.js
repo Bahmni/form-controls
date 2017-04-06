@@ -171,20 +171,77 @@ describe('Container', () => {
     });
     const recordTree = new ControlRecord({ children: List.of(childRecord) });
 
-
     it('should render a control when given single layer tree data', () => {
       const wrapper = mount(
-                <Container
-                  collapse
-                  metadata={metadata}
-                  observations={[]}
-                  validate={false}
-                />
-            );
+            <Container
+              collapse
+              metadata={metadata}
+              observations={[]}
+              validate={false}
+            />
+        );
 
       wrapper.setState({ data: recordTree });
 
       expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+    });
+
+    it('should initialize the states of controls before mount', () => {
+      const metadata1 = {
+        controls: [
+          {
+            concept: {
+              answers: [],
+              datatype: 'Numeric',
+              description: [],
+              name: 'Pulse',
+              properties: {
+                allowDecimal: true,
+              },
+              uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+            },
+            hiAbsolute: null,
+            hiNormal: 72,
+            id: '1',
+            label: {
+              type: 'label',
+              value: 'Pulse(/min)',
+            },
+            lowAbsolute: null,
+            lowNormal: 72,
+            properties: {
+              addMore: true,
+              hideLabel: false,
+              location: {
+                column: 0,
+                row: 0,
+              },
+              mandatory: true,
+              notes: false,
+            },
+            type: 'obsControl',
+            units: '/min',
+          },
+        ],
+        id: 209,
+        name: 'SingleObs',
+        uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
+        version: '1',
+        events: {
+          onFormInit: "function(form){form.get('Pulse').setEnabled(false);}",
+        },
+      };
+
+      const wrapper = mount(
+        <Container
+          collapse
+          metadata={metadata1}
+          observations={[]}
+          validate={false}
+        />
+      );
+
+      expect(wrapper.find('ObsControl')).to.have.prop('enabled').to.deep.eql(false);
     });
 
     it('should change state when onValueChanged is triggered', () => {
@@ -1223,7 +1280,7 @@ describe('Container', () => {
         uuid: 'c398a4be-3f10-11e4-adec-0800271c1b75',
       };
       const events = {
-        onValueChange: `function(){
+        onValueChange: `function(form){
                     if(form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
                       form.get('Chief Complaint Notes').setEnabled(false);
                     } else {
