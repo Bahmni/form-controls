@@ -121,7 +121,7 @@ describe('Row', () => {
     });
   });
 
-  it.only('should hide the row when control is hidden', () => {
+  it('should hide the row when control is hidden', () => {
     records[0].hidden = true;
     const wrapper = shallow(
       <Row
