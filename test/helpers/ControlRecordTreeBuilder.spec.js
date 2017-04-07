@@ -397,12 +397,12 @@ describe('ControlRecordTreeBuilder', () => {
   it('should not get mandatory error when the record is hidden', () => {
     const errors = {
       type: 'error',
-      message: "mandatory"
+      message: 'mandatory',
     };
     const obsRecordTree = new ControlRecord({
       control: {
         errors,
-        hidden: true
+        hidden: true,
       },
     });
     expect(obsRecordTree.getErrors().length).to.equals(0);
@@ -410,12 +410,12 @@ describe('ControlRecordTreeBuilder', () => {
   it('should not get mandatory error when the record is disabled', () => {
     const errors = {
       type: 'error',
-      message: "mandatory"
+      message: 'mandatory',
     };
     const obsRecordTree = new ControlRecord({
       control: {
         errors,
-        enabled: false
+        enabled: false,
       },
     });
     expect(obsRecordTree.getErrors().length).to.equals(0);

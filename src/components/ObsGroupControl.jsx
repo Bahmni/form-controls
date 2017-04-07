@@ -62,7 +62,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     const disableClass = this.props.enabled ? '' : ' disabled';
     const hiddenClass = !this.props.hidden ? '' : 'hidden';
     return (
-        <fieldset className={ classNames("form-builder-fieldset", `${hiddenClass}`) }>
+        <fieldset className={ classNames('form-builder-fieldset', `${hiddenClass}`) }>
           <legend className={`${toggleClass}${disableClass}`} onClick={ this._onCollapse}>
             <i className="fa fa-caret-down"></i>
             <i className="fa fa-caret-right"></i>

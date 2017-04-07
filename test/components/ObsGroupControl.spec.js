@@ -336,9 +336,9 @@ describe('ObsGroupControl', () => {
       <ObsGroupControl
         children={children}
         collapse={false}
-        hidden
         formName={formName}
         formVersion={formVersion}
+        hidden
         metadata={metadata}
         onValueChanged={onChangeSpy}
         validate={false}
@@ -354,9 +354,9 @@ describe('ObsGroupControl', () => {
       <ObsGroupControl
         children={children}
         collapse={false}
-        hidden
         formName={formName}
         formVersion={formVersion}
+        hidden
         metadata={metadata}
         onValueChanged={onChangeSpy}
         validate={false}

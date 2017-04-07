@@ -35,14 +35,6 @@ describe('ObsControl', () => {
     type: 'label',
   };
 
-  const metadata = {
-    id: '100',
-    type: 'obsControl',
-    concept: getConcept('Text'),
-    label,
-    options: [],
-  };
-
   const domainValue = {};
 
   const properties = { location: { row: 0, column: 1 } };
