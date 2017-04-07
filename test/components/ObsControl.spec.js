@@ -476,32 +476,4 @@ describe('ObsControl', () => {
       expect(wrapper.find('Label').props().enabled).to.equal(true);
     });
   });
-
-  it('should show as hidden when obs control is set to be hidden', () => {
-    const wrapper = mount(
-      <ObsControl
-        hidden
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={domainValue}
-      />
-    );
-    wrapper.setProps({ hidden: true });
-    expect(wrapper.find('.form-field-wrap.clearfix')).to.have.className('hidden');
-  });
-
-  it('should show as display when obs control is set not to be hidden', () => {
-    const wrapper = mount(
-      <ObsControl
-        hidden
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={domainValue}
-      />
-    );
-    wrapper.setProps({ hidden: false });
-    expect(wrapper.find('.form-field-wrap.clearfix')).to.not.have.className('hidden');
-  });
 });
