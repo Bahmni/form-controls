@@ -6,6 +6,8 @@ import ControlRecordTreeMgr from 'src/helpers/ControlRecordTreeMgr';
 import ScriptRunner from 'src/helpers/ScriptRunner';
 import addMoreDecorator from './AddMoreDecorator';
 import ObservationMapper from '../helpers/ObservationMapper';
+import NotificationContainer from '../helpers/Notification';
+import Constants from '../constants';
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
@@ -13,7 +15,8 @@ export class Container extends addMoreDecorator(Component) {
     this.childControls = {};
     const { observations, metadata } = this.props;
     const controlRecordTree = new ControlRecordTreeBuilder().build(metadata, observations);
-    this.state = { errors: [], data: controlRecordTree, collapse: props.collapse };
+    this.state = { errors: [], data: controlRecordTree,
+      collapse: props.collapse, notification: {} };
     this.storeChildRef = this.storeChildRef.bind(this);
     this.onValueChanged = this.onValueChanged.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
@@ -52,9 +55,27 @@ export class Container extends addMoreDecorator(Component) {
     }), onActionDone);
   }
 
+
+  getAddMoreMessage(rootTree, formFieldPath) {
+    const targetRecordTree = ControlRecordTreeMgr.find(rootTree, formFieldPath);
+    const name = targetRecordTree.getConceptName();
+    const type = targetRecordTree.getConceptType();
+    return (`A new ${name} ${type} has been added`);
+  }
+
   onControlAdd(formFieldPath) {
     const updatedRecordTree = ControlRecordTreeMgr.add(this.state.data, formFieldPath);
-    this.setState({ data: updatedRecordTree });
+
+    const addMoreMessage = this.getAddMoreMessage(this.state.data, formFieldPath);
+
+    this.setState({
+      data: updatedRecordTree,
+      notification: { message: addMoreMessage, type: Constants.messageType.success },
+    });
+
+    setTimeout(() => {
+      this.setState({ notification: {} });
+    }, Constants.toastTimeout);
   }
 
   onControlRemove(formFieldPath) {
@@ -104,7 +125,12 @@ export class Container extends addMoreDecorator(Component) {
     const groupedRowControls = getGroupedControls(controls, 'row');
     const records = this.state.data.getActive().children.toArray();
     return (
-      <div>{displayRowControls(groupedRowControls, records, childProps)}</div>
+      <div>
+        <NotificationContainer
+          notification={this.state.notification}
+        />
+        {displayRowControls(groupedRowControls, records, childProps)}
+      </div>
     );
   }
 }

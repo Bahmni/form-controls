@@ -13,6 +13,7 @@ import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 import { CodedControl } from 'components/CodedControl.jsx';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import ComponentStore from 'src/helpers/componentStore';
+import Constants from 'src/constants';
 
 
 chai.use(chaiEnzyme());
@@ -1371,6 +1372,24 @@ describe('Container', () => {
 
       const textBoxRecord = wrapper.state().data.children.get(1);
       expect(textBoxRecord.enabled).to.equal(false);
+    });
+
+    it('should render notification when given non-empty notification', () => {
+      const wrapper = shallow(
+        <Container
+          collapse
+          metadata={metadata}
+          observations={[]}
+          validate={false}
+        />
+      );
+
+      wrapper.setState({ notification: {
+        message: 'this is notification test',
+        type: Constants.messageType.success,
+      } });
+
+      expect(wrapper.find('NotificationContainer').length).to.equal(1);
     });
   });
 

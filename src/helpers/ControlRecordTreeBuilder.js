@@ -29,6 +29,10 @@ export const ControlRecord = new Record({
     return this.control && this.control.concept && this.control.concept.name;
   },
 
+  getConceptType() {
+    return this.control && this.control.type;
+  },
+
   getLabelName() {
     return this.control && (this.control.value || this.control.label.value);
   },

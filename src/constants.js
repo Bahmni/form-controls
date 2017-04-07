@@ -16,6 +16,13 @@ const Constants = {
     error: 'error',
   },
   bahmni: 'Bahmni',
+
+  messageType: {
+    success: 'success',
+    error: 'error',
+  },
+
+  toastTimeout: 4000,
 };
 
 export default Constants;
