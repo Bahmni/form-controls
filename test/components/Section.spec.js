@@ -294,9 +294,26 @@ describe('Section', () => {
       />);
 
     const updatedValue = { value: 1, comment: undefined };
-    wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined);
+    wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined, undefined);
 
     sinon.assert.calledOnce(
-      onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined));
+      onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined, undefined));
+  });
+
+  it('should pass onEventTrigger property to children control', () => {
+    const wrapper = mount(
+      <Section
+        children={children}
+        collapse
+        formFieldPath={sectionFormFieldPath}
+        formName={formName}
+        formVersion={formVersion}
+        metadata={metadata}
+        onEventTrigger={() => {}}
+        onValueChanged={onChangeSpy}
+        validate={false}
+      />);
+
+    expect(wrapper.find('Row')).to.have.prop('onEventTrigger');
   });
 });

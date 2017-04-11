@@ -26,8 +26,8 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     }
   }
 
-  onChange(formFieldPath, value, errors) {
-    this.props.onValueChanged(formFieldPath, value, errors);
+  onChange(formFieldPath, value, errors, onActionDone) {
+    this.props.onValueChanged(formFieldPath, value, errors, onActionDone);
   }
 
   onControlAdd(formFieldPath) {
@@ -44,16 +44,24 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
   }
 
   render() {
-    const { collapse, formName, formVersion, metadata: { label }, validate } = this.props;
+    const {
+      collapse,
+      formName,
+      formVersion,
+      metadata: { label },
+      onEventTrigger,
+      validate,
+    } = this.props;
     const childProps = {
       collapse,
       enabled: this.props.enabled,
       formName,
       formVersion,
       validate,
-      onValueChanged: this.onChange,
       onControlAdd: this.onControlAdd,
       onControlRemove: this.onControlRemove,
+      onEventTrigger,
+      onValueChanged: this.onChange,
     };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
@@ -96,6 +104,7 @@ ObsGroupControl.propTypes = {
   }),
   onControlAdd: PropTypes.func,
   onControlRemove: PropTypes.func,
+  onEventTrigger: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
   showAddMore: PropTypes.bool.isRequired,
   showRemove: PropTypes.bool.isRequired,

@@ -24,8 +24,8 @@ export class Section extends addMoreDecorator(Component) {
     }
   }
 
-  onChange(formFieldPath, value, errors) {
-    this.props.onValueChanged(formFieldPath, value, errors);
+  onChange(formFieldPath, value, errors, onActionDone) {
+    this.props.onValueChanged(formFieldPath, value, errors, onActionDone);
   }
 
   onControlAdd(formFieldPath) {
@@ -42,7 +42,15 @@ export class Section extends addMoreDecorator(Component) {
   }
 
   render() {
-    const { collapse, enabled, formName, formVersion, metadata: { label }, validate } = this.props;
+    const {
+      collapse,
+      enabled,
+      formName,
+      formVersion,
+      metadata: { label },
+      onEventTrigger,
+      validate,
+    } = this.props;
     const childProps = {
       collapse,
       enabled,
@@ -52,6 +60,7 @@ export class Section extends addMoreDecorator(Component) {
       onValueChanged: this.onChange,
       onControlAdd: this.onControlAdd,
       onControlRemove: this.onControlRemove,
+      onEventTrigger,
     };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const sectionClass =
@@ -90,6 +99,7 @@ Section.propTypes = {
     type: PropTypes.string.isRequired,
     controls: PropTypes.array,
   }),
+  onEventTrigger: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
 };

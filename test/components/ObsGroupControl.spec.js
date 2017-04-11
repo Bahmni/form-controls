@@ -272,9 +272,10 @@ describe('ObsGroupControl', () => {
     );
 
     const updatedValue = { value: 1, comment: undefined };
-    wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined);
+    wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined, undefined);
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined));
+    sinon.assert.calledOnce(
+      onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined, undefined));
   });
 
   it('should disable children in obsGroup when obsGroup is set disable', () => {
@@ -365,5 +366,24 @@ describe('ObsGroupControl', () => {
     );
     wrapper.setProps({ hidden: false });
     expect(wrapper.find('fieldset')).to.not.have.className('hidden');
+  });
+
+  it('should pass onEventTrigger property to children', () => {
+    const wrapper = mount(
+      <ObsGroupControl
+        children={children}
+        collapse={false}
+        formName={formName}
+        formVersion={formVersion}
+        hidden
+        metadata={metadata}
+        onEventTrigger={() => {}}
+        onValueChanged={onChangeSpy}
+        validate={false}
+        value={emptyValue}
+      />
+    );
+
+    expect(wrapper.find('ObsControl')).to.have.prop('onEventTrigger');
   });
 });
