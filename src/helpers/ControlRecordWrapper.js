@@ -12,8 +12,21 @@ export default class ControlRecordWrapper {
   }
 
   update(updatedRecord) {
-    const currentRecord = this.set(updatedRecord).currentRecord;
+    const currentRecord = this.set(this.updateNode(updatedRecord)).currentRecord;
     this.rootRecord = ControlRecordTreeMgr.update(this.rootRecord, currentRecord);
+  }
+
+
+  updateNode(record) {
+    if (record.children) {
+      const updatedChild = record.children.map(r => {
+        const updatedRecord = r.set('enabled', record.enabled).set('hidden', record.hidden);
+        this.updateNode(this.set(updatedRecord).currentRecord);
+        return updatedRecord;
+      });
+      return record.set('children', updatedChild);
+    }
+    return record;
   }
 
   getRecords() {
