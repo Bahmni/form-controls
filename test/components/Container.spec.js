@@ -1391,6 +1391,32 @@ describe('Container', () => {
 
       expect(wrapper.find('NotificationContainer').length).to.equal(1);
     });
+
+    it('should confirm errors be array when onControlRemove be triggered', () => {
+      const wrapper = shallow(
+        <Container
+          collapse
+          metadata={metadata}
+          observations={[]}
+          validate={false}
+        />
+      );
+      const clonedFormFieldPath = 'SingleObs.1/1-1';
+      const clonedRecord = new ControlRecord({
+        control: childRecord.control,
+        formFieldPath: clonedFormFieldPath,
+        dataSource: childRecord.dataSource,
+      });
+      const addMoreTree = new ControlRecord({ children: List.of(childRecord, clonedRecord) });
+      wrapper.setState({ data: addMoreTree });
+
+      wrapper.instance().onControlRemove(clonedFormFieldPath);
+
+      wrapper.state().data.children.forEach(r => {
+        expect(typeof r.errors).to.equal('object');
+        expect(r.errors.length).to.be.at.least(0);
+      });
+    });
   });
 
   describe('Multiple layer', () => {
