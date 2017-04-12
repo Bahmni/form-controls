@@ -12,6 +12,7 @@ import { ObsControl } from 'components/ObsControl.jsx';
 import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 import { CodedControl } from 'components/CodedControl.jsx';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
+import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 import ComponentStore from 'src/helpers/componentStore';
 import Constants from 'src/constants';
 
@@ -525,6 +526,63 @@ describe('Container', () => {
       expect(result.errors).is.not.equal(undefined);
       expect(result.observations).is.not.equal(undefined);
     });
+
+    it('should update the record tree when load the form', () => {
+      const concept = {
+        answers: [],
+        datatype: 'Numeric',
+        description: [],
+        name: 'HEIGHT',
+        properties: {
+          allowDecimal: false,
+        },
+        uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      };
+      const heightMetadata = {
+        controls: [
+          {
+            concept,
+            hiAbsolute: null,
+            hiNormal: null,
+            id: '1',
+            label: {
+              type: 'label',
+              value: 'HEIGHT',
+            },
+            lowAbsolute: null,
+            lowNormal: null,
+            properties: {
+              addMore: false,
+              hideLabel: false,
+              location: {
+                column: 0,
+                row: 0,
+              },
+              mandatory: false,
+              notes: false,
+            },
+            type: 'obsControl',
+            units: null,
+          },
+        ],
+        id: 284,
+        name: '3383',
+        uuid: 'c60ea8ad-17ef-4968-9733-82b846513d78',
+        version: '3',
+      };
+      const controlRecordTree = new ControlRecordTreeBuilder().build(heightMetadata, []);
+      const wrapper = mount(
+        <Container
+          collapse
+          metadata={heightMetadata}
+          observations={[]}
+          validate={false}
+        />
+      );
+
+      expect(wrapper.state.data).is.not.equal(controlRecordTree);
+    });
+
 
     it('should add one obsGroup when onControlAdd is triggered with obsGroup in container', () => {
       const concept = {
