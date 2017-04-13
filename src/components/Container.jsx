@@ -25,13 +25,9 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   componentWillMount() {
-    const observations = this.getValue().observations;
-    const controlRecordTree =
-      new ControlRecordTreeBuilder().build(this.props.metadata, observations);
-
     const initScript = this.props.metadata.events && this.props.metadata.events.onFormInit;
     if (initScript) {
-      const updatedTree = new ScriptRunner(controlRecordTree).execute(initScript);
+      const updatedTree = new ScriptRunner(this.state.data).execute(initScript);
       this.setState({ data: updatedTree });
     }
   }
