@@ -57,7 +57,7 @@ describe('DateTime', () => {
     wrapper.find('input').at(0).simulate('change', { target: { value: '2016-12-31' } });
     wrapper.find('input').at(1).simulate('change', { target: { value: '22:10' } });
 
-    sinon.assert.callCount(onChangeSpy, 5);
+    sinon.assert.callCount(onChangeSpy, 4);
     sinon.assert.calledWithMatch(onChangeSpy, '2016-12-31', [error]);
     sinon.assert.calledTwice(onChangeSpy.withArgs('2016-12-31 22:10', []));
   });

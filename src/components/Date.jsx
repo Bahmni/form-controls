@@ -13,7 +13,7 @@ export class Date extends Component {
   }
 
   componentDidMount() {
-    if (this.state.hasErrors || this.props.value !== 'undefined') {
+    if (this.state.hasErrors || typeof this.props.value !== 'undefined') {
       this.props.onChange(this.props.value, this._getErrors(this.props.value));
     }
   }
