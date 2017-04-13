@@ -304,7 +304,7 @@ describe('NumericBox', () => {
       />
     );
     wrapper.instance();
-    sinon.assert.calledOnce(onChangeSpy);
+    sinon.assert.calledOnce(spy);
   });
   it('should not trigger onChange when mounting component and the value is undefined', () => {
     const spy = sinon.spy();
@@ -315,10 +315,10 @@ describe('NumericBox', () => {
         onChange={spy}
         validate={false}
         validations={[]}
-        value={'undefined'}
+        value={undefined}
       />
     );
     wrapper.instance();
-    sinon.assert.notCalled(onChangeSpy);
+    sinon.assert.notCalled(spy);
   });
 });
