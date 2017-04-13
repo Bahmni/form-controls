@@ -312,4 +312,20 @@ describe('Button Component', () => {
 
     sinon.assert.calledOnce(componentUpdatedSpy);
   });
+
+  it('should trigger onChange when mounting component and the value is not undefined', () => {
+    const onChangeSpy = sinon.spy();
+    const wrapper = mount(
+      <Button
+        enabled
+        formFieldPath="test1.1-0"
+        onValueChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+        value={value}
+      />
+    );
+    wrapper.instance();
+    sinon.assert.calledOnce(onChangeSpy);
+  });
 });

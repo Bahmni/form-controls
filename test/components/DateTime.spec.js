@@ -57,7 +57,7 @@ describe('DateTime', () => {
     wrapper.find('input').at(0).simulate('change', { target: { value: '2016-12-31' } });
     wrapper.find('input').at(1).simulate('change', { target: { value: '22:10' } });
 
-    sinon.assert.callCount(onChangeSpy, 4);
+    sinon.assert.callCount(onChangeSpy, 5);
     sinon.assert.calledWithMatch(onChangeSpy, '2016-12-31', [error]);
     sinon.assert.calledTwice(onChangeSpy.withArgs('2016-12-31 22:10', []));
   });
@@ -190,5 +190,20 @@ describe('DateTime', () => {
 
     expect(wrapper.find('input').at(0).props().disabled).to.eql(false);
     expect(wrapper.find('input').at(1).props().disabled).to.eql(false);
+  });
+
+  it('should trigger onChange when mounting component and the value is not undefined', () => {
+    const wrapper = mount(
+      <DateTime
+        enabled
+        formFieldPath="test1.1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+        value={'2016-12-29'}
+      />
+    );
+    wrapper.instance();
+    sinon.assert.calledOnce(onChangeSpy);
   });
 });

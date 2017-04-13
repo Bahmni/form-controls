@@ -291,4 +291,34 @@ describe('NumericBox', () => {
 
     sinon.assert.calledOnce(componentUpdatedSpy);
   });
+
+  it('should trigger onChange when mounting component and the value is not undefined', () => {
+    const spy = sinon.spy();
+    const wrapper = mount(
+      <NumericBox
+        formFieldPath="test1.1-0"
+        onChange={spy}
+        validate={false}
+        validations={[]}
+        value={'30'}
+      />
+    );
+    wrapper.instance();
+    sinon.assert.calledOnce(onChangeSpy);
+  });
+  it('should not trigger onChange when mounting component and the value is undefined', () => {
+    const spy = sinon.spy();
+    const wrapper = mount(
+      <NumericBox
+        enabled
+        formFieldPath="test1.1-0"
+        onChange={spy}
+        validate={false}
+        validations={[]}
+        value={'undefined'}
+      />
+    );
+    wrapper.instance();
+    sinon.assert.notCalled(onChangeSpy);
+  });
 });

@@ -193,4 +193,18 @@ describe('Date', () => {
 
     expect(wrapper.find('input').props().disabled).to.eql(false);
   });
+  it('should trigger onChange when mounting component and the value is not undefined', () => {
+    const wrapper = mount(
+      <Date
+        enabled
+        formFieldPath="test1.1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+        value={'2016-12-29'}
+      />
+    );
+    wrapper.instance();
+    sinon.assert.calledOnce(onChangeSpy);
+  });
 });

@@ -53,8 +53,7 @@ describe('TextBox', () => {
       />
     );
     wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
-
-    sinon.assert.calledOnce(onChangeSpy.withArgs('My new value', []));
+    sinon.assert.called(onChangeSpy.withArgs('My new value', []));
   });
 
   it('should return undefined when value is empty string', () => {
@@ -68,7 +67,7 @@ describe('TextBox', () => {
     );
     wrapper.find('textarea').simulate('change', { target: { value: '  ' } });
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
+    sinon.assert.called(onChangeSpy.withArgs(undefined, []));
   });
 
   it('should throw error on fail of validations', () => {
@@ -85,7 +84,7 @@ describe('TextBox', () => {
     );
     const mandatoryError = new Error({ message: validations[0] });
     wrapper.find('textarea').simulate('change', { target: { value: undefined } });
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 
@@ -103,7 +102,7 @@ describe('TextBox', () => {
     );
     const mandatoryError = new Error({ message: validations[0] });
     wrapper.setProps({ validate: true, value: undefined });
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 
@@ -175,5 +174,20 @@ describe('TextBox', () => {
     );
 
     expect(wrapper.find('textarea').props().disabled).to.equal(false);
+  });
+
+  it('should trigger onChange when mounting component and the value is not undefined', () => {
+    const wrapper = mount(
+      <TextBox
+        enabled
+        formFieldPath="test1.1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+        value={'defaultText'}
+      />
+    );
+    wrapper.instance();
+    sinon.assert.calledOnce(onChangeSpy);
   });
 });
