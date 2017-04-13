@@ -16,7 +16,7 @@ export class DateTime extends Component {
   }
 
   componentDidMount() {
-    if (this.state.hasErrors) {
+    if (this.state.hasErrors || this.props.value !== 'undefined') {
       this.props.onChange(this.props.value, this._getAllErrors());
     }
   }

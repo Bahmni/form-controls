@@ -18,7 +18,7 @@ export class Button extends Component {
   }
 
   componentDidMount() {
-    if (this.state.hasErrors) {
+    if (this.state.hasErrors || this.props.value !== 'undefined') {
       this.props.onValueChange(this.props.value, this._getErrors(this.props.value));
     }
   }
