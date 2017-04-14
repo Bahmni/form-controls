@@ -46,11 +46,12 @@ describe('FormRenderer', () => {
 
   it('should create container component with the supplied form details', () => {
     React.createElement.withArgs(Container, sinon
-      .match({ metadata: formDetails, collapse: false })).returns('formControlsContainer');
+      .match({ metadata: formDetails, collapse: false, locale: 'en' }))
+      .returns('formControlsContainer');
 
     document.getElementById.withArgs('someNodeId').returns('someOtherNodeId');
 
-    renderWithControls(formDetails, [], 'someNodeId', false); // eslint-disable-line no-undef
+    renderWithControls(formDetails, [], 'someNodeId', false, 'en'); // eslint-disable-line no-undef
 
     sinon.assert.callCount(React.createElement, 1);
     sinon.assert.calledWith(ReactDOM.render, 'formControlsContainer', 'someOtherNodeId');

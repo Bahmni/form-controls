@@ -3,9 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 window.renderWithControls =
-  function renderWithControls(formDetails, observations, nodeId, collapse) {
+  function renderWithControls(formDetails, observations, nodeId, collapse, locale) {
     const container = React.createElement(Container,
-      { metadata: formDetails, observations, validate: true, collapse });
+      { metadata: formDetails, observations, validate: true, collapse, locale });
     return ReactDOM.render(container, document.getElementById(nodeId));
   };
 
