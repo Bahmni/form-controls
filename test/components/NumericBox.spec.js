@@ -321,4 +321,18 @@ describe('NumericBox', () => {
     wrapper.instance();
     sinon.assert.notCalled(spy);
   });
+
+  it('should trigger onChange when the value is changed', () => {
+    const wrapper = mount(
+      <NumericBox
+        formFieldPath="test1.1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    wrapper.setProps({ value: '20' });
+    sinon.assert.calledOnce(onChangeSpy.withArgs('20', []));
+  });
 });

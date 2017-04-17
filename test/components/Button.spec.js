@@ -313,7 +313,7 @@ describe('Button Component', () => {
     sinon.assert.calledOnce(componentUpdatedSpy);
   });
 
-  it('should trigger onChange when mounting component and the value is not undefined', () => {
+  it('should trigger onValueChange when mounting component and the value is not undefined', () => {
     const onChangeSpy = sinon.spy();
     const wrapper = mount(
       <Button
@@ -327,5 +327,21 @@ describe('Button Component', () => {
     );
     wrapper.instance();
     sinon.assert.calledOnce(onChangeSpy);
+  });
+
+
+  it('should trigger onValueChange when the value is changed', () => {
+    const wrapper = mount(
+      <Button
+        formFieldPath="test1.1-0"
+        onValueChange={valueChangeSpy}
+        options={options}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    wrapper.setProps({ value: [options[1]] });
+    sinon.assert.calledOnce(valueChangeSpy.withArgs([options[1]], []));
   });
 });

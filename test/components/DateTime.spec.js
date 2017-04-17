@@ -114,7 +114,7 @@ describe('DateTime', () => {
     );
     const mandatoryError = new Error({ message: validations[0] });
     wrapper.setProps({ validate: true, value: undefined });
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
     expect(wrapper.find('input').at(0)).to.have.className('form-builder-error');
     expect(wrapper.find('input').at(1)).to.have.className('form-builder-error');
   });
@@ -200,10 +200,24 @@ describe('DateTime', () => {
         onChange={onChangeSpy}
         validate={false}
         validations={[]}
-        value={'2016-12-29'}
+        value={'2016-12-29 22:10'}
       />
     );
     wrapper.instance();
     sinon.assert.calledOnce(onChangeSpy);
+  });
+
+  it('should trigger onChange when the value is changed', () => {
+    const wrapper = mount(
+      <DateTime
+        formFieldPath="test1.1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    wrapper.setProps({ value: '2016-12-29 22:10' });
+    sinon.assert.calledOnce(onChangeSpy.withArgs('2016-12-29 22:10', []));
   });
 });
