@@ -4,10 +4,10 @@ import map from 'lodash/map';
 import classNames from 'classnames';
 import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
 import clone from 'lodash/clone';
 import find from 'lodash/find';
 import filter from 'lodash/filter';
+import isEqual from 'lodash/isEqual';
 
 export class Button extends Component {
   constructor(props) {
@@ -18,6 +18,7 @@ export class Button extends Component {
   }
 
   componentDidMount() {
+    this.selectValue = this.props.value;
     if (this.state.hasErrors || this.props.value !== undefined) {
       this.props.onValueChange(this.props.value, this._getErrors(this.props.value));
     }
@@ -31,7 +32,8 @@ export class Button extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (!isEqual(this.props.value, nextProps.value) ||
+    this.isValueChanged = !isEqual(this.props.value, nextProps.value);
+    if (this.isValueChanged ||
       this.state.hasErrors !== nextState.hasErrors ||
       this.props.enabled !== nextProps.enabled) {
       return true;
@@ -42,6 +44,9 @@ export class Button extends Component {
   componentDidUpdate() {
     const errors = this._getErrors(this.props.value);
     if (this._hasErrors(errors)) {
+      this.props.onValueChange(this.props.value, errors);
+    }
+    if (this.isValueChanged) {
       this.props.onValueChange(this.props.value, errors);
     }
   }
