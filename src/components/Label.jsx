@@ -3,6 +3,7 @@
 
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
+import {FormattedMessage} from 'react-intl';
 
 
 export class Label extends Component {
@@ -11,7 +12,10 @@ export class Label extends Component {
     return (<label
       className={`${disableClass}`}
     >
-      {this.props.metadata.value}
+      <FormattedMessage
+        id={this.props.metadata.translation_key || 'defaultId'}
+        defaultMessage={this.props.metadata.value}
+      />
     </label>);
   }
 }
@@ -22,6 +26,7 @@ Label.propTypes = {
   metadata: PropTypes.shape({
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
+    translation_key:PropTypes.string,
   }),
 };
 

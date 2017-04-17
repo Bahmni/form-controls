@@ -8,6 +8,8 @@ import addMoreDecorator from './AddMoreDecorator';
 import ObservationMapper from '../helpers/ObservationMapper';
 import NotificationContainer from '../helpers/Notification';
 import Constants from '../constants';
+import {addLocaleData, IntlProvider} from 'react-intl';
+import enLocaleData from 'react-intl/locale-data/en';
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
@@ -124,13 +126,21 @@ export class Container extends addMoreDecorator(Component) {
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
     const records = this.state.data.getActive().children.toArray();
+    addLocaleData(enLocaleData);
+    addLocaleData({
+      locale: 'en-test',
+      parentLocale: 'en',
+    });
+    const message = {LABEL_1: 'test1', LABEL_2: 'test2'};
     return (
-      <div>
-        <NotificationContainer
-          notification={this.state.notification}
-        />
-        {displayRowControls(groupedRowControls, records, childProps)}
-      </div>
+      <IntlProvider locale={this.props.locale} messages={message}>
+        <div>
+          <NotificationContainer
+            notification={this.state.notification}
+          />
+          {displayRowControls(groupedRowControls, records, childProps)}
+        </div>
+      </IntlProvider>
     );
   }
 }
