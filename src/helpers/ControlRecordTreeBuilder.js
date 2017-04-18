@@ -71,6 +71,9 @@ export const ControlRecord = new Record({
   getErrors() {
     const errorArray = [];
     const errors = this.get('errors');
+    if (!errors) {
+      return errorArray;
+    }
     const filteredErrors = errors.filter((err) => err.type === constants.errorTypes.error);
     const filteredMandatoryErrors =
       filteredErrors.filter((err) => err.message !== constants.validations.mandatory ||
