@@ -3,11 +3,18 @@ import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Label } from 'components/Label.jsx';
-
+import { mountWithIntl } from 'src/helpers/intl-enzyme-test-helper.js';
 chai.use(chaiEnzyme());
 
 describe('Label', () => {
-  it('should render the value of label', () => {
+  it('should render value of label by related translation key', () => {
+    const metadata = { value: 'History Notes', type: 'label', translation_key: 'TEST_KEY' };
+
+    const wrapper = mountWithIntl(<Label metadata={metadata} />);
+    expect(wrapper.find('span').text()).to.eql('test value');
+  });
+
+  it('should render the value of label by default language', () => {
     const metadata = { value: 'History Notes', type: 'label' };
 
     const wrapper = shallow(<Label metadata={metadata} />);

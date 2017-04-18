@@ -8,7 +8,7 @@ import addMoreDecorator from './AddMoreDecorator';
 import ObservationMapper from '../helpers/ObservationMapper';
 import NotificationContainer from '../helpers/Notification';
 import Constants from '../constants';
-import {addLocaleData, IntlProvider} from 'react-intl';
+import { addLocaleData, IntlProvider } from 'react-intl';
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
@@ -125,8 +125,7 @@ export class Container extends addMoreDecorator(Component) {
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
     const records = this.state.data.getActive().children.toArray();
-    if(this.props.locale && this.props.locale !== 'en')
-    {
+    if (this.props.locale && this.props.locale !== 'en') {
       addLocaleData({
         locale: this.props.locale,
         parentLocale: 'en',
