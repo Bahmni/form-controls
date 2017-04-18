@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
@@ -10,15 +10,20 @@ import { NumericBox } from 'components/NumericBox.jsx';
 import { List } from 'immutable';
 import { Label } from 'components/Label.jsx';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
+import * as FormmatedMsg from 'react-intl';
 
 chai.use(chaiEnzyme());
 
 describe('Section', () => {
+  class FormattedMessageStub extends PureComponent {
+    render() {return <div />;}
+  }
   before(() => {
     ComponentStore.registerComponent('section', Section);
     ComponentStore.registerComponent('obsControl', ObsControl);
     ComponentStore.registerComponent('numeric', NumericBox);
     ComponentStore.registerComponent('label', Label);
+    sinon.stub(FormmatedMsg, 'FormattedMessage', FormattedMessageStub);
   });
 
   after(() => {
@@ -26,6 +31,7 @@ describe('Section', () => {
     ComponentStore.deRegisterComponent('obsControl');
     ComponentStore.deRegisterComponent('numeric');
     ComponentStore.deRegisterComponent('label');
+    FormmatedMsg.FormattedMessage.restore();
   });
 
   const obsConcept = {

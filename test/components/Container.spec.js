@@ -77,6 +77,10 @@ describe('Container', () => {
           units: '/min',
         },
       ],
+      locale: {
+        en: {
+        },
+      },
       id: 209,
       name: 'SingleObs',
       uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
@@ -176,6 +180,7 @@ describe('Container', () => {
       const wrapper = mount(
             <Container
               collapse
+              locale="en"
               metadata={metadata}
               observations={[]}
               validate={false}
@@ -224,6 +229,10 @@ describe('Container', () => {
             units: '/min',
           },
         ],
+        locale: {
+          en: {
+          },
+        },
         id: 209,
         name: 'SingleObs',
         uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
@@ -236,6 +245,7 @@ describe('Container', () => {
       const wrapper = mount(
         <Container
           collapse
+          locale="en"
           metadata={metadata1}
           observations={[]}
           validate={false}
@@ -249,6 +259,7 @@ describe('Container', () => {
       const wrapper = shallow(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
                   validate={false}
@@ -270,6 +281,7 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
                   validate={false}
@@ -336,6 +348,7 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
                   validate={false}
@@ -436,6 +449,7 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
                   validate={false}
@@ -487,6 +501,10 @@ describe('Container', () => {
             units: null,
           },
         ],
+        locale: {
+          en: {
+          },
+        },
         id: 284,
         name: '3383',
         uuid: 'c60ea8ad-17ef-4968-9733-82b846513d78',
@@ -513,6 +531,7 @@ describe('Container', () => {
       const wrapper = mount(
         <Container
           collapse
+          locale="en"
           metadata={heightMetadata}
           observations={[]}
           validate={false}
@@ -685,6 +704,7 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
                   validate={false}
@@ -1245,6 +1265,7 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
                   validate={false}
@@ -1351,6 +1372,9 @@ describe('Container', () => {
             units: null,
           },
         ],
+        locale: {
+          en: {},
+        },
         id: 5,
         name: '3129',
         uuid: '6a3b4de9-5e21-46b4-addb-4ad9518e587b',
@@ -1359,6 +1383,7 @@ describe('Container', () => {
       const wrapper = shallow(
         <Container
           collapse
+          locale="en"
           metadata={eventMetadata}
           observations={[]}
           validate={false}
@@ -1378,6 +1403,7 @@ describe('Container', () => {
       const wrapper = shallow(
         <Container
           collapse
+          locale="en"
           metadata={metadata}
           observations={[]}
           validate={false}
@@ -1396,6 +1422,7 @@ describe('Container', () => {
       const wrapper = shallow(
         <Container
           collapse
+          locale="en"
           metadata={metadata}
           observations={[]}
           validate={false}
@@ -1502,6 +1529,9 @@ describe('Container', () => {
           type: 'obsGroupControl',
         },
       ],
+      locale: {
+        en: {},
+      },
       id: 210,
       name: 'SingleGroup',
       uuid: '72801201-2154-4f1e-89cb-21a57a23d06a',
@@ -1784,6 +1814,7 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
                   validate={false}
@@ -1799,6 +1830,7 @@ describe('Container', () => {
       const wrapper = shallow(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
                   validate={false}
@@ -1822,6 +1854,7 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
                   validate={false}
@@ -1920,6 +1953,7 @@ describe('Container', () => {
             units: '/min',
           },
         ],
+        locale: { en: {} },
         id: 228,
         name: 'Error2',
         uuid: 'a4eb5bac-8c7a-43e6-9c75-cef0710991e5',
@@ -1929,6 +1963,7 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={updatedMetadata}
                   observations={[]}
                   validate={false}
@@ -2092,6 +2127,7 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
                       validate={false}
@@ -2203,6 +2239,7 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
                       validate={false}
@@ -2438,6 +2475,7 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
                       validate={false}
@@ -2630,6 +2668,7 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
                       validate={false}
@@ -2976,6 +3015,7 @@ describe('Container', () => {
         const wrapper = mount(
                    <Container
                      collapse
+                     locale="en"
                      metadata={metadata}
                      observations={[]}
                      validate={false}
@@ -4008,6 +4048,7 @@ describe('Container', () => {
         const wrapper = mount(
                    <Container
                      collapse
+                     locale="en"
                      metadata={metadata}
                      observations={[]}
                      validate={false}
@@ -4263,6 +4304,7 @@ describe('Container', () => {
         const wrapper = mount(
                    <Container
                      collapse
+                     locale="en"
                      metadata={metadata}
                      observations={[]}
                      validate={false}
@@ -5000,6 +5042,7 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
                       validate={false}

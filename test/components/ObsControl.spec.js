@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
@@ -6,19 +6,29 @@ import sinon from 'sinon';
 import { ObsControl } from 'components/ObsControl.jsx';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';
+import * as FormmatedMsg from 'react-intl';
 
 chai.use(chaiEnzyme());
 
 describe('ObsControl', () => {
   const DummyControl = () => <input />;
 
+  /* eslint-disable react/no-multi-comp */
+  class FormattedMessageStub extends PureComponent {
+    render() {
+      return <div />;
+    }
+  }
+
   before(() => {
     ComponentStore.componentList = {};
     ComponentStore.registerComponent('text', DummyControl);
+    sinon.stub(FormmatedMsg, 'FormattedMessage', FormattedMessageStub);
   });
 
   after(() => {
     ComponentStore.deRegisterComponent('text');
+    FormmatedMsg.FormattedMessage.restore();
   });
 
   function getConcept(datatype) {

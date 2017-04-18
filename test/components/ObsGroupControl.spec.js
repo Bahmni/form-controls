@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { List } from 'immutable';
 import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
@@ -10,6 +10,7 @@ import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
 import { ObsControl } from 'components/ObsControl.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { Label } from 'components/Label.jsx';
+import * as FormmatedMsg from 'react-intl';
 
 chai.use(chaiEnzyme());
 
@@ -136,12 +137,18 @@ describe('ObsGroupControl', () => {
 
   const onChangeSpy = sinon.spy();
   const emptyValue = {};
+  class FormattedMessageStub extends PureComponent {
+    render() {
+      return <div />;
+    }
+  }
 
   before(() => {
     ComponentStore.registerComponent('obsControl', ObsControl);
     ComponentStore.registerComponent('obsGroupControl', ObsGroupControl);
     ComponentStore.registerComponent('numeric', NumericBox);
     ComponentStore.registerComponent('label', Label);
+    sinon.stub(FormmatedMsg, 'FormattedMessage', FormattedMessageStub);
   });
 
   after(() => {
@@ -149,6 +156,7 @@ describe('ObsGroupControl', () => {
     ComponentStore.deRegisterComponent('obsGroupControl');
     ComponentStore.deRegisterComponent('numeric');
     ComponentStore.deRegisterComponent('label');
+    FormmatedMsg.FormattedMessage.restore();
   });
   it('should render obsGroupControl contain obsControl', () => {
     const wrapper = mount(

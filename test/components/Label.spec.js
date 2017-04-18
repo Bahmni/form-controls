@@ -11,7 +11,7 @@ describe('Label', () => {
     const metadata = { value: 'History Notes', type: 'label' };
 
     const wrapper = shallow(<Label metadata={metadata} />);
-    expect(wrapper.find('label').text()).to.eql('History Notes');
+    expect(wrapper.find('FormattedMessage')).to.have.prop('defaultMessage').to.eql('History Notes');
   });
 
   it('should set label to class disable when the props of enabled is false', () => {
