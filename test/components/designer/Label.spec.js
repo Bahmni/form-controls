@@ -15,7 +15,8 @@ describe('LabelDesigner', () => {
 
   beforeEach(() => {
     idGenerator = new IDGenerator();
-    metadata = { id: 'someId', type: 'label', value: 'History Notes', properties: {} };
+    metadata = { translation_key:'SOME_KEY', id: 'someId', type: 'label',
+      value: 'History Notes', properties: {} };
     wrapper = mount(<LabelDesigner
       clearSelectedControl={() => {}}
       deleteControl={() => {}}
@@ -62,6 +63,7 @@ describe('LabelDesigner', () => {
   it('should return appropriate JSON definition', () => {
     const instance = wrapper.instance();
     const expectedJson = {
+      translation_key: 'SOME_KEY',
       id: 'someId',
       type: 'label',
       value: 'History Notes',
