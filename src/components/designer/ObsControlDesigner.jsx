@@ -55,9 +55,10 @@ export class ObsControlDesigner extends Component {
   }
 
   displayLabel() {
-    const { metadata, metadata: { properties, label } } = this.props;
+    const { metadata, metadata: { properties, label, id },} = this.props;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
-    const labelMetadata = label || { type: 'label', value: metadata.concept.name };
+    const labelMetadata = Object.assign({id}, label)||
+      { type: 'label', value: metadata.concept.name, id: id };
     if (!hideLabel) {
       return (
           <LabelDesigner
