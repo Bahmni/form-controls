@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Label } from 'components/Label.jsx';
-import { mountWithIntl } from 'src/helpers/intl-enzyme-test-helper.js';
+import { mountWithIntl } from 'src/helpers/intlEnzymeTest.js';
 chai.use(chaiEnzyme());
 
 describe('Label', () => {

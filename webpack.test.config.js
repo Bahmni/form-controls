@@ -52,6 +52,7 @@ module.exports = {
         exclude: [
           /helpers\/ControlRecordTreeMgr\.js/,
           /ControlState\.js/,
+          /helpers\/intlEnzymeTest\.js/,
         ],
       },
     ]
