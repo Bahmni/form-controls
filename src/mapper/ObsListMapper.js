@@ -1,12 +1,10 @@
-import { createObsFromControl } from 'src/helpers/Obs';
+import { createObsFromControl, obsFromMetadata } from 'src/helpers/Obs';
 import { List } from 'immutable';
 import filter from 'lodash/filter';
 import groupBy from 'lodash/groupBy';
 import isEmpty from 'lodash/isEmpty';
-import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
-import { obsFromMetadata } from 'src/helpers/Obs';
+import { createFormNamespaceAndPath, getKeyPrefixForControl } from 'src/helpers/formNamespace';
 import { ObsList } from 'src/helpers/ObsList';
-import { getKeyPrefixForControl } from 'src/helpers/formNamespace';
 import { cloneDeep } from 'lodash';
 
 export class ObsListMapper {
@@ -17,7 +15,7 @@ export class ObsListMapper {
 
     const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id);
     const filteredObs = filter(bahmniObservations,
-      (observation) => observation.formFieldPath.startsWith(keyPrefix.formFieldPath));
+      (observation) => observation.formFieldPath.startsWith(`${keyPrefix.formFieldPath}-`));
     const groupedObs = groupBy(filteredObs, 'formFieldPath');
 
     const obsLists = [];
