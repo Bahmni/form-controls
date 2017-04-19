@@ -279,7 +279,7 @@ describe('ObsListMapper', () => {
       voided: true,
     } });
 
-  it('should get obsList when getInitialObject be triggered with empty observation', () => {
+  it('should get obsList when getInitialObject with empty observation', () => {
     const emptyObservation = [];
 
     const obsLists = new ObsListMapper()
@@ -292,7 +292,7 @@ describe('ObsListMapper', () => {
     expect(obsLists[0].obs.voided).to.equal(true);
   });
 
-  it('should get obsList when getInitialObject be triggered with observation', () => {
+  it('should get obsList when getInitialObject with observation', () => {
     const observations = [obs1, obs2];
 
     const obsLists = new ObsListMapper()
@@ -303,6 +303,18 @@ describe('ObsListMapper', () => {
     expect(obsLists[0].obs.concept).to.equal(multipleSelectConcept);
     expect(obsLists[0].obs.formFieldPath).to.equal(formFieldPath);
     expect(obsLists[0].obs.voided).to.equal(true);
+  });
+
+  it('should get correct obs when getInitialObject with observation', () => {
+    const obs = cloneDeep(obs1);
+    obs.formFieldPath = 'multipleSelect.1/20-0';    // this form field path is part of multipleSelect.1/2
+    const observations = [obs];
+
+    const obsLists = new ObsListMapper()
+      .getInitialObject(formName, formVersion, multipleSelectControl, observations);
+
+    expect(obsLists[0].obsList.size).to.equal(0);
+    expect(obsLists[0].formFieldPath).to.equal(formFieldPath);
   });
 
   it('should get value from record with obsList type when getValue be triggered', () => {
