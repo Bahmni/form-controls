@@ -6,7 +6,7 @@ export default class TranslationKeyGenerator {
   }
 
   build() {
-    let formatted = this.value.toUpperCase().replace(/ /g, '_');
-    return formatted + '_' + this.id.toString();
+    const formatted = this.value.toUpperCase().replace(/ /g, '_');
+    return `${formatted}_${this.id.toString()}`;
   }
 }

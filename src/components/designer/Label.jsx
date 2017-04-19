@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
-import TranslationKeyGenerator from 'src/services/TranslationKeyService'
+import TranslationKeyGenerator from 'src/services/TranslationKeyService';
 
 export class LabelDesigner extends Component {
   constructor(props) {
@@ -10,7 +10,7 @@ export class LabelDesigner extends Component {
     const transKey = (new TranslationKeyGenerator(value, props.metadata.id)).build();
     this.state = {
       defaultValue: value,
-      value: value,
+      value,
       translation_key: transKey,
     };
     this.onDoubleClick = this.onDoubleClick.bind(this);
@@ -44,8 +44,8 @@ export class LabelDesigner extends Component {
 
   getJsonDefinition() {
     const value = this.state.value;
-    const translation_key = this.state.translation_key;
-    return Object.assign({}, { translation_key } , this.props.metadata, { value });
+    const translationKey = this.state.translation_key;
+    return Object.assign({}, { translation_key: translationKey }, this.props.metadata, { value });
   }
 
   updateValue() {

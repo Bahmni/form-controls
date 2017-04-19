@@ -182,7 +182,7 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should pass appropriate props to Label', () => {
-      const expectedLabelMetadata = { id:'123', type: 'label',
+      const expectedLabelMetadata = { id: '123', type: 'label',
         value: 'dummyPulse', properties: {} };
       expect(wrapper.find('LabelDesigner').props().metadata).to.deep.eql(expectedLabelMetadata);
     });
@@ -210,7 +210,7 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should return json definition', () => {
-      const expectedLabelMetadata = { id: '123', translation_key:'DUMMYPULSE_123',
+      const expectedLabelMetadata = { id: '123', translation_key: 'DUMMYPULSE_123',
         type: 'label', value: 'dummyPulse', properties: {} };
       const instance = wrapper.instance();
       const expectedJson = { concept, label: expectedLabelMetadata, properties: {} };

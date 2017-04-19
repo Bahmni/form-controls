@@ -34,7 +34,7 @@ export class SectionDesigner extends Component {
 
   displayLabel() {
     const { metadata: { label, id } } = this.props;
-    const data = Object.assign({}, label, {id});
+    const data = Object.assign({}, label, { id });
     return (
       <LabelDesigner
         metadata={ data }

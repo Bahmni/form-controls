@@ -44,7 +44,7 @@ export { BooleanValueMapper } from 'src/mapper/BooleanValueMapper';
 export { CodedValueMapper } from 'src/mapper/CodedValueMapper';
 
 // -------------------------- services ---------------------
-export { TranslationKeyGenerator } from 'src/services/TranslationKeyService'
+export { TranslationKeyGenerator } from 'src/services/TranslationKeyService';
 
 import '../styles/styles.scss';
 

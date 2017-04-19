@@ -116,7 +116,14 @@ describe('SectionDesigner', () => {
 
     it('should return json definition', () => {
       const instance = wrapper.instance();
-      console.warn(instance.getJsonDefinition().toString());
+      const expectSectionLabel = Object.assign({}, metadata.label,
+        { id: '123', translation_key: 'DUMMYPULSE_123' });
+      const expectObsLabel = Object.assign({}, metadata.label,
+        { id: '124', translation_key: 'DUMMYPULSE_124' });
+
+      metadata.label = expectSectionLabel;
+      metadata.controls[0].label = expectObsLabel;
+
       expect(instance.getJsonDefinition()).to.deep.eql(metadata);
     });
 

@@ -202,8 +202,8 @@ describe('ObsGroupControlDesigner', () => {
     it('should return json definition', () => {
       const instance = wrapper.instance();
       const metadataClone = metadata;
-      metadataClone.label = Object.assign(metadata.label,
-        {id:'123', translation_key:'PulseDUMMYPULSE_123'})
+      metadataClone.label = Object.assign({}, metadata.label,
+        { id: '123', translation_key: 'DUMMYPULSE_123' });
       expect(instance.getJsonDefinition()).to.deep.eql(metadataClone);
     });
 

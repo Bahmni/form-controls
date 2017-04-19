@@ -15,7 +15,7 @@ describe('LabelDesigner', () => {
 
   beforeEach(() => {
     idGenerator = new IDGenerator();
-    metadata = { translation_key:'SOME_KEY', id: 'someId', type: 'label',
+    metadata = { translation_key: 'SOME_KEY', id: 'someId', type: 'label',
       value: 'History Notes', properties: {} };
     wrapper = mount(<LabelDesigner
       clearSelectedControl={() => {}}
