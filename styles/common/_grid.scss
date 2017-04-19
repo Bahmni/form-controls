@@ -31,7 +31,6 @@
 
 .form-builder-canvas, .form-builder-row {
   .obs-control-select-wrapper {
-    width: 197px !important;
     display: inline-block !important;
     box-sizing: border-box;
     float: left;
@@ -49,6 +48,7 @@
     }
   }
   .Select-control {
+    width: 197px;
     height: 25px;
     .Select-placeholder, .Select-value {
       line-height: 24px;
