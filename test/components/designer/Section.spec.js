@@ -116,6 +116,7 @@ describe('SectionDesigner', () => {
 
     it('should return json definition', () => {
       const instance = wrapper.instance();
+      console.warn(instance.getJsonDefinition().toString());
       expect(instance.getJsonDefinition()).to.deep.eql(metadata);
     });
 
