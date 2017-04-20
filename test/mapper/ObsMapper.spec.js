@@ -161,4 +161,32 @@ describe('ObsMapper', () => {
     expect(updatedObs.value).to.equal(false);
     expect(updatedObs.voided).to.equal(false);
   });
+
+  it('should trim spaces of value when given text control with string value', () => {
+    const valueWithSpaces = '   stringValue  ';
+    const record = new ControlRecord({
+      control: {},
+      formFieldPath: 'someUuid',
+      value: { value: valueWithSpaces },
+      dataSource: {},
+    });
+
+    const updatedObs = mapper.getData(record);
+
+    expect(updatedObs.value).to.eql(valueWithSpaces.trim());
+  });
+
+  it('should return undefined when given text control with empty string', () => {
+    const emptyString = '';
+    const record = new ControlRecord({
+      control: {},
+      formFieldPath: 'someUuid',
+      value: { value: emptyString },
+      dataSource: {},
+    });
+
+    const updatedObs = mapper.getData(record);
+
+    expect(updatedObs.value).to.eql(undefined);
+  });
 });

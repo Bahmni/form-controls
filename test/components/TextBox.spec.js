@@ -56,20 +56,6 @@ describe('TextBox', () => {
     sinon.assert.called(onChangeSpy.withArgs('My new value', []));
   });
 
-  it('should return undefined when value is empty string', () => {
-    const wrapper = mount(
-      <TextBox
-        formFieldPath="test1.1/1-0"
-        onChange={onChangeSpy}
-        validate={false}
-        validations={[]}
-      />
-    );
-    wrapper.find('textarea').simulate('change', { target: { value: '  ' } });
-
-    sinon.assert.called(onChangeSpy.withArgs(undefined, []));
-  });
-
   it('should return whole value when given value with spaces but not empty string', () => {
     const wrapper = mount(
       <TextBox
