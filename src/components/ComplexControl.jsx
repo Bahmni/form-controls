@@ -40,11 +40,19 @@ export class ComplexControl extends Component {
   }
 
   render() {
+    let $preview = null;
+    const value = this.props.value;
+    if (this.props.value) {
+      $preview = (<img src={`/document_images/${value}`} />);
+    }
     return (
         <div className="obs-comment-section-wrap">
           <input type="file"
             onChange={(e) => this.handleChange(e)}
           />
+          <label>
+            {$preview}
+          </label>
         </div>
     );
   }

@@ -51,4 +51,9 @@ describe('ComplexControl', () => {
     sinon.assert.calledOnce(onChangeSpy.withArgs('someUrl'));
     stub.restore();
   });
+
+  it('should display the file which been uploaded', () => {
+    wrapper.setProps({ value: 'someValue' });
+    expect(wrapper.find('img')).length.to.be(1);
+  });
 });
