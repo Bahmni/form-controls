@@ -297,6 +297,11 @@ const descriptor = {
             elementType: 'button',
             elementName: 'Editor',
           },
+          {
+            name: 'abnormal',
+            dataType: 'boolean',
+            defaultValue: false,
+          }
         ],
       },
     ],
