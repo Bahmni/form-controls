@@ -278,6 +278,12 @@ const descriptor = {
             dataType: 'boolean',
             defaultValue: false,
           },
+          {
+            name: 'control Event',
+            dataType: 'boolean',
+            defaultValue: 'Editor',
+            elementType: 'button',
+          },
         ],
       },
     ],
