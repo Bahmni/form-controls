@@ -278,6 +278,11 @@ const descriptor = {
             dataType: 'boolean',
             defaultValue: false,
           },
+          {
+            name: 'abnormal',
+            dataType: 'boolean',
+            defaultValue: false,
+          }
         ],
       },
     ],

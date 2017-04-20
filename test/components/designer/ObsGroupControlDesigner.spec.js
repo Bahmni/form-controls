@@ -58,7 +58,6 @@ describe('ObsGroupControlDesigner', () => {
         value: someConcept.name.name,
       },
       properties: {
-        abnormal: false,
         addMore: false,
         location: { row: 0, column: 0 },
       },

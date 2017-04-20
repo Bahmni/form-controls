@@ -174,11 +174,6 @@ const descriptor = {
         dataType: 'complex',
         attributes: [
           {
-            name: 'abnormal',
-            dataType: 'boolean',
-            defaultValue: false,
-          },
-          {
             name: 'addMore',
             dataType: 'boolean',
             defaultValue: false,
