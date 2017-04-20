@@ -69,6 +69,7 @@
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.2",
     "sinon": "^2.0.0-pre.2",
+    "sinon-stub-promise": "^4.0.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
@@ -83,6 +84,7 @@
     "lodash": "^4.17.4",
     "react-select": "^1.0.0-rc.2",
     "react-textarea-autosize": "^4.0.5",
+    "sinon-as-promised": "^4.0.3",
     "whatwg-fetch": "^1.0.0"
   }
 }
