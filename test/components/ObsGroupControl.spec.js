@@ -11,6 +11,7 @@ import { ObsControl } from 'components/ObsControl.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { Label } from 'components/Label.jsx';
 import * as FormmatedMsg from 'react-intl';
+import { mountWithIntl } from 'src/helpers/intlEnzymeTest.js';
 
 chai.use(chaiEnzyme());
 
@@ -148,7 +149,6 @@ describe('ObsGroupControl', () => {
     ComponentStore.registerComponent('obsGroupControl', ObsGroupControl);
     ComponentStore.registerComponent('numeric', NumericBox);
     ComponentStore.registerComponent('label', Label);
-    sinon.stub(FormmatedMsg, 'FormattedMessage', FormattedMessageStub);
   });
 
   after(() => {
@@ -156,242 +156,275 @@ describe('ObsGroupControl', () => {
     ComponentStore.deRegisterComponent('obsGroupControl');
     ComponentStore.deRegisterComponent('numeric');
     ComponentStore.deRegisterComponent('label');
-    FormmatedMsg.FormattedMessage.restore();
-  });
-  it('should render obsGroupControl contain obsControl', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-
-    expect(wrapper).to.have.exactly(1).descendants('ObsControl');
   });
 
-  it('should render obsGroup control with only the registered controls', () => {
-    ComponentStore.deRegisterComponent('obsControl');
+  describe('without i18n', () => {
+    before(() => {
+      sinon.stub(FormmatedMsg, 'FormattedMessage', FormattedMessageStub);
+    });
+    after(() => {
+      FormmatedMsg.FormattedMessage.restore();
+    });
+    it('should render obsGroupControl contain obsControl', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
 
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
+      expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+    });
 
-    expect(wrapper).to.not.have.descendants('obsControl');
-    ComponentStore.registerComponent('obsControl', ObsControl);
+    it('should render obsGroup control with only the registered controls', () => {
+      ComponentStore.deRegisterComponent('obsControl');
+
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+
+      expect(wrapper).to.not.have.descendants('obsControl');
+      ComponentStore.registerComponent('obsControl', ObsControl);
+    });
+
+    it('should collapse all child controls on click of collapse icon', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls active-group-controls');
+
+      wrapper.find('legend').simulate('click');
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls closing-group-controls');
+    });
+
+    it('should collapse all child controls on change of collapse props', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls active-group-controls');
+
+      wrapper.setProps({ collapse: true });
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls closing-group-controls');
+    });
+
+    it('should render obsGroup with addMore icon when has addMore properties', () => {
+      const updatedProperties = Object.assign({}, metadata.properties, { addMore: true });
+      const updatedMetadata = Object.assign({}, metadata, { properties: updatedProperties });
+
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={updatedMetadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+
+      expect(wrapper).to.have.descendants('AddMore');
+    });
+
+    it('should call onValueChanged in obsGroup when onChange be triggered', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+
+      const updatedValue = { value: 1, comment: undefined };
+      wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined, undefined);
+
+      sinon.assert.calledOnce(
+        onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined, undefined));
+    });
+
+    it('should disable children in obsGroup when obsGroup is set disable', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          enabled
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+      wrapper.setProps({ enabled: false });
+      expect(wrapper.find('Row').at(0).props().enabled).to.eql(false);
+    });
+
+    it('should show as disabled when obsGroup is set to be disabled', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          enabled
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+      wrapper.setProps({ enabled: false });
+      expect(wrapper.find('legend')).to.have.className('disabled');
+    });
+
+    it('should show as enabled when obsGroup is set to be enabled', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          enabled
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+      wrapper.setProps({ enabled: true });
+      expect(wrapper.find('legend')).to.not.have.className('disabled');
+    });
+
+    it('should show as hidden when obsGroup is set to be hidden', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          hidden
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+      wrapper.setProps({ hidden: true });
+      expect(wrapper.find('fieldset')).to.have.className('hidden');
+    });
+
+    it('should show as display when obsGroup is set not to be hidden', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          hidden
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+      wrapper.setProps({ hidden: false });
+      expect(wrapper.find('fieldset')).to.not.have.className('hidden');
+    });
+
+    it('should pass onEventTrigger property to children', () => {
+      const wrapper = mount(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          hidden
+          metadata={metadata}
+          onEventTrigger={() => {}}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />
+      );
+
+      expect(wrapper.find('ObsControl')).to.have.prop('onEventTrigger');
+    });
   });
+  describe('with i18n', () => {
+    it('should render label in French', () => {
+      const label = {
+        translation_key: 'TEST_KEY',
+        type: 'label',
+        value: 'label',
+      };
+      metadata.label = label;
+      const wrapper = mountWithIntl(
+        <ObsGroupControl
+          children={children}
+          collapse={false}
+          formName={formName}
+          formVersion={formVersion}
+          hidden
+          metadata={metadata}
+          onEventTrigger={() => {}}
+          onValueChanged={onChangeSpy}
+          validate={false}
+          value={emptyValue}
+        />);
 
-  it('should collapse all child controls on click of collapse icon', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls active-group-controls');
-
-    wrapper.find('legend').simulate('click');
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls closing-group-controls');
-  });
-
-  it('should collapse all child controls on change of collapse props', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls active-group-controls');
-
-    wrapper.setProps({ collapse: true });
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls closing-group-controls');
-  });
-
-  it('should render obsGroup with addMore icon when has addMore properties', () => {
-    const updatedProperties = Object.assign({}, metadata.properties, { addMore: true });
-    const updatedMetadata = Object.assign({}, metadata, { properties: updatedProperties });
-
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={updatedMetadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-
-    expect(wrapper).to.have.descendants('AddMore');
-  });
-
-  it('should call onValueChanged in obsGroup when onChange be triggered', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-
-    const updatedValue = { value: 1, comment: undefined };
-    wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined, undefined);
-
-    sinon.assert.calledOnce(
-      onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined, undefined));
-  });
-
-  it('should disable children in obsGroup when obsGroup is set disable', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        enabled
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-    wrapper.setProps({ enabled: false });
-    expect(wrapper.find('Row').at(0).props().enabled).to.eql(false);
-  });
-
-  it('should show as disabled when obsGroup is set to be disabled', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        enabled
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-    wrapper.setProps({ enabled: false });
-    expect(wrapper.find('legend')).to.have.className('disabled');
-  });
-
-  it('should show as enabled when obsGroup is set to be enabled', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        enabled
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-    wrapper.setProps({ enabled: true });
-    expect(wrapper.find('legend')).to.not.have.className('disabled');
-  });
-
-  it('should show as hidden when obsGroup is set to be hidden', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        formName={formName}
-        formVersion={formVersion}
-        hidden
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-    wrapper.setProps({ hidden: true });
-    expect(wrapper.find('fieldset')).to.have.className('hidden');
-  });
-
-  it('should show as display when obsGroup is set not to be hidden', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        formName={formName}
-        formVersion={formVersion}
-        hidden
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-    wrapper.setProps({ hidden: false });
-    expect(wrapper.find('fieldset')).to.not.have.className('hidden');
-  });
-
-  it('should pass onEventTrigger property to children', () => {
-    const wrapper = mount(
-      <ObsGroupControl
-        children={children}
-        collapse={false}
-        formName={formName}
-        formVersion={formVersion}
-        hidden
-        metadata={metadata}
-        onEventTrigger={() => {}}
-        onValueChanged={onChangeSpy}
-        validate={false}
-        value={emptyValue}
-      />
-    );
-
-    expect(wrapper.find('ObsControl')).to.have.prop('onEventTrigger');
+      expect(wrapper.find('span').at(0).text()).to.eql('test value');
+    });
   });
 });

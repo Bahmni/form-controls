@@ -4,6 +4,7 @@ import { getGroupedControls, displayRowControls } from '../helpers/controlsParse
 import classNames from 'classnames';
 import addMoreDecorator from './AddMoreDecorator';
 import { List } from 'immutable';
+import { FormattedMessage } from 'react-intl';
 
 export class ObsGroupControl extends addMoreDecorator(Component) {
 
@@ -21,7 +22,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.collapse !== undefined && (nextProps.collapse !== this.props.collapse ||
-        nextProps.collapse !== this.state.collapse)) {
+      nextProps.collapse !== this.state.collapse)) {
       this.setState({ collapse: nextProps.collapse });
     }
   }
@@ -70,17 +71,22 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     const disableClass = this.props.enabled ? '' : ' disabled';
     const hiddenClass = !this.props.hidden ? '' : 'hidden';
     return (
-        <fieldset className={ classNames('form-builder-fieldset', `${hiddenClass}`) }>
-          <legend className={`${toggleClass}${disableClass}`} onClick={ this._onCollapse}>
-            <i className="fa fa-caret-down"></i>
-            <i className="fa fa-caret-right"></i>
-          <strong>{label.value}</strong>
+      <fieldset className={ classNames('form-builder-fieldset', `${hiddenClass}`) }>
+        <legend className={`${toggleClass}${disableClass}`} onClick={ this._onCollapse}>
+          <i className="fa fa-caret-down"></i>
+          <i className="fa fa-caret-right"></i>
+          <strong>
+            <FormattedMessage
+              defaultMessage={label.value}
+              id={label.translation_key || 'defaultId'}
+            />
+          </strong>
         </legend>
-          {this.showAddMore()}
-          <div className={`obsGroup-controls ${obsGroupClass}${disableClass}`}>
-            { displayRowControls(groupedRowControls, this.props.children.toArray(), childProps) }
-          </div>
-        </fieldset>
+        {this.showAddMore()}
+        <div className={`obsGroup-controls ${obsGroupClass}${disableClass}`}>
+          { displayRowControls(groupedRowControls, this.props.children.toArray(), childProps) }
+        </div>
+      </fieldset>
     );
   }
 }
