@@ -59,14 +59,30 @@ describe('ComplexControl', () => {
 
   it('should hide uploaded file and delete button and show restore button when click the delete button',
     () => {
+      wrapper.setProps({ value: 'someValue' });
+
+      wrapper.find('.delete-button').simulate('click');
+      wrapper.setProps({ value: undefined });
+
+      sinon.assert.calledOnce(onChangeSpy.withArgs(undefined));
+      expect(wrapper.find('img')).length.to.be(0);
+      expect(wrapper.find('.delete-button')).length.to.be(0);
+      expect(wrapper.find('.restore-button')).length.to.be(1);
+    });
+
+  it('should display uploaded file and delete button and hide the restore button when click the restore button', () => {
     wrapper.setProps({ value: 'someValue' });
 
     wrapper.find('.delete-button').simulate('click');
     wrapper.setProps({ value: undefined });
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined));
-    expect(wrapper.find('img')).length.to.be(0);
-    expect(wrapper.find('.delete-button')).length.to.be(0);
-    expect(wrapper.find('.restore-button')).length.to.be(1);
+    wrapper.instance().previewUrl = 'newValue';
+    wrapper.find('.restore-button').simulate('click');
+    wrapper.setProps({ value: 'newValue' });
+
+    sinon.assert.calledOnce(onChangeSpy.withArgs('newValue'));
+    expect(wrapper.find('img')).length.to.be(1);
+    expect(wrapper.find('.delete-button')).length.to.be(1);
+    expect(wrapper.find('.restore-button')).length.to.be(0);
   });
 });

@@ -14,6 +14,7 @@ export class ComplexControl extends Component {
     reader.onloadend = (event) => {
       this._uploadFile(event.target.result, '623bd342-8056-4eb9-8a3e-9bb99e8a62fc').then((response) => response.json())
         .then(data => {
+          this.previewUrl = data.url;
           this.props.onChange(data.url);
         });
     };
@@ -39,19 +40,26 @@ export class ComplexControl extends Component {
     });
   }
 
+  _handleDelete() {
+    this.props.onChange(undefined, []);
+  }
+
+  _handleRestore() {
+    this.props.onChange(this.previewUrl, []);
+  }
+
   _displayDeleteOrRestoreButton() {
     if (this.props.value) {
       return (<button className="delete-button"
         onClick={(e) => this._handleDelete(e)}
       >Delete Image</button>);
     } else {
-      return <button className="restore-button">Restore Image</button>;
+      return (<button className="restore-button"
+        onClick={(e) => this._handleRestore(e)}
+      >Restore Image</button>);
     }
   }
 
-  _handleDelete() {
-    this.props.onChange(undefined, []);
-  }
 
   render() {
     let $preview = null;
