@@ -75,7 +75,6 @@ export class Section extends addMoreDecorator(Component) {
             <i className="fa fa-caret-down"></i>
             <i className="fa fa-caret-right"></i>
             <strong>
-              {label.value}
               <FormattedMessage
                 defaultMessage={label.value}
                 id={label.translation_key || 'defaultId'}
