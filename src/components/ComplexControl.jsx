@@ -39,6 +39,10 @@ export class ComplexControl extends Component {
     });
   }
 
+  _handleDelete() {
+    this.props.onChange(undefined, []);
+  }
+
   render() {
     let $preview = null;
     const value = this.props.value;
@@ -48,11 +52,13 @@ export class ComplexControl extends Component {
     return (
         <div className="obs-comment-section-wrap">
           <input type="file"
-            onChange={(e) => this.handleChange(e)}
-          />
+            onChange={(e) => this.handleChange(e)} />
           <label>
             {$preview}
           </label>
+          <button className="delete-button"
+            onClick={(e) => this._handleDelete(e)}
+          >Delete Image</button>
         </div>
     );
   }

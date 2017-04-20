@@ -56,4 +56,14 @@ describe('ComplexControl', () => {
     wrapper.setProps({ value: 'someValue' });
     expect(wrapper.find('img')).length.to.be(1);
   });
+
+  it('should hide uploaded file when click the delete button', () => {
+    wrapper.setProps({ value: 'someValue' });
+
+    wrapper.find('.delete-button').simulate('click');
+    wrapper.setProps({ value: undefined });
+
+    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined));
+    expect(wrapper.find('img')).length.to.be(0);
+  });
 });
