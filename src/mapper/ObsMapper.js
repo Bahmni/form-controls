@@ -17,9 +17,13 @@ export class ObsMapper {
       obs.uuid = undefined;
       obs.formFieldPath = record.formFieldPath;
     }
-    obs.value = record.value.value;
+    let value = record.value.value;
+    if (typeof value === 'string') {
+      value = value && value.trim() !== '' ? value.trim() : undefined;
+    }
+    obs.value = value;
     obs.comment = record.value.comment;
-    obs.voided = record.value.value === undefined;
+    obs.voided = value === undefined;
     obs.inactive = !record.active;
 
     return obs;
