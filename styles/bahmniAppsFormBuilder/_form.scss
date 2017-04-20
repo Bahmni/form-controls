@@ -319,6 +319,11 @@
   display: none;
 }
 
+.complex-component .form-builder-clone,
+.complex-component .add-more-complex-component{
+  display: none;
+}
+
 img {
   border: 1px solid #ddd;
   border-radius: 4px;

@@ -44,8 +44,8 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayObsControl(registeredComponent) {
-    const { onControlAdd, hidden, enabled, metadata, metadata: { concept }, validate, formFieldPath }
-    = this.props;
+    const { onControlAdd, hidden, enabled, metadata,
+      metadata: { concept }, validate, formFieldPath } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     return React.createElement(registeredComponent, {
@@ -127,14 +127,21 @@ export class ObsControl extends addMoreDecorator(Component) {
     return null;
   }
 
+  isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
+  }
+
 
   render() {
     const { concept } = this.props.metadata;
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
+    const complexClass = concept.datatype === 'Complex' ? 'complex-component' : '';
+    const addMoreComplexClass =
+      complexClass && this.isCreateByAddMore() ? 'add-more-complex-component' : '';
     if (registeredComponent) {
       return (
-        <div className="form-field-wrap clearfix">
-          <div className="label-wrap fl">
+        <div className={ classNames('form-field-wrap clearfix', `${complexClass}`) }>
+          <div className={ classNames('label-wrap fl', `${addMoreComplexClass}`) }>
             {this.displayLabel()}
             {this.markMandatory()}
             {this.showHelperText()}

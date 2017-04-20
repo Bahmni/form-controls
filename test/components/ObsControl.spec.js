@@ -468,4 +468,32 @@ describe('ObsControl', () => {
       expect(wrapper.find('Label').props().enabled).to.equal(true);
     });
   });
+  describe('ObsControl', () => {
+    ComponentStore.componentList = {};
+    ComponentStore.registerComponent('Complex', DummyControl);
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('Complex'),
+      label,
+      properties,
+    };
+    const wrapper = mount(
+      <ObsControl
+        formFieldPath="test1.1/1-1"
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        validate={false}
+        value={domainValue}
+      />);
+
+    it('should render complex control with complex-component classname', () => {
+      expect(wrapper.find('.form-field-wrap')).to.have.className('complex-component');
+    });
+
+    it('should render complex control created by add more ' +
+      'with add-more-complex-component classname', () => {
+      expect(wrapper.find('.label-wrap')).to.have.className('add-more-complex-component');
+    });
+  });
 });
