@@ -12,7 +12,7 @@ export class ComplexControl extends Component {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = (event) => {
-      this._uploadFile(event.target.result, '623bd342-8056-4eb9-8a3e-9bb99e8a62fc').then((response) => response.json())
+      this.uploadFile(event.target.result, '623bd342-8056-4eb9-8a3e-9bb99e8a62fc').then((response) => response.json())
         .then(data => {
           this.previewUrl = data.url;
           this.props.onChange(data.url);
@@ -21,7 +21,7 @@ export class ComplexControl extends Component {
     reader.readAsDataURL(file);
   }
 
-  _uploadFile(file, patientUuid) {
+  uploadFile(file, patientUuid) {
     const searchStr = ';base64';
     let format;
     format = file.split(searchStr)[0].split('/')[1];
@@ -40,27 +40,27 @@ export class ComplexControl extends Component {
     });
   }
 
-  _handleDelete() {
+  handleDelete() {
     this.props.onChange(undefined, []);
   }
 
-  _handleRestore() {
+  handleRestore() {
     this.props.onChange(this.previewUrl, []);
   }
 
-  _displayDeleteOrRestoreButton() {
+  displayActionButton() {
     if (this.props.value) {
       return (<button className="delete-button"
-        onClick={(e) => this._handleDelete(e)}
+        onClick={(e) => this.handleDelete(e)}
       >Delete Image</button>);
     } else {
       return (<button className="restore-button"
-        onClick={(e) => this._handleRestore(e)}
+        onClick={(e) => this.handleRestore(e)}
       >Restore Image</button>);
     }
   }
 
-  _addControl(){
+  addControl(){
     if (!this.hasBeenAddMore){
       this.props.onControlAdd(this.props.formFieldPath);
       this.hasBeenAddMore = true;
@@ -68,11 +68,11 @@ export class ComplexControl extends Component {
   }
 
   render() {
-    let $preview = null;
+    let preview = null;
     const value = this.props.value;
     if (this.props.value) {
-      $preview = (<img src={`/document_images/${value}`} />);
-      this._addControl();
+      preview = (<img src={`/document_images/${value}`} />);
+      this.addControl();
     }
     return (
         <div className="obs-comment-section-wrap">
@@ -80,9 +80,9 @@ export class ComplexControl extends Component {
             onChange={(e) => this.handleChange(e)}
           />
           <label>
-            {$preview}
+            {preview}
           </label>
-          {this._displayDeleteOrRestoreButton()}
+          {this.displayActionButton()}
         </div>
     );
   }
