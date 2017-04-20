@@ -11,6 +11,7 @@ import { List } from 'immutable';
 import { Label } from 'components/Label.jsx';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import * as FormmatedMsg from 'react-intl';
+import { mountWithIntl } from 'src/helpers/intlEnzymeTest.js';
 
 chai.use(chaiEnzyme());
 
@@ -23,7 +24,6 @@ describe('Section', () => {
     ComponentStore.registerComponent('obsControl', ObsControl);
     ComponentStore.registerComponent('numeric', NumericBox);
     ComponentStore.registerComponent('label', Label);
-    sinon.stub(FormmatedMsg, 'FormattedMessage', FormattedMessageStub);
   });
 
   after(() => {
@@ -31,7 +31,6 @@ describe('Section', () => {
     ComponentStore.deRegisterComponent('obsControl');
     ComponentStore.deRegisterComponent('numeric');
     ComponentStore.deRegisterComponent('label');
-    FormmatedMsg.FormattedMessage.restore();
   });
 
   const obsConcept = {
@@ -124,202 +123,240 @@ describe('Section', () => {
 
   const onChangeSpy = sinon.spy();
 
-  it('should render section control collapse equal to true', () => {
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
+  describe('without i18n', () => {
+    before(() => {
+      sinon.stub(FormmatedMsg, 'FormattedMessage', FormattedMessageStub);
+    });
 
-    expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+    after(() => {
+      FormmatedMsg.FormattedMessage.restore();
+    });
+
+    it('should render section control collapse equal to true', () => {
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+    });
+
+    it('should pass enabled property to its child component', () => {
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse
+          enabled={false}
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('ObsControl')).to.have.prop('enabled').to.deep.eql(false);
+    });
+
+    it('should set enabled as true by default', () => {
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('Section')).to.have.prop('enabled').to.deep.eql(true);
+    });
+
+    it('should render section control with only the registered controls', () => {
+      ComponentStore.deRegisterComponent('obsControl');
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper).to.not.have.descendants('obsControl');
+      ComponentStore.registerComponent('obsControl', ObsControl);
+    });
+
+    it('should collapse all child controls on click of collapse icon', () => {
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse={false}
+          enabled
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls active-group-controls');
+
+      wrapper.find('legend').simulate('click');
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls closing-group-controls');
+    });
+
+    it('should collapse all child controls on change of collapse props', () => {
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse={false}
+          enabled
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls active-group-controls');
+
+      wrapper.setProps({ collapse: true });
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls closing-group-controls');
+    });
+
+    it('should collapse all child controls on change of collapse state', () => {
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse={false}
+          enabled
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls active-group-controls');
+
+      wrapper.setState({ collapse: false });
+      wrapper.setProps({ collapse: true });
+
+      expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls closing-group-controls');
+    });
+
+    it('should show as disabled when Section is set to be disabled', () => {
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse={false}
+          enabled={false}
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('legend').props().className).
+        to.eql('form-builder-toggle active disabled');
+      expect(wrapper.find('div').at(1).props().className)
+        .to.eql('obsGroup-controls active-group-controls disabled');
+    });
+
+    it('should call onValueChanged when onChange be triggered', () => {
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      const updatedValue = { value: 1, comment: undefined };
+      wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined, undefined);
+
+      sinon.assert.calledOnce(
+        onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined, undefined));
+    });
+
+    it('should pass onEventTrigger property to children control', () => {
+      const wrapper = mount(
+        <Section
+          children={children}
+          collapse
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onEventTrigger={() => {}}
+          onValueChanged={onChangeSpy}
+          validate={false}
+        />);
+
+      expect(wrapper.find('Row')).to.have.prop('onEventTrigger');
+    });
   });
 
-  it('should pass enabled property to its child component', () => {
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse
-        enabled={false}
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
 
-    expect(wrapper.find('ObsControl')).to.have.prop('enabled').to.deep.eql(false);
-  });
+  describe('with i18n', () => {
+    it('should render label in French', () => {
+      const label = {
+        translation_key: 'TEST_KEY',
+        type: 'label',
+        value: 'label',
+      };
+      metadata.label = label;
+      const wrapper = mountWithIntl(
+        <Section
+          children={children}
+          collapse
+          formFieldPath={sectionFormFieldPath}
+          formName={formName}
+          formVersion={formVersion}
+          metadata={metadata}
+          onEventTrigger={() => {}}
+          onValueChanged={() => {}}
+          validate={false}
 
-  it('should set enabled as true by default', () => {
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
+        />);
 
-    expect(wrapper.find('Section')).to.have.prop('enabled').to.deep.eql(true);
-  });
-
-  it('should render section control with only the registered controls', () => {
-    ComponentStore.deRegisterComponent('obsControl');
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
-
-    expect(wrapper).to.not.have.descendants('obsControl');
-    ComponentStore.registerComponent('obsControl', ObsControl);
-  });
-
-  it('should collapse all child controls on click of collapse icon', () => {
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse={false}
-        enabled
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls active-group-controls');
-
-    wrapper.find('legend').simulate('click');
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls closing-group-controls');
-  });
-
-  it('should collapse all child controls on change of collapse props', () => {
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse={false}
-        enabled
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls active-group-controls');
-
-    wrapper.setProps({ collapse: true });
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls closing-group-controls');
-  });
-
-  it('should collapse all child controls on change of collapse state', () => {
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse={false}
-        enabled
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls active-group-controls');
-
-    wrapper.setState({ collapse: false });
-    wrapper.setProps({ collapse: true });
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle ');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls closing-group-controls');
-  });
-
-  it('should show as disabled when Section is set to be disabled', () => {
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse={false}
-        enabled={false}
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
-
-    expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active disabled');
-    expect(wrapper.find('div').at(0).props().className)
-      .to.eql('obsGroup-controls active-group-controls disabled');
-  });
-
-  it('should call onValueChanged when onChange be triggered', () => {
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
-
-    const updatedValue = { value: 1, comment: undefined };
-    wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined, undefined);
-
-    sinon.assert.calledOnce(
-      onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined, undefined));
-  });
-
-  it('should pass onEventTrigger property to children control', () => {
-    const wrapper = mount(
-      <Section
-        children={children}
-        collapse
-        formFieldPath={sectionFormFieldPath}
-        formName={formName}
-        formVersion={formVersion}
-        metadata={metadata}
-        onEventTrigger={() => {}}
-        onValueChanged={onChangeSpy}
-        validate={false}
-      />);
-
-    expect(wrapper.find('Row')).to.have.prop('onEventTrigger');
+      expect(wrapper.find('span').at(0).text()).to.eql('test value');
+    });
   });
 });
