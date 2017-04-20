@@ -60,12 +60,19 @@ export class ComplexControl extends Component {
     }
   }
 
+  _addControl(){
+    if (!this.hasBeenAddMore){
+      this.props.onControlAdd(this.props.formFieldPath);
+      this.hasBeenAddMore = true;
+    }
+  }
 
   render() {
     let $preview = null;
     const value = this.props.value;
     if (this.props.value) {
       $preview = (<img src={`/document_images/${value}`} />);
+      this._addControl();
     }
     return (
         <div className="obs-comment-section-wrap">

@@ -14,12 +14,16 @@ sinonStubPromise(sinon);
 describe('ComplexControl', () => {
   let onChangeSpy;
   let wrapper;
+  let addMoreSpy;
   beforeEach(() => {
     onChangeSpy = sinon.spy();
+    addMoreSpy = sinon.spy();
+
     wrapper = mount(
       <ComplexControl
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
+        onControlAdd={addMoreSpy}
         validate={false}
         validations={[]}
       />);
@@ -84,5 +88,22 @@ describe('ComplexControl', () => {
     expect(wrapper.find('img')).length.to.be(1);
     expect(wrapper.find('.delete-button')).length.to.be(1);
     expect(wrapper.find('.restore-button')).length.to.be(0);
+  });
+
+  it('should one add more complex control when there is an uploaded file', () => {
+    wrapper.setProps({ value: 'someValue' });
+    sinon.assert.calledOnce(addMoreSpy);
+  });
+
+  it('should not add more complex control when there is no uploaded file', () => {
+    wrapper.setProps({ value: undefined });
+    sinon.assert.notCalled(addMoreSpy);
+  });
+
+  it('should only one add more complex control when there is an re-uploaded file', () => {
+    wrapper.setProps({ value: 'someValue' });
+    wrapper.setProps({ value: 'newValue' });
+
+    sinon.assert.calledOnce(addMoreSpy);
   });
 });
