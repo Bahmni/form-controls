@@ -119,6 +119,7 @@ export class ComplexControl extends Component {
     return (
         <div className="obs-comment-section-wrap">
           <input className={classNames({ 'form-builder-error': this.state.hasErrors })}
+            disabled={ !this.props.enabled }
             onChange={(e) => this.handleChange(e)}
             type="file"
 

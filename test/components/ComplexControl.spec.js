@@ -140,4 +140,9 @@ describe('ComplexControl', () => {
     wrapper.setProps({ value: 'someValue' });
     sinon.assert.notCalled(onChangeSpy.withArgs('someValue'));
   });
+
+  it('should check disabled attribute when enabled prop is false', () => {
+    wrapper.setProps({ enabled: false });
+    expect(wrapper.find('input').props().disabled).to.equal(true);
+  });
 });
