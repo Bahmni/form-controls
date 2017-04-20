@@ -70,6 +70,21 @@ describe('TextBox', () => {
     sinon.assert.called(onChangeSpy.withArgs(undefined, []));
   });
 
+  it('should return whole value when given value with spaces but not empty string', () => {
+    const wrapper = mount(
+      <TextBox
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
+    );
+    const valueWithSpaces = ' abc efg ';
+    wrapper.find('textarea').simulate('change', { target: { value: valueWithSpaces } });
+
+    sinon.assert.called(onChangeSpy.withArgs(valueWithSpaces, []));
+  });
+
   it('should throw error on fail of validations', () => {
     const validations = [constants.validations.mandatory];
 

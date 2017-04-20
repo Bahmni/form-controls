@@ -58,7 +58,7 @@ export class TextBox extends Component {
 
   handleChange(e) {
     let value = e.target.value;
-    value = value && value.trim() !== '' ? value.trim() : undefined;
+    value = value && value.trim() !== '' ? value : undefined;
     const errors = this._getErrors(value);
     this.setState({ hasErrors: this._hasErrors(errors) });
     this.props.onChange(value, errors);
