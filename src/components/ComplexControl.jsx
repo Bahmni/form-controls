@@ -39,6 +39,16 @@ export class ComplexControl extends Component {
     });
   }
 
+  _displayDeleteOrRestoreButton() {
+    if (this.props.value) {
+      return (<button className="delete-button"
+        onClick={(e) => this._handleDelete(e)}
+      >Delete Image</button>);
+    } else {
+      return <button className="restore-button">Restore Image</button>;
+    }
+  }
+
   _handleDelete() {
     this.props.onChange(undefined, []);
   }
@@ -52,13 +62,12 @@ export class ComplexControl extends Component {
     return (
         <div className="obs-comment-section-wrap">
           <input type="file"
-            onChange={(e) => this.handleChange(e)} />
+            onChange={(e) => this.handleChange(e)}
+          />
           <label>
             {$preview}
           </label>
-          <button className="delete-button"
-            onClick={(e) => this._handleDelete(e)}
-          >Delete Image</button>
+          {this._displayDeleteOrRestoreButton()}
         </div>
     );
   }

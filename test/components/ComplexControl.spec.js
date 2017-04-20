@@ -57,7 +57,8 @@ describe('ComplexControl', () => {
     expect(wrapper.find('img')).length.to.be(1);
   });
 
-  it('should hide uploaded file when click the delete button', () => {
+  it('should hide uploaded file and delete button and show restore button when click the delete button',
+    () => {
     wrapper.setProps({ value: 'someValue' });
 
     wrapper.find('.delete-button').simulate('click');
@@ -65,5 +66,7 @@ describe('ComplexControl', () => {
 
     sinon.assert.calledOnce(onChangeSpy.withArgs(undefined));
     expect(wrapper.find('img')).length.to.be(0);
+    expect(wrapper.find('.delete-button')).length.to.be(0);
+    expect(wrapper.find('.restore-button')).length.to.be(1);
   });
 });
