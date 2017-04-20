@@ -1,25 +1,67 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import { Validator } from 'src/helpers/Validator';
+import classNames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 export class ComplexControl extends Component {
   constructor(props) {
     super(props);
+    const hasErrors = false;
+    this.state = { hasErrors };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    this.isValueChanged = this.props.value !== nextProps.value;
+    if (this.props.enabled !== nextProps.enabled ||
+      this.isValueChanged ||
+      this.state.hasErrors !== nextState.hasErrors) {
+      return true;
+    }
+    return false;
+  }
+
+  componentDidUpdate() {
+    const errors = this._getErrors(this.props.value);
+    if (this._hasErrors(errors)) {
+      this.props.onChange(this.props.value, errors);
+    }
+  }
+
+  _hasErrors(errors) {
+    return !isEmpty(errors);
+  }
+
+  _getErrors(value) {
+    const validations = this.props.validations;
+    const controlDetails = { validations, value };
+    return Validator.getErrors(controlDetails);
+  }
+
+  update(value) {
+    const errors = this._getErrors(value);
+    this.setState({ hasErrors: this._hasErrors(errors) });
+    this.props.onChange(value, errors);
   }
 
   handleChange(e) {
     e.preventDefault();
+    if (e.target.files === undefined) {
+      this.update(undefined);
+      return;
+    }
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = (event) => {
       this.uploadFile(event.target.result, '623bd342-8056-4eb9-8a3e-9bb99e8a62fc').then((response) => response.json())
         .then(data => {
           this.previewUrl = data.url;
-          this.props.onChange(data.url);
+          this.update(data.url);
         });
     };
     reader.readAsDataURL(file);
   }
+
 
   uploadFile(file, patientUuid) {
     const searchStr = ';base64';
@@ -41,11 +83,11 @@ export class ComplexControl extends Component {
   }
 
   handleDelete() {
-    this.props.onChange(undefined, []);
+    this.update(undefined);
   }
 
   handleRestore() {
-    this.props.onChange(this.previewUrl, []);
+    this.update(this.previewUrl);
   }
 
   displayActionButton() {
@@ -60,8 +102,8 @@ export class ComplexControl extends Component {
     }
   }
 
-  addControl(){
-    if (!this.hasBeenAddMore){
+  addControl() {
+    if (!this.hasBeenAddMore) {
       this.props.onControlAdd(this.props.formFieldPath);
       this.hasBeenAddMore = true;
     }
@@ -76,7 +118,8 @@ export class ComplexControl extends Component {
     }
     return (
         <div className="obs-comment-section-wrap">
-          <input type="file"
+          <input className={classNames({ 'form-builder-error': this.state.hasErrors })}
+            type="file"
             onChange={(e) => this.handleChange(e)}
           />
           <label>

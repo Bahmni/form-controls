@@ -4,6 +4,7 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { ComplexControl } from 'src/components/ComplexControl.jsx';
 import sinon from 'sinon';
+import constants from 'src/constants';
 import { Error } from 'src/Error';
 
 chai.use(chaiEnzyme());
@@ -34,14 +35,14 @@ describe('ComplexControl', () => {
   });
 
   it('should upload file to server', () => {
-    //given result of onloadend
+    // given result of onloadend
     const result = 'data:image/jpeg;base64,/9j/4SumRXhpZgAATU';
     const stub = sinon.stub(FileReader.prototype, 'readAsDataURL', function () {
       this.onloadend({ target: { result } });
     });
-    //spy on uploadFile
+    // spy on uploadFile
     const uploadSpy = sinon.spy(wrapper.instance(), 'uploadFile');
-    //given response of fetch
+    // given response of fetch
     const response = {
       json: () => {},
     };
@@ -110,5 +111,32 @@ describe('ComplexControl', () => {
     wrapper.setProps({ value: 'newValue' });
 
     sinon.assert.calledOnce(addMoreSpy);
+  });
+
+  it('should throw error on fail of validations', () => {
+    const validations = [constants.validations.mandatory];
+    const mandatoryError = new Error({ message: validations[0] });
+    wrapper.setProps({ validations });
+
+    wrapper.find('input').simulate('change', { target: { files: undefined } });
+
+    sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    expect(wrapper.find('input')).to.have.className('form-builder-error');
+  });
+
+  it('should throw error on fail of validations during component update', () => {
+    const validations = [constants.validations.mandatory];
+    const mandatoryError = new Error({ message: validations[0] });
+    wrapper.setProps({ validations });
+    wrapper.setProps({ value: 'someValue' });
+
+    wrapper.setProps({ validate: true, value: undefined });
+    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
+  });
+
+  it('should not update the component when the value is not change', () => {
+    wrapper.setProps({ value: 'someValue' });
+    wrapper.setProps({ value: 'someValue' });
+    sinon.assert.notCalled(onChangeSpy.withArgs('someValue'));
   });
 });
