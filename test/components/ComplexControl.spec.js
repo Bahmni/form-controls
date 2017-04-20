@@ -34,6 +34,14 @@ describe('ComplexControl', () => {
   });
 
   it('should upload file to server', () => {
+    //given result of onloadend
+    const result = 'data:image/jpeg;base64,/9j/4SumRXhpZgAATU';
+    const stub = sinon.stub(FileReader.prototype, 'readAsDataURL', function () {
+      this.onloadend({ target: { result } });
+    });
+    //spy on uploadFile
+    const uploadSpy = sinon.spy(wrapper.instance(), 'uploadFile');
+    //given response of fetch
     const response = {
       json: () => {},
     };
@@ -42,12 +50,6 @@ describe('ComplexControl', () => {
     const responsePromise = sinon.stub(response, 'json').returnsPromise();
     fetchPromise.resolves(response);
     responsePromise.resolves({ url: 'someUrl' });
-
-    const result = 'data:image/jpeg;base64,/9j/4SumRXhpZgAATU';
-    const stub = sinon.stub(FileReader.prototype, 'readAsDataURL', function () {
-      this.onloadend({ target: { result } });
-    });
-    const uploadSpy = sinon.spy(wrapper.instance(), '_uploadFile');
 
     wrapper.find('input').simulate('change', { target: { files: [{}] } });
 
@@ -58,6 +60,7 @@ describe('ComplexControl', () => {
 
   it('should display the file which been uploaded', () => {
     wrapper.setProps({ value: 'someValue' });
+
     expect(wrapper.find('img')).length.to.be(1);
   });
 
@@ -76,15 +79,14 @@ describe('ComplexControl', () => {
 
   it('should display uploaded file and delete button and hide the restore button when click the restore button', () => {
     wrapper.setProps({ value: 'someValue' });
-
+    wrapper.instance().previewUrl = 'someValue';
     wrapper.find('.delete-button').simulate('click');
     wrapper.setProps({ value: undefined });
 
-    wrapper.instance().previewUrl = 'newValue';
     wrapper.find('.restore-button').simulate('click');
-    wrapper.setProps({ value: 'newValue' });
+    wrapper.setProps({ value: 'someValue' });
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs('newValue'));
+    sinon.assert.calledOnce(onChangeSpy.withArgs('someValue'));
     expect(wrapper.find('img')).length.to.be(1);
     expect(wrapper.find('.delete-button')).length.to.be(1);
     expect(wrapper.find('.restore-button')).length.to.be(0);
@@ -92,16 +94,19 @@ describe('ComplexControl', () => {
 
   it('should one add more complex control when there is an uploaded file', () => {
     wrapper.setProps({ value: 'someValue' });
+
     sinon.assert.calledOnce(addMoreSpy);
   });
 
   it('should not add more complex control when there is no uploaded file', () => {
     wrapper.setProps({ value: undefined });
+
     sinon.assert.notCalled(addMoreSpy);
   });
 
   it('should only one add more complex control when there is an re-uploaded file', () => {
     wrapper.setProps({ value: 'someValue' });
+
     wrapper.setProps({ value: 'newValue' });
 
     sinon.assert.calledOnce(addMoreSpy);
