@@ -37,7 +37,7 @@ describe('ComplexControl', () => {
   it('should upload file to server', () => {
     // given result of onloadend
     const result = 'data:image/jpeg;base64,/9j/4SumRXhpZgAATU';
-    const stub = sinon.stub(FileReader.prototype, 'readAsDataURL', function () {
+    const stub = sinon.stub(FileReader.prototype, 'readAsDataURL', function func() {
       this.onloadend({ target: { result } });
     });
     // spy on uploadFile
@@ -65,20 +65,21 @@ describe('ComplexControl', () => {
     expect(wrapper.find('img')).length.to.be(1);
   });
 
-  it('should hide uploaded file and delete button and show restore button when click the delete button',
-    () => {
-      wrapper.setProps({ value: 'someValue' });
+  it('should hide uploaded file and delete button and ' +
+    'show restore button when click the delete button', () => {
+    wrapper.setProps({ value: 'someValue' });
 
-      wrapper.find('.delete-button').simulate('click');
-      wrapper.setProps({ value: undefined });
+    wrapper.find('.delete-button').simulate('click');
+    wrapper.setProps({ value: undefined });
 
-      sinon.assert.calledOnce(onChangeSpy.withArgs(undefined));
-      expect(wrapper.find('img')).length.to.be(0);
-      expect(wrapper.find('.delete-button')).length.to.be(0);
-      expect(wrapper.find('.restore-button')).length.to.be(1);
-    });
+    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined));
+    expect(wrapper.find('img')).length.to.be(0);
+    expect(wrapper.find('.delete-button')).length.to.be(0);
+    expect(wrapper.find('.restore-button')).length.to.be(1);
+  });
 
-  it('should display uploaded file and delete button and hide the restore button when click the restore button', () => {
+  it('should display uploaded file and delete button and ' +
+    'hide the restore button when click the restore button', () => {
     wrapper.setProps({ value: 'someValue' });
     wrapper.instance().previewUrl = 'someValue';
     wrapper.find('.delete-button').simulate('click');

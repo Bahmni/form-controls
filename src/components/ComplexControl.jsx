@@ -53,7 +53,8 @@ export class ComplexControl extends Component {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = (event) => {
-      this.uploadFile(event.target.result, '623bd342-8056-4eb9-8a3e-9bb99e8a62fc').then((response) => response.json())
+      this.uploadFile(event.target.result, '623bd342-8056-4eb9-8a3e-9bb99e8a62fc')
+        .then((response) => response.json())
         .then(data => {
           this.previewUrl = data.url;
           this.update(data.url);
@@ -65,10 +66,10 @@ export class ComplexControl extends Component {
 
   uploadFile(file, patientUuid) {
     const searchStr = ';base64';
-    let format;
-    format = file.split(searchStr)[0].split('/')[1];
+    const format = file.split(searchStr)[0].split('/')[1];
 
-    const url = 'https://local.mybahmni.org' + '/openmrs/ws/rest/v1/bahmnicore/visitDocument/uploadDocument';
+    const url = 'https://local.mybahmni.org' +
+      '/openmrs/ws/rest/v1/bahmnicore/visitDocument/uploadDocument';
     return fetch(url, {
       method: 'POST',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
@@ -95,11 +96,10 @@ export class ComplexControl extends Component {
       return (<button className="delete-button"
         onClick={(e) => this.handleDelete(e)}
       >Delete Image</button>);
-    } else {
-      return (<button className="restore-button"
-        onClick={(e) => this.handleRestore(e)}
-      >Restore Image</button>);
     }
+    return (<button className="restore-button"
+      onClick={(e) => this.handleRestore(e)}
+    >Restore Image</button>);
   }
 
   addControl() {
@@ -119,8 +119,9 @@ export class ComplexControl extends Component {
     return (
         <div className="obs-comment-section-wrap">
           <input className={classNames({ 'form-builder-error': this.state.hasErrors })}
-            type="file"
             onChange={(e) => this.handleChange(e)}
+            type="file"
+
           />
           <label>
             {preview}
@@ -130,5 +131,20 @@ export class ComplexControl extends Component {
     );
   }
 }
+
+
+ComplexControl.propTypes = {
+  enabled: PropTypes.bool,
+  formFieldPath: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  onControlAdd: PropTypes.func.isRequired,
+  validate: PropTypes.bool.isRequired,
+  validations: PropTypes.array.isRequired,
+  value: PropTypes.string,
+};
+
+ComplexControl.defaultProps = {
+  enabled: true,
+};
 
 ComponentStore.registerComponent('complex', ComplexControl);
