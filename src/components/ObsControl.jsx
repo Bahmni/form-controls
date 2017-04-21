@@ -120,8 +120,12 @@ export class ObsControl extends addMoreDecorator(Component) {
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
       const comment = this.props.value.comment;
+      const value = this.props.value.value;
+      const { concept } = this.props.metadata;
       return (
-        <Comment comment={comment} onCommentChange={this.onCommentChange} />
+        <Comment comment={comment} datatype={concept.datatype}
+          onCommentChange={this.onCommentChange} value={value}
+        />
       );
     }
     return null;
