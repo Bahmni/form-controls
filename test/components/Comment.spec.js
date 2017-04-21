@@ -51,5 +51,10 @@ describe('Comment', () => {
     wrapper.find('button').simulate('click');
     expect(wrapper.find('textarea').props().defaultValue).to.be.eql('Some Comment');
   });
+
+  it('should not render comment button when the data type of control is complex', () => {
+    wrapper = mount(<Comment datatype={'Complex'} />);
+    expect(wrapper.find('button')).length.to.be(0);
+  });
 });
 
