@@ -141,6 +141,18 @@ export class ObsControlDesigner extends Component {
     return null;
   }
 
+  showScriptButton() {
+    const scripts = this.props.metadata.events;
+    if (scripts && scripts.onValueChange && scripts.onValueChange !== '') {
+      return (
+        <button>
+          <i>Script</i>
+        </button>
+      );
+    }
+    return null;
+  }
+
   render() {
     const { metadata, metadata: { concept } } = this.props;
     const designerComponent = concept && ComponentStore.getDesignerComponent(concept.datatype);
@@ -150,6 +162,7 @@ export class ObsControlDesigner extends Component {
           onClick={ (event) => this.props.onSelect(event, metadata) }
         >
           {this.showDeleteButton()}
+          {this.showScriptButton()}
           <div className="label-wrap fl">
             {this.displayLabel()}
             {this.markMandatory()}
@@ -178,6 +191,7 @@ ObsControlDesigner.propTypes = {
   metadata: PropTypes.shape({
     concept: PropTypes.object,
     displayType: PropTypes.string,
+    events: PropTypes.object,
     id: PropTypes.string.isRequired,
     label: PropTypes.object,
     properties: PropTypes.shape({

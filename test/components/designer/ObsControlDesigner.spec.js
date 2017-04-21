@@ -294,6 +294,15 @@ describe('ObsControlDesigner', () => {
       expect(deleteButton.text()).to.eql('');
     });
 
+    it('should show script button if control has onValueChange events', () => {
+      metadata.events = { onValueChange: 'some content' };
+
+      wrapper.setProps({ metadata });
+
+      const scriptButton = wrapper.find('button');
+      expect(scriptButton.find('i').text()).to.eql('Script');
+    });
+
     it('should call deleteControl after delete button is clicked', () => {
       const deleteControlSpy = sinon.spy();
       wrapper = mount(
