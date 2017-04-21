@@ -33,9 +33,16 @@ export class ComplexControl extends Component {
   }
 
   _getErrors(value) {
+    if (this._isCreateByAddMore()) {
+      return [];
+    }
     const validations = this.props.validations;
     const controlDetails = { validations, value };
     return Validator.getErrors(controlDetails);
+  }
+
+  _isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
   }
 
   update(value) {
