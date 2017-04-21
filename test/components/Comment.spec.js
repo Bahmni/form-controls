@@ -56,5 +56,19 @@ describe('Comment', () => {
     wrapper = mount(<Comment datatype={'Complex'} />);
     expect(wrapper.find('button')).length.to.be(0);
   });
+
+  it('should render comment section when the complex control has value', () => {
+    wrapper = mount(<Comment datatype={'Complex'} onCommentChange={onCommentChange}
+      value={'someValue'}
+    />);
+    expect(wrapper.find('textarea')).length.to.be(1);
+  });
+
+  it('should not render comment section when the complex control does not have value', () => {
+    wrapper = mount(<Comment datatype={'Complex'} onCommentChange={onCommentChange}
+      value={undefined}
+    />);
+    expect(wrapper.find('textarea')).length.to.be(0);
+  });
 });
 

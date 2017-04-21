@@ -20,7 +20,7 @@ export class Comment extends Component {
   }
 
   showCommentSection() {
-    if (this.state.showCommentSection) {
+    if (this.state.showCommentSection || (this.props.datatype === 'Complex' && this.props.value)) {
       return (
         <div className="obs-comment-section-wrap">
           <div className="label-wrap"></div>
@@ -68,5 +68,6 @@ Comment.propTypes = {
   comment: PropTypes.string,
   datatype: PropTypes.string,
   onCommentChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
 };
 
