@@ -65,6 +65,13 @@ describe('ComplexControl', () => {
     expect(wrapper.find('img')).length.to.be(1);
   });
 
+  it('should display the file with a link which been uploaded', () => {
+    wrapper.setProps({ value: 'someValue' });
+
+    expect(wrapper.find('a')).to.have.prop('href').to.eql('/document_images/someValue');
+    expect(wrapper.find('a')).to.have.prop('target').to.eql('_blank');
+  });
+
   it('should hide uploaded file and delete button and ' +
     'show restore button when click the delete button', () => {
     wrapper.setProps({ value: 'someValue' });

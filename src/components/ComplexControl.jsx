@@ -118,9 +118,9 @@ export class ComplexControl extends Component {
 
   render() {
     let preview = null;
-    const value = this.props.value;
+    const imageUrl = `/document_images/${this.props.value}`;
     if (this.props.value) {
-      preview = (<img src={`/document_images/${value}`} />);
+      preview = (<a href={imageUrl} target="_blank"><img src={imageUrl} /></a>);
       this.addControl();
     }
     return (
