@@ -21,6 +21,9 @@ export class ObsMapper {
     obs.comment = record.value.comment;
     obs.voided = record.value.value === undefined;
     obs.inactive = !record.active;
+    if (record.control.concept && record.control.concept.datatype === 'Complex' && record.value.value) {
+      obs.voided = record.value.value.indexOf('voided') > 0;
+    }
 
     return obs;
   }
