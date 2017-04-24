@@ -76,6 +76,7 @@ describe('ComplexControl', () => {
     wrapper.setProps({ value: 'someValue' });
 
     wrapper.find('.delete-button').simulate('click');
+    wrapper.setProps({ value: 'someValuevoided' });
 
     expect(wrapper.find('.restore-button')).length.to.be(1);
   });
@@ -83,9 +84,10 @@ describe('ComplexControl', () => {
   it('should hide the restore button when click the restore button', () => {
     wrapper.setProps({ value: 'someValue' });
     wrapper.find('.delete-button').simulate('click');
+    wrapper.setProps({ value: 'someValuevoided' });
 
     wrapper.find('.restore-button').simulate('click');
-    wrapper.setProps({ value: 'newValue' });
+    wrapper.setProps({ value: 'someValue' });
 
     expect(wrapper.find('.restore-button')).length.to.be(0);
   });
@@ -146,9 +148,9 @@ describe('ComplexControl', () => {
     wrapper.setProps({ validations, value: 'someValue', formFieldPath: 'test1.1/1-1' });
 
     wrapper.find('.delete-button').simulate('click');
-    wrapper.setProps({ validate: true, value: undefined });
+    wrapper.setProps({ validate: true, value: 'someValuevoided' });
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs('someValuevoided', []));
   });
 
   it('should not update the component when the value is not change', () => {

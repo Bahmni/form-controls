@@ -94,13 +94,11 @@ export class ComplexControl extends Component {
   }
 
   handleDelete() {
-    this.isDeletePending = true;
-    this.update(undefined);
+    this.update(this.props.value+'voided');
   }
 
   handleRestore() {
-    this.isDeletePending = false;
-    this.update(this.props.value);
+    this.update(this.props.value.replace(/voided/g,''));
   }
   displayDeleteButton() {
     return (<button className="delete-button"
@@ -129,12 +127,12 @@ export class ComplexControl extends Component {
     let isPreviewHidden = true;
     let deleteButton = null;
     let restoreButton = null;
-    const imageUrl = `/document_images/${this.props.value}`;
     if (this.props.value) {
       isPreviewHidden = false;
+      const imageUrl = `/document_images/${this.props.value.replace(/voided/g,'')}`;
       preview = (<a href={imageUrl} target="_blank"><img src={imageUrl} /></a>);
       deleteButton = this.displayDeleteButton();
-      if(this.isDeletePending) {
+      if(this.props.value.indexOf('voided') > 0) {
         restoreButton = this.displayRestoreButton();
       }
       this.addControl();
