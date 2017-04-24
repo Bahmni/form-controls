@@ -66,7 +66,6 @@ export class ComplexControl extends Component {
       this.uploadFile(event.target.result, '623bd342-8056-4eb9-8a3e-9bb99e8a62fc')
         .then((response) => response.json())
         .then(data => {
-          this.previewUrl = data.url;
           this.update(data.url);
         });
     };
@@ -95,22 +94,27 @@ export class ComplexControl extends Component {
   }
 
   handleDelete() {
+    this.isDeletePending = true;
     this.update(undefined);
   }
 
   handleRestore() {
-    this.update(this.previewUrl);
+    this.isDeletePending = false;
+    this.update(this.props.value);
   }
-
-  displayActionButton() {
-    if (this.props.value) {
-      return (<button className="delete-button"
-        onClick={(e) => this.handleDelete(e)}
-      >Delete Image</button>);
-    }
+  displayDeleteButton() {
+    return (<button className="delete-button"
+                    onClick={(e) => this.handleDelete(e)}
+    >
+      <span className="fa fa-remove"></span>
+    </button>);
+  }
+  displayRestoreButton() {
     return (<button className="restore-button"
-      onClick={(e) => this.handleRestore(e)}
-    >Restore Image</button>);
+                    onClick={(e) => this.handleRestore(e)}
+    >
+      <span className="fa fa-undo"></span>
+    </button>);
   }
 
   addControl() {
@@ -122,24 +126,37 @@ export class ComplexControl extends Component {
 
   render() {
     let preview = null;
+    let isPreviewHidden = true;
+    let deleteButton = null;
+    let restoreButton = null;
     const imageUrl = `/document_images/${this.props.value}`;
     if (this.props.value) {
+      isPreviewHidden = false;
       preview = (<a href={imageUrl} target="_blank"><img src={imageUrl} /></a>);
+      deleteButton = this.displayDeleteButton();
+      if(this.isDeletePending) {
+        restoreButton = this.displayRestoreButton();
+      }
       this.addControl();
     }
+    const id = "file-browse-observation_" + this.props.formFieldPath.split('/')[1];
     return (
         <div className="obs-comment-section-wrap">
           <Spinner show={this.state.loading} />
           <input className={classNames({ 'form-builder-error': this.state.hasErrors })}
             disabled={ !this.props.enabled }
+                 id={id}
             onChange={(e) => this.handleChange(e)}
             type="file"
-
           />
-          <label>
+          <div className={classNames({'hidden': isPreviewHidden}, "file")}>
             {preview}
+            {deleteButton}
+            {restoreButton}
+          </div>
+          <label className={classNames({'hidden': !isPreviewHidden}, "placeholder")} htmlFor={id}>
+            <i className="fa fa-cloud-upload"></i>
           </label>
-          {this.displayActionButton()}
         </div>
     );
   }

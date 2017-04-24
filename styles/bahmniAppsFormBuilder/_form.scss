@@ -1,3 +1,4 @@
+$lightestGray: #eee;
 .form-builder-row {
   width: 100%;
   .form-builder-column {
@@ -319,15 +320,104 @@
   display: none;
 }
 
-.complex-component .form-builder-clone,
-.complex-component .add-more-complex-component{
-  display: none;
+.complex-component {
+  .form-builder-clone{
+    display: none;
+  }
+  .add-more-complex-component{
+    display: none;
+  }
+  .hidden{
+    display: none !important;
+  }
+  input {
+    display: none;
+  }
+  button {
+    margin: 0;
+    right: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    outline: 0;
+    position: absolute;
+    top: 0;
+    float: right;
+    cursor: pointer;
+  }
+  .delete-button{
+    color: #F40428;
+  }
+  .restore-button{
+    color: #88af28;
+    width: 100%;
+    left: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+  }
+  .file {
+    width: 160px;
+    height: 160px;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid $lightestGray;
+    border-radius: 3px;
+    &:hover {
+      opacity: 1;
+    }
+    img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: 100%;
+      width: auto;
+      -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+  }
+  .placeholder {
+    width: 160px;
+    height: 160px;
+    float: left;
+    margin: 0;
+    text-align: center;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    padding: 0;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+    &:hover {
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+      border-color: $lightestGray;
+    }
+    i {
+      color: #888;
+      font-size: 18px;
+      line-height: 60px;
+      width: 60px;
+      height: 60px;
+      font-size: 30px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+    }
+  }
+  textarea {
+    overflow: hidden;
+    word-wrap: break-word;
+    resize: horizontal;
+    height: 35px !important;
+    width: 180px !important;
+    display: inline-block;
+    box-sizing: border-box;
+  }
 }
 
-img {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 5px;
-  width: 50px;
-  height: 50px;
-}
+
