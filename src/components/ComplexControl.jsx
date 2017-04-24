@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import { Validator } from 'src/helpers/Validator';
+import Spinner from 'src/helpers/Spinner';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
@@ -16,7 +17,7 @@ export class ComplexControl extends Component {
     this.isValueChanged = this.props.value !== nextProps.value;
     if (this.props.enabled !== nextProps.enabled ||
       this.isValueChanged ||
-      this.state.hasErrors !== nextState.hasErrors) {
+      this.state.hasErrors !== nextState.hasErrors || this.state.loading !== nextState.loading) {
       return true;
     }
     return false;
@@ -48,12 +49,13 @@ export class ComplexControl extends Component {
 
   update(value) {
     const errors = this._getErrors(value);
-    this.setState({ hasErrors: this._hasErrors(errors) });
+    this.setState({ loading: false, hasErrors: this._hasErrors(errors) });
     this.props.onChange(value, errors);
   }
 
   handleChange(e) {
     e.preventDefault();
+    this.setState({loading: true});
     if (e.target.files === undefined) {
       this.update(undefined);
       return;
@@ -70,6 +72,7 @@ export class ComplexControl extends Component {
     };
     reader.readAsDataURL(file);
   }
+
 
 
   uploadFile(file, patientUuid) {
@@ -126,6 +129,7 @@ export class ComplexControl extends Component {
     }
     return (
         <div className="obs-comment-section-wrap">
+          <Spinner show={this.state.loading} />
           <input className={classNames({ 'form-builder-error': this.state.hasErrors })}
             disabled={ !this.props.enabled }
             onChange={(e) => this.handleChange(e)}

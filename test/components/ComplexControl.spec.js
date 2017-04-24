@@ -174,4 +174,16 @@ describe('ComplexControl', () => {
 
     expect(wrapper.find('input').props().disabled).to.equal(true);
   });
+
+  it('should show spinner when the file is uploading', () => {
+    wrapper.find('input').simulate('change', { target: { files: [{}] } });
+
+    expect(wrapper.find('Spinner').props().show).to.equal(true);
+  });
+
+  it('should not show spinner when the file is already uploaded', () => {
+    wrapper.instance().update('someValue',[]);
+
+    expect(wrapper.find('Spinner').props().show).to.equal(false);
+  });
 });
