@@ -145,29 +145,33 @@ describe('ComplexControl', () => {
   it('should throw error on fail of validations during component update', () => {
     const validations = [constants.validations.mandatory];
     const mandatoryError = new Error({ message: validations[0] });
-    wrapper.setProps({ validations });
-    wrapper.setProps({ value: 'someValue' });
+    wrapper.setProps({ validations, value: 'someValue'  });
 
     wrapper.setProps({ validate: true, value: undefined });
+
     sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
   });
 
   it('should not throw error when the complex control is created by add more', () => {
     const validations = [constants.validations.mandatory];
     wrapper.setProps({ validations, value: 'someValue', formFieldPath: 'test1.1/1-1' });
+
     wrapper.find('.delete-button').simulate('click');
     wrapper.setProps({ validate: true, value: undefined });
+
     sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
   });
 
   it('should not update the component when the value is not change', () => {
     wrapper.setProps({ value: 'someValue' });
     wrapper.setProps({ value: 'someValue' });
+
     sinon.assert.notCalled(onChangeSpy.withArgs('someValue'));
   });
 
   it('should check disabled attribute when enabled prop is false', () => {
     wrapper.setProps({ enabled: false });
+
     expect(wrapper.find('input').props().disabled).to.equal(true);
   });
 });
