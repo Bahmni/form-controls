@@ -121,6 +121,16 @@ describe('ComplexControl', () => {
     sinon.assert.calledOnce(addMoreSpy);
   });
 
+  it('should not add more control when there is value and switch the tab', () => {
+    wrapper.setProps({ value: 'someValue' });
+
+    wrapper.unmount();
+    wrapper.mount();
+    wrapper.setProps({ value: 'someValue' });
+
+    sinon.assert.calledOnce(addMoreSpy);
+  });
+
   it('should throw error on fail of validations', () => {
     const validations = [constants.validations.mandatory];
     const mandatoryError = new Error({ message: validations[0] });
