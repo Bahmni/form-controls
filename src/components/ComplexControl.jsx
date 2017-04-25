@@ -10,7 +10,6 @@ export class ComplexControl extends Component {
     super(props);
     const hasErrors = false;
     this.state = { hasErrors };
-    this.hasBeenAddMore = this.props.value;
   }
 
   shouldComponentUpdate(nextProps, nextState) {

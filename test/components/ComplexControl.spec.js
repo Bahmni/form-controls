@@ -112,8 +112,7 @@ describe('ComplexControl', () => {
     sinon.assert.calledOnce(addMoreSpy);
   });
 
-  it('should not add more control when there is value and switch the tab', () => {
-    wrapper.setProps({ value: 'someValue' });
+  it('should add more control when there is value and switch the tab', () => {
 
     wrapper.unmount();
     wrapper.mount();
