@@ -120,6 +120,7 @@ export class Container extends addMoreDecorator(Component) {
       onValueChanged: this.onValueChanged,
       onControlAdd: this.onControlAdd,
       onControlRemove: this.onControlRemove,
+      patientUuid: this.props.patientUuid,
       validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');

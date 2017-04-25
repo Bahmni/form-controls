@@ -63,7 +63,7 @@ export class ComplexControl extends Component {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = (event) => {
-      this.uploadFile(event.target.result, '623bd342-8056-4eb9-8a3e-9bb99e8a62fc')
+      this.uploadFile(event.target.result, this.props.patientUuid)
         .then((response) => response.json())
         .then(data => {
           this.update(data.url);

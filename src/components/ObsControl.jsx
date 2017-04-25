@@ -58,6 +58,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       onEventTrigger: this.onEventTrigger,
       validate,
       formFieldPath,
+      patientUuid: this.props.patientUuid,
       validations,
       value: this.props.value.value,
       ...this._numericContext(metadata),
