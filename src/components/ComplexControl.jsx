@@ -38,7 +38,12 @@ export class ComplexControl extends Component {
       return [];
     }
     const validations = this.props.validations;
-    const controlDetails = { validations, value };
+    let controlDetails;
+    if (value && value.indexOf('voided') > 0) {
+      controlDetails = { validations, undefined };
+    }else {
+      controlDetails = { validations, value };
+    }
     return Validator.getErrors(controlDetails);
   }
 

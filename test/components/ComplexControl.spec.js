@@ -16,7 +16,7 @@ describe('ComplexControl', () => {
   let onChangeSpy;
   let wrapper;
   let addMoreSpy;
-  const formFieldPath = "test1.1/1-0";
+  const formFieldPath = 'test1.1/1-0';
   beforeEach(() => {
     onChangeSpy = sinon.spy();
     addMoreSpy = sinon.spy();
@@ -24,7 +24,7 @@ describe('ComplexControl', () => {
     wrapper = mount(
       <ComplexControl
         formFieldPath={formFieldPath}
-          onChange={onChangeSpy}
+        onChange={onChangeSpy}
         onControlAdd={addMoreSpy}
         validate={false}
         validations={[]}
@@ -122,7 +122,6 @@ describe('ComplexControl', () => {
   });
 
   it('should add more control when there is value and switch the tab', () => {
-
     wrapper.unmount();
     wrapper.mount();
     wrapper.setProps({ value: 'someValue' });
@@ -144,11 +143,11 @@ describe('ComplexControl', () => {
   it('should throw error on fail of validations during component update', () => {
     const validations = [constants.validations.mandatory];
     const mandatoryError = new Error({ message: validations[0] });
-    wrapper.setProps({ validations, value: 'someValue'  });
+    wrapper.setProps({ validations, value: 'someValue' });
 
-    wrapper.setProps({ validate: true, value: undefined });
+    wrapper.setProps({ validate: true, value: 'someValuevoided' });
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.calledOnce(onChangeSpy.withArgs('someValuevoided', [mandatoryError]));
   });
 
   it('should not throw error when the complex control is created by add more', () => {
@@ -181,13 +180,13 @@ describe('ComplexControl', () => {
   });
 
   it('should not show spinner when the file is already uploaded', () => {
-    wrapper.instance().update('someValue',[]);
+    wrapper.instance().update('someValue', []);
 
     expect(wrapper.find('Spinner').props().show).to.equal(false);
   });
 
   it('should not show spinner when the file is already uploaded', () => {
-    wrapper.instance().update('someValue',[]);
+    wrapper.instance().update('someValue', []);
 
     expect(wrapper.find('Spinner').props().show).to.equal(false);
   });
