@@ -69,6 +69,7 @@ export class ComplexControl extends Component {
         });
     };
     reader.readAsDataURL(file);
+    this.addControlWithNotification(true);
   }
 
 
@@ -114,9 +115,9 @@ export class ComplexControl extends Component {
     </button>);
   }
 
-  addControl() {
+  addControlWithNotification(isNotificationShown) {
     if (!this.hasBeenAddMore) {
-      this.props.onControlAdd(this.props.formFieldPath);
+      this.props.onControlAdd(this.props.formFieldPath, isNotificationShown);
       this.hasBeenAddMore = true;
     }
   }
@@ -134,7 +135,7 @@ export class ComplexControl extends Component {
       if(this.props.value.indexOf('voided') > 0) {
         restoreButton = this.displayRestoreButton();
       }
-      this.addControl();
+      this.addControlWithNotification(false);
     }
     const id = "file-browse-observation_" + this.props.formFieldPath.split('/')[1];
     return (

@@ -16,14 +16,15 @@ describe('ComplexControl', () => {
   let onChangeSpy;
   let wrapper;
   let addMoreSpy;
+  const formFieldPath = "test1.1/1-0";
   beforeEach(() => {
     onChangeSpy = sinon.spy();
     addMoreSpy = sinon.spy();
 
     wrapper = mount(
       <ComplexControl
-        formFieldPath="test1.1/1-0"
-        onChange={onChangeSpy}
+        formFieldPath={formFieldPath}
+          onChange={onChangeSpy}
         onControlAdd={addMoreSpy}
         validate={false}
         validations={[]}
@@ -92,10 +93,18 @@ describe('ComplexControl', () => {
     expect(wrapper.find('.restore-button')).length.to.be(0);
   });
 
-  it('should one add more complex control when there is an uploaded file', () => {
+  it('should one add more complex control without notification when there is an uploaded file', () => {
     wrapper.setProps({ value: 'someValue' });
 
-    sinon.assert.calledOnce(addMoreSpy);
+    sinon.assert.calledOnce(addMoreSpy.withArgs(formFieldPath, false));
+  });
+
+  it('should one add more complex control with notification after uploading the file', () => {
+    sinon.stub(FileReader.prototype, 'readAsDataURL').returns('');
+
+    wrapper.find('input').simulate('change', { target: { files: '' } });
+
+    sinon.assert.calledOnce(addMoreSpy.withArgs(formFieldPath, true));
   });
 
   it('should not add more complex control when there is no uploaded file', () => {
@@ -169,6 +178,12 @@ describe('ComplexControl', () => {
     wrapper.find('input').simulate('change', { target: { files: [{}] } });
 
     expect(wrapper.find('Spinner').props().show).to.equal(true);
+  });
+
+  it('should not show spinner when the file is already uploaded', () => {
+    wrapper.instance().update('someValue',[]);
+
+    expect(wrapper.find('Spinner').props().show).to.equal(false);
   });
 
   it('should not show spinner when the file is already uploaded', () => {
