@@ -63,15 +63,20 @@ export class Container extends addMoreDecorator(Component) {
     return (`A new ${name} ${type} has been added`);
   }
 
-  onControlAdd(formFieldPath) {
+  onControlAdd(formFieldPath, isNotificationShown = true) {
     const updatedRecordTree = ControlRecordTreeMgr.add(this.state.data, formFieldPath);
 
     const addMoreMessage = this.getAddMoreMessage(this.state.data, formFieldPath);
-
-    this.setState({
-      data: updatedRecordTree,
-      notification: { message: addMoreMessage, type: Constants.messageType.success },
-    });
+    if (isNotificationShown) {
+      this.setState({
+        data: updatedRecordTree,
+        notification: { message: addMoreMessage, type: Constants.messageType.success },
+      });
+    } else {
+      this.setState({
+        data: updatedRecordTree,
+      });
+    }
 
     setTimeout(() => {
       this.setState({ notification: {} });
