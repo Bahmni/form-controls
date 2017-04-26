@@ -8,7 +8,7 @@ export class ComplexControlDesigner extends Component {
 
   render() {
     return (
-      <div className="obs-comment-section-wrap">
+      <div className="obs-comment-section-wrap complex-component-designer">
         <input type="file" />
       </div>
     );

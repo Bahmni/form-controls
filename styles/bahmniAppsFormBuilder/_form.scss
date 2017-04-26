@@ -419,5 +419,8 @@ $lightestGray: #eee;
     box-sizing: border-box;
   }
 }
-
-
+.complex-component-designer{
+  input {
+    width: 200px !important;
+  }
+}
