@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { getControls, getGroupedControls } from '../helpers/controlsParser';
 import map from 'lodash/map';
 import classNames from 'classnames';
+import find from 'lodash/find';
 
 
 export default class Row extends Component {
@@ -18,7 +19,10 @@ export default class Row extends Component {
   getAddMoreControls(controls, className) {
     return controls.map((control, index) => (
       control.map(ctrl =>
-        <div className={classNames(`${className}-index${index}`, { hidden: ctrl.props.hidden })}
+        <div className={classNames(`${className}-index${index}`, { hidden: ctrl.props.hidden },
+          { 'same-line': find(ctrl.props.metadata.properties,
+            (value, key) => (key === 'sameLine' && value)) }
+          )}
           key={ ctrl.props.formFieldPath }
         >
           {ctrl}

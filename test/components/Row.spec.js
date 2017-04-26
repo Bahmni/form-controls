@@ -10,8 +10,8 @@ import { Obs } from '../../src/helpers/Obs';
 
 chai.use(chaiEnzyme());
 
-function getLocationProperties(row, column) {
-  return { location: { row, column } };
+function getLocationAndSameLineProperties(row, column) {
+  return { location: { row, column }, sameLine: true };
 }
 
 class DummyControl extends Component {
@@ -34,17 +34,17 @@ describe('Row', () => {
       id: '100',
       type: 'randomType',
       value: 'Pulse',
-      properties: getLocationProperties(0, 1),
+      properties: getLocationAndSameLineProperties(0, 1),
     },
     {
       id: '101',
       type: 'randomType',
-      properties: getLocationProperties(0, 2),
+      properties: getLocationAndSameLineProperties(0, 2),
     },
     {
       id: '102',
       type: 'randomType',
-      properties: getLocationProperties(0, 3),
+      properties: getLocationAndSameLineProperties(0, 3),
     },
   ];
   const formName = 'formName';
@@ -135,5 +135,20 @@ describe('Row', () => {
       />
     );
     expect(wrapper.find('.form-builder-column').at(0)).to.have.className('hidden');
+  });
+
+  it('should set same line class to the row when control is set same line', () => {
+    const wrapper = shallow(
+      <Row
+        controls={controls}
+        formName={formName}
+        formVersion={formVersion}
+        id={0}
+        onValueChanged={onChangeSpy}
+        records={records}
+        validate={false}
+      />
+    );
+    expect(wrapper.find('.form-builder-column').at(0)).to.have.className('same-line');
   });
 });

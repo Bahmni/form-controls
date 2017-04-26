@@ -42,6 +42,11 @@ const descriptor = {
             defaultValue: false,
             disabled: true,
           },
+          {
+            name: 'sameLine',
+            dataType: 'boolean',
+            defaultValue: true,
+          },
         ],
       },
     ],
