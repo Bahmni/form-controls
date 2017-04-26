@@ -23,6 +23,7 @@ describe('ComplexControl', () => {
 
     wrapper = mount(
       <ComplexControl
+        addMore={true}
         formFieldPath={formFieldPath}
         onChange={onChangeSpy}
         onControlAdd={addMoreSpy}
@@ -112,6 +113,13 @@ describe('ComplexControl', () => {
 
     sinon.assert.notCalled(addMoreSpy);
   });
+
+  it('should not add more when the addMore property of complex control is false', () => {
+    wrapper.setProps({ addMore: false });
+
+    sinon.assert.notCalled(addMoreSpy);
+  });
+
 
   it('should only one add more complex control when there is an re-uploaded file', () => {
     wrapper.setProps({ value: 'someValue' });

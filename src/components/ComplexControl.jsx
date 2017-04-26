@@ -121,7 +121,7 @@ export class ComplexControl extends Component {
   }
 
   addControlWithNotification(isNotificationShown) {
-    if (!this.hasBeenAddMore) {
+    if (this.props.addMore && !this.hasBeenAddMore) {
       this.props.onControlAdd(this.props.formFieldPath, isNotificationShown);
       this.hasBeenAddMore = true;
     }
@@ -171,6 +171,7 @@ ComplexControl.propTypes = {
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   onControlAdd: PropTypes.func.isRequired,
+  addMore: PropTypes.bool,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,
@@ -178,6 +179,7 @@ ComplexControl.propTypes = {
 
 ComplexControl.defaultProps = {
   enabled: true,
+  addMore: false,
 };
 
 ComponentStore.registerComponent('complex', ComplexControl);

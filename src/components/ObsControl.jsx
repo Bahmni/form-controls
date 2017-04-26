@@ -48,6 +48,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       metadata: { concept }, validate, formFieldPath } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
+    const isAddMoreEnabled = find(metadata.properties, (value, key) => (key === 'addMore' && value));
     return React.createElement(registeredComponent, {
       hidden,
       enabled,
@@ -59,6 +60,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       validate,
       formFieldPath,
       patientUuid: this.props.patientUuid,
+      addMore: isAddMoreEnabled,
       validations,
       value: this.props.value.value,
       ...this._numericContext(metadata),
@@ -136,6 +138,9 @@ export class ObsControl extends addMoreDecorator(Component) {
     return (this.props.formFieldPath.split('-')[1] !== '0');
   }
 
+  showInSameLine() {
+    return true;
+  }
 
   render() {
     const { concept } = this.props.metadata;
