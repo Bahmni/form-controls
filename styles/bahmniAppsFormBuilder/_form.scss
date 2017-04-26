@@ -324,7 +324,7 @@ $lightestGray: #eee;
   .form-builder-clone{
     display: none;
   }
-  .add-more-complex-component{
+  .label-wrap{
     visibility:hidden;
   }
   .hidden{
@@ -423,4 +423,10 @@ $lightestGray: #eee;
   input {
     width: 200px !important;
   }
+}
+
+.same-line{
+  display: inline-block;
+  width: 30% !important;
+  vertical-align: top;
 }
