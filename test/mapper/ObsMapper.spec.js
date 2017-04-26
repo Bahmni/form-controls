@@ -162,7 +162,8 @@ describe('ObsMapper', () => {
     expect(updatedObs.voided).to.equal(false);
   });
 
-  it('should mark voided of obs as true when given obs control with complex type and the value contains voided', () => {
+  it('should mark voided of obs as true when given obs control ' +
+    'with complex type and the value contains voided', () => {
     const complexConcept = {
       answers: [],
       datatype: 'Complex',
@@ -221,5 +222,4 @@ describe('ObsMapper', () => {
 
     expect(updatedObs).to.equal(null);
   });
-
 });

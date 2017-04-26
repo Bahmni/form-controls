@@ -14,9 +14,6 @@ import { CodedControl } from 'components/CodedControl.jsx';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import ComponentStore from 'src/helpers/componentStore';
 import Constants from 'src/constants';
-import ControlRecordTreeMgr from 'src/helpers/ControlRecordTreeMgr';
-import sinon from 'sinon';
-
 
 chai.use(chaiEnzyme());
 

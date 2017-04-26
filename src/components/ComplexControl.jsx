@@ -41,7 +41,7 @@ export class ComplexControl extends Component {
     let controlDetails;
     if (value && value.indexOf('voided') > 0) {
       controlDetails = { validations, undefined };
-    }else {
+    } else {
       controlDetails = { validations, value };
     }
     return Validator.getErrors(controlDetails);
@@ -59,7 +59,7 @@ export class ComplexControl extends Component {
 
   handleChange(e) {
     e.preventDefault();
-    this.setState({loading: true});
+    this.setState({ loading: true });
     if (e.target.files === undefined) {
       this.update(undefined);
       return;
@@ -76,7 +76,6 @@ export class ComplexControl extends Component {
     reader.readAsDataURL(file);
     this.addControlWithNotification(true);
   }
-
 
 
   uploadFile(file, patientUuid) {
@@ -99,22 +98,22 @@ export class ComplexControl extends Component {
   }
 
   handleDelete() {
-    this.update(this.props.value+'voided');
+    this.update(`${this.props.value}voided`);
   }
 
   handleRestore() {
-    this.update(this.props.value.replace(/voided/g,''));
+    this.update(this.props.value.replace(/voided/g, ''));
   }
   displayDeleteButton() {
     return (<button className="delete-button"
-                    onClick={(e) => this.handleDelete(e)}
+      onClick={(e) => this.handleDelete(e)}
     >
       <span className="fa fa-remove"></span>
     </button>);
   }
   displayRestoreButton() {
     return (<button className="restore-button"
-                    onClick={(e) => this.handleRestore(e)}
+      onClick={(e) => this.handleRestore(e)}
     >
       <span className="fa fa-undo"></span>
     </button>);
@@ -134,30 +133,31 @@ export class ComplexControl extends Component {
     let restoreButton = null;
     if (this.props.value) {
       isPreviewHidden = false;
-      const imageUrl = `/document_images/${this.props.value.replace(/voided/g,'')}`;
+      const imageUrl = `/document_images/${this.props.value.replace(/voided/g, '')}`;
       preview = (<a href={imageUrl} target="_blank"><img src={imageUrl} /></a>);
       deleteButton = this.displayDeleteButton();
-      if(this.props.value.indexOf('voided') > 0) {
+      if (this.props.value.indexOf('voided') > 0) {
         restoreButton = this.displayRestoreButton();
       }
       this.addControlWithNotification(false);
     }
-    const id = "file-browse-observation_" + this.props.formFieldPath.split('/')[1];
+    const id = `file-browse-observation_${this.props.formFieldPath.split('/')[1]}`;
     return (
         <div className="obs-comment-section-wrap">
           <Spinner show={this.state.loading} />
-          <input className={classNames({ 'form-builder-error': this.state.hasErrors })}
+          <input accept="image/*"
+            className={classNames({ 'form-builder-error': this.state.hasErrors })}
             disabled={ !this.props.enabled }
-                 id={id}
+            id={id}
             onChange={(e) => this.handleChange(e)}
             type="file"
           />
-          <div className={classNames({'hidden': isPreviewHidden}, "file")}>
+          <div className={classNames({ hidden: isPreviewHidden }, 'file')}>
             {preview}
             {deleteButton}
             {restoreButton}
           </div>
-          <label className={classNames({'hidden': !isPreviewHidden}, "placeholder")} htmlFor={id}>
+          <label className={classNames({ hidden: !isPreviewHidden }, 'placeholder')} htmlFor={id}>
             <i className="fa fa-cloud-upload"></i>
           </label>
         </div>
@@ -167,11 +167,12 @@ export class ComplexControl extends Component {
 
 
 ComplexControl.propTypes = {
+  addMore: PropTypes.bool,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   onControlAdd: PropTypes.func.isRequired,
-  addMore: PropTypes.bool,
+  patientUuid: PropTypes.string,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,

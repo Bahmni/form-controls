@@ -40,7 +40,7 @@ const descriptor = {
             name: 'mandatory',
             dataType: 'boolean',
             defaultValue: false,
-            disabled: true
+            disabled: true,
           },
         ],
       },

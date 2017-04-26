@@ -48,7 +48,8 @@ export class ObsControl extends addMoreDecorator(Component) {
       metadata: { concept }, validate, formFieldPath } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
-    const isAddMoreEnabled = find(metadata.properties, (value, key) => (key === 'addMore' && value));
+    const isAddMoreEnabled =
+      find(metadata.properties, (value, key) => (key === 'addMore' && value));
     return React.createElement(registeredComponent, {
       hidden,
       enabled,
@@ -136,10 +137,6 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   isCreateByAddMore() {
     return (this.props.formFieldPath.split('-')[1] !== '0');
-  }
-
-  showInSameLine() {
-    return true;
   }
 
   render() {

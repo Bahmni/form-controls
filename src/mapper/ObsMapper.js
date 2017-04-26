@@ -22,10 +22,10 @@ export class ObsMapper {
     obs.voided = record.value.value === undefined;
     obs.inactive = !record.active;
     if (record.control.concept && record.control.concept.datatype === 'Complex') {
-      if (obs.voided && obs.formFieldPath.split('-')[1] !== '0'){
+      if (obs.voided && obs.formFieldPath.split('-')[1] !== '0') {
         return null;
       }
-      if(!obs.voided){
+      if (!obs.voided) {
         obs.voided = obs.value.indexOf('voided') > 0;
       }
     }

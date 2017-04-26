@@ -23,7 +23,7 @@ describe('ComplexControl', () => {
 
     wrapper = mount(
       <ComplexControl
-        addMore={true}
+        addMore
         formFieldPath={formFieldPath}
         onChange={onChangeSpy}
         onControlAdd={addMoreSpy}
@@ -94,11 +94,12 @@ describe('ComplexControl', () => {
     expect(wrapper.find('.restore-button')).length.to.be(0);
   });
 
-  it('should one add more complex control without notification when there is an uploaded file', () => {
-    wrapper.setProps({ value: 'someValue' });
+  it('should one add more complex control without notification when there is an uploaded file',
+    () => {
+      wrapper.setProps({ value: 'someValue' });
 
-    sinon.assert.calledOnce(addMoreSpy.withArgs(formFieldPath, false));
-  });
+      sinon.assert.calledOnce(addMoreSpy.withArgs(formFieldPath, false));
+    });
 
   it('should one add more complex control with notification after uploading the file', () => {
     sinon.stub(FileReader.prototype, 'readAsDataURL').returns('');
