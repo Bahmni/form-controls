@@ -35,10 +35,17 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [],
+        attributes: [
+          {
+            name: 'mandatory',
+            dataType: 'boolean',
+            defaultValue: false,
+            disabled: true
+          },
+        ],
       },
     ],
   },
 };
 
-ComponentStore.registerDesignerComponent('complex', descriptor);
+ComponentStore.registerDesignerComponent('Complex', descriptor);
