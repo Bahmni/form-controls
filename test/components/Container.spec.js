@@ -15,7 +15,6 @@ import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import ComponentStore from 'src/helpers/componentStore';
 import Constants from 'src/constants';
 
-
 chai.use(chaiEnzyme());
 
 describe('Container', () => {
@@ -286,7 +285,7 @@ describe('Container', () => {
       expect(updatedValue).to.equal('1');
     });
 
-    it('should add one obs when onControlAdd is triggered with obs in container', () => {
+    describe('onControllAdd', () => {
       const concept = {
         answers: [],
         datatype: 'Numeric',
@@ -333,23 +332,40 @@ describe('Container', () => {
         },
       });
       const obsTree = new ControlRecord({ children: List.of(childRecordTree) });
-      const wrapper = mount(
-                <Container
-                  collapse
-                  metadata={metadata}
-                  observations={[]}
-                  validate={false}
-                />
-            );
-      wrapper.setState({ data: obsTree });
 
-      wrapper.instance().onControlAdd(addedFormFieldPath);
+      it('should add one obs when onControlAdd is triggered with obs in container', () => {
+        const wrapper = mount(
+          <Container
+            collapse
+            metadata={metadata}
+            observations={[]}
+            validate={false}
+          />
+        );
+        wrapper.setState({ data: obsTree });
+        wrapper.instance().onControlAdd(addedFormFieldPath);
 
-      const expectedFormFieldPath = 'singleObs.1/1-1';
-      const updatedRootTree = wrapper.state().data;
-      expect(updatedRootTree.children.size).to.equal(2);
-      expect(updatedRootTree.children.get(0).formFieldPath).to.equal(addedFormFieldPath);
-      expect(updatedRootTree.children.get(1).formFieldPath).to.equal(expectedFormFieldPath);
+        const expectedFormFieldPath = 'singleObs.1/1-1';
+        const updatedRootTree = wrapper.state().data;
+        expect(updatedRootTree.children.size).to.equal(2);
+        expect(updatedRootTree.children.get(0).formFieldPath).to.equal(addedFormFieldPath);
+        expect(updatedRootTree.children.get(1).formFieldPath).to.equal(expectedFormFieldPath);
+      });
+
+      it('should not render notification when add more with notification shown false', () => {
+        const wrapper = mount(
+          <Container
+            collapse
+            metadata={metadata}
+            observations={[]}
+            validate={false}
+          />
+        );
+        wrapper.setState({ data: obsTree });
+        wrapper.instance().onControlAdd(addedFormFieldPath, false);
+
+        expect(wrapper.find('NotificationContainer').props().notification).to.eql({});
+      });
     });
 
     it('should remove one obs when onControlRemove is triggered with obs in container', () => {

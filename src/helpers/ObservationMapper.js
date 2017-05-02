@@ -7,7 +7,7 @@ export default class ObservationMapper {
       const mapper = MapperStore.getMapper(r.control);
       return mapper.getData(r);
     });
-    const filteredResult = result.filter(r => r.concept || !r.voided);
+    const filteredResult = result.filter(r => r && (r.concept || !r.voided));
 
     return flattenDeep(filteredResult.toJS());
   }

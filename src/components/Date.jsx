@@ -26,13 +26,9 @@ export class Date extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return this.props.value !== nextProps.value ||
-      this.state.hasErrors !== nextState.hasErrors;
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
+    this.isValueChanged = this.props.value !== nextProps.value;
     if (this.props.enabled !== nextProps.enabled ||
-          this.props.value !== nextProps.value ||
+          this.isValueChanged ||
           this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
@@ -42,6 +38,9 @@ export class Date extends Component {
   componentDidUpdate() {
     const errors = this._getErrors(this.props.value);
     if (this._hasErrors(errors)) {
+      this.props.onChange(this.props.value, errors);
+    }
+    if (this.isValueChanged) {
       this.props.onChange(this.props.value, errors);
     }
   }

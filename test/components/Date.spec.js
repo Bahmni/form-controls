@@ -117,7 +117,7 @@ describe('Date', () => {
     );
     const mandatoryError = new Error({ message: validations[0] });
     wrapper.setProps({ validate: true, value: undefined });
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
@@ -206,5 +206,19 @@ describe('Date', () => {
     );
     wrapper.instance();
     sinon.assert.calledOnce(onChangeSpy);
+  });
+
+  it('should trigger onChange when the value is changed', () => {
+    const wrapper = mount(
+      <Date
+        formFieldPath="test1.1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    wrapper.setProps({ value: '2016-12-29' });
+    sinon.assert.calledOnce(onChangeSpy.withArgs('2016-12-29', []));
   });
 });

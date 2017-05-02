@@ -191,4 +191,18 @@ describe('TextBox', () => {
     wrapper.instance();
     sinon.assert.calledOnce(onChangeSpy);
   });
+
+  it('should trigger onChange when the value is changed', () => {
+    const wrapper = mount(
+      <TextBox
+        formFieldPath="test1.1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validations={[]}
+      />
+    );
+
+    wrapper.setProps({ value: 'defaultText' });
+    sinon.assert.calledOnce(onChangeSpy.withArgs('defaultText', []));
+  });
 });

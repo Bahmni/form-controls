@@ -420,4 +420,12 @@ describe('ControlRecordTreeBuilder', () => {
     });
     expect(obsRecordTree.getErrors().length).to.equals(0);
   });
+
+  it('should return empty array when the record does not have key error', () => {
+    const obsRecordTree = new ControlRecord({
+      control: {
+      },
+    });
+    expect(obsRecordTree.getErrors().length).to.equals(0);
+  });
 });

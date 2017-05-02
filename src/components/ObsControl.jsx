@@ -44,19 +44,24 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayObsControl(registeredComponent) {
-    const { hidden, enabled, metadata, metadata: { concept }, validate, formFieldPath }
-    = this.props;
+    const { onControlAdd, hidden, enabled, metadata,
+      metadata: { concept }, validate, formFieldPath } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
+    const isAddMoreEnabled =
+      find(metadata.properties, (value, key) => (key === 'addMore' && value));
     return React.createElement(registeredComponent, {
       hidden,
       enabled,
       properties: metadata.properties,
       options,
       onChange: this.onChange,
+      onControlAdd,
       onEventTrigger: this.onEventTrigger,
       validate,
       formFieldPath,
+      patientUuid: this.props.patientUuid,
+      addMore: isAddMoreEnabled,
       validations,
       value: this.props.value.value,
       ...this._numericContext(metadata),
@@ -119,21 +124,31 @@ export class ObsControl extends addMoreDecorator(Component) {
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
       const comment = this.props.value.comment;
+      const value = this.props.value.value;
+      const { concept } = this.props.metadata;
       return (
-        <Comment comment={comment} onCommentChange={this.onCommentChange} />
+        <Comment comment={comment} datatype={concept.datatype}
+          onCommentChange={this.onCommentChange} value={value}
+        />
       );
     }
     return null;
   }
 
+  isCreateByAddMore() {
+    return (this.props.formFieldPath.split('-')[1] !== '0');
+  }
 
   render() {
     const { concept } = this.props.metadata;
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
+    const complexClass = concept.datatype === 'Complex' ? 'complex-component' : '';
+    const addMoreComplexClass =
+      complexClass && this.isCreateByAddMore() ? 'add-more-complex-component' : '';
     if (registeredComponent) {
       return (
-        <div className="form-field-wrap clearfix">
-          <div className="label-wrap fl">
+        <div className={ classNames('form-field-wrap clearfix', `${complexClass}`) }>
+          <div className={ classNames('label-wrap fl', `${addMoreComplexClass}`) }>
             {this.displayLabel()}
             {this.markMandatory()}
             {this.showHelperText()}

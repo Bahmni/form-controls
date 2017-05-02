@@ -20,7 +20,7 @@ export class Comment extends Component {
   }
 
   showCommentSection() {
-    if (this.state.showCommentSection) {
+    if (this.state.showCommentSection || (this.props.datatype === 'Complex' && this.props.value)) {
       return (
         <div className="obs-comment-section-wrap">
           <div className="label-wrap"></div>
@@ -36,21 +36,28 @@ export class Comment extends Component {
     return null;
   }
 
+  showCommentButton() {
+    if (this.props.datatype === 'Complex') {
+      return '';
+    }
+    return (<button
+      className={classNames('form-builder-comment-toggle',
+        { active: this.state.showCommentSection === true,
+          'has-notes': this.state.hasNote === true })}
+      onClick={() => this.setState({ showCommentSection: !this.state.showCommentSection })}
+    >
+      <i className="fa fa-file-o">
+        <i className="fa fa-plus-circle" />
+        <i className="fa fa-minus-circle" />
+      </i>
+      <i className="fa fa-file-text-o" />
+    </button>);
+  }
+
   render() {
     return (
       <div className="form-builder-comment-wrap">
-        <button
-          className={classNames('form-builder-comment-toggle',
-            { active: this.state.showCommentSection === true,
-              'has-notes': this.state.hasNote === true })}
-          onClick={() => this.setState({ showCommentSection: !this.state.showCommentSection })}
-        >
-          <i className="fa fa-file-o">
-            <i className="fa fa-plus-circle" />
-            <i className="fa fa-minus-circle" />
-          </i>
-          <i className="fa fa-file-text-o" />
-        </button>
+        {this.showCommentButton()}
         {this.showCommentSection()}
       </div>
     );
@@ -59,6 +66,8 @@ export class Comment extends Component {
 
 Comment.propTypes = {
   comment: PropTypes.string,
+  datatype: PropTypes.string,
   onCommentChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
 };
 

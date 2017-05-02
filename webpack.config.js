@@ -47,7 +47,11 @@ module.exports = {
       {
         test: /\.scss$/,
         loaders: ["style", "css", "sass"]
-      }
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: 'base64-inline-loader?name=/styles/images/[name].[ext]',
+      },
     ],
   },
   resolve: {

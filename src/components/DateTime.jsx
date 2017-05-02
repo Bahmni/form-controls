@@ -31,8 +31,9 @@ export class DateTime extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    this.isValueChanged = this.props.value !== nextProps.value;
     if (this.props.enabled !== nextProps.enabled ||
-        this.props.value !== nextProps.value ||
+      this.isValueChanged ||
       this.state.hasErrors !== nextState.hasErrors) {
       return true;
     }
@@ -44,6 +45,9 @@ export class DateTime extends Component {
     const dateTimeValue = !this.valueNotFilled() ?
       `${this.dateValue} ${this.timeValue}` : undefined;
     this.props.onChange(dateTimeValue, errors);
+    if (this.isValueChanged) {
+      this.props.onChange(this.props.value, errors);
+    }
   }
 
   handleDateChange(e) {

@@ -189,4 +189,65 @@ describe('ObsMapper', () => {
 
     expect(updatedObs.value).to.eql(undefined);
   });
+
+  it('should mark voided of obs as true when given obs control ' +
+    'with complex type and the value contains voided', () => {
+    const complexConcept = {
+      answers: [],
+      datatype: 'Complex',
+      name: 'Image',
+      uuid: 'c2a43174-c9db-4e54-8516-17372c83537f',
+    };
+    const complexControl = {
+      concept: complexConcept,
+    };
+    const formFieldPath = 'ComplexTest.4/23-0';
+    const complexDataSource = {
+      concept: complexConcept,
+      formFieldPath,
+      formNamespace: 'Bahmni',
+      voided: false,
+    };
+
+    const record = new ControlRecord({
+      control: complexControl,
+      formFieldPath,
+      value: { value: 'valueAsvoided', comment: undefined },
+      dataSource: complexDataSource,
+    });
+
+    const updatedObs = mapper.getData(record);
+
+    expect(updatedObs.voided).to.equal(true);
+  });
+
+  it('should remove void obs created by add more when given obs control with complex type', () => {
+    const complexConcept = {
+      answers: [],
+      datatype: 'Complex',
+      name: 'Image',
+      uuid: 'c2a43174-c9db-4e54-8516-17372c83537f',
+    };
+    const complexControl = {
+      concept: complexConcept,
+    };
+    const formFieldPath = 'ComplexTest.4/23-1';
+    const complexDataSource = {
+      concept: complexConcept,
+      formFieldPath,
+      formNamespace: 'Bahmni',
+      voided: false,
+    };
+
+    const record = new ControlRecord({
+      control: complexControl,
+      formFieldPath,
+      value: { value: undefined, comment: undefined },
+      dataSource: complexDataSource,
+    });
+
+    const updatedObs = mapper.getData(record);
+
+    expect(updatedObs).to.equal(null);
+  });
 });

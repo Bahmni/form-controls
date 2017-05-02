@@ -51,5 +51,24 @@ describe('Comment', () => {
     wrapper.find('button').simulate('click');
     expect(wrapper.find('textarea').props().defaultValue).to.be.eql('Some Comment');
   });
+
+  it('should not render comment button when the data type of control is complex', () => {
+    wrapper = mount(<Comment datatype={'Complex'} />);
+    expect(wrapper.find('button')).length.to.be(0);
+  });
+
+  it('should render comment section when the complex control has value', () => {
+    wrapper = mount(<Comment datatype={'Complex'} onCommentChange={onCommentChange}
+      value={'someValue'}
+    />);
+    expect(wrapper.find('textarea')).length.to.be(1);
+  });
+
+  it('should not render comment section when the complex control does not have value', () => {
+    wrapper = mount(<Comment datatype={'Complex'} onCommentChange={onCommentChange}
+      value={undefined}
+    />);
+    expect(wrapper.find('textarea')).length.to.be(0);
+  });
 });
 
