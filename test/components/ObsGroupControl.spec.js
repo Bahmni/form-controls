@@ -136,6 +136,7 @@ describe('ObsGroupControl', () => {
 
   const onChangeSpy = sinon.spy();
   const emptyValue = {};
+  const showNotificationSpy = sinon.spy();
 
   before(() => {
     ComponentStore.registerComponent('obsControl', ObsControl);
@@ -159,6 +160,7 @@ describe('ObsGroupControl', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -178,6 +180,7 @@ describe('ObsGroupControl', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -196,6 +199,7 @@ describe('ObsGroupControl', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -221,6 +225,7 @@ describe('ObsGroupControl', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -249,6 +254,7 @@ describe('ObsGroupControl', () => {
         formVersion={formVersion}
         metadata={updatedMetadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -266,6 +272,7 @@ describe('ObsGroupControl', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -288,6 +295,7 @@ describe('ObsGroupControl', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -306,6 +314,7 @@ describe('ObsGroupControl', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -324,6 +333,7 @@ describe('ObsGroupControl', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -342,6 +352,7 @@ describe('ObsGroupControl', () => {
         hidden
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -360,6 +371,7 @@ describe('ObsGroupControl', () => {
         hidden
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />
@@ -379,6 +391,7 @@ describe('ObsGroupControl', () => {
         metadata={metadata}
         onEventTrigger={() => {}}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={emptyValue}
       />

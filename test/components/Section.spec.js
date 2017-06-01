@@ -117,6 +117,7 @@ describe('Section', () => {
   }));
 
   const onChangeSpy = sinon.spy();
+  const showNotificationSpy = sinon.spy();
 
   it('should render section control collapse equal to true', () => {
     const wrapper = mount(
@@ -128,6 +129,7 @@ describe('Section', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 
@@ -145,6 +147,7 @@ describe('Section', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 
@@ -161,6 +164,7 @@ describe('Section', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 
@@ -178,6 +182,7 @@ describe('Section', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 
@@ -196,6 +201,7 @@ describe('Section', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 
@@ -221,6 +227,7 @@ describe('Section', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 
@@ -246,6 +253,7 @@ describe('Section', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 
@@ -272,6 +280,7 @@ describe('Section', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 
@@ -290,6 +299,7 @@ describe('Section', () => {
         formVersion={formVersion}
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 
@@ -311,6 +321,7 @@ describe('Section', () => {
         metadata={metadata}
         onEventTrigger={() => {}}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
       />);
 

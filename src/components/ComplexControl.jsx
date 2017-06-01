@@ -4,6 +4,7 @@ import { Validator } from 'src/helpers/Validator';
 import Spinner from 'src/helpers/Spinner';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import Constants from '../constants';
 
 export class ComplexControl extends Component {
   constructor(props) {
@@ -51,6 +52,18 @@ export class ComplexControl extends Component {
     return (this.props.formFieldPath.split('-')[1] !== '0');
   }
 
+  _getFileType(fileType) {
+    const pdfType = 'pdf';
+    const imageType = 'image';
+    if (fileType.indexOf(pdfType) !== -1) {
+      return pdfType;
+    }
+    if (fileType.indexOf(imageType) !== -1) {
+      return imageType;
+    }
+    return 'not_supported';
+  }
+
   update(value) {
     const errors = this._getErrors(value);
     this.setState({ loading: false, hasErrors: this._hasErrors(errors) });
@@ -66,8 +79,15 @@ export class ComplexControl extends Component {
     }
     const file = e.target.files[0];
     const reader = new FileReader();
+    const fileType = this._getFileType(file.type);
+    if (fileType === 'not_supported') {
+      this.update(undefined);
+      this.props.showNotification(Constants.errorMessage.fileTypeNotSupported,
+                                  Constants.messageType.error);
+      return;
+    }
     reader.onloadend = (event) => {
-      this.uploadFile(event.target.result, this.props.patientUuid)
+      this.uploadFile(event.target.result, this.props.patientUuid, fileType)
         .then((response) => response.json())
         .then(data => {
           this.update(data.url);
@@ -77,13 +97,10 @@ export class ComplexControl extends Component {
     this.addControlWithNotification(true);
   }
 
-
-  uploadFile(file, patientUuid) {
+  uploadFile(file, patientUuid, fileType) {
     const searchStr = ';base64';
     const format = file.split(searchStr)[0].split('/')[1];
-
-    const url = 'https://local.mybahmni.org' +
-      '/openmrs/ws/rest/v1/bahmnicore/visitDocument/uploadDocument';
+    const url = '/openmrs/ws/rest/v1/bahmnicore/visitDocument/uploadDocument';
     return fetch(url, {
       method: 'POST',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
@@ -91,7 +108,7 @@ export class ComplexControl extends Component {
         content: file.substring(file.indexOf(searchStr) + searchStr.length, file.length),
         format,
         patientUuid,
-        fileType: 'file',
+        fileType: fileType || 'file',
       }),
       credentials: 'include',
     });
@@ -133,8 +150,13 @@ export class ComplexControl extends Component {
     let restoreButton = null;
     if (this.props.value) {
       isPreviewHidden = false;
-      const imageUrl = `/document_images/${this.props.value.replace(/voided/g, '')}`;
-      preview = (<a href={imageUrl} target="_blank"><img src={imageUrl} /></a>);
+      let imageUrl;
+      if (this.props.value.indexOf('.pdf') > 0) {
+        imageUrl = '../../../../bahmni/images/pdfIcon.png';
+      } else {
+        imageUrl = `/document_images/${this.props.value.replace(/voided/g, '')}`;
+      }
+      preview = (<img src={imageUrl} />);
       deleteButton = this.displayDeleteButton();
       if (this.props.value.indexOf('voided') > 0) {
         restoreButton = this.displayRestoreButton();
@@ -142,10 +164,11 @@ export class ComplexControl extends Component {
       this.addControlWithNotification(false);
     }
     const id = `file-browse-observation_${this.props.formFieldPath.split('/')[1]}`;
+    const loading = (this.state.loading === true);
     return (
         <div className="obs-comment-section-wrap">
-          <Spinner show={this.state.loading} />
-          <input accept="image/*"
+          <Spinner show={loading} />
+          <input accept="application/pdf, image/*"
             className={classNames({ 'form-builder-error': this.state.hasErrors })}
             disabled={ !this.props.enabled }
             id={id}
@@ -173,6 +196,7 @@ ComplexControl.propTypes = {
   onChange: PropTypes.func.isRequired,
   onControlAdd: PropTypes.func.isRequired,
   patientUuid: PropTypes.string,
+  showNotification: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,

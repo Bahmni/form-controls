@@ -320,6 +320,7 @@ describe('Button Component', () => {
         enabled
         formFieldPath="test1.1-0"
         onValueChange={onChangeSpy}
+        options={[]}
         validate={false}
         validations={[]}
         value={value}

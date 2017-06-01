@@ -13,11 +13,14 @@
     left: 32%;
     z-index: 99999999;
     display: table;
-    .message-icon{
+    .message-icon.success{
       display: block;
       font-size: 30px;
       text-align: left;
       width: 12%;
+    }
+    .message-icon.error{
+      display: none;
     }
   }
   .error-message-container{

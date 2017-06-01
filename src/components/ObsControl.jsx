@@ -45,7 +45,7 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   displayObsControl(registeredComponent) {
     const { onControlAdd, hidden, enabled, metadata,
-      metadata: { concept }, validate, formFieldPath } = this.props;
+      metadata: { concept }, validate, formFieldPath, showNotification } = this.props;
     const options = metadata.options || concept.answers;
     const validations = getValidations(metadata.properties, concept.properties);
     const isAddMoreEnabled =
@@ -65,6 +65,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       validations,
       value: this.props.value.value,
       ...this._numericContext(metadata),
+      showNotification,
     });
   }
 
@@ -188,6 +189,7 @@ ObsControl.propTypes = {
   onControlRemove: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
   showAddMore: PropTypes.bool.isRequired,
+  showNotification: PropTypes.func.isRequired,
   showRemove: PropTypes.bool.isRequired,
   validate: PropTypes.bool.isRequired,
   value: PropTypes.object.isRequired,

@@ -49,7 +49,9 @@ export class Section extends addMoreDecorator(Component) {
       formVersion,
       metadata: { label },
       onEventTrigger,
+      patientUuid,
       validate,
+      showNotification,
     } = this.props;
     const childProps = {
       collapse,
@@ -61,6 +63,8 @@ export class Section extends addMoreDecorator(Component) {
       onControlAdd: this.onControlAdd,
       onControlRemove: this.onControlRemove,
       onEventTrigger,
+      patientUuid,
+      showNotification,
     };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const sectionClass =
@@ -101,6 +105,8 @@ Section.propTypes = {
   }),
   onEventTrigger: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
+  patientUuid: PropTypes.string,
+  showNotification: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
 };
 

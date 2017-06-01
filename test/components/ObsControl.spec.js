@@ -38,11 +38,9 @@ describe('ObsControl', () => {
   const domainValue = {};
 
   const properties = { location: { row: 0, column: 1 } };
-  let onChangeSpy;
 
-  beforeEach(() => {
-    onChangeSpy = sinon.spy();
-  });
+  const onChangeSpy = sinon.spy();
+  const showNotificationSpy = sinon.spy();
 
   it('should render dummyControl', () => {
     const metadata = {
@@ -56,6 +54,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -82,6 +81,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -103,6 +103,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -123,6 +124,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -144,6 +146,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -165,6 +168,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />
@@ -192,6 +196,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />
@@ -219,6 +224,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />
@@ -240,6 +246,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />
@@ -260,6 +267,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />
@@ -289,6 +297,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -311,6 +320,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -338,6 +348,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -369,6 +380,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -393,6 +405,7 @@ describe('ObsControl', () => {
       <ObsControl
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);
@@ -419,6 +432,7 @@ describe('ObsControl', () => {
           metadata={metadata}
           onEventTrigger={eventTriggerSpy}
           onValueChanged={(uuid, _value, _errors, onValueChangeDone) => onValueChangeDone()}
+          showNotification={showNotificationSpy}
           validate={false}
           value={domainValue}
         />
@@ -436,6 +450,7 @@ describe('ObsControl', () => {
           enabled={false}
           metadata={metadata}
           onValueChanged={onChangeSpy}
+          showNotification={showNotificationSpy}
           validate={false}
           value={domainValue}
         />);
@@ -449,6 +464,7 @@ describe('ObsControl', () => {
           enabled
           metadata={metadata}
           onValueChanged={onChangeSpy}
+          showNotification={showNotificationSpy}
           validate={false}
           value={domainValue}
         />);
@@ -461,6 +477,7 @@ describe('ObsControl', () => {
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
+          showNotification={showNotificationSpy}
           validate={false}
           value={domainValue}
         />);
@@ -483,6 +500,7 @@ describe('ObsControl', () => {
         formFieldPath="test1.1/1-1"
         metadata={metadata}
         onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         value={domainValue}
       />);

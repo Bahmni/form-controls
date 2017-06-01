@@ -16,10 +16,12 @@ describe('ComplexControl', () => {
   let onChangeSpy;
   let wrapper;
   let addMoreSpy;
+  let showNotificationSpy;
   const formFieldPath = 'test1.1/1-0';
   beforeEach(() => {
     onChangeSpy = sinon.spy();
     addMoreSpy = sinon.spy();
+    showNotificationSpy = sinon.spy();
 
     wrapper = mount(
       <ComplexControl
@@ -27,6 +29,7 @@ describe('ComplexControl', () => {
         formFieldPath={formFieldPath}
         onChange={onChangeSpy}
         onControlAdd={addMoreSpy}
+        showNotification={showNotificationSpy}
         validate={false}
         validations={[]}
       />);
@@ -39,7 +42,7 @@ describe('ComplexControl', () => {
   it('should upload file to server', () => {
     // given result of onloadend
     const result = 'data:image/jpeg;base64,/9j/4SumRXhpZgAATU';
-    const stub = sinon.stub(FileReader.prototype, 'readAsDataURL', function func() {
+    const stub = sinon.stub(FileReader.prototype, 'readAsDataURL').callsFake(function func() {
       this.onloadend({ target: { result } });
     });
     // spy on uploadFile
@@ -54,11 +57,20 @@ describe('ComplexControl', () => {
     fetchPromise.resolves(response);
     responsePromise.resolves({ url: 'someUrl' });
 
-    wrapper.find('input').simulate('change', { target: { files: [{}] } });
+    wrapper.find('input').simulate('change', { target: { files: [{ type: 'image/gif' }] } });
 
     sinon.assert.calledOnce(uploadSpy.withArgs(result));
     sinon.assert.calledOnce(onChangeSpy.withArgs('someUrl'));
     stub.restore();
+  });
+
+  it('should not upload if file type is not supported', () => {
+    wrapper.find('input').simulate('change', { target: { files: [{ type: 'random' }] } });
+    const uploadSpy = sinon.spy();
+    sinon.assert.calledOnce(showNotificationSpy.withArgs(
+      constants.errorMessage.fileTypeNotSupported,
+      constants.messageType.error));
+    sinon.assert.notCalled(uploadSpy);
   });
 
   it('should display the file which been uploaded', () => {
@@ -67,11 +79,12 @@ describe('ComplexControl', () => {
     expect(wrapper.find('img')).length.to.be(1);
   });
 
-  it('should display the file with a link which been uploaded', () => {
-    wrapper.setProps({ value: 'someValue' });
+  it('should display the pdfIcon if a pdf is uploaded', () => {
+    const imageUrl = '../../../../bahmni/images/pdfIcon.png';
+    wrapper.setProps({ value: 'someValue.pdf' });
 
-    expect(wrapper.find('a')).to.have.prop('href').to.eql('/document_images/someValue');
-    expect(wrapper.find('a')).to.have.prop('target').to.eql('_blank');
+    expect(wrapper.find('img')).length.to.be(1);
+    expect(wrapper.find('img').at(0).prop('src')).to.eql(imageUrl);
   });
 
   it('should show restore button when click the delete button', () => {
@@ -104,7 +117,7 @@ describe('ComplexControl', () => {
   it('should one add more complex control with notification after uploading the file', () => {
     sinon.stub(FileReader.prototype, 'readAsDataURL').returns('');
 
-    wrapper.find('input').simulate('change', { target: { files: '' } });
+    wrapper.find('input').simulate('change', { target: { files: [{ type: 'pdf' }] } });
 
     sinon.assert.calledOnce(addMoreSpy.withArgs(formFieldPath, true));
   });
@@ -183,15 +196,9 @@ describe('ComplexControl', () => {
   });
 
   it('should show spinner when the file is uploading', () => {
-    wrapper.find('input').simulate('change', { target: { files: [{}] } });
+    wrapper.find('input').simulate('change', { target: { files: [{ type: 'image/gif' }] } });
 
     expect(wrapper.find('Spinner').props().show).to.equal(true);
-  });
-
-  it('should not show spinner when the file is already uploaded', () => {
-    wrapper.instance().update('someValue', []);
-
-    expect(wrapper.find('Spinner').props().show).to.equal(false);
   });
 
   it('should not show spinner when the file is already uploaded', () => {

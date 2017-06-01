@@ -53,7 +53,7 @@ describe('Comment', () => {
   });
 
   it('should not render comment button when the data type of control is complex', () => {
-    wrapper = mount(<Comment datatype={'Complex'} />);
+    wrapper = mount(<Comment datatype={'Complex'} onCommentChange={onCommentChange} />);
     expect(wrapper.find('button')).length.to.be(0);
   });
 

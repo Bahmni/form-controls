@@ -51,6 +51,8 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
       metadata: { label },
       onEventTrigger,
       validate,
+      patientUuid,
+      showNotification,
     } = this.props;
     const childProps = {
       collapse,
@@ -62,6 +64,8 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
       onControlRemove: this.onControlRemove,
       onEventTrigger,
       onValueChanged: this.onChange,
+      patientUuid,
+      showNotification,
     };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     const toggleClass = `form-builder-toggle ${classNames({ active: !this.state.collapse })}`;
@@ -106,7 +110,9 @@ ObsGroupControl.propTypes = {
   onControlRemove: PropTypes.func,
   onEventTrigger: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
+  patientUuid: PropTypes.string,
   showAddMore: PropTypes.bool.isRequired,
+  showNotification: PropTypes.func.isRequired,
   showRemove: PropTypes.bool.isRequired,
   validate: PropTypes.bool.isRequired,
   value: PropTypes.object.isRequired,

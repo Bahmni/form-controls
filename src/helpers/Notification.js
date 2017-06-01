@@ -2,12 +2,13 @@ import React, { PropTypes } from 'react';
 
 const NotificationContainer = (props) => {
   const messageType = `message-container ${props.notification.type}-message-container`;
+  const notificationType = `message-icon ${props.notification.type}`;
   if (props.notification.message) {
     return (
       <div className="messages">
         <div className={ messageType }>
-          <div className="message-icon">
-            <i className="fa fa-check-circle"></i>
+          <div className={ notificationType }>
+            <i className="fa fa-check-circle" />
           </div>
           <div className="message-text">
             { props.notification.message }
@@ -16,7 +17,7 @@ const NotificationContainer = (props) => {
       </div>
     );
   }
-  return (<div></div>);
+  return (<div />);
 };
 
 NotificationContainer.propTypes = {

@@ -22,6 +22,10 @@ const Constants = {
     error: 'error',
   },
 
+  errorMessage: {
+    fileTypeNotSupported: 'File Type not supported',
+  },
+
   toastTimeout: 4000,
 };
 

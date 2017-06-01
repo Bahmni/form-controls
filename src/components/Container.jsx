@@ -22,6 +22,7 @@ export class Container extends addMoreDecorator(Component) {
     this.onControlAdd = this.onControlAdd.bind(this);
     this.onControlRemove = this.onControlRemove.bind(this);
     this.onEventTrigger = this.onEventTrigger.bind(this);
+    this.showNotification = this.showNotification.bind(this);
   }
 
   componentWillMount() {
@@ -78,9 +79,7 @@ export class Container extends addMoreDecorator(Component) {
       });
     }
 
-    setTimeout(() => {
-      this.setState({ notification: {} });
-    }, Constants.toastTimeout);
+    this.hideNotification();
   }
 
   onControlRemove(formFieldPath) {
@@ -113,6 +112,17 @@ export class Container extends addMoreDecorator(Component) {
     return observations.every((obs) => obs.voided);
   }
 
+  showNotification(message, notificationType) {
+    this.setState({ notification: { message, type: notificationType } });
+    this.hideNotification();
+  }
+
+  hideNotification() {
+    setTimeout(() => {
+      this.setState({ notification: {} });
+    }, Constants.toastTimeout);
+  }
+
   render() {
     const { metadata: { controls, name: formName, version: formVersion }, validate } = this.props;
     const childProps = {
@@ -126,6 +136,7 @@ export class Container extends addMoreDecorator(Component) {
       onControlAdd: this.onControlAdd,
       onControlRemove: this.onControlRemove,
       patientUuid: this.props.patientUuid,
+      showNotification: this.showNotification,
       validate,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');

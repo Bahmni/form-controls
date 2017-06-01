@@ -14,6 +14,8 @@ import { CodedControl } from 'components/CodedControl.jsx';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import ComponentStore from 'src/helpers/componentStore';
 import Constants from 'src/constants';
+import sinon from 'sinon';
+
 
 chai.use(chaiEnzyme());
 
@@ -1391,6 +1393,7 @@ describe('Container', () => {
     });
 
     it('should render notification when given non-empty notification', () => {
+      const clock = sinon.useFakeTimers();
       const wrapper = shallow(
         <Container
           collapse
@@ -1399,13 +1402,18 @@ describe('Container', () => {
           validate={false}
         />
       );
-
-      wrapper.setState({ notification: {
-        message: 'this is notification test',
-        type: Constants.messageType.success,
-      } });
-
+      expect(wrapper.state().notification).to.eql({});
+      const notification = {
+        message: Constants.errorMessage.fileTypeNotSupported,
+        type: Constants.messageType.error,
+      };
+      Constants.toastTimeout = 1000;
+      wrapper.instance().showNotification(notification.message, notification.type);
+      expect(wrapper.state().notification).to.eql(notification);
       expect(wrapper.find('NotificationContainer').length).to.equal(1);
+      expect(wrapper.find('NotificationContainer').at(0).prop('notification')).to.eql(notification);
+      clock.tick(Constants.toastTimeout);
+      expect(wrapper.state().notification).to.eql({});
     });
 
     it('should confirm errors be array when onControlRemove be triggered', () => {
