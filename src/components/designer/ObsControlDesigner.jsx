@@ -145,9 +145,7 @@ export class ObsControlDesigner extends Component {
     const scripts = this.props.metadata.events;
     if (scripts && scripts.onValueChange && scripts.onValueChange !== '') {
       return (
-        <button>
-          <i>Script</i>
-        </button>
+        <i aria-hidden="true" className="fa fa-code script-circle" />
       );
     }
     return null;

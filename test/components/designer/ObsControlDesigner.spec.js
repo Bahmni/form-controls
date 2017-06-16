@@ -298,9 +298,7 @@ describe('ObsControlDesigner', () => {
       metadata.events = { onValueChange: 'some content' };
 
       wrapper.setProps({ metadata });
-
-      const scriptButton = wrapper.find('button');
-      expect(scriptButton.find('i').text()).to.eql('Script');
+      expect(wrapper.find('i').props().className).to.eql('fa fa-code script-circle');
     });
 
     it('should call deleteControl after delete button is clicked', () => {
