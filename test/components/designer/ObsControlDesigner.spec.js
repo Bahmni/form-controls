@@ -320,6 +320,24 @@ describe('ObsControlDesigner', () => {
 
       sinon.assert.calledOnce(deleteControlSpy);
     });
+
+    it('should render abnormal button if abnormal is configured', () => {
+      metadata = {
+        id: '123',
+        type: 'obsControl',
+        concept,
+        label,
+        properties: { abnormal: true },
+      };
+      wrapper = mount(<ObsControlDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        metadata={metadata}
+        onSelect={onSelectSpy}
+        showDeleteButton={false}
+      />);
+      expect(wrapper.find('button').text()).to.eql('Abnormal');
+    });
   });
 
   context('when concept has description', () => {

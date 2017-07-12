@@ -151,6 +151,19 @@ export class ObsControlDesigner extends Component {
     return null;
   }
 
+  showAbnormalButton() {
+    const { properties } = this.props.metadata;
+    const isAbnormal = find(properties, (value, key) => (key === 'abnormal' && value));
+    if (isAbnormal) {
+      return (
+        <button className="abnormal-button">
+          <span>Abnormal</span>
+        </button>
+      );
+    }
+    return null;
+  }
+
   render() {
     const { metadata, metadata: { concept } } = this.props;
     const designerComponent = concept && ComponentStore.getDesignerComponent(concept.datatype);
@@ -167,6 +180,7 @@ export class ObsControlDesigner extends Component {
             {this.showHelperText()}
           </div>
           {this.displayObsControl(designerComponent)}
+          {this.showAbnormalButton()}
           {this.showAddMore()}
           {this.showComment()}
         </div>
@@ -301,7 +315,7 @@ const descriptor = {
             name: 'abnormal',
             dataType: 'boolean',
             defaultValue: false,
-          }
+          },
         ],
       },
     ],

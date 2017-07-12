@@ -14,6 +14,7 @@ describe('Obs', () => {
   const value = '345';
   const uuid = 'uuid';
   const comment = 'comment';
+  const interpretation = 'ABNORMAL';
 
 
   it('should create a default obs', () => {
@@ -25,15 +26,17 @@ describe('Obs', () => {
     expect(obs).to.have.property('observationDateTime').and.equal(undefined);
     expect(obs).to.have.property('voided').and.equal(false);
     expect(obs).to.have.property('comment').and.equal(undefined);
+    expect(obs).to.have.property('interpretation').and.equal(undefined);
   });
 
   it('should create the obs with default values', () => {
-    const obs = new Obs({ concept, formNamespace, value });
+    const obs = new Obs({ concept, formNamespace, interpretation, value });
 
     expect(obs).to.have.property('concept').and.equal(concept);
     expect(obs).to.have.property('formNamespace').and.equal(formNamespace);
     expect(obs).to.have.property('value').and.equal(value);
     expect(obs).to.have.property('voided').and.equal(false);
+    expect(obs).to.have.property('interpretation').and.equal('ABNORMAL');
   });
 
   it('should test all getters of obs', () => {

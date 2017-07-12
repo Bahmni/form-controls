@@ -14,6 +14,7 @@ export const ImmutableObs = Record({
   formNamespace: undefined,
   formFieldPath: undefined,
   groupMembers: undefined,
+  interpretation: undefined,
 });
 
 const NUMERIC_DATATYPE = 'Numeric';

@@ -8,7 +8,7 @@ export class ObsMapper {
   }
 
   getValue(obs) {
-    return { value: obs.value, comment: obs.comment };
+    return { value: obs.value, comment: obs.comment, interpretation: obs.interpretation };
   }
 
   getData(record) {
@@ -23,6 +23,7 @@ export class ObsMapper {
     }
     obs.value = value;
     obs.comment = record.value.comment;
+    obs.interpretation = record.value.interpretation;
     obs.voided = value === undefined;
     obs.inactive = !record.active;
     if (record.control.concept && record.control.concept.datatype === 'Complex') {
@@ -33,7 +34,7 @@ export class ObsMapper {
         obs.voided = obs.value.indexOf('voided') > 0;
       }
     }
-    return obs;
+    return (obs.value === undefined && obs.uuid === undefined) ? null : obs;
   }
 
   getChildren() {

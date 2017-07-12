@@ -8,6 +8,7 @@ import { getValidations } from 'src/helpers/controlsHelper';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import isEmpty from 'lodash/isEmpty';
 import addMoreDecorator from './AddMoreDecorator';
+import constants from 'src/constants';
 
 export class ObsControl extends addMoreDecorator(Component) {
 
@@ -19,6 +20,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     this.onAddControl = this.onAddControl.bind(this);
     this.onRemoveControl = this.onRemoveControl.bind(this);
     this.onValueChangeDone = this.onValueChangeDone.bind(this);
+    this.setAbnormal = this.setAbnormal.bind(this);
   }
 
   onValueChangeDone() {
@@ -27,10 +29,20 @@ export class ObsControl extends addMoreDecorator(Component) {
     }
   }
 
-  onChange(value, errors) {
+  onChange(value, errors, calledOnMount) {
+    const { metadata: { properties } } = this.props;
+
+    const isAbnormalPropertyEnabled = find(properties, (val, key) => (key === 'abnormal' && val));
+    const isAbnormal = find(errors, (err) => err.type === constants.errorTypes.warning
+                                              && err.message === constants.validations.allowRange);
+    let interpretation = isAbnormalPropertyEnabled && isAbnormal ? 'ABNORMAL' : null;
+    if (calledOnMount) {
+      interpretation = this.props.value.interpretation;
+    }
+    const obsValue = { value, comment: this.props.value.comment, interpretation };
     this.props.onValueChanged(
       this.props.formFieldPath,
-      { value, comment: this.props.value.comment },
+      obsValue,
       errors,
       this.onValueChangeDone);
   }
@@ -38,7 +50,7 @@ export class ObsControl extends addMoreDecorator(Component) {
   onCommentChange(comment) {
     this.props.onValueChanged(
       this.props.formFieldPath,
-      { value: this.props.value.value, comment },
+      { value: this.props.value.value, comment, interpretation: this.props.value.interpretation },
       undefined
     );
   }
@@ -140,6 +152,34 @@ export class ObsControl extends addMoreDecorator(Component) {
     return (this.props.formFieldPath.split('-')[1] !== '0');
   }
 
+  showAbnormalButton() {
+    const { metadata: { properties }, value } = this.props;
+    const isAbnormal = find(properties, (val, key) => (key === 'abnormal' && val));
+    const isAbnormalObs = (value.interpretation === 'ABNORMAL');
+    const abnormalClassName = classNames({ 'fa fa-ok': isAbnormalObs });
+    if (isAbnormal) {
+      return (
+        <button className="abnormal-button" disabled={!value.value} onClick={this.setAbnormal} >
+          <i className={abnormalClassName}></i>
+            <span>Abnormal</span>
+        </button>
+      );
+    }
+    return null;
+  }
+
+  setAbnormal() {
+    const { value } = this.props;
+    if (value.value) {
+      const interpretation = value.interpretation === 'ABNORMAL' ? null : 'ABNORMAL';
+      this.props.onValueChanged(
+        this.props.formFieldPath,
+        { value: this.props.value.value, comment: this.props.value.comment, interpretation },
+        undefined
+      );
+    }
+  }
+
   render() {
     const { concept } = this.props.metadata;
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
@@ -155,6 +195,7 @@ export class ObsControl extends addMoreDecorator(Component) {
             {this.showHelperText()}
           </div>
           {this.displayObsControl(registeredComponent)}
+          {this.showAbnormalButton()}
           {this.showAddMore()}
           {this.showComment()}
         </div>

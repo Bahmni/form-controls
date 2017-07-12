@@ -94,6 +94,7 @@ describe('ObsMapper', () => {
 
     expect(updatedObs.value).to.equal(1);
     expect(updatedObs.comment).to.equal(undefined);
+    expect(updatedObs.interpretation).to.equal(undefined);
     expect(updatedObs.formFieldPath).to.equal(formFieldPath);
   });
 
@@ -176,7 +177,7 @@ describe('ObsMapper', () => {
     expect(updatedObs.value).to.eql(valueWithSpaces.trim());
   });
 
-  it('should return undefined when given text control with empty string', () => {
+  it('should return null when given text control with empty string', () => {
     const emptyString = '';
     const record = new ControlRecord({
       control: {},
@@ -187,7 +188,7 @@ describe('ObsMapper', () => {
 
     const updatedObs = mapper.getData(record);
 
-    expect(updatedObs.value).to.eql(undefined);
+    expect(updatedObs).to.eql(null);
   });
 
   it('should mark voided of obs as true when given obs control ' +

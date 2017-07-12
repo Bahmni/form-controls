@@ -177,7 +177,7 @@ describe('ObsControl', () => {
     sinon.assert.calledOnce(
       onChangeSpy.withArgs(
         wrapper.prop('formFieldPath'),
-        { value: true, comment: wrapper.props('value').comment },
+        { value: true, comment: wrapper.props('value').comment, interpretation: null },
         []
       ));
   });
@@ -206,7 +206,7 @@ describe('ObsControl', () => {
     sinon.assert.calledOnce(
       onChangeSpy.withArgs(
         wrapper.prop('formFieldPath'),
-        { value: undefined, comment: wrapper.props('value').comment },
+        { value: undefined, comment: wrapper.props('value').comment, interpretation: null },
         errors
       ));
   });
@@ -278,7 +278,11 @@ describe('ObsControl', () => {
     sinon.assert.calledOnce(
       onChangeSpy.withArgs(
         wrapper.prop('formFieldPath'),
-        { value: wrapper.prop('value').value, comment: 'Test Comment' },
+        {
+          value: wrapper.prop('value').value,
+          comment: 'Test Comment',
+          interpretation: wrapper.prop('value').interpretation,
+        },
         undefined
       ));
   });
@@ -413,6 +417,87 @@ describe('ObsControl', () => {
     const helperText = wrapper.instance().showHelperText();
 
     expect(helperText).to.not.equal(null);
+  });
+
+  it('should render abnormal button if abnormal property is enabled', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('text'),
+      label,
+      properties: { abnormal: true },
+    };
+
+    const wrapper = mount(
+      <ObsControl
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
+        validate={false}
+        value={domainValue}
+      />
+    );
+
+    expect(wrapper.find('button').text()).to.eql('Abnormal');
+    expect(wrapper.find('button').props().disabled).to.eql(true);
+  });
+
+  it('should set interpretation to abnormal on click of abnormal', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('text'),
+      label,
+      properties: { abnormal: true },
+    };
+
+    const wrapper = mount(
+      <ObsControl
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
+        validate={false}
+        value={ { value: 'text' } }
+      />
+    );
+
+    wrapper.find('button').simulate('click');
+
+    sinon.assert.calledOnce(
+      onChangeSpy.withArgs(
+        wrapper.prop('formFieldPath'),
+        { value: 'text', comment: wrapper.props('value').comment, interpretation: 'ABNORMAL' },
+        undefined
+      ));
+  });
+
+  it('should set interpretation to undefined if it is abnormal', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      concept: getConcept('text'),
+      label,
+      properties: { abnormal: true },
+    };
+
+    const wrapper = mount(
+      <ObsControl
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        showNotification={showNotificationSpy}
+        validate={false}
+        value={ { value: 'text', interpretation: 'ABNORMAL' } }
+      />
+    );
+
+    wrapper.find('button').simulate('click');
+
+    sinon.assert.calledOnce(
+      onChangeSpy.withArgs(
+        wrapper.prop('formFieldPath'),
+        { value: 'text', comment: wrapper.props('value').comment, interpretation: null },
+        undefined
+      ));
   });
 
   describe('enable or disable obs control', () => {

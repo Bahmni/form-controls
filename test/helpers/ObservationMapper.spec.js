@@ -22,6 +22,7 @@ describe('ObservationMapper', () => {
     concept: obsConcept,
     formFieldPath: obsFormFieldPath,
     formNamespace: 'Bahmni',
+    uuid: 'someUuid',
     voided: true,
   };
   const obsControl = {
@@ -463,6 +464,7 @@ describe('ObservationMapper', () => {
         concept: singleObsConcept,
         formFieldPath: activeFormFieldPath,
         formNamespace: 'Bahmni',
+        uuid: 'someUuud',
         voided: true,
       },
     });
@@ -507,11 +509,10 @@ describe('ObservationMapper', () => {
 
     const observations = new ObservationMapper().from(rootRecordTree);
 
+    expect(observations.length).to.eql(1);
+
     const activeObservation = observations[0];
     expect(activeObservation.formFieldPath).to.equal(activeFormFieldPath);
     expect(activeObservation.inactive).to.equal(false);
-    const inactiveObservation = observations[1];
-    expect(inactiveObservation.formFieldPath).to.equal(inactiveFormFieldPath);
-    expect(inactiveObservation.inactive).to.equal(true);
   });
 });

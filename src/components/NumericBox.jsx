@@ -20,7 +20,7 @@ export class NumericBox extends Component {
   componentDidMount() {
     this.input.value = this.props.value;
     if (this.state.hasErrors || typeof this.props.value !== 'undefined') {
-      this.props.onChange(this.props.value, this._getErrors(this.props.value));
+      this.props.onChange(this.props.value, this._getErrors(this.props.value), true);
     }
   }
 
