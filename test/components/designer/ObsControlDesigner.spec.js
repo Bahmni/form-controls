@@ -35,6 +35,9 @@ describe('ObsControlDesigner', () => {
       datatype: {
         name: 'someDatatype',
       },
+      conceptClass: {
+        name: 'Misc',
+      },
       uuid: 'someUuid',
       allowDecimal: false,
     };
@@ -45,6 +48,7 @@ describe('ObsControlDesigner', () => {
         name: 'someName',
         description: undefined,
         datatype: 'someDatatype',
+        conceptClass: 'Misc',
         uuid: 'someUuid',
         properties: { allowDecimal: false },
         answers: undefined,

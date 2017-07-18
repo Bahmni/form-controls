@@ -35,6 +35,7 @@ export class Concept {
       name: `${concept.name.name}${this.getUnits(concept)}`,
       uuid: concept.uuid,
       datatype: concept.datatype.name,
+      conceptClass: concept.conceptClass.name,
     }, this._getConceptProperties(concept));
   }
 

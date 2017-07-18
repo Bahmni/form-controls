@@ -55,11 +55,15 @@ export class ComplexControl extends Component {
   _getFileType(fileType) {
     const pdfType = 'pdf';
     const imageType = 'image';
+    const videoType = 'video';
     if (fileType.indexOf(pdfType) !== -1) {
       return pdfType;
     }
     if (fileType.indexOf(imageType) !== -1) {
       return imageType;
+    }
+    if (fileType.indexOf(videoType) !== -1) {
+      return videoType;
     }
     return 'not_supported';
   }
@@ -143,7 +147,7 @@ export class ComplexControl extends Component {
     }
   }
 
-  render() {
+  displayImage() {
     let preview = null;
     let isPreviewHidden = true;
     let deleteButton = null;
@@ -166,31 +170,84 @@ export class ComplexControl extends Component {
     const id = `file-browse-observation_${this.props.formFieldPath.split('/')[1]}`;
     const loading = (this.state.loading === true);
     return (
-        <div className="obs-comment-section-wrap">
-          <Spinner show={loading} />
-          <input accept="application/pdf, image/*"
-            className={classNames({ 'form-builder-error': this.state.hasErrors })}
-            disabled={ !this.props.enabled }
-            id={id}
-            onChange={(e) => this.handleChange(e)}
-            type="file"
-          />
-          <div className={classNames({ hidden: isPreviewHidden }, 'file')}>
-            {preview}
-            {deleteButton}
-            {restoreButton}
-          </div>
-          <label className={classNames({ hidden: !isPreviewHidden }, 'placeholder')} htmlFor={id}>
-            <i className="fa fa-cloud-upload"></i>
-          </label>
+      <div className="image-upload">
+        <Spinner show={loading} />
+        <input accept="application/pdf, image/*"
+          className={classNames({ 'form-builder-error': this.state.hasErrors })}
+          disabled={ !this.props.enabled }
+          id={id}
+          onChange={(e) => this.handleChange(e)}
+          type="file"
+        />
+        <div className={classNames({ hidden: isPreviewHidden }, 'file')}>
+          {preview}
+          {deleteButton}
+          {restoreButton}
         </div>
+        <label className={classNames({ hidden: !isPreviewHidden }, 'placeholder')} htmlFor={id}>
+          <i className="fa fa-cloud-upload"></i>
+        </label>
+      </div>
     );
+  }
+
+  displayVideo() {
+    let preview = null;
+    let isPreviewHidden = true;
+    let deleteButton = null;
+    let restoreButton = null;
+    if (this.props.value) {
+      isPreviewHidden = false;
+      const videoUrl = `/document_images/${this.props.value.replace(/voided/g, '')}`;
+      const videoClassName =
+        classNames('obs-video', { 'obs-disabled': this.props.value.indexOf('voided') > 0 });
+      preview = (<video className={videoClassName} controls preload="metadata">
+            <source src={videoUrl} />
+            Your browser does not support the video tag. </video>);
+      if (this.props.value.indexOf('voided') > 0) {
+        restoreButton = this.displayRestoreButton();
+      } else {
+        deleteButton = this.displayDeleteButton();
+      }
+      this.addControlWithNotification(false);
+    }
+    const id = `file-browse-observation_${this.props.formFieldPath.split('/')[1]}`;
+    const loading = (this.state.loading === true);
+    return (
+      <div className="video-upload">
+        <Spinner show={loading} />
+        <input accept=".mkv,.flv,.ogg,video/*,audio/3gpp"
+          className={classNames('file-browse', { 'form-builder-error': this.state.hasErrors })}
+          disabled={ !this.props.enabled }
+          id={id}
+          onChange={(e) => this.handleChange(e)}
+          type="file"
+        />
+        <div className={classNames({ hidden: isPreviewHidden }, 'file')}>
+          {preview}
+          {deleteButton}
+          {restoreButton}
+        </div>
+        <label
+          className={classNames({ hidden: !isPreviewHidden }, 'video-placeholder')}
+          htmlFor={id}
+        >
+          Upload Video
+        </label>
+      </div>
+    );
+  }
+
+  render() {
+    const { conceptClass } = this.props;
+    return conceptClass === 'Image' ? this.displayImage() : this.displayVideo();
   }
 }
 
 
 ComplexControl.propTypes = {
   addMore: PropTypes.bool,
+  conceptClass: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,

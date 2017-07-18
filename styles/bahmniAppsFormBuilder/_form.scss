@@ -329,103 +329,146 @@ $lightestGray: #eee;
   display: none;
 }
 
-.complex-component {
+.video-upload {
+  .file-browse {
+    position: absolute;
+    z-index: -999;
+    min-width: 1px;
+  }
+
+  .video-placeholder {
+    width: auto;
+    margin-right: 20px;
+    padding: 6px 15px;
+    background: #eee;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    float: left;
+  }
+
+  .obs-video {
+    width: 280px;
+    height: 190px;
+    display: table;
+    margin: 0 auto;
+    float: left;
+  }
+
+  .obs-disabled {
+    opacity: .1;
+    pointer-events: none;
+    border: 3px solid black;
+  }
+
+  .delete-button, .restore-button {
+    font-size: 20px;
+    color: #660000;
+    padding: 0;
+    margin-top: 15px;
+    margin-left: 15px;
+  }
+}
+
+.complex-component  {
   .form-builder-clone{
     display: none;
   }
-  .label-wrap{
-    visibility:hidden;
-  }
-  .hidden{
-    display: none !important;
-  }
-  input {
-    display: none;
-  }
-  button {
-    margin: 0;
-    right: 0;
-    padding: 0;
-    background: transparent;
-    border: none;
-    outline: 0;
-    position: absolute;
-    top: 0;
-    float: right;
-    cursor: pointer;
-  }
-  .delete-button{
-    color: #F40428;
-  }
-  .restore-button{
-    color: #88af28;
-    width: 100%;
-    left: 0;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.9);
-  }
-  .file {
-    width: 160px;
-    height: 160px;
-    display: inline-block;
-    overflow: hidden;
-    position: relative;
-    border: 1px solid $lightestGray;
-    border-radius: 3px;
-    &:hover {
-      opacity: 1;
+  .image-upload{
+    .label-wrap{
+      visibility:hidden;
     }
-    img {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      height: 100%;
-      width: auto;
-      -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
+    .hidden{
+      display: none !important;
     }
-  }
-  .placeholder {
-    width: 160px;
-    height: 160px;
-    float: left;
-    margin: 0;
-    text-align: center;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    padding: 0;
-    position: relative;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
-    &:hover {
-      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
-      border-color: $lightestGray;
+    input {
+      display: none;
     }
-    i {
-      color: #888;
-      font-size: 18px;
-      line-height: 60px;
-      width: 60px;
-      height: 60px;
-      font-size: 30px;
+    button {
+      margin: 0;
+      right: 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+      outline: 0;
       position: absolute;
       top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      margin: auto;
+      float: right;
+      cursor: pointer;
     }
-  }
-  textarea {
-    overflow: hidden;
-    word-wrap: break-word;
-    resize: horizontal;
-    height: 35px !important;
-    width: 180px !important;
-    display: inline-block;
-    box-sizing: border-box;
+    .delete-button{
+      color: #F40428;
+    }
+    .restore-button{
+      color: #88af28;
+      width: 100%;
+      left: 0;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+    }
+    .file {
+      width: 160px;
+      height: 160px;
+      display: inline-block;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid $lightestGray;
+      border-radius: 3px;
+      &:hover {
+        opacity: 1;
+      }
+      img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        height: 100%;
+        width: auto;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
+    }
+    .placeholder {
+      width: 160px;
+      height: 160px;
+      float: left;
+      margin: 0;
+      text-align: center;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      padding: 0;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+      transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+      &:hover {
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+        border-color: $lightestGray;
+      }
+      i {
+        color: #888;
+        font-size: 18px;
+        line-height: 60px;
+        width: 60px;
+        height: 60px;
+        font-size: 30px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    }
+    textarea {
+      overflow: hidden;
+      word-wrap: break-word;
+      resize: horizontal;
+      height: 35px !important;
+      width: 180px !important;
+      display: inline-block;
+      box-sizing: border-box;
+    }
   }
 }
 .complex-component-designer{

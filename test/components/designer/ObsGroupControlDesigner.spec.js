@@ -37,6 +37,9 @@ describe('ObsGroupControlDesigner', () => {
       datatype: {
         name: 'someDatatype',
       },
+      conceptClass: {
+        name: 'Misc',
+      },
       uuid: 'someUuid',
       allowDecimal: false,
       set: true,
@@ -49,6 +52,7 @@ describe('ObsGroupControlDesigner', () => {
       concept: {
         name: 'someName',
         datatype: 'someDatatype',
+        conceptClass: 'Misc',
         uuid: 'someUuid',
         set: true,
         setMembers: [],

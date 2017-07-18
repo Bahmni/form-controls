@@ -9,7 +9,7 @@ export class ComplexControlDesigner extends Component {
   render() {
     return (
       <div className="fl complex-component-designer">
-        <input type="file" />
+        <input disabled type="file" />
       </div>
     );
   }

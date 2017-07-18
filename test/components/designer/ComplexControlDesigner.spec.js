@@ -25,6 +25,7 @@ describe('ComplexControlDesigner', () => {
 
   it('should render the ComplexControl designer component', () => {
     expect(wrapper.find('input')).to.have.prop('type').to.eql('file');
+    expect(wrapper.find('input')).to.have.prop('disabled').to.eql(true);
   });
 
   it('should return json definition', () => {
