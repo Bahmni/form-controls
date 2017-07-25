@@ -22,6 +22,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -37,7 +38,9 @@ describe('NumericBox', () => {
         concept={concept}
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
-        validate={false} validations={[]}
+        validate={false}
+        validateForm={false}
+        validations={[]}
         value={'50'}
       />
     );
@@ -53,6 +56,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'50'}
       />
@@ -69,6 +73,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
       />
     );
@@ -86,6 +91,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
       />
     );
@@ -101,6 +107,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1/1-1"
         onChange={onChangeSpy}
         validate
+        validateForm={false}
         validations={validations}
         value="98.6"
       />
@@ -117,6 +124,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
       />
     );
@@ -131,6 +139,7 @@ describe('NumericBox', () => {
           formFieldPath="test1.1-0"
           onChange={onChangeSpy}
           validate={false}
+          validateForm={false}
           validations={validations}
         />
     );
@@ -151,6 +160,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={'21'}
       />
@@ -170,6 +180,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={'22'}
       />
@@ -185,6 +196,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={'23'}
       />
@@ -203,6 +215,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={'22'}
       />
@@ -221,6 +234,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={() => {}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -235,6 +249,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={() => {}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -251,6 +266,7 @@ describe('NumericBox', () => {
         lowNormal={10}
         onChange={() => {}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -267,6 +283,7 @@ describe('NumericBox', () => {
         lowNormal={10}
         onChange={() => {}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -281,6 +298,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={() => {}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -299,6 +317,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={spy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'30'}
       />
@@ -314,6 +333,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={spy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={undefined}
       />
@@ -328,6 +348,7 @@ describe('NumericBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );

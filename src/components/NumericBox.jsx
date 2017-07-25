@@ -18,9 +18,10 @@ export class NumericBox extends Component {
   }
 
   componentDidMount() {
+    const { value, validateForm } = this.props;
     this.input.value = this.props.value;
-    if (this.state.hasErrors || typeof this.props.value !== 'undefined') {
-      this.props.onChange(this.props.value, this._getErrors(this.props.value), true);
+    if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
+      this.props.onChange(value, this._getErrors(value), true);
     }
   }
 
@@ -138,6 +139,7 @@ NumericBox.propTypes = {
   lowNormal: PropTypes.number,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
+  validateForm: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,
 };

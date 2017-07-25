@@ -22,6 +22,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -35,6 +36,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'defaultText'}
       />
@@ -48,6 +50,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'defalutText'}
       />
@@ -62,6 +65,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -79,6 +83,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={'defalutText'}
       />
@@ -97,6 +102,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={'defalutText'}
       />
@@ -113,6 +119,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'defalutText'}
       />
@@ -128,6 +135,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-1"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
       />
     );
@@ -142,6 +150,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
       />
     );
@@ -156,6 +165,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -170,6 +180,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -184,6 +195,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'defaultText'}
       />
@@ -198,6 +210,7 @@ describe('TextBox', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );

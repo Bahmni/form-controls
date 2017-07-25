@@ -57,6 +57,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 
@@ -84,6 +85,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 
@@ -106,6 +108,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 
@@ -127,6 +130,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 
@@ -149,6 +153,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 
@@ -171,6 +176,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />
     );
@@ -199,6 +205,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />
     );
@@ -227,6 +234,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />
     );
@@ -249,6 +257,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />
     );
@@ -270,6 +279,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />
     );
@@ -304,6 +314,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
     expect(wrapper).to.have.exactly(1).not.to.have.descendants('Label');
@@ -327,6 +338,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 
@@ -355,6 +367,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 
@@ -387,6 +400,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 
@@ -412,6 +426,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 
@@ -435,6 +450,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />
     );
@@ -458,6 +474,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={ { value: 'text' } }
       />
     );
@@ -487,6 +504,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={ { value: 'text', interpretation: 'ABNORMAL' } }
       />
     );
@@ -520,6 +538,7 @@ describe('ObsControl', () => {
           onValueChanged={(uuid, _value, _errors, onValueChangeDone) => onValueChangeDone()}
           showNotification={showNotificationSpy}
           validate={false}
+          validateForm={false}
           value={domainValue}
         />
       );
@@ -538,6 +557,7 @@ describe('ObsControl', () => {
           onValueChanged={onChangeSpy}
           showNotification={showNotificationSpy}
           validate={false}
+          validateForm={false}
           value={domainValue}
         />);
 
@@ -551,7 +571,7 @@ describe('ObsControl', () => {
           metadata={metadata}
           onValueChanged={onChangeSpy}
           showNotification={showNotificationSpy}
-          validate={false}
+          validate={false} validateForm={false}
           value={domainValue}
         />);
 
@@ -565,6 +585,7 @@ describe('ObsControl', () => {
           onValueChanged={onChangeSpy}
           showNotification={showNotificationSpy}
           validate={false}
+          validateForm={false}
           value={domainValue}
         />);
 
@@ -588,6 +609,7 @@ describe('ObsControl', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
         value={domainValue}
       />);
 

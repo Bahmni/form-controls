@@ -51,6 +51,7 @@ export class Section extends addMoreDecorator(Component) {
       onEventTrigger,
       patientUuid,
       validate,
+      validateForm,
       showNotification,
     } = this.props;
     const childProps = {
@@ -59,6 +60,7 @@ export class Section extends addMoreDecorator(Component) {
       formName,
       formVersion,
       validate,
+      validateForm,
       onValueChanged: this.onChange,
       onControlAdd: this.onControlAdd,
       onControlRemove: this.onControlRemove,
@@ -108,6 +110,7 @@ Section.propTypes = {
   patientUuid: PropTypes.string,
   showNotification: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
+  validateForm: PropTypes.bool.isRequired,
 };
 
 Section.defaultProps = {

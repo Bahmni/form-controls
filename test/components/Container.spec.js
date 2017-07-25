@@ -180,6 +180,7 @@ describe('Container', () => {
               metadata={metadata}
               observations={[]}
               validate={false}
+              validateForm={false}
             />
         );
 
@@ -240,6 +241,7 @@ describe('Container', () => {
           metadata={metadata1}
           observations={[]}
           validate={false}
+          validateForm={false}
         />
       );
 
@@ -253,6 +255,7 @@ describe('Container', () => {
                   metadata={metadata}
                   observations={[]}
                   validate={false}
+                  validateForm={false}
                 />
             );
       const changedValue = { value: '1', comment: undefined };
@@ -274,6 +277,7 @@ describe('Container', () => {
                   metadata={metadata}
                   observations={[]}
                   validate={false}
+                  validateForm={false}
                 />
             );
       wrapper.setState({ data: recordTree });
@@ -342,6 +346,7 @@ describe('Container', () => {
             metadata={metadata}
             observations={[]}
             validate={false}
+            validateForm={false}
           />
         );
         wrapper.setState({ data: obsTree });
@@ -361,6 +366,7 @@ describe('Container', () => {
             metadata={metadata}
             observations={[]}
             validate={false}
+            validateForm={false}
           />
         );
         wrapper.setState({ data: obsTree });
@@ -457,6 +463,7 @@ describe('Container', () => {
                   metadata={metadata}
                   observations={[]}
                   validate={false}
+                  validateForm={false}
                 />
             );
       wrapper.setState({ data: obsTree });
@@ -534,6 +541,7 @@ describe('Container', () => {
           metadata={heightMetadata}
           observations={[]}
           validate={false}
+          validateForm={false}
         />
       );
       wrapper.setState({ data: rootRecord });
@@ -706,6 +714,7 @@ describe('Container', () => {
                   metadata={metadata}
                   observations={[]}
                   validate={false}
+                  validateForm={false}
                 />
             );
       wrapper.setState({ data: obsGroupTree });
@@ -1266,6 +1275,7 @@ describe('Container', () => {
                   metadata={metadata}
                   observations={[]}
                   validate={false}
+                  validateForm={false}
                 />
             );
       wrapper.setState({ data: obsGroupTree });
@@ -1379,7 +1389,7 @@ describe('Container', () => {
           collapse
           metadata={eventMetadata}
           observations={[]}
-          validate={false}
+          validate={false} validateForm={false}
         />
       );
       const targetFormFieldPath = '3129.4/5-0';
@@ -1400,6 +1410,7 @@ describe('Container', () => {
           metadata={metadata}
           observations={[]}
           validate={false}
+          validateForm={false}
         />
       );
       expect(wrapper.state().notification).to.eql({});
@@ -1423,6 +1434,7 @@ describe('Container', () => {
           metadata={metadata}
           observations={[]}
           validate={false}
+          validateForm={false}
         />
       );
       const clonedFormFieldPath = 'SingleObs.1/1-1';
@@ -1811,6 +1823,7 @@ describe('Container', () => {
                   metadata={metadata}
                   observations={[]}
                   validate={false}
+                  validateForm={false}
                 />
             );
 
@@ -1826,6 +1839,7 @@ describe('Container', () => {
                   metadata={metadata}
                   observations={[]}
                   validate={false}
+                  validateForm={false}
                 />
             );
       const formFieldPath = 'SingleGroup.3/4-0';
@@ -1849,6 +1863,7 @@ describe('Container', () => {
                   metadata={metadata}
                   observations={[]}
                   validate={false}
+                  validateForm={false}
                 />
             );
       wrapper.setState({ data: recordTree });
@@ -1956,6 +1971,7 @@ describe('Container', () => {
                   metadata={updatedMetadata}
                   observations={[]}
                   validate={false}
+                  validateForm={false}
                 />
             );
 
@@ -2119,6 +2135,7 @@ describe('Container', () => {
                       metadata={metadata}
                       observations={[]}
                       validate={false}
+                      validateForm={false}
                     />
                 );
         wrapper.setState({ data: obsTree });
@@ -2230,6 +2247,7 @@ describe('Container', () => {
                       metadata={metadata}
                       observations={[]}
                       validate={false}
+                      validateForm={false}
                     />
                 );
         wrapper.setState({ data: obsTree });
@@ -2465,6 +2483,7 @@ describe('Container', () => {
                       metadata={metadata}
                       observations={[]}
                       validate={false}
+                      validateForm={false}
                     />
                 );
         wrapper.setState({ data: obsTree });
@@ -2657,6 +2676,7 @@ describe('Container', () => {
                       metadata={metadata}
                       observations={[]}
                       validate={false}
+                      validateForm={false}
                     />
                 );
         wrapper.setState({ data: obsTree });
@@ -3003,6 +3023,7 @@ describe('Container', () => {
                      metadata={metadata}
                      observations={[]}
                      validate={false}
+                     validateForm={false}
                    />
                );
         wrapper.setState({ data: rootTree });
@@ -4035,6 +4056,7 @@ describe('Container', () => {
                      metadata={metadata}
                      observations={[]}
                      validate={false}
+                     validateForm={false}
                    />
                );
         wrapper.setState({ data: rootTree });
@@ -4290,6 +4312,7 @@ describe('Container', () => {
                      metadata={metadata}
                      observations={[]}
                      validate={false}
+                     validateForm={false}
                    />
                );
         wrapper.setState({ data: rootTree });
@@ -5027,6 +5050,7 @@ describe('Container', () => {
                       metadata={metadata}
                       observations={[]}
                       validate={false}
+                      validateForm={false}
                     />
                 );
         wrapper.setState({ data: rootTree });

@@ -16,8 +16,9 @@ export class DateTime extends Component {
   }
 
   componentDidMount() {
-    if (this.state.hasErrors || typeof this.props.value !== 'undefined') {
-      this.props.onChange(this.props.value, this._getAllErrors());
+    const { value, validateForm } = this.props;
+    if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
+      this.props.onChange(value, this._getAllErrors());
     }
   }
 
@@ -130,6 +131,7 @@ DateTime.propTypes = {
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
+  validateForm: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.string,
 };

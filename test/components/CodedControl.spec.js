@@ -52,12 +52,13 @@ describe('CodedControl', () => {
         options={options}
         properties={{}}
         validate={false}
+        validateForm={false}
         validations={validations}
       />
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(8);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(9);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
@@ -72,15 +73,17 @@ describe('CodedControl', () => {
         options={options}
         properties={{}}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={{ name: 'Answer1', uuid: 'answer1uuid' }}
       />
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(8);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(9);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
+    expect(wrapper.find('DummyControl')).to.have.prop('validateForm').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
     expect(wrapper.find('DummyControl')).to.have.prop('value').
         to.deep.eql({ name: 'Answer1', value: 'answer1uuid' });
@@ -95,6 +98,7 @@ describe('CodedControl', () => {
         options={options}
         properties={{}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -109,6 +113,7 @@ describe('CodedControl', () => {
         options={options}
         properties={{}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />);
     const instance = wrapper.instance();
@@ -124,6 +129,7 @@ describe('CodedControl', () => {
         options={options}
         properties={{ autoComplete: true }}
         validate={false}
+        validateForm={false}
         validations={[]}
       />);
     expect(wrapper.find('DummyControl')).to.have.prop('asynchronous').to.eql(false);
@@ -141,6 +147,7 @@ describe('CodedControl', () => {
         options={options}
         properties={{}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />);
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
@@ -156,6 +163,7 @@ describe('CodedControl', () => {
         options={options}
         properties={{}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />);
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
@@ -172,15 +180,17 @@ describe('CodedControl', () => {
         options={options}
         properties={{ autoComplete: true, multiSelect: true }}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={[options[0], options[1]]}
       />
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(11);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(12);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
+    expect(wrapper.find('DummyControl')).to.have.prop('validateForm').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
     expect(wrapper.find('DummyControl')).to.have.prop('value').
     to.deep.eql([expectedOptions[0], expectedOptions[1]]);
@@ -197,6 +207,7 @@ describe('CodedControl', () => {
         options={options}
         properties={{ autoComplete: true, multiSelect: true }}
         validate={false}
+        validateForm={false}
         validations={[]}
       />);
     const instance = wrapper.instance();
@@ -212,6 +223,7 @@ describe('CodedControl', () => {
         options={options}
         properties={{}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />);
     const instance = wrapper.instance();

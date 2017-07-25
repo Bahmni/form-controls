@@ -18,9 +18,9 @@ export class Button extends Component {
   }
 
   componentDidMount() {
-    this.selectValue = this.props.value;
-    if (this.state.hasErrors || this.props.value !== undefined) {
-      this.props.onValueChange(this.props.value, this._getErrors(this.props.value));
+    const { value, validateForm } = this.props;
+    if (this.state.hasErrors || value !== undefined || validateForm) {
+      this.props.onValueChange(value, this._getErrors(value));
     }
   }
 
@@ -132,6 +132,7 @@ Button.propTypes = {
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
+  validateForm: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
   valueKey: PropTypes.string,

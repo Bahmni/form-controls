@@ -51,6 +51,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
       metadata: { label },
       onEventTrigger,
       validate,
+      validateForm,
       patientUuid,
       showNotification,
     } = this.props;
@@ -60,6 +61,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
       formName,
       formVersion,
       validate,
+      validateForm,
       onControlAdd: this.onControlAdd,
       onControlRemove: this.onControlRemove,
       onEventTrigger,
@@ -115,6 +117,7 @@ ObsGroupControl.propTypes = {
   showNotification: PropTypes.func.isRequired,
   showRemove: PropTypes.bool.isRequired,
   validate: PropTypes.bool.isRequired,
+  validateForm: PropTypes.bool.isRequired,
   value: PropTypes.object.isRequired,
 };
 

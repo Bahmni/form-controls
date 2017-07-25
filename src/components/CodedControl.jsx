@@ -55,6 +55,7 @@ export class CodedControl extends Component {
       formFieldPath,
       value,
       validate,
+      validateForm,
       validations,
       properties: { multiSelect },
     } = this.props;
@@ -65,6 +66,7 @@ export class CodedControl extends Component {
       onValueChange: this.onValueChange,
       options: this._getOptionsRepresentation(this.props.options, multiSelect),
       validate,
+      validateForm,
       validations,
       multiSelect,
     };
@@ -104,6 +106,7 @@ CodedControl.propTypes = {
   options: PropTypes.array.isRequired,
   properties: PropTypes.object.isRequired,
   validate: PropTypes.bool.isRequired,
+  validateForm: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
 };

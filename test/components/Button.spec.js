@@ -28,6 +28,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -49,6 +50,7 @@ describe('Button Component', () => {
        onValueChange={valueChangeSpy}
        options={options}
        validate={false}
+       validateForm={false}
        validations={[]}
        value={value}
      />
@@ -64,6 +66,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate
+        validateForm={false}
         validations={[constants.validations.mandatory]}
       />
     );
@@ -78,6 +81,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -92,6 +96,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={value}
       />
@@ -114,6 +119,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -134,6 +140,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={validations}
       />
     );
@@ -153,6 +160,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={value}
       />
@@ -177,6 +185,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={validations}
         value
       />
@@ -193,6 +202,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={value}
       />
@@ -219,6 +229,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={options}
       />
@@ -235,6 +246,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={undefined}
       />
@@ -258,6 +270,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={[options[0]]}
       />
@@ -281,6 +294,7 @@ describe('Button Component', () => {
           onValueChange={valueChangeSpy}
           options={optionsWithoutValueKey}
           validate={false}
+          validateForm={false}
           validations={[]}
           value={{ name: 'Yes' }}
           valueKey={'name' }
@@ -302,6 +316,7 @@ describe('Button Component', () => {
         onValueChange={() => {}}
         options={[]}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -322,6 +337,7 @@ describe('Button Component', () => {
         onValueChange={onChangeSpy}
         options={[]}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={value}
       />
@@ -338,6 +354,7 @@ describe('Button Component', () => {
         onValueChange={valueChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );

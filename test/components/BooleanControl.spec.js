@@ -35,6 +35,7 @@ describe('BooleanControl', () => {
         onChange={onChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={validations}
       />
     );
@@ -52,6 +53,7 @@ describe('BooleanControl', () => {
         onChange={onChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -68,6 +70,7 @@ describe('BooleanControl', () => {
         onChange={onChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
       />);
     const instance = wrapper.instance();
@@ -81,6 +84,7 @@ describe('BooleanControl', () => {
         onChange={onChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
         value
       />);
@@ -97,6 +101,7 @@ describe('BooleanControl', () => {
         onChange={onChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
         value
       />);
@@ -113,6 +118,7 @@ describe('BooleanControl', () => {
         onChange={onChangeSpy}
         options={options}
         validate={false}
+        validateForm={false}
         validations={[]}
       />);
     const instance = wrapper.instance();

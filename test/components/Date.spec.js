@@ -22,6 +22,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -35,6 +36,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'2016-12-29'}
       />
@@ -48,6 +50,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'2016-12-29'}
       />
@@ -63,6 +66,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -77,6 +81,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -93,6 +98,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={'2016-12-29'}
       />
@@ -111,6 +117,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={'2016-12-29'}
       />
@@ -129,6 +136,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-1"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
       />
     );
@@ -144,6 +152,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={validations}
         value={'2016-12-29'}
       />
@@ -158,6 +167,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'2016-12-29'}
       />
@@ -173,6 +183,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={() => {}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -187,6 +198,7 @@ describe('Date', () => {
         formFieldPath="test1.1/1-0"
         onChange={() => {}}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );
@@ -200,6 +212,7 @@ describe('Date', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
         value={'2016-12-29'}
       />
@@ -214,6 +227,7 @@ describe('Date', () => {
         formFieldPath="test1.1-0"
         onChange={onChangeSpy}
         validate={false}
+        validateForm={false}
         validations={[]}
       />
     );

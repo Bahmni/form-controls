@@ -131,6 +131,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     expect(wrapper).to.have.exactly(1).descendants('ObsControl');
@@ -149,6 +150,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     expect(wrapper.find('ObsControl')).to.have.prop('enabled').to.deep.eql(false);
@@ -166,6 +168,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     expect(wrapper.find('Section')).to.have.prop('enabled').to.deep.eql(true);
@@ -184,6 +187,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     expect(wrapper).to.not.have.descendants('obsControl');
@@ -203,6 +207,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
@@ -229,6 +234,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
@@ -255,6 +261,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active');
@@ -282,6 +289,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     expect(wrapper.find('legend').props().className).to.eql('form-builder-toggle active disabled');
@@ -301,6 +309,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     const updatedValue = { value: 1, comment: undefined };
@@ -323,6 +332,7 @@ describe('Section', () => {
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
         validate={false}
+        validateForm={false}
       />);
 
     expect(wrapper.find('Row')).to.have.prop('onEventTrigger');

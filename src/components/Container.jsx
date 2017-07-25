@@ -97,6 +97,10 @@ export class Container extends addMoreDecorator(Component) {
     const observations = (new ObservationMapper()).from(records);
     const errors = records.getErrors();
 
+    if (!isEmpty(errors) && this.props.validateForm) {
+      return { errors, observations };
+    }
+
     if (isEmpty(observations) || this.areAllVoided(observations) || isEmpty(errors)) {
       return { observations };
     }
@@ -138,6 +142,7 @@ export class Container extends addMoreDecorator(Component) {
       patientUuid: this.props.patientUuid,
       showNotification: this.showNotification,
       validate,
+      validateForm: this.props.validateForm,
     };
     const groupedRowControls = getGroupedControls(controls, 'row');
     const records = this.state.data.getActive().children.toArray();
@@ -166,5 +171,6 @@ Container.propTypes = {
   }),
   observations: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
+  validateForm: PropTypes.bool.isRequired,
 };
 

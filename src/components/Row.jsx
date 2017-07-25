@@ -51,4 +51,5 @@ Row.propTypes = {
   onValueChanged: PropTypes.func.isRequired,
   records: PropTypes.any.isRequired,
   validate: PropTypes.bool.isRequired,
+  validateForm: PropTypes.bool.isRequired,
 };

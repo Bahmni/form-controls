@@ -79,6 +79,7 @@ describe('Row', () => {
           onValueChanged={onChangeSpy}
           records={records}
           validate={false}
+          validateForm={false}
         />
       );
       expect(wrapper).to.have.exactly(3).descendants('DummyControl');
@@ -98,6 +99,7 @@ describe('Row', () => {
           onValueChanged={onChangeSpy}
           records={records1}
           validate={false}
+          validateForm={false}
         />
       );
 
@@ -114,6 +116,7 @@ describe('Row', () => {
           onValueChanged={onChangeSpy}
           records={records}
           validate={false}
+          validateForm={false}
         />
       );
 
@@ -132,6 +135,7 @@ describe('Row', () => {
         onValueChanged={onChangeSpy}
         records={records}
         validate={false}
+        validateForm={false}
       />
     );
     expect(wrapper.find('.form-builder-column').at(0)).to.have.className('hidden');
@@ -147,6 +151,7 @@ describe('Row', () => {
         onValueChanged={onChangeSpy}
         records={records}
         validate={false}
+        validateForm={false}
       />
     );
     expect(wrapper.find('.form-builder-column').at(0)).to.have.className('same-line');

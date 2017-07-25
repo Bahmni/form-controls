@@ -19,7 +19,7 @@ export class BooleanControl extends Component {
   }
 
   render() {
-    const { formFieldPath, enabled, options, validations, validate } = this.props;
+    const { formFieldPath, enabled, options, validations, validate, validateForm } = this.props;
     const registeredComponent = ComponentStore.getRegisteredComponent('button');
     if (registeredComponent) {
       const initialValue = this._getValue(options, this.props.value);
@@ -30,6 +30,7 @@ export class BooleanControl extends Component {
         onValueChange: this.onValueChange,
         options,
         validate,
+        validateForm,
         validations,
       };
       return React.createElement(registeredComponent, childProps);
@@ -50,6 +51,7 @@ BooleanControl.propTypes = {
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
+  validateForm: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
 };
