@@ -7,11 +7,12 @@ export class ComplexControlDesigner extends Component {
   }
 
   render() {
-    return (
-      <div className="fl complex-component-designer">
-        <input disabled type="file" />
-      </div>
-    );
+    const { metadata: { concept: { conceptHandler } } } = this.props;
+    const registeredComponent = ComponentStore.getDesignerComponent(conceptHandler);
+    if (registeredComponent) {
+      return React.createElement(registeredComponent.control);
+    }
+    return <input />;
   }
 }
 

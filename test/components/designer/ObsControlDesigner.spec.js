@@ -40,6 +40,7 @@ describe('ObsControlDesigner', () => {
       },
       uuid: 'someUuid',
       allowDecimal: false,
+      handler: 'someHandler',
     };
     const expectedMetadata = {
       id: 'someId',
@@ -52,6 +53,7 @@ describe('ObsControlDesigner', () => {
         uuid: 'someUuid',
         properties: { allowDecimal: false },
         answers: undefined,
+        conceptHandler: 'someHandler',
       },
       units: undefined,
       hiNormal: undefined,

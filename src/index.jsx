@@ -14,6 +14,8 @@ export { CodedControl } from 'components/CodedControl.jsx';
 export { Date } from 'components/Date.jsx';
 export { DateTime } from 'components/DateTime.jsx';
 export { Section } from 'components/Section.jsx';
+export { Image } from 'components/Image.jsx';
+export { Video } from 'components/Video.jsx';
 
 //  -----------designer components------------------
 
@@ -34,6 +36,8 @@ export { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesi
 export { DateDesigner } from 'components/designer/Date.jsx';
 export { DateTimeDesigner } from 'components/designer/DateTime.jsx';
 export { SectionDesigner } from 'components/designer/Section.jsx';
+export { ImageDesigner } from 'components/designer/Image.jsx';
+export { VideoDesigner } from 'components/designer/Video.jsx';
 
 // -------------------------- helpers ---------------------
 
