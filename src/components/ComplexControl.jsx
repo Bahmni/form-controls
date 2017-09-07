@@ -24,6 +24,7 @@ ComplexControl.propTypes = {
   onChange: PropTypes.func.isRequired,
   onControlAdd: PropTypes.func.isRequired,
   patientUuid: PropTypes.string,
+  properties: PropTypes.object.isRequired,
   showNotification: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,

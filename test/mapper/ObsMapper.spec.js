@@ -192,10 +192,11 @@ describe('ObsMapper', () => {
   });
 
   it('should mark voided of obs as true when given obs control ' +
-    'with complex type and the value contains voided', () => {
+    'with complex media type and the value contains voided', () => {
     const complexConcept = {
       answers: [],
       datatype: 'Complex',
+      conceptHandler: 'ImageUrlHandler',
       name: 'Image',
       uuid: 'c2a43174-c9db-4e54-8516-17372c83537f',
     };
@@ -222,7 +223,7 @@ describe('ObsMapper', () => {
     expect(updatedObs.voided).to.equal(true);
   });
 
-  it('should remove void obs created by add more when given obs control with complex type', () => {
+  it('should remove void obs created by add more when obsControl with complex media type', () => {
     const complexConcept = {
       answers: [],
       datatype: 'Complex',

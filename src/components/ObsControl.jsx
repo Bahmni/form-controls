@@ -9,6 +9,7 @@ import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import isEmpty from 'lodash/isEmpty';
 import addMoreDecorator from './AddMoreDecorator';
 import constants from 'src/constants';
+import { Util } from 'src/helpers/Util';
 
 export class ObsControl extends addMoreDecorator(Component) {
 
@@ -144,8 +145,10 @@ export class ObsControl extends addMoreDecorator(Component) {
       const value = this.props.value.value;
       const { concept } = this.props.metadata;
       return (
-        <Comment comment={comment} datatype={concept.datatype}
-          onCommentChange={this.onCommentChange} value={value}
+        <Comment
+          comment={comment} conceptHandler={concept.conceptHandler}
+          datatype={concept.datatype} onCommentChange={this.onCommentChange}
+          value={value}
         />
       );
     }
@@ -187,7 +190,7 @@ export class ObsControl extends addMoreDecorator(Component) {
   render() {
     const { concept } = this.props.metadata;
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
-    const complexClass = concept.datatype === 'Complex' ? 'complex-component' : '';
+    const complexClass = Util.isComplexMediaConcept(concept) ? 'complex-component' : '';
     const addMoreComplexClass =
       complexClass && this.isCreateByAddMore() ? 'add-more-complex-component' : '';
     if (registeredComponent) {

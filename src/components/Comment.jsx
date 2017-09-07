@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import Textarea from 'react-textarea-autosize';
+import { Util } from 'src/helpers/Util';
+
 export class Comment extends Component {
 
   constructor(props) {
@@ -19,8 +21,8 @@ export class Comment extends Component {
     this.props.onCommentChange(value);
   }
 
-  showCommentSection() {
-    if (this.state.showCommentSection || (this.props.datatype === 'Complex' && this.props.value)) {
+  showCommentSection(isComplexMediaConcept) {
+    if (this.state.showCommentSection || (isComplexMediaConcept && this.props.value)) {
       return (
         <div className="obs-comment-section-wrap">
           <div className="label-wrap"></div>
@@ -36,8 +38,8 @@ export class Comment extends Component {
     return null;
   }
 
-  showCommentButton() {
-    if (this.props.datatype === 'Complex') {
+  showCommentButton(isComplexMediaConcept) {
+    if (isComplexMediaConcept) {
       return '';
     }
     return (<button
@@ -55,10 +57,12 @@ export class Comment extends Component {
   }
 
   render() {
+    const { conceptHandler, datatype } = this.props;
+    const isComplexMediaConcept = Util.isComplexMediaConcept({ conceptHandler, datatype });
     return (
       <div className="form-builder-comment-wrap">
-        {this.showCommentButton()}
-        {this.showCommentSection()}
+        {this.showCommentButton(isComplexMediaConcept)}
+        {this.showCommentSection(isComplexMediaConcept)}
       </div>
     );
   }
@@ -66,6 +70,7 @@ export class Comment extends Component {
 
 Comment.propTypes = {
   comment: PropTypes.string,
+  conceptHandler: PropTypes.string,
   datatype: PropTypes.string,
   onCommentChange: PropTypes.func.isRequired,
   value: PropTypes.string,

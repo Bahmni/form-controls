@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import classNames from 'classnames';
 import Spinner from 'src/helpers/Spinner';
-import Constants from '../constants';
+import Constants from 'src/constants';
 import isEmpty from 'lodash/isEmpty';
 import { Util } from 'src/helpers/Util';
 import { Validator } from 'src/helpers/Validator';

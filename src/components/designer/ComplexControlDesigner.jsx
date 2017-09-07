@@ -10,9 +10,9 @@ export class ComplexControlDesigner extends Component {
     const { metadata: { concept: { conceptHandler } } } = this.props;
     const registeredComponent = ComponentStore.getDesignerComponent(conceptHandler);
     if (registeredComponent) {
-      return React.createElement(registeredComponent.control);
+      return React.createElement(registeredComponent.control, { ...this.props });
     }
-    return <input />;
+    return null;
   }
 }
 
@@ -24,6 +24,7 @@ ComplexControlDesigner.propTypes = {
     properties: PropTypes.object.isRequired,
     type: PropTypes.string,
   }),
+  setError: PropTypes.func,
 };
 
 const descriptor = {
@@ -42,11 +43,6 @@ const descriptor = {
             dataType: 'boolean',
             defaultValue: false,
             disabled: true,
-          },
-          {
-            name: 'sameLine',
-            dataType: 'boolean',
-            defaultValue: true,
           },
         ],
       },

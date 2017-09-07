@@ -36,10 +36,11 @@ export class ObsControlDesigner extends Component {
   }
 
   displayObsControl(designerComponent) {
-    const { metadata } = this.props;
+    const { metadata, setError } = this.props;
     return React.createElement(designerComponent.control, {
       metadata,
       ref: this.storeChildRef,
+      setError,
       ...this._numericContext(metadata),
     });
   }
@@ -215,6 +216,7 @@ ObsControlDesigner.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
+  setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
 };
 

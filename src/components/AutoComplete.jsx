@@ -46,12 +46,15 @@ export class AutoComplete extends Component {
     const value = get(nextProps, 'value');
     const errors = this._getErrors(value);
     const hasErrors = this._hasErrors(errors);
-    this.setState({ value, hasErrors });
+    const options = (this.state.options !== nextProps.options && !this.props.searchable) ?
+      nextProps.options : this.state.options;
+    this.setState({ value, hasErrors, options });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     return !isEqual(this.props.value, nextProps.value) ||
       !isEqual(this.state.value, nextState.value) ||
+      !isEqual(this.props.searchable, nextProps.searchable) ||
       this.state.hasErrors !== nextState.hasErrors ||
       this.state.options !== nextState.options ||
       this.state.noResultsText !== nextState.noResultsText ||

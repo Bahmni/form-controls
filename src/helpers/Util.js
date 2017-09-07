@@ -40,4 +40,10 @@ export class Util {
       credentials: 'include',
     });
   }
+
+  static isComplexMediaConcept(concept) {
+    const { datatype, conceptHandler } = concept;
+    return (datatype === 'Complex') &&
+      (conceptHandler === 'ImageUrlHandler' || conceptHandler === 'VideoUrlHandler');
+  }
 }

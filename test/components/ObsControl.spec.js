@@ -21,12 +21,13 @@ describe('ObsControl', () => {
     ComponentStore.deRegisterComponent('text');
   });
 
-  function getConcept(datatype) {
+  function getConcept(datatype, handler) {
     return {
       uuid: '70645842-be6a-4974-8d5f-45b52990e132',
       name: 'Pulse',
       datatype,
       conceptClass: 'Image',
+      conceptHandler: handler,
     };
   }
 
@@ -598,7 +599,7 @@ describe('ObsControl', () => {
     const metadata = {
       id: '100',
       type: 'obsControl',
-      concept: getConcept('Complex'),
+      concept: getConcept('Complex', 'ImageUrlHandler'),
       label,
       properties,
     };
@@ -613,11 +614,11 @@ describe('ObsControl', () => {
         value={domainValue}
       />);
 
-    it('should render complex control with complex-component classname', () => {
+    it('should render complex media control with complex-component classname', () => {
       expect(wrapper.find('.form-field-wrap')).to.have.className('complex-component');
     });
 
-    it('should render complex control created by add more ' +
+    it('should render complex media ontrol created by add more ' +
       'with add-more-complex-component classname', () => {
       expect(wrapper.find('.label-wrap')).to.have.className('add-more-complex-component');
     });

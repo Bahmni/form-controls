@@ -37,6 +37,7 @@ describe('Complex Control', () => {
         formFieldPath={formFieldPath}
         onChange={onChangeSpy}
         onControlAdd={addMoreSpy}
+        properties={{}}
         showNotification={showNotificationSpy}
         validate={false}
         validations={[]}
@@ -44,6 +45,7 @@ describe('Complex Control', () => {
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(wrapper.find('DummyControl')).to.have.prop('formFieldPath').to.deep.eql(formFieldPath);
     expect(wrapper.find('DummyControl')).to.have.prop('onChange').to.deep.eql(onChangeSpy);
+    expect(wrapper.find('DummyControl')).to.have.prop('properties').to.deep.eql({});
     expect(wrapper.find('DummyControl')).to.have.prop('onControlAdd').to.deep.eql(addMoreSpy);
   });
 
@@ -56,6 +58,7 @@ describe('Complex Control', () => {
         formFieldPath={formFieldPath}
         onChange={onChangeSpy}
         onControlAdd={addMoreSpy}
+        properties={{}}
         showNotification={showNotificationSpy}
         validate={false}
         validations={[]}

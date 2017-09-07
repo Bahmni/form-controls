@@ -1,5 +1,6 @@
 import { createObsFromControl } from 'src/helpers/Obs';
 import { cloneDeep } from 'lodash';
+import { Util } from 'src/helpers/Util';
 
 export class ObsMapper {
 
@@ -26,7 +27,7 @@ export class ObsMapper {
     obs.interpretation = record.value.interpretation;
     obs.voided = value === undefined;
     obs.inactive = !record.active;
-    if (record.control.concept && record.control.concept.datatype === 'Complex') {
+    if (record.control.concept && Util.isComplexMediaConcept(record.control.concept)) {
       if (obs.voided && obs.formFieldPath.split('-')[1] !== '0') {
         return null;
       }

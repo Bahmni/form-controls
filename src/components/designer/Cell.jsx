@@ -88,6 +88,7 @@ export class CellDesigner extends DropTarget {
                 ref: this.storeChildRef,
                 wrapper: this.props.wrapper,
                 deleteControl: this.deleteControl,
+                setError: this.props.setError,
                 showDeleteButton: this.props.showDeleteButton,
               }
             )
@@ -139,6 +140,7 @@ CellDesigner.propTypes = {
     row: PropTypes.number,
   }).isRequired,
   onChange: PropTypes.func.isRequired,
+  setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
 };

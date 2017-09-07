@@ -47,6 +47,7 @@ export class GridDesigner extends Component {
                   ref={this.rowReference}
                   rowData={ get(this.rowData, i, []) }
                   rowPosition={i}
+                  setError={this.props.setError}
                   showDeleteButton={ this.props.showDeleteButton }
                   wrapper={ this.props.wrapper }
                 />);
@@ -74,6 +75,7 @@ GridDesigner.propTypes = {
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
   minRows: PropTypes.number,
+  setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
 };

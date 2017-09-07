@@ -52,22 +52,45 @@ describe('Comment', () => {
     expect(wrapper.find('textarea').props().defaultValue).to.be.eql('Some Comment');
   });
 
-  it('should not render comment button when the data type of control is complex', () => {
-    wrapper = mount(<Comment datatype={'Complex'} onCommentChange={onCommentChange} />);
+  it('should not render comment button when the control is of complex media type', () => {
+    wrapper = mount(
+      <Comment
+        conceptHandler={'ImageUrlHandler'}
+        datatype={'Complex'}
+        onCommentChange={onCommentChange}
+      />);
     expect(wrapper.find('button')).length.to.be(0);
   });
 
-  it('should render comment section when the complex control has value', () => {
-    wrapper = mount(<Comment datatype={'Complex'} onCommentChange={onCommentChange}
-      value={'someValue'}
-    />);
+  it('should render comment button when the control is of complex but not media type', () => {
+    wrapper = mount(
+      <Comment
+        conceptHandler={'LocationHandler'}
+        datatype={'Complex'}
+        onCommentChange={onCommentChange}
+      />);
+    expect(wrapper.find('button')).length.to.be(1);
+  });
+
+  it('should render comment section when the complex Media type control has value', () => {
+    wrapper = mount(
+      <Comment
+        conceptHandler={'ImageUrlHandler'}
+        datatype={'Complex'}
+        onCommentChange={onCommentChange}
+        value={'someValue'}
+      />);
     expect(wrapper.find('textarea')).length.to.be(1);
   });
 
-  it('should not render comment section when the complex control does not have value', () => {
-    wrapper = mount(<Comment datatype={'Complex'} onCommentChange={onCommentChange}
-      value={undefined}
-    />);
+  it('should not render comment section when the complex media control does not have value', () => {
+    wrapper = mount(
+      <Comment
+        conceptHandler={'ImageUrlHandler'}
+        datatype={'Complex'}
+        onCommentChange={onCommentChange}
+        value={undefined}
+      />);
     expect(wrapper.find('textarea')).length.to.be(0);
   });
 });
