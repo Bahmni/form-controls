@@ -52,7 +52,7 @@ export class ObsGroupMapper {
                       obsGroup.groupMembers.filter(child => !child.voided).length === 0;
     obsGroup.inactive = !record.active;
 
-    return obsGroup;
+    return (obsGroup.uuid === undefined && isEmpty(obsGroup.groupMembers)) ? null : obsGroup;
   }
 
   getChildren(obs) {

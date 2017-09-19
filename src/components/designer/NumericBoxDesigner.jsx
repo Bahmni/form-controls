@@ -60,7 +60,13 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [],
+        attributes: [
+          {
+            name: 'abnormal',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
+        ],
       },
     ],
   },

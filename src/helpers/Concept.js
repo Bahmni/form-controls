@@ -36,6 +36,7 @@ export class Concept {
       uuid: concept.uuid,
       datatype: concept.datatype.name,
       conceptClass: concept.conceptClass.name,
+      conceptHandler: concept.handler,
     }, this._getConceptProperties(concept));
   }
 

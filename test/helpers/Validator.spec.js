@@ -100,6 +100,12 @@ describe('Validator', () => {
       const errors = Validator.getErrors({ params, validations, value: 110 });
       expect(errors).to.deep.eql([]);
     });
+
+    it('should not get allowRange error when range is in decimal and value is in range', () => {
+      const params = { minNormal: 98.6, maxNormal: 98.8 };
+      const errors = Validator.getErrors({ params, validations, value: 98.6 });
+      expect(errors).to.deep.eql([]);
+    });
   });
 
   describe('minMaxRange validation', () => {

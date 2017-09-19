@@ -32,13 +32,7 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [
-          {
-            name: 'sameLine',
-            dataType: 'boolean',
-            defaultValue: false,
-          },
-        ],
+        attributes: [],
       },
     ],
   },

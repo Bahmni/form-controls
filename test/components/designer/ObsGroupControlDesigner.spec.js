@@ -40,6 +40,7 @@ describe('ObsGroupControlDesigner', () => {
       conceptClass: {
         name: 'Misc',
       },
+      handler: 'someHandler',
       uuid: 'someUuid',
       allowDecimal: false,
       set: true,
@@ -53,6 +54,7 @@ describe('ObsGroupControlDesigner', () => {
         name: 'someName',
         datatype: 'someDatatype',
         conceptClass: 'Misc',
+        conceptHandler: 'someHandler',
         uuid: 'someUuid',
         set: true,
         setMembers: [],

@@ -46,8 +46,8 @@ export class Validator {
   static rangeValidation(value, minRange, maxRange) {
     if (isUndefined(value)) return undefined;
 
-    if ((minRange && value < Number.parseInt(minRange, 10)) ||
-      (maxRange && value > Number.parseInt(maxRange, 10))) {
+    if ((minRange && value < Number.parseFloat(minRange)) ||
+      (maxRange && value > Number.parseFloat(maxRange))) {
       return true;
     }
     return undefined;
