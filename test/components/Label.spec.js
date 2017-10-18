@@ -27,4 +27,11 @@ describe('Label', () => {
     const wrapper = shallow(<Label enabled metadata={metadata} />);
     expect(wrapper.find('label')).to.not.have.className('disabled-label');
   });
+
+  it('should render the value of label with units', () => {
+    const metadata = { value: 'Pulse', type: 'label', units: '(/min)' };
+
+    const wrapper = shallow(<Label metadata={metadata} />);
+    expect(wrapper.find('label').text()).to.eql('Pulse (/min)');
+  });
 });

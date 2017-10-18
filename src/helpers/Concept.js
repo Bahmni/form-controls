@@ -32,19 +32,12 @@ export class Concept {
 
   _getConcept(concept) {
     return Object.assign({}, {
-      name: `${concept.name.name}${this.getUnits(concept)}`,
+      name: concept.name.name,
       uuid: concept.uuid,
       datatype: concept.datatype.name,
       conceptClass: concept.conceptClass.name,
       conceptHandler: concept.handler,
     }, this._getConceptProperties(concept));
-  }
-
-  getUnits(concept) {
-    if (concept.units) {
-      return `(${concept.units})`;
-    }
-    return '';
   }
 
   _getConceptProperties(concept) {

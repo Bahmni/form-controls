@@ -15,7 +15,8 @@ describe('LabelDesigner', () => {
 
   beforeEach(() => {
     idGenerator = new IDGenerator();
-    metadata = { id: 'someId', type: 'label', value: 'History Notes', properties: {} };
+    metadata = { id: '1', type: 'label',
+      value: 'History Notes', properties: {} };
     wrapper = mount(<LabelDesigner
       clearSelectedControl={() => {}}
       deleteControl={() => {}}
@@ -62,7 +63,8 @@ describe('LabelDesigner', () => {
   it('should return appropriate JSON definition', () => {
     const instance = wrapper.instance();
     const expectedJson = {
-      id: 'someId',
+      translation_key: 'HISTORY_NOTES_1',
+      id: '1',
       type: 'label',
       value: 'History Notes',
       properties: {},
@@ -122,5 +124,24 @@ describe('LabelDesigner', () => {
     });
 
     sinon.assert.calledOnce(deleteControlSpy);
+  });
+
+
+  it('should not generate new translation key if it already exists', () => {
+    metadata.units = '(/min)';
+    metadata.translation_key = 'SOME_KEY';
+    wrapper = mount(
+      <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        dispatch={() => {}}
+        idGenerator={idGenerator}
+        metadata={metadata}
+        showDeleteButton={false}
+        wrapper={() => {}}
+      />);
+    expect(wrapper.find('label').text()).to.eql('History Notes (/min)');
+    const instance = wrapper.instance();
+    expect(instance.getJsonDefinition().translation_key).to.deep.eql('SOME_KEY');
   });
 });

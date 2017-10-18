@@ -37,6 +37,7 @@ describe('Concept', () => {
           uuid: '8d4a4488-c2cc-11de-8d13-0010c6dffd0f',
           name: 'Numeric',
         },
+        units: '/min',
       },
       {
         uuid: 'c36c7c98-3f10-11e4-adec-0800271c1b75',
@@ -89,7 +90,6 @@ describe('Concept', () => {
   it('should retrieve first numeric set member', () => {
     const concept = new Concept(abnormalConcept);
     const numericSetMember = concept.findFirstNumericSetMember();
-
     expect(numericSetMember).to.be.eql({
       name: 'Pulse',
       uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
@@ -97,7 +97,7 @@ describe('Concept', () => {
       datatype: 'Numeric',
       conceptClass: 'Misc',
       conceptHandler: undefined,
-      units: undefined,
+      units: '/min',
       hiNormal: undefined,
       lowNormal: undefined,
       hiAbsolute: undefined,
@@ -126,7 +126,7 @@ describe('Concept', () => {
       datatype: 'Numeric',
       conceptClass: 'Misc',
       conceptHandler: undefined,
-      units: undefined,
+      units: '/min',
       hiNormal: undefined,
       lowNormal: undefined,
       hiAbsolute: undefined,

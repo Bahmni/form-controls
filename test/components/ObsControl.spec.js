@@ -51,6 +51,7 @@ describe('ObsControl', () => {
       concept: getConcept('Text'),
       label,
       properties,
+      units: '/min',
     };
     const wrapper = mount(
       <ObsControl
@@ -68,6 +69,8 @@ describe('ObsControl', () => {
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).not.to.have.prop('options');
+    expect(wrapper.find('Label')).to.have.prop('metadata')
+      .to.deep.eql({ ...label, units: '(/min)' });
   });
 
   it('should render child control with options when metadata has options', () => {
@@ -90,7 +93,9 @@ describe('ObsControl', () => {
         value={domainValue}
       />);
 
+
     expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql([]);
+    expect(wrapper.find('Label')).to.have.prop('metadata').to.deep.eql({ ...label, units: '' });
   });
 
   it('should render child control with options when concept has answers', () => {

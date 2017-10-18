@@ -95,12 +95,17 @@ export class ObsControl extends addMoreDecorator(Component) {
     };
   }
 
+  _getUnits(units) {
+    return units ? `(${units})` : '';
+  }
+
   displayLabel() {
-    const { properties, label } = this.props.metadata;
+    const { enabled, hidden, metadata: { properties, label, units } } = this.props;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
+    const labelMetadata = { ...label, units: this._getUnits(units) };
     if (!hideLabel) {
       return (
-            <Label enabled={this.props.enabled} hidden={this.props.hidden} metadata={label} />
+            <Label enabled={enabled} hidden={hidden} metadata={labelMetadata} />
       );
     }
     return null;

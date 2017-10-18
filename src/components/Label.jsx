@@ -7,11 +7,13 @@ import ComponentStore from 'src/helpers/componentStore';
 
 export class Label extends Component {
   render() {
-    const disableClass = this.props.enabled ? '' : 'disabled-label';
+    const { enabled, metadata: { value, units } } = this.props;
+    const disableClass = enabled ? '' : 'disabled-label';
+    const labelValue = units ? `${value} ${units}` : value;
     return (<label
       className={`${disableClass}`}
     >
-      {this.props.metadata.value}
+      {labelValue}
     </label>);
   }
 }
@@ -21,6 +23,7 @@ Label.propTypes = {
   hidden: PropTypes.bool,
   metadata: PropTypes.shape({
     type: PropTypes.string.isRequired,
+    units: PropTypes.string,
     value: PropTypes.string.isRequired,
   }),
 };

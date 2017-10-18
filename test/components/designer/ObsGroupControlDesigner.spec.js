@@ -206,7 +206,10 @@ describe('ObsGroupControlDesigner', () => {
 
     it('should return json definition', () => {
       const instance = wrapper.instance();
-      expect(instance.getJsonDefinition()).to.deep.eql(metadata);
+      const metadataClone = metadata;
+      metadataClone.label = Object.assign({}, metadata.label,
+        { id: '123', translation_key: 'DUMMYPULSE_123' });
+      expect(instance.getJsonDefinition()).to.deep.eql(metadataClone);
     });
 
     it('should show delete button if the showDeleteButton props is true', () => {

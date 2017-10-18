@@ -37,8 +37,9 @@ export class ObsGroupControlDesigner extends Component {
   }
 
   displayLabel() {
-    const { metadata, metadata: { label } } = this.props;
-    const labelMetadata = label || { type: 'label', value: metadata.concept.name };
+    const { metadata, metadata: { label, id } } = this.props;
+    const labelMetadata = Object.assign(label, { id }) ||
+      { type: 'label', value: metadata.concept.name, id };
     return (
       <LabelDesigner
         metadata={ labelMetadata }

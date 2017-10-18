@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
+import TranslationKeyGenerator from 'src/services/TranslationKeyService';
 
 export class LabelDesigner extends Component {
   constructor(props) {
     super(props);
-    this.props = props;
-    this.state = {
-      defaultValue: props.metadata.value,
-      value: props.metadata.value,
-    };
+    const { metadata, metadata: { id, value } } = props;
+    const translationKey = metadata.translation_key ||
+      (new TranslationKeyGenerator(value, id)).build();
+    this.state = { value, translation_key: translationKey };
     this.onDoubleClick = this.onDoubleClick.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.showDeleteButton = this.showDeleteButton.bind(this);
@@ -40,7 +40,8 @@ export class LabelDesigner extends Component {
 
   getJsonDefinition() {
     const value = this.state.value;
-    return Object.assign({}, this.props.metadata, { value });
+    const translationKey = this.state.translation_key;
+    return Object.assign({}, { translation_key: translationKey }, this.props.metadata, { value });
   }
 
   updateValue() {
@@ -50,6 +51,12 @@ export class LabelDesigner extends Component {
       isEditable: false,
       value,
     });
+  }
+
+  _getLabelValue() {
+    const { value } = this.state;
+    const { units } = this.props.metadata;
+    return units ? `${value} ${units}` : value;
   }
 
   storeComponentRef(ref) {
@@ -90,7 +97,7 @@ export class LabelDesigner extends Component {
         <label
           onDoubleClick={ this.onDoubleClick }
         >
-          { this.state.value }
+          { this._getLabelValue() }
         </label>
         {this.showDeleteButton()}
       </div>);
@@ -105,7 +112,9 @@ LabelDesigner.propTypes = {
   dispatch: PropTypes.func,
   metadata: PropTypes.shape({
     id: PropTypes.string,
+    translation_key: PropTypes.string,
     type: PropTypes.string.isRequired,
+    units: PropTypes.string,
     value: PropTypes.string.isRequired,
     properties: PropTypes.shape({
       location: PropTypes.shape({

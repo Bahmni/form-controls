@@ -188,7 +188,8 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should pass appropriate props to Label', () => {
-      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse', properties: {} };
+      const expectedLabelMetadata = { id: '123', type: 'label',
+        value: 'dummyPulse', properties: {}, units: '' };
       expect(wrapper.find('LabelDesigner').props().metadata).to.deep.eql(expectedLabelMetadata);
     });
 
@@ -215,7 +216,19 @@ describe('ObsControlDesigner', () => {
     });
 
     it('should return json definition', () => {
-      const expectedLabelMetadata = { type: 'label', value: 'dummyPulse', properties: {} };
+      wrapper = mount(
+        <ObsControlDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={ () => {} }
+          dispatch={() => {}}
+          idGenerator={idGenerator}
+          metadata={ { ...metadata, units: '/min' } }
+          onSelect={() => {}}
+          showDeleteButton
+          wrapper={() => {}}
+        />);
+      const expectedLabelMetadata = { id: '123', translation_key: 'DUMMYPULSE_123',
+        type: 'label', value: 'dummyPulse', properties: {}, units: '(/min)' };
       const instance = wrapper.instance();
       const expectedJson = { concept, label: expectedLabelMetadata, properties: {} };
       expect(instance.getJsonDefinition()).to.eql(expectedJson);
@@ -280,6 +293,7 @@ describe('ObsControlDesigner', () => {
         id: '123',
         type: 'obsControl',
         concept,
+        label,
         properties: { notes: true, hideLabel: false },
       };
       wrapper = mount(<ObsControlDesigner

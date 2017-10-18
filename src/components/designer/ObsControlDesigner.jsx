@@ -55,10 +55,16 @@ export class ObsControlDesigner extends Component {
     };
   }
 
+  _getUnits(units) {
+    return units ? `(${units})` : '';
+  }
+
   displayLabel() {
-    const { metadata, metadata: { properties, label } } = this.props;
+    const { metadata, metadata: { properties, label, id } } = this.props;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
-    const labelMetadata = label || { type: 'label', value: metadata.concept.name };
+    const units = this._getUnits(metadata.units);
+    const labelMetadata = Object.assign({ id, units }, label) ||
+      { type: 'label', value: metadata.concept.name, id };
     if (!hideLabel) {
       return (
           <LabelDesigner
@@ -235,7 +241,7 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
   };
   const label = {
     type: 'label',
-    value: `${concept.name.name}${ObsControlDesigner.getUnits(concept)}`,
+    value: concept.name.name,
   };
 
   return Object.assign(
@@ -247,13 +253,6 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
   );
 };
 
-
-ObsControlDesigner.getUnits = (concept) => {
-  if (concept.units) {
-    return `(${concept.units})`;
-  }
-  return '';
-};
 
 const descriptor = {
   control: ObsControlDesigner,
