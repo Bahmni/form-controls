@@ -117,9 +117,9 @@ describe('SectionDesigner', () => {
     it('should return json definition', () => {
       const instance = wrapper.instance();
       const expectSectionLabel = Object.assign({}, metadata.label,
-        { id: '123', translation_key: 'DUMMYPULSE_123' });
+        { id: '123', translationKey: 'DUMMYPULSE_123' });
       const expectObsLabel = Object.assign({}, metadata.label,
-        { id: '124', translation_key: 'DUMMYPULSE_124' });
+        { id: '124', translationKey: 'DUMMYPULSE_124' });
 
       metadata.label = expectSectionLabel;
       metadata.controls[0].label = expectObsLabel;

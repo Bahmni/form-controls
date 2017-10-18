@@ -63,7 +63,7 @@ describe('LabelDesigner', () => {
   it('should return appropriate JSON definition', () => {
     const instance = wrapper.instance();
     const expectedJson = {
-      translation_key: 'HISTORY_NOTES_1',
+      translationKey: 'HISTORY_NOTES_1',
       id: '1',
       type: 'label',
       value: 'History Notes',
@@ -129,7 +129,7 @@ describe('LabelDesigner', () => {
 
   it('should not generate new translation key if it already exists', () => {
     metadata.units = '(/min)';
-    metadata.translation_key = 'SOME_KEY';
+    metadata.translationKey = 'SOME_KEY';
     wrapper = mount(
       <LabelDesigner
         clearSelectedControl={() => {}}
@@ -142,6 +142,6 @@ describe('LabelDesigner', () => {
       />);
     expect(wrapper.find('label').text()).to.eql('History Notes (/min)');
     const instance = wrapper.instance();
-    expect(instance.getJsonDefinition().translation_key).to.deep.eql('SOME_KEY');
+    expect(instance.getJsonDefinition().translationKey).to.deep.eql('SOME_KEY');
   });
 });

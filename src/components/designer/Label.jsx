@@ -5,10 +5,8 @@ import TranslationKeyGenerator from 'src/services/TranslationKeyService';
 export class LabelDesigner extends Component {
   constructor(props) {
     super(props);
-    const { metadata, metadata: { id, value } } = props;
-    const translationKey = metadata.translation_key ||
-      (new TranslationKeyGenerator(value, id)).build();
-    this.state = { value, translation_key: translationKey };
+    const { metadata: { value } } = props;
+    this.state = { value };
     this.onDoubleClick = this.onDoubleClick.bind(this);
     this.onBlur = this.onBlur.bind(this);
     this.showDeleteButton = this.showDeleteButton.bind(this);
@@ -39,9 +37,11 @@ export class LabelDesigner extends Component {
   }
 
   getJsonDefinition() {
+    const { metadata, metadata: { id } } = this.props;
     const value = this.state.value;
-    const translationKey = this.state.translation_key;
-    return Object.assign({}, { translation_key: translationKey }, this.props.metadata, { value });
+    const translationKey = metadata.translationKey
+      || (new TranslationKeyGenerator(value, id)).build();
+    return Object.assign({}, { translationKey }, metadata, { value });
   }
 
   updateValue() {
@@ -112,7 +112,7 @@ LabelDesigner.propTypes = {
   dispatch: PropTypes.func,
   metadata: PropTypes.shape({
     id: PropTypes.string,
-    translation_key: PropTypes.string,
+    translationKey: PropTypes.string,
     type: PropTypes.string.isRequired,
     units: PropTypes.string,
     value: PropTypes.string.isRequired,

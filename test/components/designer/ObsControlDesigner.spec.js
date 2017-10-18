@@ -5,11 +5,14 @@ import chai, { expect } from 'chai';
 import { ObsControlDesigner } from 'components/designer/ObsControlDesigner.jsx';
 import sinon from 'sinon';
 import { IDGenerator } from 'src/helpers/idGenerator';
+import cloneDeep from 'lodash/cloneDeep';
 
 chai.use(chaiEnzyme());
 
 const concept = { name: 'dummyPulse', datatype: 'text', uuid: 'dummyUuid' };
 const properties = {};
+const conceptWithDesc = Object.assign({}, concept);
+conceptWithDesc.description = { value: 'concept description' };
 class DummyControl extends Component {
   getJsonDefinition() {
     return { concept, properties };
@@ -17,6 +20,12 @@ class DummyControl extends Component {
 
   render() {
     return <input />;
+  }
+}
+
+class DummyControlWithDescription extends DummyControl {
+  getJsonDefinition() {
+    return { concept: conceptWithDesc, properties };
   }
 }
 
@@ -227,7 +236,7 @@ describe('ObsControlDesigner', () => {
           showDeleteButton
           wrapper={() => {}}
         />);
-      const expectedLabelMetadata = { id: '123', translation_key: 'DUMMYPULSE_123',
+      const expectedLabelMetadata = { id: '123', translationKey: 'DUMMYPULSE_123',
         type: 'label', value: 'dummyPulse', properties: {}, units: '(/min)' };
       const instance = wrapper.instance();
       const expectedJson = { concept, label: expectedLabelMetadata, properties: {} };
@@ -361,8 +370,6 @@ describe('ObsControlDesigner', () => {
   });
 
   context('when concept has description', () => {
-    const conceptWithDesc = Object.assign({}, concept);
-    conceptWithDesc.description = [{ display: 'concept description' }];
     const label = {
       type: 'label',
       value: concept.name,
@@ -377,7 +384,7 @@ describe('ObsControlDesigner', () => {
         properties,
       };
 
-      const textBoxDescriptor = { control: DummyControl };
+      const textBoxDescriptor = { control: DummyControlWithDescription };
       componentStore.registerDesignerComponent('text', textBoxDescriptor); // eslint-disable-line no-undef
       onSelectSpy = sinon.spy();
       wrapper = mount(<ObsControlDesigner
@@ -395,6 +402,16 @@ describe('ObsControlDesigner', () => {
 
     it('should show help tooltip if concept description is present', () => {
       expect(wrapper.find('.form-builder-tooltip-trigger')).to.have.prop('onClick');
+    });
+
+    it('should include translationKey if description is present', () => {
+      const instance = wrapper.instance();
+      const clonedConcept = cloneDeep(conceptWithDesc);
+      clonedConcept.description.translationKey = 'DUMMYPULSE_123_DESC';
+      const expectedLabelMetadata = { id: '123', translationKey: 'DUMMYPULSE_123',
+        type: 'label', value: 'dummyPulse', properties: {}, units: '' };
+      const expectedJson = { concept: clonedConcept, label: expectedLabelMetadata, properties: {} };
+      expect(instance.getJsonDefinition()).to.eql(expectedJson);
     });
   });
 });

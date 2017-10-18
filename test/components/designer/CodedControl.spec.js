@@ -4,6 +4,7 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
 import ComponentStore from 'src/helpers/componentStore';
+import cloneDeep from 'lodash/cloneDeep';
 
 chai.use(chaiEnzyme());
 
@@ -50,7 +51,9 @@ describe('Coded Control Designer', () => {
   it('should return the JSON Definition', () => {
     const wrapper = mount(<CodedControlDesigner metadata={metadata} />);
     const instance = wrapper.instance();
-    expect(instance.getJsonDefinition()).to.deep.eql(metadata);
+    const clonedMetadata = cloneDeep(metadata);
+    clonedMetadata.concept.answers[0].translationKey = 'ANSWER1_100';
+    expect(instance.getJsonDefinition()).to.deep.eql(clonedMetadata);
   });
 
   it('should return null when registered component not found', () => {

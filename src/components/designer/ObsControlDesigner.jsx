@@ -5,6 +5,7 @@ import { CommentDesigner } from 'components/designer/Comment.jsx';
 import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { Concept } from 'src/helpers/Concept';
 
@@ -23,7 +24,11 @@ export class ObsControlDesigner extends Component {
       return undefined;
     }
     const childJsonDefinition = this.childControl.getJsonDefinition();
+    const { description } = childJsonDefinition.concept;
     const labelJsonDefinition = this.labelControl && this.labelControl.getJsonDefinition();
+    if (description && !description.translationKey) {
+      description.translationKey = `${labelJsonDefinition.translationKey}_DESC`;
+    }
     return Object.assign({}, childJsonDefinition, { label: labelJsonDefinition });
   }
 
@@ -88,11 +93,9 @@ export class ObsControlDesigner extends Component {
   }
 
   showHelperText() {
-    const { concept } = this.props.metadata;
+    const { concept: { description } } = this.props.metadata;
     const showHintButton = this.state && this.state.showHintButton;
-    const description = concept.description && !isEmpty(concept.description) ?
-      concept.description[0].display : undefined;
-    if (description) {
+    if (description && description.value) {
       return (
         <div className={classNames('form-builder-tooltip-wrap',
            { active: showHintButton === true })}>
@@ -102,7 +105,7 @@ export class ObsControlDesigner extends Component {
           </i>
           <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
-            <span className="details hint">{description}</span>
+            <span className="details hint">{description.value}</span>
           </p>
         </div>
       );
@@ -230,7 +233,8 @@ ObsControlDesigner.injectConceptToMetadata = (metadata, concept) => {
   const filteredConcepts = {
     name: concept.name.name,
     uuid: concept.uuid,
-    description: concept.descriptions,
+    description: !isEmpty(concept.descriptions)
+      ? { value: get(concept, 'descriptions[0].display') } : undefined,
     datatype: concept.datatype.name,
     conceptClass: concept.conceptClass.name,
     conceptHandler: concept.handler,

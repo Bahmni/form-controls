@@ -6,7 +6,6 @@ import find from 'lodash/find';
 import { Comment } from 'components/Comment.jsx';
 import { getValidations } from 'src/helpers/controlsHelper';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
-import isEmpty from 'lodash/isEmpty';
 import addMoreDecorator from './AddMoreDecorator';
 import constants from 'src/constants';
 import { Util } from 'src/helpers/Util';
@@ -121,11 +120,9 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   showHelperText() {
-    const { concept } = this.props.metadata;
+    const { concept: { description } } = this.props.metadata;
     const showHintButton = this.state && this.state.showHintButton;
-    const description = concept.description && !isEmpty(concept.description) ?
-      concept.description[0].display : undefined;
-    if (description) {
+    if (description && description.value) {
       return (
         <div className={classNames('form-builder-tooltip-wrap fr',
            { active: showHintButton === true }) }>
@@ -134,7 +131,7 @@ export class ObsControl extends addMoreDecorator(Component) {
           />
           <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
-            <span className="details hint">{description}</span>
+            <span className="details hint">{description.value}</span>
           </p>
         </div>
       );

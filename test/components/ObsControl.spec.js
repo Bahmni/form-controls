@@ -418,7 +418,7 @@ describe('ObsControl', () => {
 
   it('should return helper text when concept has description', () => {
     const conceptDetail = getConcept('Text');
-    conceptDetail.description = [{ display: true }];
+    conceptDetail.description = { value: true };
     const metadata = {
       id: '100',
       type: 'obsControl',

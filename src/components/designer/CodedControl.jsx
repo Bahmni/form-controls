@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
+import cloneDeep from 'lodash/cloneDeep';
+import TranslationKeyGenerator from 'src/services/TranslationKeyService';
 
 export class CodedControlDesigner extends Component {
   constructor(props) {
@@ -9,8 +11,14 @@ export class CodedControlDesigner extends Component {
   }
 
   getJsonDefinition() {
-    const updatedMetadata = Object.assign({}, this.props.metadata);
-    return updatedMetadata;
+    const metadataClone = cloneDeep(this.props.metadata);
+    const { concept, id } = metadataClone;
+    map(concept.answers, (answer) => {
+      if (!answer.translationKey) {
+        answer.translationKey = new TranslationKeyGenerator(answer.name.display, id).build(); // eslint-disable-line no-param-reassign
+      }
+    });
+    return Object.assign({}, this.props.metadata, { concept });
   }
 
   storeChildRef(ref) {

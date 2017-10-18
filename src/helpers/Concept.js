@@ -1,3 +1,6 @@
+import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
+
 export class Concept {
   constructor(concept) {
     this.concept = concept;
@@ -48,7 +51,8 @@ export class Concept {
       };
     }
     return {
-      description: concept.descriptions,
+      description: !isEmpty(concept.descriptions) ?
+        { value: get(concept, 'descriptions[0].display') } : undefined,
       units: concept.units,
       hiNormal: concept.hiNormal,
       lowNormal: concept.lowNormal,
