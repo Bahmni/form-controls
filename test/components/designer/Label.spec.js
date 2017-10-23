@@ -39,6 +39,21 @@ describe('LabelDesigner', () => {
     expect(wrapper).to.have.descendants('input');
   });
 
+  it('should not change translation key after editing the label', () => {
+    wrapper.find('label').props().onDoubleClick();
+    const instance = wrapper.instance();
+    instance.input.value = 'My new value';
+    wrapper.find('input').props().onKeyUp({ keyCode: 13 });
+    const expectedJson = {
+      translationKey: 'HISTORY_NOTES_1',
+      id: '1',
+      type: 'label',
+      value: 'My new value',
+      properties: {},
+    };
+    expect(instance.getJsonDefinition()).to.deep.eql(expectedJson);
+  });
+
   it('should display value in non editable mode after pressing enter', () => {
     wrapper.find('label').props().onDoubleClick();
     expect(wrapper).to.have.descendants('input');
