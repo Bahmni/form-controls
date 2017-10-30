@@ -1,11 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { CodedControl } from 'components/CodedControl.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';
+import { mountWithIntl } from '../intlEnzymeTest.js';
 
 chai.use(chaiEnzyme());
 
@@ -13,11 +13,11 @@ describe('CodedControl', () => {
   const DummyControl = () => <input />;
 
   const options = [
-    { name: { display: 'Answer1' }, uuid: 'answer1uuid' },
-    { name: { display: 'Answer2' }, uuid: 'answer2uuid' },
-    { name: { display: 'Answer3' }, uuid: 'answer3uuid' },
-    { name: { display: 'Answer4' }, uuid: 'answer4uuid' },
-    { name: { display: 'Answer5' }, uuid: 'answer5uuid' },
+    { translationKey: 'ANSWER_1', name: { display: 'Answer1' }, uuid: 'answer1uuid' },
+    { translationKey: 'ANSWER_2', name: { display: 'Answer2' }, uuid: 'answer2uuid' },
+    { translationKey: 'ANSWER_3', name: { display: 'Answer3' }, uuid: 'answer3uuid' },
+    { translationKey: 'ANSWER_4', name: { display: 'Answer4' }, uuid: 'answer4uuid' },
+    { translationKey: 'ANSWER_5', name: { display: 'Answer5' }, uuid: 'answer5uuid' },
   ];
 
   const expectedOptions = [
@@ -45,7 +45,7 @@ describe('CodedControl', () => {
   const validations = [constants.validations.allowDecimal, constants.validations.mandatory];
 
   it('should render Dummy Control of displayType button by default', () => {
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         enabled
         onChange={onChangeSpy}
@@ -67,7 +67,7 @@ describe('CodedControl', () => {
   });
 
   it('should render Dummy Control with default value', () => {
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         onChange={onChangeSpy}
         options={options}
@@ -92,7 +92,7 @@ describe('CodedControl', () => {
 
   it('should return null when registered component not found', () => {
     ComponentStore.deRegisterComponent('button');
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         onChange={onChangeSpy}
         options={options}
@@ -107,7 +107,7 @@ describe('CodedControl', () => {
   });
 
   it('should return the coded button control value', () => {
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         onChange={onChangeSpy}
         options={options}
@@ -123,7 +123,7 @@ describe('CodedControl', () => {
 
   it('should return the autoComplete control value', () => {
     ComponentStore.registerComponent('autoComplete', DummyControl);
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         onChange={onChangeSpy}
         options={options}
@@ -141,7 +141,7 @@ describe('CodedControl', () => {
   });
 
   it('should validate in state on change of props', () => {
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         onChange={onChangeSpy}
         options={options}
@@ -157,7 +157,7 @@ describe('CodedControl', () => {
   });
 
   it('should not set errors in state if props are same', () => {
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         onChange={onChangeSpy}
         options={options}
@@ -174,7 +174,7 @@ describe('CodedControl', () => {
 
   it('should render multiselect coded control with default values', () => {
     ComponentStore.registerComponent('autoComplete', DummyControl);
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         onChange={onChangeSpy}
         options={options}
@@ -201,7 +201,7 @@ describe('CodedControl', () => {
 
   it('should return multiselect values from coded control', () => {
     ComponentStore.registerComponent('autoComplete', DummyControl);
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         onChange={onChangeSpy}
         options={options}
@@ -217,7 +217,7 @@ describe('CodedControl', () => {
   });
 
   it('should return undefined if no value is selected', () => {
-    const wrapper = shallow(
+    const wrapper = mountWithIntl(
       <CodedControl
         onChange={onChangeSpy}
         options={options}

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import addMoreDecorator from './AddMoreDecorator';
+import { FormattedMessage } from 'react-intl';
 
 export class Section extends addMoreDecorator(Component) {
 
@@ -79,7 +80,12 @@ export class Section extends addMoreDecorator(Component) {
           <legend className={`${toggleClass}${disableClass}`} onClick={ this._onCollapse}>
             <i className="fa fa-caret-down"></i>
             <i className="fa fa-caret-right"></i>
-            <strong>{label.value}</strong>
+            <strong>
+              <FormattedMessage
+                defaultMessage={label.value}
+                id={label.translationKey || 'defaultId'}
+              />
+            </strong>
           </legend>
           <div className={`obsGroup-controls ${sectionClass}${disableClass}`} >
             {displayRowControls(groupedRowControls, this.props.children.toArray(), childProps)}
