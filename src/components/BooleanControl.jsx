@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
+import map from 'lodash/map';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 
 export class BooleanControl extends Component {
@@ -14,8 +15,22 @@ export class BooleanControl extends Component {
     this.props.onChange(updatedValue, errors);
   }
 
+  _getOptionsRepresentation(options) {
+    const optionsRepresentation = [];
+    map(options, (option) => {
+      const message = {
+        id: option.translationKey,
+        defaultMessage: option.name,
+      };
+      const formattedMessage = this.context.intl.formatMessage(message);
+      optionsRepresentation.push({ name: formattedMessage, value: option.value });
+    });
+    return optionsRepresentation;
+  }
+
   _getValue(options, value) {
-    return find(options, ['value', value]);
+    const updatedValue = find(options, ['value', value]);
+    return updatedValue ? this._getOptionsRepresentation([updatedValue])[0] : undefined;
   }
 
   render() {
@@ -28,7 +43,7 @@ export class BooleanControl extends Component {
         formFieldPath,
         value: initialValue,
         onValueChange: this.onValueChange,
-        options,
+        options: this._getOptionsRepresentation(options),
         validate,
         validateForm,
         validations,
@@ -58,6 +73,10 @@ BooleanControl.propTypes = {
 
 BooleanControl.defaultProps = {
   enabled: true,
+};
+
+BooleanControl.contextTypes = {
+  intl: React.PropTypes.object.isRequired,
 };
 
 ComponentStore.registerComponent('boolean', BooleanControl);
