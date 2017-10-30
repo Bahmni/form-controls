@@ -3,17 +3,26 @@
 
 import React, { Component, PropTypes } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
+import { FormattedMessage } from 'react-intl';
 
 
 export class Label extends Component {
+
+  _getUnits(units) {
+    return units ? ` ${units}` : '';
+  }
+
   render() {
     const { enabled, metadata: { value, units } } = this.props;
     const disableClass = enabled ? '' : 'disabled-label';
-    const labelValue = units ? `${value} ${units}` : value;
     return (<label
       className={`${disableClass}`}
     >
-      {labelValue}
+      <FormattedMessage
+        defaultMessage={value}
+        id={this.props.metadata.translationKey || 'defaultId'}
+      />
+     {this._getUnits(units)}
     </label>);
   }
 }
@@ -25,6 +34,7 @@ Label.propTypes = {
     type: PropTypes.string.isRequired,
     units: PropTypes.string,
     value: PropTypes.string.isRequired,
+    translationKey: PropTypes.string,
   }),
 };
 

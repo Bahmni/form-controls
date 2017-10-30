@@ -3,6 +3,7 @@ import 'src/helpers/formRenderer';
 import sinon from 'sinon';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { expect } from 'chai';
 
 describe('FormRenderer', () => {
   const formDetails = {
@@ -35,12 +36,14 @@ describe('FormRenderer', () => {
   beforeEach(() => {
     sinon.stub(React, 'createElement');
     sinon.stub(ReactDOM, 'render');
+    sinon.stub(ReactDOM, 'unmountComponentAtNode');
     sinon.stub(document, 'getElementById');
   });
 
   afterEach(() => {
     React.createElement.restore();
     ReactDOM.render.restore();
+    ReactDOM.unmountComponentAtNode.restore();
     document.getElementById.restore();
   });
 
@@ -54,5 +57,18 @@ describe('FormRenderer', () => {
 
     sinon.assert.callCount(React.createElement, 1);
     sinon.assert.calledWith(ReactDOM.render, 'formControlsContainer', 'someOtherNodeId');
+  });
+
+  it('should call unmountComponentAtNode with container', () => {
+    const container = {};
+    ReactDOM.unmountComponentAtNode.returns(true);
+    const val = unMountForm(container); // eslint-disable-line no-undef
+    sinon.assert.callCount(ReactDOM.unmountComponentAtNode, 1);
+    sinon.assert.calledWith(ReactDOM.unmountComponentAtNode, {});
+    expect(val).to.eql(true);
+  });
+
+  it('should return false if there is no container', () => {
+    expect(unMountForm()).to.eql(false); // eslint-disable-line no-undef
   });
 });

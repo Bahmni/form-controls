@@ -19,8 +19,8 @@ describe('Boolean Control Designer', () => {
   });
 
   const options = [
-    { name: 'Yes', value: true },
-    { name: 'No', value: false },
+    { translationKey: 'BOOLEAN_YES', name: 'Yes', value: true },
+    { translationKey: 'BOOLEAN_NO', name: 'No', value: false },
   ];
 
   beforeEach(() => {

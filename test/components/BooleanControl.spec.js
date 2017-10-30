@@ -1,11 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { BooleanControl } from 'components/BooleanControl.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';
+import { shallowWithIntl } from '../intlEnzymeTest.js';
 
 chai.use(chaiEnzyme());
 
@@ -13,8 +13,8 @@ describe('BooleanControl', () => {
   const DummyControl = () => <input />;
 
   const options = [
-    { name: 'Yes', value: true },
-    { name: 'No', value: false },
+    { translationKey: 'BOOLEAN_YES', name: 'Yes', value: true },
+    { translationKey: 'BOOLEAN_NO', name: 'No', value: false },
   ];
 
   before(() => {
@@ -30,7 +30,7 @@ describe('BooleanControl', () => {
   const validations = [constants.validations.allowDecimal, constants.validations.mandatory];
 
   it('should render Dummy Control of displayType button by default', () => {
-    const wrapper = shallow(
+    const wrapper = shallowWithIntl(
       <BooleanControl
         onChange={onChangeSpy}
         options={options}
@@ -40,15 +40,20 @@ describe('BooleanControl', () => {
       />
     );
 
+    const expectedOptions = [
+      { name: 'Yes', value: true },
+      { name: 'No', value: false },
+    ];
+
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
 
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
-    expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(options);
+    expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql(expectedOptions);
   });
 
   it('should return null when registered component not found', () => {
     ComponentStore.deRegisterComponent('button');
-    const wrapper = shallow(
+    const wrapper = shallowWithIntl(
       <BooleanControl
         onChange={onChangeSpy}
         options={options}
@@ -65,7 +70,7 @@ describe('BooleanControl', () => {
   });
 
   it('should return the boolean control value', () => {
-    const wrapper = shallow(
+    const wrapper = shallowWithIntl(
       <BooleanControl
         onChange={onChangeSpy}
         options={options}
@@ -79,7 +84,7 @@ describe('BooleanControl', () => {
   });
 
   it('should reRender on change of value in props', () => {
-    const wrapper = shallow(
+    const wrapper = shallowWithIntl(
       <BooleanControl
         onChange={onChangeSpy}
         options={options}
@@ -96,7 +101,7 @@ describe('BooleanControl', () => {
   });
 
   it('should not reRender if value is not changed', () => {
-    const wrapper = shallow(
+    const wrapper = shallowWithIntl(
       <BooleanControl
         onChange={onChangeSpy}
         options={options}
@@ -113,7 +118,7 @@ describe('BooleanControl', () => {
   });
 
   it('should return undefined if no value is selected', () => {
-    const wrapper = shallow(
+    const wrapper = shallowWithIntl(
       <BooleanControl
         onChange={onChangeSpy}
         options={options}

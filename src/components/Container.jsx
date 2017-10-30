@@ -8,6 +8,7 @@ import addMoreDecorator from './AddMoreDecorator';
 import ObservationMapper from '../helpers/ObservationMapper';
 import NotificationContainer from '../helpers/Notification';
 import Constants from '../constants';
+import { IntlProvider } from 'react-intl';
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
@@ -128,7 +129,9 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   render() {
-    const { metadata: { controls, name: formName, version: formVersion }, validate } = this.props;
+    const { metadata: { controls,
+      name: formName, version: formVersion }, validate, translations } = this.props;
+    const formTranslations = { ...translations.labels, ...translations.concepts };
     const childProps = {
       collapse: this.state.collapse,
       errors: this.state.errors,
@@ -147,18 +150,21 @@ export class Container extends addMoreDecorator(Component) {
     const groupedRowControls = getGroupedControls(controls, 'row');
     const records = this.state.data.getActive().children.toArray();
     return (
-      <div>
-        <NotificationContainer
-          notification={this.state.notification}
-        />
-        {displayRowControls(groupedRowControls, records, childProps)}
-      </div>
+      <IntlProvider locale="en" messages={formTranslations}>
+        <div>
+          <NotificationContainer
+            notification={this.state.notification}
+          />
+          {displayRowControls(groupedRowControls, records, childProps)}
+        </div>
+      </IntlProvider>
     );
   }
 }
 
 Container.propTypes = {
   collapse: PropTypes.bool.isRequired,
+  locale: PropTypes.string,
   metadata: PropTypes.shape({
     controls: React.PropTypes.arrayOf(
       React.PropTypes.shape({
@@ -170,6 +176,7 @@ Container.propTypes = {
     version: PropTypes.string.isRequired,
   }),
   observations: PropTypes.array.isRequired,
+  translations: PropTypes.object.isRequired,
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,
 };

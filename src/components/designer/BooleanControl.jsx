@@ -7,7 +7,10 @@ export class BooleanControlDesigner extends Component {
   }
 
   render() {
-    const defaultOptions = [{ name: 'Yes', value: true }, { name: 'No', value: false }];
+    const defaultOptions = [
+      { name: 'Yes', translationKey: 'BOOLEAN_YES', value: true },
+      { name: 'No', translationKey: 'BOOLEAN_NO', value: false },
+    ];
     const { metadata, metadata: { options = defaultOptions } } = this.props;
     this.updatedMetadata = Object.assign({}, { options }, metadata);
     const registeredComponent = ComponentStore.getDesignerComponent('button');

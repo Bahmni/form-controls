@@ -82,6 +82,7 @@ describe('Container', () => {
       name: 'SingleObs',
       uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
       version: '1',
+      defaultLocale: 'en',
     };
 
     const formFieldPath = 'SingleObs.1/1-0';
@@ -171,14 +172,22 @@ describe('Container', () => {
         voided: false,
       },
     });
+
+    const translations = {
+      labels: {
+        LABEL_1: 'some Label',
+      },
+    };
     const recordTree = new ControlRecord({ children: List.of(childRecord) });
 
     it('should render a control when given single layer tree data', () => {
       const wrapper = mount(
             <Container
               collapse
+              locale="en"
               metadata={metadata}
               observations={[]}
+              translations={translations}
               validate={false}
               validateForm={false}
             />
@@ -233,13 +242,16 @@ describe('Container', () => {
         events: {
           onFormInit: "function(form){form.get('Pulse').setEnabled(false);}",
         },
+        defaultLocale: 'en',
       };
 
       const wrapper = mount(
         <Container
           collapse
+          locale="en"
           metadata={metadata1}
           observations={[]}
+          translations={translations}
           validate={false}
           validateForm={false}
         />
@@ -252,8 +264,10 @@ describe('Container', () => {
       const wrapper = shallow(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
+                  translations={translations}
                   validate={false}
                   validateForm={false}
                 />
@@ -274,8 +288,10 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
+                  translations={translations}
                   validate={false}
                   validateForm={false}
                 />
@@ -343,8 +359,10 @@ describe('Container', () => {
         const wrapper = mount(
           <Container
             collapse
+            locale="en"
             metadata={metadata}
             observations={[]}
+            translations={translations}
             validate={false}
             validateForm={false}
           />
@@ -363,8 +381,10 @@ describe('Container', () => {
         const wrapper = mount(
           <Container
             collapse
+            locale="en"
             metadata={metadata}
             observations={[]}
+            translations={translations}
             validate={false}
             validateForm={false}
           />
@@ -460,8 +480,10 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
+                  translations={translations}
                   validate={false}
                   validateForm={false}
                 />
@@ -538,8 +560,10 @@ describe('Container', () => {
       const wrapper = mount(
         <Container
           collapse
+          locale="en"
           metadata={heightMetadata}
           observations={[]}
+          translations={translations}
           validate={false}
           validateForm={false}
         />
@@ -711,8 +735,10 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
+                  translations={translations}
                   validate={false}
                   validateForm={false}
                 />
@@ -1272,8 +1298,10 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
+                  translations={translations}
                   validate={false}
                   validateForm={false}
                 />
@@ -1290,7 +1318,7 @@ describe('Container', () => {
     it('should change state when onEventTrigger is triggered', () => {
       const booleanConcept = {
         answers: [],
-        datatype: 'Boolean',
+        datatype: 'Text',
         description: [],
         name: 'Tuberculosis, Need of Admission',
         properties: {
@@ -1310,7 +1338,7 @@ describe('Container', () => {
       };
       const events = {
         onValueChange: `function(form){
-                    if(form.get('Tuberculosis, Need of Admission').getValue() === 'Yes') {
+                    if(form.get('Tuberculosis, Need of Admission').getValue() === 'abc') {
                       form.get('Chief Complaint Notes').setEnabled(false);
                     } else {
                       form.get('Chief Complaint Notes').setEnabled(true);
@@ -1383,19 +1411,22 @@ describe('Container', () => {
         name: '3129',
         uuid: '6a3b4de9-5e21-46b4-addb-4ad9518e587b',
         version: '4',
+        defaultLocale: 'en',
       };
       const wrapper = shallow(
         <Container
           collapse
+          locale="en"
           metadata={eventMetadata}
           observations={[]}
+          translations={translations}
           validate={false} validateForm={false}
         />
       );
       const targetFormFieldPath = '3129.4/5-0';
 
       const instance = wrapper.instance();
-      instance.onValueChanged(targetFormFieldPath, { value: true }, undefined);
+      instance.onValueChanged(targetFormFieldPath, { value: 'abc' }, undefined);
       instance.onEventTrigger(targetFormFieldPath, 'onValueChange');
 
       const textBoxRecord = wrapper.state().data.children.get(1);
@@ -1407,8 +1438,10 @@ describe('Container', () => {
       const wrapper = shallow(
         <Container
           collapse
+          locale="en"
           metadata={metadata}
           observations={[]}
+          translations={translations}
           validate={false}
           validateForm={false}
         />
@@ -1431,8 +1464,10 @@ describe('Container', () => {
       const wrapper = shallow(
         <Container
           collapse
+          locale="en"
           metadata={metadata}
           observations={[]}
+          translations={translations}
           validate={false}
           validateForm={false}
         />
@@ -1542,6 +1577,7 @@ describe('Container', () => {
       name: 'SingleGroup',
       uuid: '72801201-2154-4f1e-89cb-21a57a23d06a',
       version: '3',
+      defaultLocale: 'en',
     };
 
     const obsCtrlRecord = new ControlRecord({
@@ -1814,14 +1850,26 @@ describe('Container', () => {
       },
       children: List.of(obsCtrlRecord),
     });
+
+    const translations = {
+      labels: {
+        LABEL_1: 'some Label',
+      },
+      concepts: {
+        TEMPERATURE_2: 'Temperature',
+      },
+    };
+
     const recordTree = new ControlRecord({ children: List.of(childRecord) });
 
     it('should render multiple control when given multiple layer tree data', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
+                  translations={translations}
                   validate={false}
                   validateForm={false}
                 />
@@ -1836,8 +1884,10 @@ describe('Container', () => {
       const wrapper = shallow(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
+                  translations={translations}
                   validate={false}
                   validateForm={false}
                 />
@@ -1860,8 +1910,10 @@ describe('Container', () => {
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={metadata}
                   observations={[]}
+                  translations={translations}
                   validate={false}
                   validateForm={false}
                 />
@@ -1963,13 +2015,16 @@ describe('Container', () => {
         name: 'Error2',
         uuid: 'a4eb5bac-8c7a-43e6-9c75-cef0710991e5',
         version: '1',
+        defaultLocale: 'en',
       };
 
       const wrapper = mount(
                 <Container
                   collapse
+                  locale="en"
                   metadata={updatedMetadata}
                   observations={[]}
+                  translations={translations}
                   validate={false}
                   validateForm={false}
                 />
@@ -2132,8 +2187,10 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
+                      translations={translations}
                       validate={false}
                       validateForm={false}
                     />
@@ -2244,8 +2301,10 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
+                      translations={translations}
                       validate={false}
                       validateForm={false}
                     />
@@ -2480,8 +2539,10 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
+                      translations={translations}
                       validate={false}
                       validateForm={false}
                     />
@@ -2673,8 +2734,10 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
+                      translations={translations}
                       validate={false}
                       validateForm={false}
                     />
@@ -3020,8 +3083,10 @@ describe('Container', () => {
         const wrapper = mount(
                    <Container
                      collapse
+                     locale="en"
                      metadata={metadata}
                      observations={[]}
+                     translations={translations}
                      validate={false}
                      validateForm={false}
                    />
@@ -4053,8 +4118,10 @@ describe('Container', () => {
         const wrapper = mount(
                    <Container
                      collapse
+                     locale="en"
                      metadata={metadata}
                      observations={[]}
+                     translations={translations}
                      validate={false}
                      validateForm={false}
                    />
@@ -4309,8 +4376,10 @@ describe('Container', () => {
         const wrapper = mount(
                    <Container
                      collapse
+                     locale="en"
                      metadata={metadata}
                      observations={[]}
+                     translations={translations}
                      validate={false}
                      validateForm={false}
                    />
@@ -5047,8 +5116,10 @@ describe('Container', () => {
         const wrapper = mount(
                     <Container
                       collapse
+                      locale="en"
                       metadata={metadata}
                       observations={[]}
+                      translations={translations}
                       validate={false}
                       validateForm={false}
                     />
