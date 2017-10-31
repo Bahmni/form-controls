@@ -18,6 +18,7 @@ export { Image } from 'components/Image.jsx';
 export { Video } from 'components/Video.jsx';
 export { Location } from 'components/Location.jsx';
 export { Provider } from 'components/Provider.jsx';
+export { FreeTextAutoComplete } from 'components/FreeTextAutoComplete.jsx';
 
 //  -----------designer components------------------
 
