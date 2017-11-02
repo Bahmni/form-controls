@@ -36,7 +36,7 @@ export class CodedControl extends Component {
     const optionsRepresentation = [];
     map(options, (option) => {
       const message = {
-        id: option.translationKey,
+        id: option.translationKey || 'defaultId',
         defaultMessage: option.name.display || option.name,
       };
       const formattedMessage = this.context.intl.formatMessage(message);
