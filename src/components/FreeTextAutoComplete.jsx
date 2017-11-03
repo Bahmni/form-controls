@@ -51,8 +51,6 @@ FreeTextAutoComplete.propTypes = {
 FreeTextAutoComplete.defaultProps = {
   multi: false,
   clearable: false,
-  onChange() {
-  },
 };
 
 
