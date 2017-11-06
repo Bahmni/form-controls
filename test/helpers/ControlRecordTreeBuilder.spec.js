@@ -394,6 +394,22 @@ describe('ControlRecordTreeBuilder', () => {
     expect(obsRecordTree.getLabelName()).to.equal(labelName);
   });
 
+  it('should get control id from the record tree', () => {
+    const labelName = 'something';
+    const obsRecordTree = new ControlRecord({
+      control: {
+        value: labelName,
+        id: '1',
+      },
+    });
+    expect(obsRecordTree.getControlId()).to.equal('1');
+  });
+
+  it('should return control id as undefined from the record tree if there is no control', () => {
+    const obsRecordTree = new ControlRecord({ value: '100' });
+    expect(obsRecordTree.getControlId()).to.equal(undefined);
+  });
+
   it('should not get mandatory error when the record is hidden', () => {
     const errors = {
       type: 'error',
