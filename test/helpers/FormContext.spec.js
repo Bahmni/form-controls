@@ -238,4 +238,32 @@ describe('FormContext', () => {
 
     sinon.assert.calledOnce(warningStub);
   });
+
+  it('should get suitable record when control ID is given', () => {
+    const formContext = new FormContext(recordTree);
+
+    const targetRecordWrapper = formContext.getById(1);
+
+    expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal(formFieldPathInPosition0);
+  });
+
+  it('should not give warning message when control with given ID exists', () => {
+    const warningSpy = sinon.spy(console, 'warn');
+    const formContext = new FormContext(recordTree);
+
+    formContext.getById(1);
+    sinon.assert.notCalled(warningSpy);
+    warningSpy.restore();
+  });
+
+  it('should give warning message when control with given ID does not exist', () => {
+    const warningSpy = sinon.spy(console, 'warn');
+    const formContext = new FormContext(recordTree);
+    const expectedMsg = '[FormEventHandler] Control with id - 0 does not exist';
+
+    formContext.getById(0);
+
+    sinon.assert.calledOnce(warningSpy.withArgs(expectedMsg));
+    warningSpy.restore();
+  });
 });

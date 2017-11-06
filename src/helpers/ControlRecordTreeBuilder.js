@@ -21,6 +21,10 @@ export const ControlRecord = new Record({
     return this.mapper.getObject(this.obs);
   },
 
+  getControlId() {
+    return this.control && this.control.id;
+  },
+
   getEventScripts() {
     return this.control && this.control.events;
   },
