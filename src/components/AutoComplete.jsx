@@ -141,12 +141,13 @@ export class AutoComplete extends Component {
   }
 
   render() {
-    const { autofocus, autoload, cache, enabled, labelKey, valueKey,
+    const { autofocus, autoload, cache, enabled, filterOptions, labelKey, valueKey,
                   asynchronous, multiSelect, minimumInput, searchable } = this.props;
     const props = {
       autofocus,
       backspaceRemoves: true,
       disabled: !enabled,
+      filterOptions,
       labelKey,
       minimumInput,
       multi: multiSelect,
@@ -192,6 +193,7 @@ AutoComplete.propTypes = {
   autoload: PropTypes.bool,
   cache: PropTypes.bool,
   enabled: PropTypes.bool,
+  filterOptions: PropTypes.func,
   formFieldPath: PropTypes.string,
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
