@@ -27,10 +27,13 @@ describe('FreeTextAutoComplete', () => {
 
     expect(instance.state.options).to.be.eql(options);
     expect(instance.state.value).to.be.eql(undefined);
-    expect(wrapper.find('Select').props().options).to.be.eql(options);
-    expect(wrapper.find('Select').props().value).to.be.eql(undefined);
-    expect(wrapper.find('Select').props().clearable).to.be.eql(false);
-    expect(wrapper.find('Select').props().multi).to.be.eql(false);
+    const props = wrapper.find('Select').props();
+    expect(props.options).to.be.eql(options);
+    expect(props.value).to.be.eql(undefined);
+    expect(props.clearable).to.be.eql(false);
+    expect(props.backspaceRemoves).to.be.eql(false);
+    expect(props.deleteRemoves).to.be.eql(false);
+    expect(props.multi).to.be.eql(false);
   });
 
   it('should render FreeTextAutoComplete with default value', () => {
