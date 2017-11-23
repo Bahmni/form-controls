@@ -10,7 +10,8 @@ export class Metadata {
       let row = 0;
       controls = concept.setMembers.map(c => {
         if (c.set) {
-          return this.getMetadataForConcept(c, idGenerator, type);
+          return this.getMetadataForConcept(c, idGenerator,
+            type, undefined, { row: row++, column: loc.column });
         }
         return this.getMetadataForConcept(c, idGenerator,
           childType, undefined, { row: row++, column: loc.column });

@@ -3,6 +3,7 @@ import Row from '../components/Row.jsx';
 import groupBy from 'lodash/groupBy';
 import sortBy from 'lodash/sortBy';
 import map from 'lodash/map';
+import each from 'lodash/each';
 import ComponentStore from 'src/helpers/componentStore';
 import { Util } from './Util';
 
@@ -53,11 +54,10 @@ export function groupControlsByLocation(controls, property) {
 
 export function sortGroupedControls(controls) {
   const sortedControls = [];
-  Object.keys(controls)
-    .sort()
-    .forEach((key) => {
-      sortedControls.push(controls[key]);
-    });
+  const sortedIndexes = sortBy(Object.keys(controls).map((i) => parseInt(i, 10)));
+  each(sortedIndexes, (index) => {
+    sortedControls.push(controls[index]);
+  });
   return sortedControls;
 }
 
