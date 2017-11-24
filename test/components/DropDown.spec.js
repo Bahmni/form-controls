@@ -16,9 +16,15 @@ describe('DropDown', () => {
     { name: 'three', value: 'Three' },
   ];
 
+  const onValueChangeSpy = sinon.spy();
 
   it('should render DropDown', () => {
-    const wrapper = mount(<DropDown formFieldPath="test1.1/1-0" options={options} />);
+    const wrapper = mount(
+      <DropDown
+        formFieldPath="test1.1/1-0"
+        onValueChange={onValueChangeSpy}
+        options={options}
+      />);
     expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
     expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
     expect(wrapper.find('Select').props().options).to.be.eql(options);
@@ -28,6 +34,7 @@ describe('DropDown', () => {
     const wrapper = mount(
       <DropDown
         formFieldPath="test1.1/1-0"
+        onValueChange={onValueChangeSpy}
         options={options}
         value={options[0]}
       />);
@@ -66,6 +73,7 @@ describe('DropDown', () => {
     const wrapper = mount(
       <DropDown
         formFieldPath="test1.1/1-0"
+        onValueChange={onValueChangeSpy}
         options={options}
         value={options[0]}
       />);
@@ -78,6 +86,7 @@ describe('DropDown', () => {
       <DropDown
         enabled
         formFieldPath="test1.1/1-0"
+        onValueChange={onValueChangeSpy}
         options={options}
         value={options[0]}
       />);

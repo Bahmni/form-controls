@@ -22,13 +22,15 @@ describe('AutoComplete', () => {
     { name: 'three', value: 'Three' },
   ];
 
+  const onValueChangeSpy = sinon.spy();
+
   it('should check errors after mount if the formFieldPath suffix is not 0', () => {
     const validations = [constants.validations.mandatory];
     const wrapper = mount(
       <AutoComplete
         asynchronous={false}
         formFieldPath="test1.1/1-1"
-        onValueChange={() => {}}
+        onValueChange={onValueChangeSpy}
         options={options}
         validations={validations}
       />);
@@ -42,6 +44,7 @@ describe('AutoComplete', () => {
       <AutoComplete
         asynchronous={false}
         formFieldPath="test1.1/1-0"
+        onValueChange={onValueChangeSpy}
         options={options}
         validations={validations}
       />);
@@ -51,7 +54,11 @@ describe('AutoComplete', () => {
 
   context('when component is asynchronous', () => {
     it('should render asynchronous AutoComplete', () => {
-      const wrapper = mount(<AutoComplete formFieldPath="test1.1/1-0" />);
+      const wrapper = mount(
+        <AutoComplete
+          formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
+        />);
       expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
       expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
       expect(wrapper.find('Select').props().minimumInput).to.be.eql(2);
@@ -61,12 +68,22 @@ describe('AutoComplete', () => {
     });
 
     it('should render asynchronous AutoComplete with default value', () => {
-      const wrapper = mount(<AutoComplete formFieldPath="test1.1/1-0" value={concept[0]} />);
+      const wrapper = mount(
+        <AutoComplete
+          formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
+          value={concept[0]}
+        />);
       expect(wrapper.find('Select').props().value).to.be.eql(concept[0]);
     });
 
     it('should return the default value of the AutoComplete if there is no change', () => {
-      const wrapper = mount(<AutoComplete formFieldPath="test1.1/1-0" value={concept[0]} />);
+      const wrapper = mount(
+        <AutoComplete
+          formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
+          value={concept[0]}
+        />);
       expect(wrapper.find('Select').props().value).to.be.eql(concept[0]);
 
       const instance = wrapper.instance();
@@ -74,7 +91,11 @@ describe('AutoComplete', () => {
     });
 
     it('should clear the options on Focus for aysnchronous', () => {
-      const wrapper = mount(<AutoComplete formFieldPath="test1.1/1-0" />);
+      const wrapper = mount(
+        <AutoComplete
+          formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
+        />);
       const instance = wrapper.instance();
       const loadOptionsSpy = sinon.spy(instance.childRef, 'loadOptions');
       wrapper.find('Select').props().onFocus();
@@ -86,6 +107,7 @@ describe('AutoComplete', () => {
         <AutoComplete
           enabled={false}
           formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
         />
       );
 
@@ -97,6 +119,7 @@ describe('AutoComplete', () => {
         <AutoComplete
           enabled
           formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
         />
       );
 
@@ -108,6 +131,7 @@ describe('AutoComplete', () => {
         <AutoComplete
           enabled
           formFieldPath="test1.1-0"
+          onValueChange={onValueChangeSpy}
         />
       );
       const instance = wrapper.instance();
@@ -125,6 +149,7 @@ describe('AutoComplete', () => {
         <AutoComplete
           asynchronous={false}
           formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
           options={options}
         />
       );
@@ -139,6 +164,7 @@ describe('AutoComplete', () => {
         <AutoComplete
           asynchronous={false}
           formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
           options={options}
           value={options[0]}
         />);
@@ -198,6 +224,7 @@ describe('AutoComplete', () => {
           asynchronous={false}
           enabled
           formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
           options={options}
           value={options[0]}
         />);
@@ -228,6 +255,7 @@ describe('AutoComplete', () => {
         <AutoComplete
           asynchronous={false}
           formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
           options={options}
           validations={[]}
           value={options[0]}
