@@ -37,7 +37,7 @@ export class AutoComplete extends Component {
   }
 
   componentDidMount() {
-    if (this.state.hasErrors) {
+    if (this.state.hasErrors || this.props.value !== undefined || this.props.validateForm) {
       this.props.onValueChange(this.props.value, this._getErrors(this.props.value));
     }
   }
@@ -202,6 +202,7 @@ AutoComplete.propTypes = {
   options: PropTypes.array,
   optionsUrl: PropTypes.string,
   searchable: PropTypes.bool,
+  validateForm: PropTypes.bool,
   validations: PropTypes.array,
   value: PropTypes.any,
   valueKey: PropTypes.string,
