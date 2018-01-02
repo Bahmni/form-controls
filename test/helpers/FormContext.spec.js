@@ -266,4 +266,15 @@ describe('FormContext', () => {
     sinon.assert.calledOnce(warningSpy.withArgs(expectedMsg));
     warningSpy.restore();
   });
+
+  it('should return patient as undefined if patient is not passed', () => {
+    const formContext = new FormContext(recordTree);
+    expect(formContext.getPatient()).to.eql(undefined);
+  });
+
+  it('should return patient object', () => {
+    const patient = { age: 10, gender: 'M', id: 'GAN1234' };
+    const formContext = new FormContext(recordTree, patient);
+    expect(formContext.getPatient()).to.eql(patient);
+  });
 });

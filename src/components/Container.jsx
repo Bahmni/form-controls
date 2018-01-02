@@ -29,7 +29,7 @@ export class Container extends addMoreDecorator(Component) {
   componentWillMount() {
     const initScript = this.props.metadata.events && this.props.metadata.events.onFormInit;
     if (initScript) {
-      const updatedTree = new ScriptRunner(this.state.data).execute(initScript);
+      const updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(initScript);
       this.setState({ data: updatedTree });
     }
   }
@@ -42,7 +42,7 @@ export class Container extends addMoreDecorator(Component) {
     const eventScripts = ControlRecordTreeMgr.find(this.state.data, sender).getEventScripts();
     const script = eventScripts && eventScripts[eventName];
     if (script) {
-      const updatedTree = new ScriptRunner(this.state.data).execute(script);
+      const updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(script);
       this.setState({
         data: updatedTree,
       });
@@ -130,8 +130,9 @@ export class Container extends addMoreDecorator(Component) {
 
   render() {
     const { metadata: { controls,
-      name: formName, version: formVersion }, validate, translations } = this.props;
+      name: formName, version: formVersion }, validate, translations, patient } = this.props;
     const formTranslations = { ...translations.labels, ...translations.concepts };
+    const patientUuid = patient ? patient.uuid : undefined;
     const childProps = {
       collapse: this.state.collapse,
       errors: this.state.errors,
@@ -142,7 +143,7 @@ export class Container extends addMoreDecorator(Component) {
       onValueChanged: this.onValueChanged,
       onControlAdd: this.onControlAdd,
       onControlRemove: this.onControlRemove,
-      patientUuid: this.props.patientUuid,
+      patientUuid,
       showNotification: this.showNotification,
       validate,
       validateForm: this.props.validateForm,
@@ -176,6 +177,7 @@ Container.propTypes = {
     version: PropTypes.string.isRequired,
   }),
   observations: PropTypes.array.isRequired,
+  patient: PropTypes.object.isRequired,
   translations: PropTypes.object.isRequired,
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,

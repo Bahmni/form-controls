@@ -2,9 +2,10 @@ import ControlRecordWrapper from './ControlRecordWrapper';
 
 export default class FormContext {
 
-  constructor(formRecords) {
+  constructor(formRecords, patient) {
     this.wrapper = new ControlRecordWrapper(formRecords);
     this.rootRecord = formRecords;
+    this.patient = patient;
   }
 
   getName(recordTree) {
@@ -52,6 +53,10 @@ export default class FormContext {
       });
     }
     return records;
+  }
+
+  getPatient() {
+    return this.patient;
   }
 
   getById(id) {
