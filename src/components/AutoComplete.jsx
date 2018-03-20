@@ -56,7 +56,7 @@ export class AutoComplete extends Component {
       !isEqual(this.state.value, nextState.value) ||
       !isEqual(this.props.searchable, nextProps.searchable) ||
       this.state.hasErrors !== nextState.hasErrors ||
-      this.state.options !== nextState.options ||
+      !isEqual(this.state.options, nextState.options) ||
       this.state.noResultsText !== nextState.noResultsText ||
       this.props.enabled !== nextProps.enabled;
   }
