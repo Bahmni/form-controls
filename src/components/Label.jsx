@@ -1,7 +1,9 @@
 /* eslint-disable react/prefer-stateless-function */
 /* Needs this to attach refs as they cannot be attached to stateless functions. */
 
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+
+import React, { Component } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import { FormattedMessage } from 'react-intl';
 

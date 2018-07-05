@@ -5,9 +5,15 @@ import ReactDOM from 'react-dom';
 window.renderWithControls =
   function renderWithControls(formDetails, observations, nodeId,
                               collapse, patient, validateForm, locale, formTranslations) {
-    const container = React.createElement(Container,
-      { metadata: formDetails, observations, validate: true,
-        validateForm, collapse, patient, locale, translations: formTranslations });
+    const container = <Container
+      metadata={formDetails}
+      observations={observations}
+      validate={true}
+      validateForm={validateForm}
+      collapse={collapse}
+      patient={patient}
+      locale={locale}
+      translations={formTranslations} />;
     return ReactDOM.render(container, document.getElementById(nodeId));
   };
 

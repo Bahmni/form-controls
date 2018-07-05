@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import find from 'lodash/find';
@@ -123,7 +124,7 @@ CodedControl.propTypes = {
 };
 
 CodedControl.contextTypes = {
-  intl: React.PropTypes.object.isRequired,
+  intl: PropTypes.object.isRequired,
 };
 
 ComponentStore.registerComponent('Coded', CodedControl);

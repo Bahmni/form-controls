@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const NotificationContainer = (props) => {
   const messageType = `message-container ${props.notification.type}-message-container`;

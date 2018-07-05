@@ -19,7 +19,7 @@ module.exports = {
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        loaders: ['babel'],
+        loaders: ['babel-loader'],
         include: path.join(__dirname, 'src')
       },
       {
@@ -29,11 +29,11 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        loader: 'json'
+        loader: 'json-loader'
       },
       {
         test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
+        loaders: ["style-loader", "css-loader", "sass-loader"]
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -52,11 +52,12 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         include: path.join(__dirname, 'src'),
-        loader: 'isparta',
+        loader: 'istanbul-instrumenter-loader',
         exclude: [
           /helpers\/ControlRecordTreeMgr\.js/,
           /ControlState\.js/,
         ],
+        options : { esModules: true }
       },
     ]
   },
