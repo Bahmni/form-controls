@@ -50,7 +50,7 @@ module.exports = {
       },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
-        loader: 'base64-inline-loader?name=/styles/images/[name].[ext]',
+        loader: 'base64-inline-loader?name=/styles/images/[name].[ext]'
       },
     ],
   },

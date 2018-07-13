@@ -16,11 +16,14 @@ module.exports = {
     'react/addons': true
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(js|jsx)$/,
         loaders: ['babel-loader'],
-        include: path.join(__dirname, 'src')
+        include: path.join(__dirname, 'src'),
+        options: {
+          presets: ["es2015"]
+        }
       },
       {
         test: /\.js$/,
@@ -29,7 +32,10 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        loader: 'json-loader'
+        loader: 'json-loader',
+        exclude: [
+            /node_modules/
+        ]
       },
       {
         test: /\.scss$/,
@@ -47,18 +53,17 @@ module.exports = {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loader: 'file-loader?name=/styles/images/[name].[ext]',
       },
-    ],
-    preLoaders: [
       {
         test: /\.(js|jsx)$/,
         include: path.join(__dirname, 'src'),
+        enforce:"pre",
         loader: 'istanbul-instrumenter-loader',
         exclude: [
           /helpers\/ControlRecordTreeMgr\.js/,
           /ControlState\.js/,
         ],
         options : { esModules: true }
-      },
+      }
     ]
   },
   resolve: {

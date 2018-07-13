@@ -1,6 +1,10 @@
 import React from 'react';
 import { IntlProvider, intlShape } from 'react-intl';
 import { mount, shallow } from 'enzyme';
+import { configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+
+configure({ adapter: new Adapter() });
 
 // You can pass your messages to the IntlProvider. Optional: remove if unneeded.
 const messages = { TEST_KEY: 'test value' }; // en.json

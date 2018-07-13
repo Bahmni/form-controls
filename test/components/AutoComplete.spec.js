@@ -6,6 +6,7 @@ import { AutoComplete } from '../../src/components/AutoComplete.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import { Error } from 'src/Error';
+import {describe} from "mocha";
 
 chai.use(chaiEnzyme());
 

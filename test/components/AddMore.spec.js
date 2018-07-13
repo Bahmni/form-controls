@@ -11,9 +11,9 @@ describe('AddMore', () => {
   it('should render both add and remove buttons with proper call backs', () => {
     const onAddSpy = sinon.spy();
     const onRemoveSpy = sinon.spy();
-    const wrapper = mount(<AddMore canAdd canRemove
-      onAdd={onAddSpy} onRemove={onRemoveSpy}
-    />);
+    const wrapper = mount(
+      <AddMore canAdd canRemove onAdd={onAddSpy} onRemove={onRemoveSpy}/>
+    );
 
     expect(wrapper.find('button').find('.fa-plus')).to.have.exactly(1).descendants('i');
     expect(wrapper.find('button').at(0).props().onClick).to.be.eql(onAddSpy);
