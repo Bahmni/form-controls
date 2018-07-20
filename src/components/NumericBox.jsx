@@ -36,7 +36,7 @@ export class NumericBox extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     let valueToString;
-    if (this.props.value) {
+    if (this.props.value !== undefined) {
       valueToString = this.props.value.toString();
     }
     return valueToString !== nextProps.value ||
@@ -50,7 +50,7 @@ export class NumericBox extends Component {
       this.props.onChange(this.props.value, errors);
     }
     let valueToString;
-    if (this.props.value) {
+    if (this.props.value !== undefined) {
       valueToString = this.props.value.toString();
     }
     if (this.input.value !== valueToString) {
