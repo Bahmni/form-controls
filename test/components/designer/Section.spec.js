@@ -26,6 +26,7 @@ describe('SectionDesigner', () => {
   let wrapper;
   let metadata;
   let idGenerator;
+  const onSelectSpy = sinon.spy();
 
   context('when section is rendered', () => {
     const label = {
@@ -73,6 +74,7 @@ describe('SectionDesigner', () => {
           dispatch={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
+          onSelect={onSelectSpy}
           wrapper={() => {}}
         />);
     });
@@ -106,12 +108,24 @@ describe('SectionDesigner', () => {
           dispatch={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
+          onSelect={() => {}}
           wrapper={() => {}}
         />);
 
       expect(wrapper).to.have.descendants('GridDesigner');
       const grid = wrapper.find('GridDesigner');
       expect(grid.prop('controls')).to.eql([]);
+    });
+
+    it('should call onSelect function on section click', () => {
+      expect(wrapper.find('.form-builder-fieldset')).to.have.prop('onClick');
+      wrapper.find('.form-builder-fieldset').simulate('click');
+      sinon.assert.calledOnce(onSelectSpy);
+    });
+
+    it('should call onSelect method with given metadata', () => {
+      wrapper.find('.form-builder-fieldset').simulate('click');
+      sinon.assert.calledWith(onSelectSpy, sinon.match.any, metadata);
     });
 
     it('should return json definition', () => {
@@ -136,6 +150,7 @@ describe('SectionDesigner', () => {
           dispatch = {dispatchSpy}
           idGenerator={idGenerator}
           metadata={metadata}
+          onSelect={() => {}}
           wrapper={() => {}}
         />);
       wrapper.find('fieldset').simulate('click', {
@@ -160,6 +175,38 @@ describe('SectionDesigner', () => {
 
       sinon.assert.calledOnce(instance.deleteControl);
       instance.deleteControl.restore();
+    });
+
+    it('should not render add-more and remove buttons when addMore attribute is false', () => {
+      Object.assign(metadata.properties, { addMore: false });
+      wrapper = mount(
+              <SectionDesigner
+                clearSelectedControl={() => {}}
+                deleteControl={() => {}}
+                dispatch={() => {}}
+                idGenerator={idGenerator}
+                metadata={metadata}
+                onSelect={onSelectSpy}
+                wrapper={() => {}}
+              />);
+      expect(wrapper.exists('.form-builder-add-more')).to.equal(false);
+      expect(wrapper.exists('.form-builder-remove')).to.equal(false);
+    });
+
+    it('should render add-more and remove buttons when addMore attribute is true', () => {
+      Object.assign(metadata.properties, { addMore: true });
+      wrapper = mount(
+              <SectionDesigner
+                clearSelectedControl={() => {}}
+                deleteControl={() => {}}
+                dispatch={() => {}}
+                idGenerator={idGenerator}
+                metadata={metadata}
+                onSelect={onSelectSpy}
+                wrapper={() => {}}
+              />);
+      expect(wrapper.find('.form-builder-add-more')).to.be.length(1);
+      expect(wrapper.find('.form-builder-remove')).to.be.length(1);
     });
   });
 });
