@@ -1,6 +1,7 @@
 $lightestGray: #eee;
 .form-builder-row {
   width: 100%;
+  display: flex;
   .form-builder-column {
     min-height: 50px;
     width: 100%;
@@ -287,6 +288,21 @@ $lightestGray: #eee;
 
 .form-builder-radio {
   display: inline-block;
+}
+
+.table-controls{
+  .form-builder-column{
+    border: 1px dotted #BBB;
+  }
+  .header{
+    display: flex;
+    .control-wrapper-content, .form-builder-label{
+      flex: 1;
+      border: 1px dotted #BBB;
+      padding: 2px;
+    }
+  }
+
 }
 
 .active-group-controls {

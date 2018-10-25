@@ -40,18 +40,19 @@ export class GridDesigner extends Component {
     const rows = [];
     for (let i = 0; i < rowCount; ++i) {
       rows.push(
-                <RowDesigner
-                  dragAllowed={this.props.dragAllowed}
-                  idGenerator={ this.props.idGenerator }
-                  key={i}
-                  onChange={this.changeHandler}
-                  ref={this.rowReference}
-                  rowData={ get(this.rowData, i, []) }
-                  rowPosition={i}
-                  setError={this.props.setError}
-                  showDeleteButton={ this.props.showDeleteButton }
-                  wrapper={ this.props.wrapper }
-                />);
+        <RowDesigner
+          columns={this.props.minColumns}
+          dragAllowed={this.props.dragAllowed}
+          idGenerator={this.props.idGenerator}
+          key={i}
+          onChange={this.changeHandler}
+          ref={this.rowReference}
+          rowData={get(this.rowData, i, [])}
+          rowPosition={i}
+          setError={this.props.setError}
+          showDeleteButton={this.props.showDeleteButton}
+          wrapper={this.props.wrapper}
+        />);
     }
     return rows;
   }
@@ -64,9 +65,9 @@ export class GridDesigner extends Component {
 
   render() {
     return (
-            <div className="grid">
-                { this.createRows() }
-            </div>
+      <div className="grid">
+        {this.createRows()}
+      </div>
     );
   }
 }
@@ -75,6 +76,7 @@ GridDesigner.propTypes = {
   controls: PropTypes.array.isRequired,
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
+  minColumns: PropTypes.number,
   minRows: PropTypes.number,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
@@ -82,6 +84,7 @@ GridDesigner.propTypes = {
 };
 
 GridDesigner.defaultProps = {
+  minColumns: constants.Grid.minColumns,
   minRows: constants.Grid.minRows,
 };
 

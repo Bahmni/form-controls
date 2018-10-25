@@ -39,6 +39,7 @@ export { ObsGroupControlDesigner } from 'components/designer/ObsGroupControlDesi
 export { DateDesigner } from 'components/designer/Date.jsx';
 export { DateTimeDesigner } from 'components/designer/DateTime.jsx';
 export { SectionDesigner } from 'components/designer/Section.jsx';
+export { TableDesigner } from 'components/designer/TableDesigner.jsx';
 export { ImageDesigner } from 'components/designer/Image.jsx';
 export { VideoDesigner } from 'components/designer/Video.jsx';
 export { LocationDesigner } from 'components/designer/Location.jsx';
