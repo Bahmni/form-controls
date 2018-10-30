@@ -284,4 +284,40 @@ describe('Cell', () => {
 
     expect(wrapper.state('data')).to.eql([]);
   });
+
+  it('should allow only one control when allowMultipleControls prop passed as false', () => {
+    const idGenerator = new IDGenerator();
+    const context =
+      {
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'Label',
+        },
+        properties: {
+          addMore: false,
+          hideLabel: false,
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+      };
+    const wrapper = shallow(
+            <CellDesigner
+              allowMultipleControls = {false}
+              cellData={[metadata]}
+              idGenerator={idGenerator}
+              location={location}
+              onChange={() => {
+              }}
+              wrapper={ TestComponent }
+            />
+        );
+
+    wrapper.instance().processDrop(context);
+    expect(wrapper.state('data').length).to.eql(1);
+
+    wrapper.instance().processDrop(context);
+    expect(wrapper.state('data').length).to.eql(1);
+  });
 });

@@ -36,6 +36,7 @@ export class RowDesigner extends Component {
     for (let i = 0; i < columns; ++i) {
       cells.push(
                 <CellDesigner
+                  allowMultipleControls= { this.props.allowMultipleControls }
                   cellData={ get(this.cellData, i, []) }
                   dragAllowed={ this.props.dragAllowed }
                   idGenerator={ this.props.idGenerator }
@@ -69,6 +70,7 @@ export class RowDesigner extends Component {
 }
 
 RowDesigner.propTypes = {
+  allowMultipleControls: PropTypes.bool,
   columns: PropTypes.number,
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
@@ -82,6 +84,7 @@ RowDesigner.propTypes = {
 
 RowDesigner.defaultProps = {
   columns: rowWidth,
+  allowMultipleControls: true,
 };
 
 

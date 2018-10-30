@@ -41,6 +41,7 @@ export class GridDesigner extends Component {
     for (let i = 0; i < rowCount; ++i) {
       rows.push(
         <RowDesigner
+          allowMultipleControls = { this.props.allowMultipleControls }
           columns={this.props.minColumns}
           dragAllowed={this.props.dragAllowed}
           idGenerator={this.props.idGenerator}
@@ -73,6 +74,7 @@ export class GridDesigner extends Component {
 }
 
 GridDesigner.propTypes = {
+  allowMultipleControls: PropTypes.bool,
   controls: PropTypes.array.isRequired,
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
@@ -84,6 +86,7 @@ GridDesigner.propTypes = {
 };
 
 GridDesigner.defaultProps = {
+  allowMultipleControls: true,
   minColumns: constants.Grid.minColumns,
   minRows: constants.Grid.minRows,
 };

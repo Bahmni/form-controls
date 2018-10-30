@@ -51,7 +51,9 @@ export class CellDesigner extends DropTarget {
   }
 
   processDrop(metadata) {
-    if (this.props.dragAllowed === false) {
+    const { data } = this.state;
+    if (this.props.dragAllowed === false ||
+      (!this.props.allowMultipleControls && data.length >= 1)) {
       return;
     }
     const oldLocation = metadata.properties.location;
@@ -60,7 +62,7 @@ export class CellDesigner extends DropTarget {
     if (oldLocation && isEqual(oldLocation, currentLocation)) {
       return;
     }
-    const dataClone = this.state.data.slice();
+    const dataClone = data.slice();
     const metadataClone = Object.assign({}, metadata);
     const location = { location: this.props.location };
     metadataClone.properties = Object.assign({}, metadata.properties, location);
@@ -133,6 +135,7 @@ CellDesigner.dropLoc = {
 };
 
 CellDesigner.propTypes = {
+  allowMultipleControls: PropTypes.bool,
   cellData: PropTypes.array.isRequired,
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
@@ -144,6 +147,10 @@ CellDesigner.propTypes = {
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
+};
+
+CellDesigner.defaultProps = {
+  allowMultipleControls: true,
 };
 
 const descriptor = {

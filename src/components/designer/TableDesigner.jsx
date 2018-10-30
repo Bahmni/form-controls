@@ -83,6 +83,7 @@ export class TableDesigner extends Component {
             {this.displayLabel(controls[1] ? controls[1].value : 'Column2')}
           </div>
           <GridDesigner
+            allowMultipleControls = {false}
             controls={controls.slice(2)}
             idGenerator={this.props.idGenerator}
             minColumns={2}
