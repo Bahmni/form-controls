@@ -3,15 +3,19 @@ import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
-
 import { CellDesigner } from 'components/designer/Cell.jsx';
 import { IDGenerator } from 'src/helpers/idGenerator';
+import Constants from 'src/constants';
 
 chai.use(chaiEnzyme());
 
 describe('Cell', () => {
   let eventData;
-  const metadata = { id: '123', properties: {} };
+  const defaultProps = {
+    allowMultipleControls: true,
+    supportedControlTypes: Constants.Grid.supportedControlTypes,
+  };
+  const metadata = { id: '123', properties: {}, type: 'obsControl' };
   const TestComponent = () => <div>TestComponent</div>;
 
   before(() => {
@@ -38,12 +42,14 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
             <CellDesigner
+              {...defaultProps}
               cellData={[]}
               idGenerator={idGenerator}
               location={location}
               onChange={() => {
               }}
               wrapper={ TestComponent }
+
             />
         );
 
@@ -60,6 +66,7 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
             <CellDesigner
+              {...defaultProps}
               cellData={[]}
               idGenerator={idGenerator}
               location={location}
@@ -78,6 +85,7 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
             <CellDesigner
+              {...defaultProps}
               cellData={[]}
               idGenerator={idGenerator}
               location={location}
@@ -101,6 +109,7 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = mount(
             <CellDesigner
+              {...defaultProps}
               cellData={[]}
               idGenerator={idGenerator}
               location={location}
@@ -121,6 +130,7 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const cell1 = mount(
             <CellDesigner
+              {...defaultProps}
               cellData={[metadata]}
               idGenerator={idGenerator}
               location={ { row: 0, column: 0 } }
@@ -131,6 +141,7 @@ describe('Cell', () => {
         );
     const cell2 = mount(
             <CellDesigner
+              {...defaultProps}
               cellData={[]}
               idGenerator={idGenerator}
               location={{ row: 0, column: 1 }}
@@ -162,6 +173,7 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = mount(
             <CellDesigner
+              {...defaultProps}
               cellData={[]}
               idGenerator={idGenerator}
               location={{ column: 10, row: 1 }}
@@ -192,6 +204,7 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
             <CellDesigner
+              {...defaultProps}
               cellData={[]}
               idGenerator={idGenerator}
               location={location}
@@ -210,6 +223,7 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = mount(
             <CellDesigner
+              {...defaultProps}
               cellData={[]}
               idGenerator={idGenerator}
               location={location}
@@ -236,6 +250,7 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = mount(
             <CellDesigner
+              {...defaultProps}
               cellData={[metadata]}
               idGenerator={idGenerator}
               location={location}
@@ -271,6 +286,7 @@ describe('Cell', () => {
     const idGenerator = new IDGenerator();
     const wrapper = mount(
             <CellDesigner
+              {...defaultProps}
               cellData={[]}
               dragAllowed = { false }
               idGenerator={idGenerator}
@@ -305,11 +321,12 @@ describe('Cell', () => {
     const wrapper = shallow(
             <CellDesigner
               allowMultipleControls = {false}
-              cellData={[metadata]}
+              cellData={[]}
               idGenerator={idGenerator}
               location={location}
               onChange={() => {
               }}
+              supportedControlTypes = {defaultProps.supportedControlTypes}
               wrapper={ TestComponent }
             />
         );
@@ -319,5 +336,71 @@ describe('Cell', () => {
 
     wrapper.instance().processDrop(context);
     expect(wrapper.state('data').length).to.eql(1);
+  });
+
+  it('should allow only supported controls, that are passed as props', () => {
+    const idGenerator = new IDGenerator();
+    const context =
+      {
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'Label',
+        },
+        properties: {
+          addMore: false,
+          hideLabel: false,
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+      };
+    const wrapper = shallow(
+           <CellDesigner
+             allowMultipleControls = {false}
+             cellData={[]}
+             idGenerator={idGenerator}
+             location={location}
+             onChange={() => {}}
+             supportedControlTypes = {defaultProps.supportedControlTypes}
+             wrapper={ TestComponent }
+           />
+        );
+
+    wrapper.instance().processDrop(context);
+    expect(wrapper.state('data').length).to.eql(1);
+  });
+
+  it('should not allow controls that are not passed as supportedControls', () => {
+    const idGenerator = new IDGenerator();
+    const context =
+      {
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'Label',
+        },
+        properties: {
+          addMore: false,
+          hideLabel: false,
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+      };
+    const wrapper = shallow(
+           <CellDesigner
+             allowMultipleControls = {false}
+             cellData={[]}
+             idGenerator={idGenerator}
+             location={location}
+             onChange={() => {}}
+             supportedControlTypes = {['obsGroupControls']}
+             wrapper={ TestComponent }
+           />
+        );
+
+    wrapper.instance().processDrop(context);
+    expect(wrapper.state('data').length).to.eql(0);
   });
 });

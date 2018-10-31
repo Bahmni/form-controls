@@ -52,8 +52,10 @@ export class CellDesigner extends DropTarget {
 
   processDrop(metadata) {
     const { data } = this.state;
+    const { supportedControlTypes, allowMultipleControls } = this.props;
     if (this.props.dragAllowed === false ||
-      (!this.props.allowMultipleControls && data.length >= 1)) {
+      (!allowMultipleControls && data.length >= 1)
+      || !(supportedControlTypes.includes(metadata.type))) {
       return;
     }
     const oldLocation = metadata.properties.location;
@@ -146,12 +148,10 @@ CellDesigner.propTypes = {
   onChange: PropTypes.func.isRequired,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
+  supportedControlTypes: PropTypes.arrayOf(PropTypes.string),
   wrapper: PropTypes.func.isRequired,
 };
 
-CellDesigner.defaultProps = {
-  allowMultipleControls: true,
-};
 
 const descriptor = {
   control: CellDesigner,

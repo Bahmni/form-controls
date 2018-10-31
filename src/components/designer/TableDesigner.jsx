@@ -90,6 +90,7 @@ export class TableDesigner extends Component {
             minRows={2}
             ref={this.storeGridRef}
             showDeleteButton
+            supportedControlTypes={['obsControl']}
             wrapper={this.props.wrapper}
           />
         </div>

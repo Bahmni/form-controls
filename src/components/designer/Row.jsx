@@ -46,6 +46,7 @@ export class RowDesigner extends Component {
                   ref={ this.cellReference }
                   setError={this.props.setError}
                   showDeleteButton={ this.props.showDeleteButton }
+                  supportedControlTypes = {this.props.supportedControlTypes}
                   wrapper={ this.props.wrapper }
                 />);
     }
@@ -79,6 +80,7 @@ RowDesigner.propTypes = {
   rowPosition: PropTypes.number.isRequired,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
+  supportedControlTypes: PropTypes.arrayOf(PropTypes.string),
   wrapper: PropTypes.func.isRequired,
 };
 
