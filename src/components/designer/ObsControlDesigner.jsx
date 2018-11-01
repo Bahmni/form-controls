@@ -119,7 +119,10 @@ export class ObsControlDesigner extends Component {
     const isAddCommentsEnabled = find(properties, (value, key) => (key === 'notes' && value));
     if (isAddCommentsEnabled) {
       return (
-        <CommentDesigner />
+        <div className={classNames('obs-comment-wrap')}>
+          <div className={classNames('obs-empty-block')}></div>
+          <div className={classNames('obs-comment-content')}><CommentDesigner /></div>
+        </div>
       );
     }
     return null;
