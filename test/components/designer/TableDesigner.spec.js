@@ -234,5 +234,24 @@ describe('TableDesigner', () => {
       ];
       expect(instance.getJsonDefinition()).to.deep.eql(metadata);
     });
+
+    it('should have addMore in unsupportedProperties and obsControl ' +
+      'in supportedControlTypes', () => {
+      wrapper = shallow(
+        <TableDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
+          idGenerator={idGenerator}
+          metadata={metadata}
+          onSelect={() => {}}
+          wrapper={() => {}}
+        />);
+
+      expect(wrapper).to.have.descendants('GridDesigner');
+      const grid = wrapper.find('GridDesigner');
+      expect(grid.prop('unsupportedProperties')).to.eql(['addMore']);
+      expect(grid.prop('supportedControlTypes')).to.eql(['obsControl']);
+    });
   });
 });

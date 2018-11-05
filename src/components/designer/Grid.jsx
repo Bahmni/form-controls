@@ -53,6 +53,7 @@ export class GridDesigner extends Component {
           setError={this.props.setError}
           showDeleteButton={this.props.showDeleteButton}
           supportedControlTypes = {this.props.supportedControlTypes}
+          unsupportedProperties = {this.props.unsupportedProperties}
           wrapper={this.props.wrapper}
         />);
     }
@@ -84,6 +85,7 @@ GridDesigner.propTypes = {
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
   supportedControlTypes: PropTypes.arrayOf(PropTypes.string),
+  unsupportedProperties: PropTypes.arrayOf(PropTypes.string),
   wrapper: PropTypes.func.isRequired,
 };
 
@@ -92,6 +94,7 @@ GridDesigner.defaultProps = {
   minColumns: constants.Grid.minColumns,
   minRows: constants.Grid.minRows,
   supportedControlTypes: constants.Grid.supportedControlTypes,
+  unsupportedProperties: [],
 };
 
 const descriptor = {

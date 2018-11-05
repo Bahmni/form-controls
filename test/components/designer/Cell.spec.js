@@ -14,8 +14,9 @@ describe('Cell', () => {
   const defaultProps = {
     allowMultipleControls: true,
     supportedControlTypes: Constants.Grid.supportedControlTypes,
+    unsupportedProperties: [],
   };
-  const metadata = { id: '123', properties: {}, type: 'obsControl' };
+  const metadata = { id: '123', properties: {}, type: 'obsControl', unsupportedProperties: [] };
   const TestComponent = () => <div>TestComponent</div>;
 
   before(() => {
@@ -402,5 +403,40 @@ describe('Cell', () => {
 
     wrapper.instance().processDrop(context);
     expect(wrapper.state('data').length).to.eql(0);
+  });
+
+  it('should add unsupportedProperties to metadata ', () => {
+    const idGenerator = new IDGenerator();
+    const context =
+      {
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'Label',
+        },
+        properties: {
+          addMore: false,
+          hideLabel: false,
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+      };
+    const unsupportedProperties = ['addMore'];
+    const wrapper = shallow(
+      <CellDesigner
+        allowMultipleControls = {false}
+        cellData={[]}
+        idGenerator={idGenerator}
+        location={location}
+        onChange={() => {}}
+        supportedControlTypes = {['obsControl']}
+        unsupportedProperties={unsupportedProperties}
+        wrapper={ TestComponent }
+      />
+    );
+
+    wrapper.instance().processDrop(context);
+    expect(context.unsupportedProperties).to.eql(unsupportedProperties);
   });
 });

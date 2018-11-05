@@ -49,7 +49,7 @@ export class CellDesigner extends DropTarget {
     this._setActiveClass(false);
     this.forceUpdate();
   }
-
+  /* eslint-disable no-param-reassign */
   processDrop(metadata) {
     const { data } = this.state;
     const { supportedControlTypes, allowMultipleControls } = this.props;
@@ -58,6 +58,7 @@ export class CellDesigner extends DropTarget {
       || !(supportedControlTypes.includes(metadata.type))) {
       return;
     }
+    metadata.unsupportedProperties = this.props.unsupportedProperties;
     const oldLocation = metadata.properties.location;
     const currentLocation = this.props.location;
     CellDesigner.dropLoc = Object.assign({}, this.props.location);
@@ -149,6 +150,7 @@ CellDesigner.propTypes = {
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
   supportedControlTypes: PropTypes.arrayOf(PropTypes.string),
+  unsupportedProperties: PropTypes.arrayOf(PropTypes.string),
   wrapper: PropTypes.func.isRequired,
 };
 
