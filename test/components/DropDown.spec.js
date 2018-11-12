@@ -53,6 +53,7 @@ describe('DropDown', () => {
 
     const onChange = wrapper.find('Select').props().onChange;
     onChange(options[1]);
+    wrapper.update();
     expect(wrapper.find('Select').props().value).to.eql(options[1]);
   });
 

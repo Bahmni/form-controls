@@ -36,11 +36,13 @@ describe('LabelDesigner', () => {
     expect(wrapper).to.have.descendants('label');
 
     wrapper.find('label').props().onDoubleClick();
+    wrapper.update();
     expect(wrapper).to.have.descendants('input');
   });
 
   it('should not change translation key after editing the label', () => {
     wrapper.find('label').props().onDoubleClick();
+    wrapper.update();
     const instance = wrapper.instance();
     instance.input.value = 'My new value';
     wrapper.find('input').props().onKeyUp({ keyCode: 13 });
@@ -51,16 +53,19 @@ describe('LabelDesigner', () => {
       value: 'My new value',
       properties: {},
     };
+    wrapper.update();
     expect(instance.getJsonDefinition()).to.deep.eql(expectedJson);
   });
 
   it('should display value in non editable mode after pressing enter', () => {
     wrapper.find('label').props().onDoubleClick();
+    wrapper.update();
     expect(wrapper).to.have.descendants('input');
 
     const instance = wrapper.instance();
     instance.input.value = 'Note';
     wrapper.find('input').props().onKeyUp({ keyCode: 13 });
+    wrapper.update();
     expect(wrapper).to.have.descendants('label');
     expect(wrapper).to.not.have.descendants('input');
     expect(wrapper.find('label').text()).to.eql('Note');
@@ -68,9 +73,11 @@ describe('LabelDesigner', () => {
 
   it('should display value in non editable mode on blur', () => {
     wrapper.find('label').props().onDoubleClick();
+    wrapper.update();
     expect(wrapper).to.have.descendants('input');
 
     wrapper.find('input').props().onBlur();
+    wrapper.update();
     expect(wrapper).to.have.descendants('label');
     expect(wrapper).to.not.have.descendants('input');
   });
@@ -89,11 +96,12 @@ describe('LabelDesigner', () => {
 
   it('should display existing value when only spaces are entered', () => {
     wrapper.find('label').props().onDoubleClick();
+    wrapper.update();
     expect(wrapper).to.have.descendants('input');
-
     const instance = wrapper.instance();
     instance.input.value = '  ';
     wrapper.find('input').props().onKeyUp({ keyCode: 13 });
+    wrapper.update();
     expect(wrapper.find('label')).text().to.eql('History Notes');
   });
 
