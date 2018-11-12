@@ -71,11 +71,22 @@ export class TableDesigner extends Component {
     );
   }
 
+  stopEventPropagation(event) {
+    this.props.dispatch();
+    event.stopPropagation();
+  }
+
   render() {
     const { metadata } = this.props;
     const controls = metadata.controls || [];
     return (
-      <fieldset className="form-builder-fieldset">
+        <fieldset
+          className="form-builder-fieldset"
+          onClick={(event) => {
+            this.stopEventPropagation(event);
+            this.props.onSelect(event, metadata);
+          }}
+        >
         {this.showDeleteButton()}
         <div className="table-controls">
           <div className="header">

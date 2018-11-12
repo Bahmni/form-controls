@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import * as Grid from 'components/designer/Grid.jsx';
@@ -94,6 +94,37 @@ describe('TableDesigner', () => {
 
     afterEach(() => {
       componentStore.deRegisterDesignerComponent('text'); // eslint-disable-line no-undef
+    });
+
+    it('should call onSelect function on table click', () => {
+      wrapper = mount(
+        <TableDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
+          idGenerator={idGenerator}
+          metadata={metadata}
+          onSelect={onSelectSpy}
+          wrapper={() => {}}
+        />);
+      expect(wrapper.find('.form-builder-fieldset')).to.have.prop('onClick');
+      wrapper.find('.form-builder-fieldset').simulate('click');
+      sinon.assert.calledOnce(onSelectSpy);
+    });
+
+    it('should call onSelect method with given metadata', () => {
+      wrapper = mount(
+        <TableDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
+          idGenerator={idGenerator}
+          metadata={metadata}
+          onSelect={onSelectSpy}
+          wrapper={() => {}}
+        />);
+      wrapper.find('.form-builder-fieldset').simulate('click');
+      sinon.assert.calledWith(onSelectSpy, sinon.match.any, metadata);
     });
 
     it('should render column names as Column1 and Column2 when controls are not defined', () => {
@@ -211,12 +242,9 @@ describe('TableDesigner', () => {
 
     it('should return json definition', () => {
       const instance = wrapper.instance();
-
-
       instance.storeGridRef({
         getControls: sinon.stub().returns([childControl]),
       });
-
 
       instance.labelControls = [
         {
@@ -226,7 +254,6 @@ describe('TableDesigner', () => {
           getJsonDefinition: sinon.stub().returns(column2LabelJson),
         },
       ];
-
       metadata.controls = [
         column1LabelJson,
         column2LabelJson,
