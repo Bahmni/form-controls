@@ -1,4 +1,5 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import ReactJsonSyntaxHighlighter from 'react-json-syntax-highlighter';
 import JSONTree from 'react-json-tree';
 
