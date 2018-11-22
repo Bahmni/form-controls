@@ -7,6 +7,11 @@ export class NumericBoxDesigner extends Component {
     return this.props.metadata;
   }
 
+  isComputed() {
+    const { metadata } = this.props;
+    return metadata.concept && metadata.concept.conceptClass === 'Computed';
+  }
+
   render() {
     const { lowNormal, hiNormal } = this.props;
     if (NumericBoxDesigner.getRange(lowNormal, hiNormal) !== '') {
@@ -21,7 +26,7 @@ export class NumericBoxDesigner extends Component {
     }
     return (
         <div className="fl">
-          <input type="number" />
+            { !this.isComputed() && <input type="number" />}
         </div>
     );
   }

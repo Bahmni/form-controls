@@ -14,7 +14,7 @@ describe('NumericBox', () => {
 
   const validations = [constants.validations.allowDecimal, constants.validations.mandatory];
 
-  it('should render NumericBox', () => {
+  it('should render NumericBox with empty class when conceptClass is not Computed', () => {
     const concept = {};
     const wrapper = shallow(
       <NumericBox
@@ -28,8 +28,8 @@ describe('NumericBox', () => {
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input')).to.have.value(undefined);
+    expect(wrapper.find('input')).to.have.className('');
   });
-
 
   it('should render NumericBox with default value', () => {
     const concept = {};
@@ -46,6 +46,23 @@ describe('NumericBox', () => {
     );
     expect(wrapper.find('input').props().type).to.be.eql('number');
     expect(wrapper.find('input')).to.have.value('50');
+  });
+
+  it('should render NumericBox with computed-value class when conceptClass is Computed', () => {
+    const wrapper = mount(
+      <NumericBox
+        conceptClass="Computed"
+        formFieldPath="test1.1-0"
+        onChange={onChangeSpy}
+        validate={false}
+        validateForm={false}
+        validations={[]}
+        value={'50'}
+      />
+    );
+    expect(wrapper.find('input').props().type).to.be.eql('number');
+    expect(wrapper.find('input')).to.have.value('50');
+    expect(wrapper.find('input')).to.have.className('computed-value');
   });
 
   it('should get user entered value of the NumericBox', () => {
@@ -325,6 +342,7 @@ describe('NumericBox', () => {
     wrapper.instance();
     sinon.assert.calledOnce(spy);
   });
+
   it('should not trigger onChange when mounting component and the value is undefined', () => {
     const spy = sinon.spy();
     const wrapper = mount(
