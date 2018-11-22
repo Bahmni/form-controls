@@ -1,11 +1,11 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { NumericBox } from 'components/NumericBox.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import { Error } from 'src/Error';
+import { mount, shallow } from 'enzyme';
 
 chai.use(chaiEnzyme());
 

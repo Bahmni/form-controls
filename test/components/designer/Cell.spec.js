@@ -123,7 +123,7 @@ describe('Cell', () => {
             <CellDesigner
               cellData={[metadata]}
               idGenerator={idGenerator}
-              location={ { row: 0, location: 0 } }
+              location={ { row: 0, column: 0 } }
               onChange={() => {
               }}
               wrapper={ TestComponent }
@@ -133,7 +133,7 @@ describe('Cell', () => {
             <CellDesigner
               cellData={[]}
               idGenerator={idGenerator}
-              location={{ row: 0, location: 1 }}
+              location={{ row: 0, column: 1 }}
               onChange={() => {
               }}
               wrapper={ TestComponent }
@@ -152,6 +152,8 @@ describe('Cell', () => {
 
     cell1.find('.form-builder-column').props().onDrop(eventDataClone);
     cell2.instance().processMove(metadataClone);
+    cell1.update();
+    cell2.update();
     expect(cell1.find('.form-builder-column')).to.have.exactly(2).descendants('TestComponent');
     expect(cell2.find('.form-builder-column')).to.not.have.descendants('TestComponent');
   });

@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { DropTarget } from 'src/components/DropTarget.jsx';
 import Constants from 'src/constants';
 import each from 'lodash/each';

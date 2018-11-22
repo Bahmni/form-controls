@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import map from 'lodash/map';
@@ -76,7 +78,7 @@ BooleanControl.defaultProps = {
 };
 
 BooleanControl.contextTypes = {
-  intl: React.PropTypes.object.isRequired,
+  intl: PropTypes.object.isRequired,
 };
 
 ComponentStore.registerComponent('boolean', BooleanControl);
