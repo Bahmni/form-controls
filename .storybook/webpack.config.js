@@ -15,12 +15,24 @@ module.exports = {
     // your custom plugins
   ],
   module: {
-    loaders: [
-      // add your custom loaders.
+    rules: [
       {
-        test: /\.(scss|css)$/,
-        loaders: ["style", "css", "sass"]
-      }
+        test: /\.s?css$/,
+        loader: 'style-loader!css-loader?modules&camelCase&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass-loader'
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: 'base64-inline-loader?name=/styles/images/[name].[ext]',
+      },
+      {
+        test: /\.(js|jsx)$/,
+        loaders: ['babel'],
+        include: path.join(__dirname, 'src')
+      },
+      {
+        test: /\.json$/,
+        loader: 'json'
+      },
     ],
   },
   resolve: {

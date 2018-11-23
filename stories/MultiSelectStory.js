@@ -1,5 +1,5 @@
 import React from 'react';
-import { storiesOf } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import StoryWrapper from './StoryWrapper';
 import { Container } from 'src/components/Container.jsx';
 import '../styles/styles.scss';
@@ -26,7 +26,6 @@ const form = {
           row: 0,
         },
         multiSelect: true,
-        autoComplete: true,
       },
       id: '1',
       concept: {
@@ -325,8 +324,11 @@ const obsList = [
 storiesOf('Forms', module)
   .add('Multi Select', () =>
     <StoryWrapper json={form}>
-      <Container metadata={form} observations={obsList}
-        validate={ false }
+      <Container collapse metadata={form} observations={obsList} patient={{}}
+        translations={{ labels: {
+          LABEL_1: 'some Label',
+        } }}
+        validate={ false } validateForm={false}
       />
     </StoryWrapper>
   );

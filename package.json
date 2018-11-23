@@ -15,7 +15,7 @@
     "eslintFix": "eslint --ext .js --ext .jsx ./src ./test --fix",
     "publish": "npm publish || true",
     "ci": "yarn run clean && yarn run build && yarn run publish",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 -c .storybook",
     "deploy-storybook": "storybook-to-ghpages",
     "build-storybook": "build-storybook",
     "bump-up": "npm version patch -m 'Bumped to version %s'",
@@ -23,8 +23,11 @@
   },
   "author": "bahmni@thoughtworks.com",
   "devDependencies": {
-    "@kadira/storybook": "^2.21.0",
     "@kadira/storybook-deployer": "^1.2.0",
+    "@storybook/addon-actions": "^3.4.11",
+    "@storybook/addon-links": "^3.4.11",
+    "@storybook/addons": "^3.4.11",
+    "@storybook/react": "^3.4.11",
     "babel-cli": "^6.11.4",
     "babel-core": "^6.10.4",
     "babel-eslint": "^6.1.2",
@@ -32,6 +35,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
+    "babel-runtime": "^6.26.0",
     "chai": "^3.5.0",
     "chai-enzyme": "^1.0.0-beta.1",
     "copyfiles": "^1.0.0",
@@ -77,6 +81,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "babel-plugin-react-require": "^3.0.1",
     "base64-inline-loader": "^1.1.0",
     "classnames": "^2.2.5",
     "enzyme-adapter-react-15": "^1.1.0",

@@ -1,6 +1,7 @@
 import React from 'react';
-import { storiesOf,action } from '@kadira/storybook';
+import { storiesOf } from '@storybook/react';
 import { AddMore } from 'src/components/AddMore.jsx';
+import { action } from '@storybook/addon-actions';
 
 storiesOf('Simple Controls', module)
     .add('AddMore component with add button', () =>

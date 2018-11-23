@@ -1,23 +1,23 @@
-import React from "react";
-import {storiesOf} from "@kadira/storybook";
-import {Obs} from "src/helpers/Obs";
-import "../styles/styles.scss";
-import {NumericBox} from "src/components/NumericBox.jsx";
-import {BooleanControl} from "src/components/BooleanControl.jsx";
-import {Button} from "src/components/Button.jsx";
-import {List} from "immutable";
-import StoryWrapper from "./StoryWrapper";
-import {CodedControl} from "src/components/CodedControl.jsx";
-import {AutoComplete} from "src/components/AutoComplete.jsx";
-import {TextBox} from "src/components/TextBox.jsx";
-import {Container} from "src/components/Container.jsx";
-import {Section} from "src/components/Section.jsx";
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { Obs } from 'src/helpers/Obs';
+import '../styles/styles.scss';
+import { NumericBox } from 'src/components/NumericBox.jsx';
+import { BooleanControl } from 'src/components/BooleanControl.jsx';
+import { Button } from 'src/components/Button.jsx';
+import { List } from 'immutable';
+import StoryWrapper from './StoryWrapper';
+import { CodedControl } from 'src/components/CodedControl.jsx';
+import { AutoComplete } from 'src/components/AutoComplete.jsx';
+import { TextBox } from 'src/components/TextBox.jsx';
+import { Container } from 'src/components/Container.jsx';
+import { Section } from 'src/components/Section.jsx';
 
 const metadata = {
   id: 1,
   name: 'Form Name',
   version: '1',
-  uuid:'c36bc411-3f10-11e4-adec-0800271c1asd',
+  uuid: 'c36bc411-3f10-11e4-adec-0800271c1asd',
   controls: [{
     type: 'section',
     label: {
@@ -60,8 +60,8 @@ const metadata = {
         type: 'obsControl',
         displayType: 'Button',
         options: [
-          {name: 'Yes', value: true},
-          {name: 'No', value: false},
+          { name: 'Yes', value: true },
+          { name: 'No', value: false },
         ],
         label: {
           type: 'label',
@@ -84,7 +84,7 @@ const metadata = {
         },
       },
     ],
-  }]
+  }],
 };
 
 componentStore.registerComponent('numeric', NumericBox);
@@ -100,9 +100,14 @@ storiesOf('Section control', module)
     .add('Basic View', () => (
   <StoryWrapper json={metadata}>
     <Container
+      collapse = { false }
       metadata={metadata}
       observations={ [] }
-      validate= { true }
+      patient={{}}
+      translations= { { labels: {
+        LABEL_1: 'some Label',
+      } } }
+      validate = { false } validateForm={ false }
     />
 
   </StoryWrapper>

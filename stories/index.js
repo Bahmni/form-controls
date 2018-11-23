@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { storiesOf, action, linkTo } from '@kadira/storybook';
+import { storiesOf, action, linkTo } from '@storybook/react';
 import Welcome from './Welcome';
 import { ObsMapper } from 'src/helpers/ObsMapper';
 import { TextBox } from 'src/components/TextBox.jsx';
@@ -58,6 +58,7 @@ const form = {
         name: 'Systolic',
         uuid: 'c36e9c8b-3f10-11e4-adec-0800271c1b75',
         datatype: 'Numeric',
+        conceptClass: 'Image',
       },
     },
     {
@@ -162,7 +163,9 @@ storiesOf('Welcome', module)
 
 storiesOf('Container', module)
   .add('Sample Form', () => (
-    <Container metadata={form} observations={obsList} />
+    <Container metadata={form} observations={obsList} translations={{labels: {
+      LABEL_1: 'some Label',
+    }}} />
   ));
 
 
@@ -174,34 +177,43 @@ storiesOf('ObsControl', module)
       metadata={form.controls[0]}
       obs={new Obs({ concept: form.controls[0].concept })}
       onValueChanged={(obs, errors) => console.log(obs, errors)}
+      showNotification={()=>{}}
+      value={{}}
+      formFieldPath=''
     />
   ));
 
 storiesOf('ObsControl', module)
-  .add('TextBox Obs Control', () => (
+  .add('TextBox2 Obs Control', () => (
     <ObsControl
-      errors={[]}
-      formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
-      metadata={form.controls[1]}
-      obs={new Obs({ concept: form.controls[1].concept })}
-      onValueChanged={(obs, errors) => console.log(obs, errors)}
+    errors={[]}
+    formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
+    metadata={form.controls[1]}
+    obs={new Obs({ concept: form.controls[1].concept })}
+    onValueChanged={(obs, errors) => console.log(obs, errors)}
+    showNotification={()=>{}}
+    value={{}}
     />
   ));
 
 storiesOf('ObsControl', module)
   .add('Boolean Obs Control', () => (
     <ObsControl
-      errors={[]}
-      formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
-      metadata={form.controls[2]}
-      obs={ new Obs({ concept: form.controls[2].concept })}
-      onValueChanged={(obs, errors) => console.log(obs, errors)}
+    errors={[]}
+    formUuid={'fbc5d897-64e4-4cc1-90a3-47fde7a98026'}
+    metadata={form.controls[2]}
+    obs={new Obs({ concept: form.controls[2].concept })}
+    onValueChanged={(obs, errors) => console.log(obs, errors)}
+    showNotification={()=>{}}
+    value={{}}
     />
   ));
 
 storiesOf('Container',module)
     .add('Sample Form', () => (
-        <Container metadata={form} observations={obsList} />
+        <Container metadata={form} observations={obsList} translations={{labels: {
+          LABEL_1: 'some Label',
+        }}} />
     ));
 
 
