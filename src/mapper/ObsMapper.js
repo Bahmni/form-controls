@@ -4,8 +4,10 @@ import { Util } from 'src/helpers/Util';
 
 export class ObsMapper {
 
-  getInitialObject(formName, formVersion, control, bahmniObservations) {
-    return createObsFromControl(formName, formVersion, control, bahmniObservations);
+  getInitialObject(formName, formVersion, control, bahmniObservations, allObs,
+                   parentFormFieldPath) {
+    return createObsFromControl(formName, formVersion, control, bahmniObservations,
+        parentFormFieldPath);
   }
 
   getValue(obs) {

@@ -84,6 +84,124 @@ describe('SectionMapper', () => {
       expect(initObject.obsList.length).to.eql(2);
     });
 
+    it('should return two initial objects if observations come from add more sections and' +
+        'obs are segregated by section control ids', () => {
+      const observationControl = {
+        type: 'obsControl',
+        id: '2',
+        concept,
+        properties: {},
+      };
+      const sectionCtrl = {
+        type: 'section',
+        id: '1',
+        controls: [observationControl],
+        properties: {
+          addMore: true,
+        },
+      };
+      const formFieldPathPrefix =
+            getKeyPrefixForControl(formName, formVersion, sectionCtrl.id).formFieldPath;
+      const firstObsFormFieldPathInSection = `${formFieldPathPrefix}-0/2-0`;
+      const secondObsFormFieldPathInSection = `${formFieldPathPrefix}-0/2-1`;
+      const obsFormFieldPathInAddMoreSection = `${formFieldPathPrefix}-1/2-0`;
+
+      const observations = [{
+        formFieldPath: firstObsFormFieldPathInSection,
+        concept,
+      },
+      {
+        formFieldPath: secondObsFormFieldPathInSection,
+        concept,
+      },
+      {
+        formFieldPath: obsFormFieldPathInAddMoreSection,
+        concept,
+      }];
+
+      const initObjects = mapper.getInitialObject(formName, formVersion, sectionCtrl, null,
+          observations);
+      expect(initObjects.length).to.eql(2);
+
+      const initObjectArray = [initObjects[0].toJS(), initObjects[1].toJS()];
+      expect([initObjectArray[0].formFieldPath, initObjectArray[1].formFieldPath])
+          .to.have.members([`${formFieldPathPrefix}-0`, `${formFieldPathPrefix}-1`]);
+
+      let sectionObj = initObjectArray.find(obj =>
+          (obj.formFieldPath === `${formFieldPathPrefix}-0` ? obj : undefined));
+      expect(sectionObj.obsList.length).to.eql(2);
+      expect(sectionObj.obsList.map(obs => obs.formFieldPath))
+          .to.have.members([firstObsFormFieldPathInSection, secondObsFormFieldPathInSection]);
+
+      sectionObj = initObjectArray.find(obj => (obj.formFieldPath === `${formFieldPathPrefix}-1` ?
+        obj : undefined));
+
+      expect(sectionObj.obsList.length).to.eql(1);
+      expect(sectionObj.obsList[0].formFieldPath).to.eql(obsFormFieldPathInAddMoreSection);
+    });
+
+    it('should return two initial objects if observations come from add more sections' +
+        'whose parent is also section with add more property and obs are segregated by' +
+        'current section control ids', () => {
+      const observationCtrl = {
+        type: 'obsControl',
+        id: '3',
+        concept,
+        properties: {},
+      };
+      const sectionCtrl = {
+        type: 'section',
+        id: '2',
+        controls: [observationCtrl],
+        properties: {
+          addMore: true,
+        },
+      };
+      const parentFormFieldPath = createFormNamespaceAndPath(formName, formVersion, 1)
+          .formFieldPath;
+
+      const formFieldPathPrefix =
+              getKeyPrefixForControl(formName, formVersion, sectionCtrl.id, parentFormFieldPath)
+                  .formFieldPath;
+      const firstObsFormFieldPathInSection = `${formFieldPathPrefix}-0/3-0`;
+      const secondObsFormFieldPathInSection = `${formFieldPathPrefix}-0/3-1`;
+      const obsFormFieldPathInAddMoreSection = `${formFieldPathPrefix}-1/3-0`;
+
+      const observations = [{
+        formFieldPath: firstObsFormFieldPathInSection,
+        concept,
+      },
+      {
+        formFieldPath: secondObsFormFieldPathInSection,
+        concept,
+      },
+      {
+        formFieldPath: obsFormFieldPathInAddMoreSection,
+        concept,
+      }];
+
+      const initObjects = mapper.getInitialObject(formName, formVersion, sectionCtrl, null,
+              observations, parentFormFieldPath);
+      expect(initObjects.length).to.eql(2);
+
+      const initObjectArray = [initObjects[0].toJS(), initObjects[1].toJS()];
+      expect([initObjectArray[0].formFieldPath, initObjectArray[1].formFieldPath])
+              .to.have.members([`${formFieldPathPrefix}-0`, `${formFieldPathPrefix}-1`]);
+
+      let sectionObj = initObjectArray.find(obj =>
+          (obj.formFieldPath === `${formFieldPathPrefix}-0` ? obj : undefined));
+      expect(sectionObj.obsList.length).to.eql(2);
+      expect(sectionObj.obsList.map(obs => obs.formFieldPath))
+              .to.have.members([firstObsFormFieldPathInSection, secondObsFormFieldPathInSection]);
+
+      sectionObj = initObjectArray.find(obj =>
+          (obj.formFieldPath === `${formFieldPathPrefix}-1` ? obj : undefined));
+
+      expect(sectionObj.obsList.length).to.eql(1);
+      expect(sectionObj.obsList[0].formFieldPath).to.eql(obsFormFieldPathInAddMoreSection);
+    });
+
+
     it('should get flatten data from records given single layer control record', () => {
       const child = new ControlRecord({
         control: {

@@ -3,6 +3,8 @@ import MapperStore from 'src/helpers/MapperStore';
 import constants from 'src/constants';
 import isEmpty from 'lodash/isEmpty';
 import ValueMapperStore from './ValueMapperStore';
+import { isAnyAncestorOrControlHasAddMore,
+    getCurrentFormFieldPathIfAddMore } from 'src/helpers/ControlUtil';
 
 export const ControlRecord = new Record({
   valueMapper: undefined,
@@ -114,7 +116,7 @@ export const ControlRecord = new Record({
 
 export default class ControlRecordTreeBuilder {
 
-  getRecords(controls, formName, formVersion, currentLayerObs, allObs) {
+  getRecords(controls, formName, formVersion, currentLayerObs, allObs, parentFormFieldPath) {
     let recordList = new List();
 
     controls.forEach(control => {
@@ -125,7 +127,8 @@ export default class ControlRecordTreeBuilder {
         formVersion,
         control,
         currentLayerObs,
-        allObs
+        allObs,
+        parentFormFieldPath
       );
       obsArray.forEach(data => {
         const record = new ControlRecord({
@@ -142,7 +145,10 @@ export default class ControlRecordTreeBuilder {
             formName,
             formVersion,
             mapper.getChildren(data),
-            allObs
+            allObs,
+            isAnyAncestorOrControlHasAddMore(control, parentFormFieldPath) ? data.formFieldPath :
+            getCurrentFormFieldPathIfAddMore(formName, formVersion, control, parentFormFieldPath)
+
           ),
         });
 
