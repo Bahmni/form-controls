@@ -61,7 +61,7 @@ export class Container extends addMoreDecorator(Component) {
 
   getAddMoreMessage(rootTree, formFieldPath) {
     const targetRecordTree = ControlRecordTreeMgr.find(rootTree, formFieldPath);
-    const name = targetRecordTree.getConceptName();
+    const name = targetRecordTree.getConceptName() || targetRecordTree.control.label.value;
     const type = targetRecordTree.getConceptType();
     return (`A new ${name} ${type} has been added`);
   }
