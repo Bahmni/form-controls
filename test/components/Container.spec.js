@@ -1909,7 +1909,7 @@ describe('Container', () => {
                   validateForm={false}
                 />
             );
-      const formFieldPath = 'SingleGroup.3/4-0';
+      const formFieldPath = 'SingleGroup.3/3-0/4-0';
       const changedValue = { value: '1', comment: undefined };
 
             // const update = sinon.stub(wrapper.state().data, 'update').returns(recordTree);

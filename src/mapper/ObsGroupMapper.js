@@ -2,12 +2,37 @@ import { createObsFromControl } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
 import { cloneDeep } from 'lodash';
 import ObservationMapper from '../helpers/ObservationMapper';
+import { getUpdatedFormFieldPath } from 'src/helpers/formNamespace';
+import { isAnyAncestorOrControlHasAddMore } from 'src/helpers/ControlUtil';
 
 export class ObsGroupMapper {
 
-  getInitialObject(formName, formVersion, control, bahmniObservations) {
-    return createObsFromControl(formName, formVersion, control, bahmniObservations);
+  getInitialObject(formName, formVersion, control, bahmniObservations, allObs,
+                   parentFormFieldPath) {
+    this.updateOldObsGroupFormFieldPathForBackwardCompatibility(control, allObs);
+    return createObsFromControl(formName, formVersion, control, bahmniObservations,
+        parentFormFieldPath);
   }
+
+  updateOldObsGroupFormFieldPathForBackwardCompatibility(control, bahmniObservations) {
+    if (isEmpty(bahmniObservations) || !isAnyAncestorOrControlHasAddMore(control)) return;
+    const controlPrefix = `/${control.id}`;
+    const filteredControlObs = bahmniObservations
+        .filter(obs => obs.formFieldPath.includes(controlPrefix));
+    filteredControlObs.forEach(obs => {
+      this.updateToLatestFormFieldPath(obs, '');
+    });
+  }
+
+  updateToLatestFormFieldPath(observation, parentFormFieldPath) {
+    // eslint-disable-next-line no-param-reassign
+    observation.formFieldPath = getUpdatedFormFieldPath(observation, parentFormFieldPath);
+      // eslint-disable-next-line no-unused-expressions
+    observation.groupMembers && observation.groupMembers.forEach(obs => {
+      this.updateToLatestFormFieldPath(obs, observation.formFieldPath);
+    });
+  }
+
 
   setValue(obsGroup, obs) {
     let updatedObsGroup = obsGroup.addGroupMember(obs);
