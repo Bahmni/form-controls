@@ -345,7 +345,7 @@ describe('Control Record', () => {
     it('should create multiple layer record given multiple layer metadata and empty data', () => {
       const emptyObservation = [];
       const expectedFormFieldPath = 'SingleGroup.3/3-0';
-      const expectedSubFormFieldPath = 'SingleGroup.3/4-0';
+      const expectedSubFormFieldPath = 'SingleGroup.3/3-0/4-0';
 
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
 
@@ -402,7 +402,7 @@ describe('Control Record', () => {
         }],
       }];
       const expectedFormFieldPath = 'SingleGroup.3/3-0';
-      const expectedSubFormFieldPath = 'SingleGroup.3/4-0';
+      const expectedSubFormFieldPath = 'SingleGroup.3/3-0/4-0';
 
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, observation);
 
@@ -420,7 +420,7 @@ describe('Control Record', () => {
 
     it('should update data from record when input obs is emtpy', () => {
       const emptyObservation = [];
-      const expectedSubFormFieldPath = 'SingleGroup.3/4-0';
+      const expectedSubFormFieldPath = 'SingleGroup.3/3-0/4-0';
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
 
       const updatedRecordTree = controlRecordTree.update(expectedSubFormFieldPath, updatedValue);
@@ -433,7 +433,7 @@ describe('Control Record', () => {
 
     it('should generate data from record when input obs is emtpy', () => {
       const emptyObservation = [];
-      const expectedSubFormFieldPath = 'SingleGroup.3/4-0';
+      const expectedSubFormFieldPath = 'SingleGroup.3/3-0/4-0';
       const controlRecordTree = (new ControlRecordTreeBuilder()).build(metadata, emptyObservation);
       const updatedRecordTree = controlRecordTree.update(expectedSubFormFieldPath, updatedValue);
 
@@ -616,5 +616,107 @@ describe('Control Record', () => {
       expect(nested.children.size).to.equal(1);
       expect(nested.children.get(0).value.value).to.equal(1212);
     });
+  });
+
+  it('should generate record tree when section is add-more in given metadata with child obsControl',
+      () => {
+        const metadata = {
+          name: 'section-add-more-with-obs',
+          id: 43,
+          uuid: '9b9b20ee-2350-42c3-b365-a395ec2590cb',
+          controls: [
+            {
+              type: 'section',
+              properties: {
+                addMore: true,
+              },
+              id: 1,
+              controls: [
+                {
+                  type: 'obsControl',
+                  properties: {
+                    addMore: false,
+                  },
+                  id: 2,
+                },
+              ],
+            },
+          ],
+          version: 1,
+        };
+
+        const observations = [
+          {
+            formFieldPath: 'section-add-more-with-obs.1/1-0/2-0',
+            value: 120,
+          },
+        ];
+
+        const controlRecordTree = new ControlRecordTreeBuilder().build(metadata, observations);
+        expect(controlRecordTree.children.size).to.equal(1);
+        expect(controlRecordTree.children.get(0).children.get(0).value.value).to.equal(120);
+      });
+
+  it('should generate record tree when section is add-more in given metadata with' +
+        'child obsGroupControl', () => {
+    const metadata = {
+      name: 'section-add-more-with-obsGroup',
+      id: 43,
+      uuid: '9b9b20ee-2350-42c3-b365-a395ec2590cb',
+      controls: [
+        {
+          type: 'section',
+          properties: {
+            addMore: true,
+          },
+          id: 1,
+          controls: [{
+            type: 'obsGroupControl',
+            properties: {
+              addMore: false,
+            },
+            id: 2,
+            controls: [
+              {
+                type: 'obsControl',
+                properties: {
+                  addMore: false,
+                },
+                id: 3,
+              },
+            ],
+          },
+          ],
+        },
+      ],
+      version: 1,
+    };
+
+    const observations = [
+      {
+        formFieldPath: 'section-add-more-with-obsGroup.1/1-0/2-0',
+        groupMembers: [
+          {
+            formFieldPath: 'section-add-more-with-obsGroup.1/1-0/2-0/3-0',
+            voided: false,
+            value: 120,
+          },
+        ],
+
+      },
+    ];
+
+    const controlRecordTree = new ControlRecordTreeBuilder().build(metadata, observations);
+    expect(controlRecordTree.children.size).to.equal(1);
+    const sectionRecord = controlRecordTree.children.get(0);
+    expect(sectionRecord.formFieldPath)
+          .to.eql('section-add-more-with-obsGroup.1/1-0');
+    const obsGroupRecord = sectionRecord.children.get(0);
+    expect(obsGroupRecord.formFieldPath)
+          .to.eql('section-add-more-with-obsGroup.1/1-0/2-0');
+    expect(obsGroupRecord.children.get(0).formFieldPath)
+          .to.eql('section-add-more-with-obsGroup.1/1-0/2-0/3-0');
+    expect(obsGroupRecord.children.get(0).value.value)
+          .to.equal(120);
   });
 });

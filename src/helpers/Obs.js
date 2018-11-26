@@ -144,9 +144,9 @@ export function obsFromMetadata(formNamespaceAndPath, metadata) {
   };
 }
 
-export function createObsFromControl(formName, formVersion, control, bahmniObservations = []) {
-  const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id);
-
+export function createObsFromControl(formName, formVersion, control, bahmniObservations = [],
+                                     parentFormFieldPath) {
+  const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id, parentFormFieldPath);
   const observationsForControl = bahmniObservations.filter(observation =>
     observation.formFieldPath.startsWith(keyPrefix.formFieldPath) &&
       new RegExp(`${keyPrefix.formFieldPath}[^0-9]`).test(observation.formFieldPath)
@@ -156,6 +156,7 @@ export function createObsFromControl(formName, formVersion, control, bahmniObser
     return observationsForControl;
   }
 
-  const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id);
+  const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id,
+      parentFormFieldPath);
   return [obsFromMetadata(formNamespaceAndPath, control)];
 }
