@@ -17,6 +17,8 @@ export class Section extends addMoreDecorator(Component) {
     this._onCollapse = this._onCollapse.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
     this.onControlRemove = this.onControlRemove.bind(this);
+    this.onAddControl = this.onAddControl.bind(this);
+    this.onRemoveControl = this.onRemoveControl.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -78,6 +80,7 @@ export class Section extends addMoreDecorator(Component) {
 
     return (
         <fieldset className="form-builder-fieldset">
+            {this.showAddMore()}
           <legend className={`${toggleClass}${disableClass}`} onClick={ this._onCollapse}>
             <i className="fa fa-caret-down"></i>
             <i className="fa fa-caret-right"></i>
