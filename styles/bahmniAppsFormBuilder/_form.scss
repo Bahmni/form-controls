@@ -321,6 +321,10 @@ $lightestGray: #eee;
 }
 
 .table-controls{
+  padding-top:  5px;
+  .row-wrapper{
+    flex:1
+  }
   .form-builder-row {
     display: flex;
     .form-builder-column{
@@ -342,10 +346,11 @@ $lightestGray: #eee;
   }
   .header{
     display: flex;
+    background: #ddd;
     .control-wrapper-content, .form-builder-label{
       flex: 1;
       border: 1px dotted #BBB;
-      padding: 2px;
+      padding: 5px;
     }
     label{
       font-weight: bold;

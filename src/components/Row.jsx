@@ -32,11 +32,29 @@ export default class Row extends Component {
   }
 
   render() {
-    const { controls, records, ...childProps } = this.props;
+    const { controls, records, isInTable, ...childProps } = this.props;
+    let shouldDisplayLeftEmptyCell = false;
+    let shouldDisplayRightEmptyCell = false;
     const groupedColumnControls = getGroupedControls(controls, 'column');
+    if (groupedColumnControls.length < 2 && isInTable) {
+      const column = groupedColumnControls[0][0].properties.location.column;
+      if (column === 0) {
+        shouldDisplayRightEmptyCell = true;
+      } else {
+        shouldDisplayLeftEmptyCell = true;
+      }
+    }
     return (
       <div className="form-builder-row">
+        {shouldDisplayLeftEmptyCell &&
+          <div className={classNames('form-builder-column', 'form-builder-column-empty-left')}>
+          </div>
+        }
         {this.getControlsByColumn(groupedColumnControls, records, childProps)}
+        {shouldDisplayRightEmptyCell &&
+          <div className={classNames('form-builder-column', 'form-builder-column-empty-right')}>
+          </div>
+        }
       </div>
     );
   }
@@ -48,6 +66,7 @@ Row.propTypes = {
   formName: PropTypes.string.isRequired,
   formVersion: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
+  isInTable: PropTypes.bool,
   onValueChanged: PropTypes.func.isRequired,
   records: PropTypes.any.isRequired,
   validate: PropTypes.bool.isRequired,

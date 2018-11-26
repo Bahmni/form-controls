@@ -66,11 +66,12 @@ export function getGroupedControls(controls, property) {
   return sortGroupedControls(groupedControls);
 }
 
-export function displayRowControls(controls, records, childProps) {
+export function displayRowControls(controls, records, childProps, isInTable = false) {
   return map(controls, (rowControls, index) =>
     <Row
       controls={rowControls}
       id={index}
+      isInTable={isInTable}
       key={index}
       records={records}
       {...childProps}

@@ -14,6 +14,7 @@ export { CodedControl } from 'components/CodedControl.jsx';
 export { Date } from 'components/Date.jsx';
 export { DateTime } from 'components/DateTime.jsx';
 export { Section } from 'components/Section.jsx';
+export { Table } from 'components/Table.jsx';
 export { Image } from 'components/Image.jsx';
 export { Video } from 'components/Video.jsx';
 export { Location } from 'components/Location.jsx';
