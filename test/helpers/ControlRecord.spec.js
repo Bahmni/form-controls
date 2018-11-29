@@ -1,6 +1,8 @@
 import ControlRecordTreeBuilder from '../../src/helpers/ControlRecordTreeBuilder';
 import ObservationMapper from '../../src/helpers/ObservationMapper';
 import { expect } from 'chai';
+import { ControlRecord } from 'src/helpers/ControlRecordTreeBuilder';
+import { List } from 'immutable';
 
 describe('Control Record', () => {
   const updatedValue = { value: 1, comment: undefined };
@@ -442,6 +444,94 @@ describe('Control Record', () => {
       expect(obs.length).to.equal(1);
       expect(obs[0].groupMembers.length).to.equal(1);
       expect(obs[0].groupMembers[0].value).to.equal(1);
+    });
+
+    it('should remove value of all child records when a parent record is removed', () => {
+      const innerObsControlRecord = new ControlRecord(
+        {
+          control: {
+            type: 'obsControl',
+            id: '4',
+            concept: {
+              name: 'This is concept',
+            },
+            units: null,
+            hiNormal: null,
+            lowNormal: null,
+            hiAbsolute: null,
+            lowAbsolute: null,
+          },
+          formFieldPath: 'ObsGroupTEst2.1/1-1/3-0/4-0',
+          value: {
+            value: 'aaaa',
+            comment: null,
+            interpretation: null,
+          },
+          active: true,
+          enabled: true,
+          hidden: false,
+          showAddMore: true,
+          showRemove: false,
+          errors: [],
+        }
+          );
+      const innerObsGrpControlRecord = new ControlRecord(
+        {
+          control: {
+            type: 'obsGroupControl',
+            properties: {
+              addMore: true,
+              location: {
+                column: 0,
+                row: 0,
+              },
+            },
+            id: '3',
+            concept: {
+            },
+          },
+          formFieldPath: 'ObsGroupTEst2.1/1-1/3-0',
+          children: List.of(innerObsControlRecord),
+          value: 'aaaa',
+          active: true,
+          enabled: true,
+          hidden: false,
+          showAddMore: true,
+          showRemove: false,
+          errors: [],
+        }
+          );
+      const parentControl = new ControlRecord(
+        {
+          control: {
+            type: 'section',
+            properties: {
+              addMore: true,
+              location: {
+                column: 0,
+                row: 0,
+              },
+            },
+            id: '1',
+          },
+          formFieldPath: 'ObsGroupTEst2.1/1-1',
+          children: List.of(innerObsGrpControlRecord),
+          value: {},
+          active: true,
+          enabled: true,
+          hidden: false,
+          showAddMore: true,
+          showRemove: false,
+          errors: [],
+        }
+          );
+      const formFieldPath = 'ObsGroupTEst2.1/1-1';
+      const updatedControlRecord = parentControl.update(formFieldPath, {}, [], true);
+
+      expect(updatedControlRecord.getValue()).to.eql(undefined);
+      expect(updatedControlRecord.active).to.eql(false);
+      expect(updatedControlRecord.children.get(0).getValue()).to.eql(undefined);
+      expect(updatedControlRecord.children.get(0).children.get(0).getValue()).to.eql(undefined);
     });
 
     it('should generate data from record when input obs is nested section', () => {
