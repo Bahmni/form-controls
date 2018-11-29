@@ -60,7 +60,8 @@ export const ControlRecord = new Record({
 
   update(formFieldPath, value, errors, isRemoved) {
     if (this.formFieldPath === formFieldPath) {
-      return (Object.keys(value).length === 0 && isRemoved ? this.set('active', false) : this)
+      return (Object.keys(value).length === 0 && isRemoved ? this.set('active', false)
+          .voidChildRecords() : this)
         .set('value', value)
         .set('errors', errors);
     }
@@ -72,6 +73,14 @@ export const ControlRecord = new Record({
       return this.set('children', childRecord);
     }
     return null;
+  },
+
+  voidChildRecords() {
+    if (this.children) {
+      const childRecord = this.children.map(record => record.voidChildRecords());
+      return this.set('children', childRecord);
+    }
+    return this.set('value', {});
   },
 
   getErrors() {
