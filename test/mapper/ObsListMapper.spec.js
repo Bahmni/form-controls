@@ -434,4 +434,882 @@ describe('ObsListMapper', () => {
 
     expect(value.comment).to.equal(obs1WithComment.comment);
   });
+  it('should return obs with same uuid available in obsList if formFieldPath matches', () => {
+    const multiSelectCtrlRecord = new ControlRecord({
+      valueMapper: {},
+      control: {
+        type: 'obsControl',
+        label: {
+          translationKey: 'P/A_PRESENTING_PART_7',
+          id: '7',
+          units: '',
+          type: 'label',
+          value: 'P/A Presenting Part',
+        },
+        properties: {
+          multiSelect: true,
+        },
+        id: '7',
+        unsupportedProperties: [],
+        concept: {
+          name: 'P/A Presenting Part',
+          uuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
+          datatype: 'Coded',
+          conceptClass: 'Misc',
+          conceptHandler: null,
+          answers: [
+            {
+              uuid: 'c4526510-3f10-11e4-adec-0800271c1b75',
+              name: {
+                display: 'Cephalic',
+                uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+                name: 'Cephalic',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                links: [
+                ],
+                resourceVersion: '1.9',
+              },
+              names: [
+                {
+                  display: 'Cephalic',
+                  uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+                  name: 'Cephalic',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+                  ],
+                  resourceVersion: '1.9',
+                },
+                {
+                  display: 'Cephalic',
+                  uuid: '57626fe7-a25e-404f-8c5e-427b407f97aa',
+                  name: 'Cephalic',
+                  locale: 'en',
+                  localePreferred: false,
+                  conceptNameType: 'SHORT',
+                  links: [
+                  ],
+                  resourceVersion: '1.9',
+                },
+              ],
+              displayString: 'Cephalic',
+              resourceVersion: '2.0',
+              translationKey: 'CEPHALIC_7',
+            },
+            {
+              uuid: 'c45329de-3f10-11e4-adec-0800271c1b75',
+              name: {
+                display: 'Breech',
+                uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+                name: 'Breech',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                links: [
+
+                ],
+                resourceVersion: '1.9',
+              },
+              names: [
+                {
+                  display: 'Breech',
+                  uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+                  name: 'Breech',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                {
+                  display: 'Breech',
+                  uuid: '0ab2ccd3-40e9-43ef-99c2-b6b745a49135',
+                  name: 'Breech',
+                  locale: 'en',
+                  localePreferred: false,
+                  conceptNameType: 'SHORT',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+              ],
+              displayString: 'Breech',
+              resourceVersion: '2.0',
+              translationKey: 'BREECH_7',
+            },
+            {
+              uuid: 'c453caa3-3f10-11e4-adec-0800271c1b75',
+              name: {
+                display: 'Transverse',
+                uuid: 'c453d148-3f10-11e4-adec-0800271c1b75',
+                name: 'Transverse',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                links: [
+
+                ],
+                resourceVersion: '1.9',
+              },
+              names: [
+                {
+                  display: 'Transverse',
+                  uuid: 'c453ce42-3f10-11e4-adec-0800271c1b75',
+                  name: 'Transverse',
+                  locale: 'en',
+                  localePreferred: false,
+                  conceptNameType: 'SHORT',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                {
+                  display: 'Transverse',
+                  uuid: 'c453d148-3f10-11e4-adec-0800271c1b75',
+                  name: 'Transverse',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+              ],
+              displayString: 'Transverse',
+              resourceVersion: '2.0',
+              translationKey: 'TRANSVERSE_7',
+            },
+          ],
+          properties: {
+            allowDecimal: null,
+          },
+        },
+        units: null,
+        hiNormal: null,
+        lowNormal: null,
+        hiAbsolute: null,
+        lowAbsolute: null,
+      },
+      formFieldPath: 'multiSelectThree.7/6-0/7-0',
+      dataSource: {
+        formFieldPath: 'multiSelectThree.7/6-0/7-0',
+        obs: {
+          concept: {
+            name: 'P/A Presenting Part',
+            uuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
+            datatype: 'Coded',
+            conceptClass: 'Misc',
+            conceptHandler: null,
+            answers: [
+              {
+                uuid: 'c4526510-3f10-11e4-adec-0800271c1b75',
+                name: {
+                  display: 'Cephalic',
+                  uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+                  name: 'Cephalic',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                names: [
+                  {
+                    display: 'Cephalic',
+                    uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+                    name: 'Cephalic',
+                    locale: 'en',
+                    localePreferred: true,
+                    conceptNameType: 'FULLY_SPECIFIED',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                  {
+                    display: 'Cephalic',
+                    uuid: '57626fe7-a25e-404f-8c5e-427b407f97aa',
+                    name: 'Cephalic',
+                    locale: 'en',
+                    localePreferred: false,
+                    conceptNameType: 'SHORT',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                ],
+                displayString: 'Cephalic',
+                resourceVersion: '2.0',
+                translationKey: 'CEPHALIC_7',
+              },
+              {
+                uuid: 'c45329de-3f10-11e4-adec-0800271c1b75',
+                name: {
+                  display: 'Breech',
+                  uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+                  name: 'Breech',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                names: [
+                  {
+                    display: 'Breech',
+                    uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+                    name: 'Breech',
+                    locale: 'en',
+                    localePreferred: true,
+                    conceptNameType: 'FULLY_SPECIFIED',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                  {
+                    display: 'Breech',
+                    uuid: '0ab2ccd3-40e9-43ef-99c2-b6b745a49135',
+                    name: 'Breech',
+                    locale: 'en',
+                    localePreferred: false,
+                    conceptNameType: 'SHORT',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                ],
+                displayString: 'Breech',
+                resourceVersion: '2.0',
+                translationKey: 'BREECH_7',
+              },
+              {
+                uuid: 'c453caa3-3f10-11e4-adec-0800271c1b75',
+                name: {
+                  display: 'Transverse',
+                  uuid: 'c453d148-3f10-11e4-adec-0800271c1b75',
+                  name: 'Transverse',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                names: [
+                  {
+                    display: 'Transverse',
+                    uuid: 'c453ce42-3f10-11e4-adec-0800271c1b75',
+                    name: 'Transverse',
+                    locale: 'en',
+                    localePreferred: false,
+                    conceptNameType: 'SHORT',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                  {
+                    display: 'Transverse',
+                    uuid: 'c453d148-3f10-11e4-adec-0800271c1b75',
+                    name: 'Transverse',
+                    locale: 'en',
+                    localePreferred: true,
+                    conceptNameType: 'FULLY_SPECIFIED',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                ],
+                displayString: 'Transverse',
+                resourceVersion: '2.0',
+                translationKey: 'TRANSVERSE_7',
+              },
+            ],
+            properties: {
+              allowDecimal: null,
+            },
+          },
+          formNamespace: 'Bahmni',
+          formFieldPath: 'multiSelectThree.7/6-0/7-0',
+          voided: true,
+        },
+        obsList: [
+          {
+            encounterDateTime: 1543830864000,
+            visitStartDateTime: null,
+            targetObsRelation: null,
+            groupMembers: [],
+            providers: [
+              {
+                uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
+                name: 'Super Man',
+                encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
+              },
+            ],
+            isAbnormal: null,
+            duration: null,
+            type: 'Coded',
+            encounterUuid: '28b24937-c8a9-4444-92b1-c6371ceb87d4',
+            obsGroupUuid: null,
+            creatorName: 'Super Man',
+            conceptSortWeight: 1,
+            parentConceptUuid: null,
+            hiNormal: null,
+            lowNormal: null,
+            formNamespace: 'Bahmni',
+            formFieldPath: 'multiSelectThree.7/6-0/7-0',
+            interpretation: null,
+            status: 'FINAL',
+            complexData: null,
+            conceptUuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
+            concept: {
+              uuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
+              name: 'P/A Presenting Part',
+              dataType: 'Coded',
+              shortName: 'P/A Presenting Part',
+              conceptClass: 'Misc',
+              hiNormal: null,
+              lowNormal: null,
+              set: false,
+              mappings: [],
+            },
+            valueAsString: 'Cephalic',
+            voided: false,
+            voidReason: null,
+            unknown: false,
+            uuid: 'e4bb9974-e3e6-4a35-a985-741f6a267e7b',
+            observationDateTime: '2018-12-03T09:54:24.000+0000',
+            orderUuid: null,
+            abnormal: null,
+            conceptNameToDisplay: 'P/A Presenting Part',
+            comment: null,
+            value: {
+              uuid: 'c4526510-3f10-11e4-adec-0800271c1b75',
+              name: 'Cephalic',
+              dataType: 'N/A',
+              shortName: 'Cephalic',
+              conceptClass: 'Misc',
+              hiNormal: null,
+              lowNormal: null,
+              set: false,
+              mappings: [],
+              translationKey: 'CEPHALIC_7',
+            },
+          },
+          {
+            encounterDateTime: 1543830864000,
+            visitStartDateTime: null,
+            targetObsRelation: null,
+            groupMembers: [],
+            providers: [
+              {
+                uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
+                name: 'Super Man',
+                encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
+              },
+            ],
+            isAbnormal: null,
+            duration: null,
+            type: 'Coded',
+            encounterUuid: '28b24937-c8a9-4444-92b1-c6371ceb87d4',
+            obsGroupUuid: null,
+            creatorName: 'Super Man',
+            conceptSortWeight: 1,
+            parentConceptUuid: null,
+            hiNormal: null,
+            lowNormal: null,
+            formNamespace: 'Bahmni',
+            formFieldPath: 'multiSelectThree.7/6-0/7-0',
+            interpretation: null,
+            status: 'FINAL',
+            complexData: null,
+            conceptUuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
+            concept: {
+              uuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
+              name: 'P/A Presenting Part',
+              dataType: 'Coded',
+              shortName: 'P/A Presenting Part',
+              conceptClass: 'Misc',
+              hiNormal: null,
+              lowNormal: null,
+              set: false,
+              mappings: [],
+            },
+            valueAsString: 'Breech',
+            voided: false,
+            voidReason: null,
+            unknown: false,
+            uuid: '9e469b18-2859-484a-b8f5-2f12037a0ab2',
+            observationDateTime: '2018-12-03T09:54:24.000+0000',
+            orderUuid: null,
+            abnormal: null,
+            conceptNameToDisplay: 'P/A Presenting Part',
+            comment: null,
+            value: {
+              uuid: 'c45329de-3f10-11e4-adec-0800271c1b75',
+              name: 'Breech',
+              dataType: 'N/A',
+              shortName: 'Breech',
+              conceptClass: 'Misc',
+              hiNormal: null,
+              lowNormal: null,
+              set: false,
+              mappings: [],
+              translationKey: 'BREECH_7',
+            },
+          },
+        ],
+      },
+    });
+
+    const obsArray = new ObsListMapper().getData(multiSelectCtrlRecord);
+
+    expect(obsArray.length).to.be.equal(2);
+    expect(obsArray[0].uuid).to.be.equal('e4bb9974-e3e6-4a35-a985-741f6a267e7b');
+    expect(obsArray[1].uuid).to.be.equal('9e469b18-2859-484a-b8f5-2f12037a0ab2');
+  });
+
+  it('should return obs with undefined uuid if obsList is not available', () => {
+    const multiSelectCtrlRecord = new ControlRecord({
+      valueMapper: {},
+      control: {
+        type: 'obsControl',
+        label: {
+          translationKey: 'P/A_PRESENTING_PART_7',
+          id: '7',
+          units: '',
+          type: 'label',
+          value: 'P/A Presenting Part',
+        },
+        properties: {
+          multiSelect: true,
+        },
+        id: '7',
+        unsupportedProperties: [],
+        concept: {
+          name: 'P/A Presenting Part',
+          uuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
+          datatype: 'Coded',
+          conceptClass: 'Misc',
+          conceptHandler: null,
+          answers: [
+            {
+              uuid: 'c4526510-3f10-11e4-adec-0800271c1b75',
+              name: {
+                display: 'Cephalic',
+                uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+                name: 'Cephalic',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                links: [
+                ],
+                resourceVersion: '1.9',
+              },
+              names: [
+                {
+                  display: 'Cephalic',
+                  uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+                  name: 'Cephalic',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+                  ],
+                  resourceVersion: '1.9',
+                },
+                {
+                  display: 'Cephalic',
+                  uuid: '57626fe7-a25e-404f-8c5e-427b407f97aa',
+                  name: 'Cephalic',
+                  locale: 'en',
+                  localePreferred: false,
+                  conceptNameType: 'SHORT',
+                  links: [
+                  ],
+                  resourceVersion: '1.9',
+                },
+              ],
+              displayString: 'Cephalic',
+              resourceVersion: '2.0',
+              translationKey: 'CEPHALIC_7',
+            },
+            {
+              uuid: 'c45329de-3f10-11e4-adec-0800271c1b75',
+              name: {
+                display: 'Breech',
+                uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+                name: 'Breech',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                links: [
+
+                ],
+                resourceVersion: '1.9',
+              },
+              names: [
+                {
+                  display: 'Breech',
+                  uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+                  name: 'Breech',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                {
+                  display: 'Breech',
+                  uuid: '0ab2ccd3-40e9-43ef-99c2-b6b745a49135',
+                  name: 'Breech',
+                  locale: 'en',
+                  localePreferred: false,
+                  conceptNameType: 'SHORT',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+              ],
+              displayString: 'Breech',
+              resourceVersion: '2.0',
+              translationKey: 'BREECH_7',
+            },
+            {
+              uuid: 'c453caa3-3f10-11e4-adec-0800271c1b75',
+              name: {
+                display: 'Transverse',
+                uuid: 'c453d148-3f10-11e4-adec-0800271c1b75',
+                name: 'Transverse',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                links: [
+
+                ],
+                resourceVersion: '1.9',
+              },
+              names: [
+                {
+                  display: 'Transverse',
+                  uuid: 'c453ce42-3f10-11e4-adec-0800271c1b75',
+                  name: 'Transverse',
+                  locale: 'en',
+                  localePreferred: false,
+                  conceptNameType: 'SHORT',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                {
+                  display: 'Transverse',
+                  uuid: 'c453d148-3f10-11e4-adec-0800271c1b75',
+                  name: 'Transverse',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+              ],
+              displayString: 'Transverse',
+              resourceVersion: '2.0',
+              translationKey: 'TRANSVERSE_7',
+            },
+          ],
+          properties: {
+            allowDecimal: null,
+          },
+        },
+        units: null,
+        hiNormal: null,
+        lowNormal: null,
+        hiAbsolute: null,
+        lowAbsolute: null,
+      },
+      formFieldPath: 'multiSelectThree.7/6-0/7-0',
+      value: {
+        value: [
+          {
+            uuid: 'c4526510-3f10-11e4-adec-0800271c1b75',
+            name: {
+              display: 'Cephalic',
+              uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+              name: 'Cephalic',
+              locale: 'en',
+              localePreferred: true,
+              conceptNameType: 'FULLY_SPECIFIED',
+              links: [
+
+              ],
+              resourceVersion: '1.9',
+            },
+            names: [
+              {
+                display: 'Cephalic',
+                uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+                name: 'Cephalic',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                links: [
+
+                ],
+                resourceVersion: '1.9',
+              },
+              {
+                display: 'Cephalic',
+                uuid: '57626fe7-a25e-404f-8c5e-427b407f97aa',
+                name: 'Cephalic',
+                locale: 'en',
+                localePreferred: false,
+                conceptNameType: 'SHORT',
+                links: [
+
+                ],
+                resourceVersion: '1.9',
+              },
+            ],
+            displayString: 'Cephalic',
+            resourceVersion: '2.0',
+            translationKey: 'CEPHALIC_7',
+          },
+          {
+            uuid: 'c45329de-3f10-11e4-adec-0800271c1b75',
+            name: {
+              display: 'Breech',
+              uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+              name: 'Breech',
+              locale: 'en',
+              localePreferred: true,
+              conceptNameType: 'FULLY_SPECIFIED',
+              links: [
+
+              ],
+              resourceVersion: '1.9',
+            },
+            names: [
+              {
+                display: 'Breech',
+                uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+                name: 'Breech',
+                locale: 'en',
+                localePreferred: true,
+                conceptNameType: 'FULLY_SPECIFIED',
+                links: [
+
+                ],
+                resourceVersion: '1.9',
+              },
+              {
+                display: 'Breech',
+                uuid: '0ab2ccd3-40e9-43ef-99c2-b6b745a49135',
+                name: 'Breech',
+                locale: 'en',
+                localePreferred: false,
+                conceptNameType: 'SHORT',
+                links: [
+
+                ],
+                resourceVersion: '1.9',
+              },
+            ],
+            displayString: 'Breech',
+            resourceVersion: '2.0',
+            translationKey: 'BREECH_7',
+          },
+        ],
+        comment: null,
+        interpretation: null,
+      },
+      active: true,
+      enabled: true,
+      hidden: false,
+      showAddMore: true,
+      showRemove: false,
+      errors: [],
+      dataSource: {
+        formFieldPath: 'multiSelectThree.7/6-0/7-0',
+        obs: {
+          concept: {
+            name: 'P/A Presenting Part',
+            uuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
+            datatype: 'Coded',
+            conceptClass: 'Misc',
+            conceptHandler: null,
+            answers: [
+              {
+                uuid: 'c4526510-3f10-11e4-adec-0800271c1b75',
+                name: {
+                  display: 'Cephalic',
+                  uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+                  name: 'Cephalic',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                names: [
+                  {
+                    display: 'Cephalic',
+                    uuid: 'c4526bb2-3f10-11e4-adec-0800271c1b75',
+                    name: 'Cephalic',
+                    locale: 'en',
+                    localePreferred: true,
+                    conceptNameType: 'FULLY_SPECIFIED',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                  {
+                    display: 'Cephalic',
+                    uuid: '57626fe7-a25e-404f-8c5e-427b407f97aa',
+                    name: 'Cephalic',
+                    locale: 'en',
+                    localePreferred: false,
+                    conceptNameType: 'SHORT',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                ],
+                displayString: 'Cephalic',
+                resourceVersion: '2.0',
+                translationKey: 'CEPHALIC_7',
+              },
+              {
+                uuid: 'c45329de-3f10-11e4-adec-0800271c1b75',
+                name: {
+                  display: 'Breech',
+                  uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+                  name: 'Breech',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                names: [
+                  {
+                    display: 'Breech',
+                    uuid: 'c45330f0-3f10-11e4-adec-0800271c1b75',
+                    name: 'Breech',
+                    locale: 'en',
+                    localePreferred: true,
+                    conceptNameType: 'FULLY_SPECIFIED',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                  {
+                    display: 'Breech',
+                    uuid: '0ab2ccd3-40e9-43ef-99c2-b6b745a49135',
+                    name: 'Breech',
+                    locale: 'en',
+                    localePreferred: false,
+                    conceptNameType: 'SHORT',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                ],
+                displayString: 'Breech',
+                resourceVersion: '2.0',
+                translationKey: 'BREECH_7',
+              },
+              {
+                uuid: 'c453caa3-3f10-11e4-adec-0800271c1b75',
+                name: {
+                  display: 'Transverse',
+                  uuid: 'c453d148-3f10-11e4-adec-0800271c1b75',
+                  name: 'Transverse',
+                  locale: 'en',
+                  localePreferred: true,
+                  conceptNameType: 'FULLY_SPECIFIED',
+                  links: [
+
+                  ],
+                  resourceVersion: '1.9',
+                },
+                names: [
+                  {
+                    display: 'Transverse',
+                    uuid: 'c453ce42-3f10-11e4-adec-0800271c1b75',
+                    name: 'Transverse',
+                    locale: 'en',
+                    localePreferred: false,
+                    conceptNameType: 'SHORT',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                  {
+                    display: 'Transverse',
+                    uuid: 'c453d148-3f10-11e4-adec-0800271c1b75',
+                    name: 'Transverse',
+                    locale: 'en',
+                    localePreferred: true,
+                    conceptNameType: 'FULLY_SPECIFIED',
+                    links: [
+
+                    ],
+                    resourceVersion: '1.9',
+                  },
+                ],
+                displayString: 'Transverse',
+                resourceVersion: '2.0',
+                translationKey: 'TRANSVERSE_7',
+              },
+            ],
+            properties: {
+              allowDecimal: null,
+            },
+          },
+          formNamespace: 'Bahmni',
+          formFieldPath: 'multiSelectThree.7/6-0/7-0',
+          voided: true,
+        },
+        obsList: [],
+      },
+    });
+
+    const obsArray = new ObsListMapper().getData(multiSelectCtrlRecord);
+
+    expect(obsArray.length).to.be.equal(2);
+    expect(obsArray[0].uuid).to.be.equal(undefined);
+    expect(obsArray[1].uuid).to.be.equal(undefined);
+  });
 });
