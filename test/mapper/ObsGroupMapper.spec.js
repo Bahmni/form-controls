@@ -137,22 +137,22 @@ describe('ObsGroupMapper', () => {
     const secondObsFormFieldPath = 'Test1.1/2-1';
 
     const observation = [
-      {
+      new Obs({
         formFieldPath: firstObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             formFieldPath: firstObsFormFieldPath,
-          },
+          }),
         ],
-      },
-      {
+      }),
+      new Obs({
         formFieldPath: secondObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             formFieldPath: secondObsFormFieldPath,
-          },
+          }),
         ],
-      },
+      }),
     ];
     const obsArray = new ObsGroupMapper()
             .getInitialObject(formName, formVersion, control, observation, observation);
@@ -198,22 +198,22 @@ describe('ObsGroupMapper', () => {
     const secondObsFormFieldPath = 'Test1.1/1-1/2-0';
 
     const observation = [
-      {
+      new Obs({
         formFieldPath: firstObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             formFieldPath: firstObsFormFieldPath,
-          },
+          }),
         ],
-      },
-      {
+      }),
+      new Obs({
         formFieldPath: secondObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             formFieldPath: secondObsFormFieldPath,
-          },
+          }),
         ],
-      },
+      }),
     ];
     const obsArray = new ObsGroupMapper()
             .getInitialObject(formName, formVersion, control, observation, observation);
@@ -260,22 +260,22 @@ describe('ObsGroupMapper', () => {
     const secondObsFormFieldPath = 'Test1.1/1-0/2-1/3-0';
 
     const observation = [
-      {
+      new Obs({
         formFieldPath: firstObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             formFieldPath: firstObsFormFieldPath,
-          },
+          }),
         ],
-      },
-      {
+      }),
+      new Obs({
         formFieldPath: secondObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             formFieldPath: secondObsFormFieldPath,
-          },
+          }),
         ],
-      },
+      }),
     ];
     const obsArray = new ObsGroupMapper()
             .getInitialObject(formName, formVersion, control, observation, observation,
@@ -368,7 +368,7 @@ describe('ObsGroupMapper', () => {
     const secondObsFormFieldPath = 'Test1.1/2-1';
 
     const observation = [
-      {
+      new Obs({
         concept: {
           dataType: 'N/A',
           name: 'Bacteriology Additional Attributes',
@@ -376,7 +376,7 @@ describe('ObsGroupMapper', () => {
         },
         formFieldPath: firstObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             concept: {
               dataType: 'Text',
               name: 'Consultation Note',
@@ -387,13 +387,13 @@ describe('ObsGroupMapper', () => {
             obsGroupUuid: '26a81979-d28c-4e7b-b490-d86dd53b23d7',
             uuid: '20f2e76a-63f2-4f05-9b3a-5cc80af1cdba',
             value: '1',
-          },
+          }),
         ],
         uuid: '26a81979-d28c-4e7b-b490-d86dd53b23d7',
         value: '1',
         voided: false,
-      },
-      {
+      }),
+      new Obs({
         concept: {
           dataType: 'N/A',
           name: 'Bacteriology Additional Attributes',
@@ -401,7 +401,7 @@ describe('ObsGroupMapper', () => {
         },
         formFieldPath: secondObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             concept: {
               dataType: 'Text',
               name: 'Consultation Note',
@@ -414,12 +414,12 @@ describe('ObsGroupMapper', () => {
             uuid: 'd16dee4e-ac4f-4ad7-ba35-89b73d39220d',
             value: '2',
             voided: false,
-          },
+          }),
         ],
         uuid: '09f0ddbe-45a2-41d8-8a99-416059f61b21',
         value: '2',
         voided: false,
-      },
+      }),
     ];
 
     const obsArray = new ObsGroupMapper()

@@ -13,7 +13,7 @@ export class ObsListMapper {
                    parentFormFieldpath) {
     const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id,
         parentFormFieldpath);
-    const obs = obsFromMetadata(formNamespaceAndPath, control);
+    let obs = obsFromMetadata(formNamespaceAndPath, control);
 
     const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id,
         parentFormFieldpath);
@@ -31,7 +31,7 @@ export class ObsListMapper {
         inactive = observation.inactive;
       }
 
-      obs.formFieldPath = formFieldPath;
+      obs = obs.set('formFieldPath', formFieldPath);
 
       obsLists.push(new ObsList({ obsList, formFieldPath, obs, inactive }));
     });
@@ -58,7 +58,12 @@ export class ObsListMapper {
   }
 
   buildObs(record, value, uuid, comment) {
-    const obs = cloneDeep(record.dataSource.obs);
+    const targetValue = record.dataSource.obsList.filter(
+        (obs) => (value && obs.value.uuid === value.uuid &&
+        obs.formFieldPath === record.formFieldPath)
+    );
+    const obs = (targetValue.size > 0 ? cloneDeep(targetValue.get(0)) :
+      cloneDeep(record.dataSource.obs)).toJS();
     obs.uuid = uuid;
     obs.value = value;
     obs.inactive = !record.active;
@@ -96,7 +101,8 @@ export class ObsListMapper {
             (obs) => (obs.value.uuid === value.uuid && obs.formFieldPath === record.formFieldPath)
           );
           const uuid = targetValue.size > 0 ? targetValue.get(0).uuid : undefined;
-          obsArray.push(this.buildObs(record, value, uuid, record.value.comment));
+          const newValue = record.voided ? undefined : value;
+          obsArray.push(this.buildObs(record, newValue, uuid, record.value.comment));
         }
       );
     }

@@ -88,7 +88,7 @@ export class Container extends addMoreDecorator(Component) {
     this.setState((previousState) => (
       {
         ...previousState,
-        data: previousState.data.update(formFieldPath, {}, [], true),
+        data: previousState.data.remove(formFieldPath),
         collapse: undefined,
       }
     ));

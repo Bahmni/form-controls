@@ -3,7 +3,8 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 import { ControlRecord } from 'src/helpers/ControlRecordTreeBuilder';
-
+import { Obs } from 'src/helpers/Obs';
+import { ObsList } from 'src/helpers/ObsList';
 chai.use(chaiEnzyme());
 
 describe('ControlRecordTreeBuilder', () => {
@@ -246,7 +247,6 @@ describe('ControlRecordTreeBuilder', () => {
     };
 
     const rootRecordTree = new ControlRecordTreeBuilder().build(metadata, observations);
-
     const activeRecord = rootRecordTree.children.get(0);
     expect(activeRecord.formFieldPath).to.equal(activeFormFieldPath);
     expect(activeRecord.active).to.equal(true);
@@ -443,5 +443,845 @@ describe('ControlRecordTreeBuilder', () => {
       },
     });
     expect(obsRecordTree.getErrors().length).to.equals(0);
+  });
+  describe('parse obs', () => {
+    it('should parse the obs to return it in the Immutable Obs format', () => {
+      const obsConcept = {
+        answers: [],
+        datatype: 'Numeric',
+        description: [],
+        name: 'Pulse',
+        properties: {
+          allowDecimal: true,
+        },
+        uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+      };
+      const observation =
+        {
+          concept: obsConcept,
+          formFieldPath: 'FormName.Version/1-0',
+          formNamespace: 'Bahmni',
+          inactive: false,
+          voided: true,
+        };
+
+      expect(() => {observation.formFieldPath = 'FormName.Version/1-0';}).to.not.throw();
+      const parsedObs = new ControlRecordTreeBuilder().parseObs(observation);
+      expect(() => {parsedObs.formFieldPath = 'FormName.Version/1-0';}).to.throw();
+    });
+
+    it('should parse the obs group memebers to return it in the Immutable Obs format', () => {
+      const obsConcept = {
+        answers: [],
+        datatype: 'Numeric',
+        description: [],
+        name: 'Pulse',
+        properties: {
+          allowDecimal: true,
+        },
+        uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+      };
+      const observation =
+        {
+          concept: obsConcept,
+          formFieldPath: 'FormName.Version/1-0',
+          formNamespace: 'Bahmni',
+          inactive: false,
+          voided: true,
+          groupMembers: [
+            {
+              concept: obsConcept,
+              formFieldPath: 'FormName.Version/1-0/2-0',
+              formNamespace: 'Bahmni',
+              inactive: false,
+              voided: true,
+            },
+          ],
+        };
+
+      expect(() => {observation.formFieldPath = 'FormName.Version/1-0';}).to.not.throw();
+      const parsedObs = new ControlRecordTreeBuilder().parseObs(observation);
+      expect(() => {parsedObs.formFieldPath = 'FormName.Version/1-0';}).to.throw();
+      expect(() => {
+        parsedObs.groupMembers[0]
+        .formFieldPath = 'FormName.Version/1-0/2-0';
+      }).to.throw();
+    });
+
+    it('should parse the obs group memebers containing group members to return it'
+      + 'in the Immutable Obs format', () => {
+      const obsConcept = {
+        answers: [],
+        datatype: 'Numeric',
+        description: [],
+        name: 'Pulse',
+        properties: {
+          allowDecimal: true,
+        },
+        uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+      };
+      const observation =
+        {
+          concept: obsConcept,
+          formFieldPath: 'FormName.Version/1-0',
+          formNamespace: 'Bahmni',
+          inactive: false,
+          voided: true,
+          groupMembers: [
+            {
+              concept: obsConcept,
+              formFieldPath: 'FormName.Version/1-0/2-0',
+              formNamespace: 'Bahmni',
+              inactive: false,
+              voided: true,
+              groupMembers: [
+                {
+                  concept: obsConcept,
+                  formFieldPath: 'FormName.Version/1-0/2-0',
+                  formNamespace: 'Bahmni',
+                  inactive: false,
+                  voided: true,
+                },
+              ],
+            },
+          ],
+        };
+
+      expect(() => {observation.formFieldPath = 'FormName.Version/1-0';}).to.not.throw();
+      const parsedObs = new ControlRecordTreeBuilder().parseObs(observation);
+      expect(() => {parsedObs.formFieldPath = 'FormName.Version/1-0';}).to.throw();
+      expect(() => {
+        parsedObs.groupMembers[0].groupMembers[0]
+        .formFieldPath = 'FormName.Version/1-0/2-0';
+      }).to.throw();
+    });
+  });
+  describe('remove', () => {
+    describe('control without any value stored in database', () => {
+      it('should return the new tree after removing the control which does not contain any' +
+        ' child and matches the form field path', () => {
+        const obsConcept = {
+          answers: [],
+          datatype: 'Numeric',
+          description: [],
+          hiAbsolute: null,
+          hiNormal: null,
+          lowAbsolute: null,
+          lowNormal: null,
+          name: 'TestObs',
+          properties: {
+            allowDecimal: false,
+          },
+          units: null,
+          uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+        };
+        const formFieldPath1 = 'SingleGroup.1/1-0';
+        const formFieldPath2 = 'SingleGroup.1/2-0';
+        const control = {
+          concept: obsConcept,
+          hiAbsolute: null,
+          hiNormal: null,
+          id: '4',
+          label: {
+            type: 'label',
+            value: 'TestObs',
+          },
+          lowAbsolute: null,
+          lowNormal: null,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: {
+              column: 0,
+              row: 0,
+            },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: null,
+        };
+        const controlRecord1 = new ControlRecord({
+          control,
+          formFieldPath: formFieldPath1,
+          value: {},
+          active: true,
+          dataSource: {
+            concept: obsConcept,
+            formFieldPath: formFieldPath1,
+            formNamespace: 'Bahmni',
+            voided: true,
+          },
+        });
+        const controlRecord2 = new ControlRecord({
+          control,
+          formFieldPath: formFieldPath2,
+          value: {},
+          active: true,
+          dataSource: {
+            concept: obsConcept,
+            formFieldPath: formFieldPath2,
+            formNamespace: 'Bahmni',
+            voided: true,
+          },
+        });
+        const rootRecordTree = new ControlRecord({ children: List.of(controlRecord1,
+          controlRecord2) });
+        const updatedRecordTree = rootRecordTree.remove(formFieldPath1);
+        expect(updatedRecordTree.children.size).to.equal(1);
+      });
+
+      it('should return the new tree by removing a nested child that matches the form field' +
+        ' path', () => {
+        const obsConcept = {
+          answers: [],
+          datatype: 'Numeric',
+          description: [],
+          hiAbsolute: null,
+          hiNormal: null,
+          lowAbsolute: null,
+          lowNormal: null,
+          name: 'TestObs',
+          properties: {
+            allowDecimal: false,
+          },
+          units: null,
+          uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+        };
+        const formFieldPath1 = 'SingleGroup.1/1-0';
+        const formFieldPath1of1 = 'SingleGroup.1/1-0/1-0';
+        const formFieldPath2of1 = 'SingleGroup.1/1-0/1-1';
+        const formFieldPath2 = 'SingleGroup.1/2-0';
+        const control = {
+          concept: obsConcept,
+          hiAbsolute: null,
+          hiNormal: null,
+          id: '4',
+          label: {
+            type: 'label',
+            value: 'TestObs',
+          },
+          lowAbsolute: null,
+          lowNormal: null,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: {
+              column: 0,
+              row: 0,
+            },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: null,
+        };
+        const controlRecord1of1 = new ControlRecord({
+          control,
+          formFieldPath: formFieldPath1of1,
+          value: {},
+          active: true,
+          dataSource: {
+            concept: obsConcept,
+            formFieldPath: formFieldPath1of1,
+            formNamespace: 'Bahmni',
+            voided: true,
+          },
+        });
+        const controlRecord2of1 = new ControlRecord({
+          control,
+          formFieldPath: formFieldPath2of1,
+          value: {},
+          active: true,
+          dataSource: {
+            concept: obsConcept,
+            formFieldPath: formFieldPath2of1,
+            formNamespace: 'Bahmni',
+            voided: true,
+          },
+        });
+
+        const controlRecord1 = new ControlRecord({
+          children: List.of(controlRecord1of1,
+              controlRecord2of1), formFieldPath: formFieldPath1,
+        });
+        const controlRecord2 = new ControlRecord({
+          control,
+          formFieldPath: formFieldPath2,
+          value: {},
+          active: true,
+          dataSource: {
+            concept: obsConcept,
+            formFieldPath: formFieldPath2,
+            formNamespace: 'Bahmni',
+            voided: true,
+          },
+        });
+        const rootRecordTree = new ControlRecord({ children: List.of(controlRecord1,
+          controlRecord2) });
+        const updatedRecordTree = rootRecordTree.remove(formFieldPath1of1);
+        expect(updatedRecordTree.children.size).to.equal(2);
+        expect(updatedRecordTree.children.get(0).children.size).to.equal(1);
+      });
+    });
+    describe('control with obs uuid, which is saved to database', () => {
+      it('should void an obs and return the tree with the voided record', () => {
+        const obsConcept = {
+          answers: [],
+          datatype: 'Numeric',
+          description: [],
+          hiAbsolute: null,
+          hiNormal: null,
+          lowAbsolute: null,
+          lowNormal: null,
+          name: 'TestObs',
+          properties: {
+            allowDecimal: false,
+          },
+          units: null,
+          uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+        };
+        const formFieldPath1 = 'SingleGroup.1/1-0';
+        const formFieldPath2 = 'SingleGroup.1/2-0';
+        const control = {
+          concept: obsConcept,
+          hiAbsolute: null,
+          hiNormal: null,
+          id: '4',
+          label: {
+            type: 'label',
+            value: 'TestObs',
+          },
+          lowAbsolute: null,
+          lowNormal: null,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: {
+              column: 0,
+              row: 0,
+            },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: null,
+        };
+        const controlRecord1 = new ControlRecord({
+          control,
+          formFieldPath: formFieldPath1,
+          value: {},
+          active: true,
+          dataSource: {
+            concept: obsConcept,
+            formFieldPath: formFieldPath1,
+            formNamespace: 'Bahmni',
+            uuid: 'control_record_1',
+          },
+        });
+        const controlRecord2 = new ControlRecord({
+          control,
+          formFieldPath: formFieldPath2,
+          value: {},
+          active: true,
+          dataSource: {
+            concept: obsConcept,
+            formFieldPath: formFieldPath2,
+            formNamespace: 'Bahmni',
+            uuid: 'control_record_2',
+          },
+        });
+        const rootRecordTree = new ControlRecord({ children: List.of(controlRecord1,
+          controlRecord2) });
+        const updatedRootRocordTree = rootRecordTree.remove(formFieldPath2);
+        expect(updatedRootRocordTree.children.size).to.eql(2);
+        expect(updatedRootRocordTree.children.get(1).voided).to.eql(true);
+        expect(updatedRootRocordTree.children.get(0).voided).to.eql(false);
+      });
+
+      it('should void an obs and return the tree with the voided record for multiselect', () => {
+        const obsConcept = {
+          answers: [],
+          datatype: 'Coded',
+          description: [],
+          hiAbsolute: null,
+          hiNormal: null,
+          lowAbsolute: null,
+          lowNormal: null,
+          name: 'TestObs',
+          properties: {
+            allowDecimal: false,
+          },
+          units: null,
+          uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+        };
+        const formFieldPath1 = 'SingleGroup.1/1-0';
+        const formFieldPath2 = 'SingleGroup.1/2-0';
+        const control = {
+          concept: obsConcept,
+          hiAbsolute: null,
+          hiNormal: null,
+          id: '4',
+          label: {
+            type: 'label',
+            value: 'TestObs',
+          },
+          lowAbsolute: null,
+          lowNormal: null,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: {
+              column: 0,
+              row: 0,
+            },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: null,
+        };
+        const controlRecord1 = new ControlRecord({
+          control,
+          formFieldPath: formFieldPath1,
+          value: {},
+          active: true,
+          dataSource: new ObsList({
+            formFieldPath: formFieldPath1,
+            formNamespace: 'Bahmni',
+            obsList: [
+              new Obs({
+                uuid: 'uuid_1',
+              }),
+            ],
+          }),
+        });
+        const controlRecord2 = new ControlRecord({
+          control,
+          formFieldPath: formFieldPath2,
+          value: {},
+          active: true,
+          dataSource: new ObsList({
+            formFieldPath: formFieldPath2,
+            obsList: [
+              new Obs({
+                uuid: 'uuid_2',
+              })],
+          }),
+        });
+
+        const rootRecordTree = new ControlRecord({ children: List.of(controlRecord1,
+          controlRecord2) });
+        const updatedRootRocordTree = rootRecordTree.remove(formFieldPath2);
+        expect(updatedRootRocordTree.children.size).to.eql(2);
+        expect(updatedRootRocordTree.children.get(1).voided).to.eql(true);
+        expect(updatedRootRocordTree.children.get(0).voided).to.eql(false);
+      });
+    });
+  });
+  describe('removeObsUuidsInDataSource', () => {
+    it('should remove obs uuid in datasource', () => {
+      const obsConcept = {
+        answers: [],
+        datatype: 'Numeric',
+        description: [],
+        hiAbsolute: null,
+        hiNormal: null,
+        lowAbsolute: null,
+        lowNormal: null,
+        name: 'TestObs',
+        properties: {
+          allowDecimal: false,
+        },
+        units: null,
+        uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+      };
+      const formFieldPath1 = 'SingleGroup.1/1-0';
+      const control = {
+        concept: obsConcept,
+        hiAbsolute: null,
+        hiNormal: null,
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'TestObs',
+        },
+        lowAbsolute: null,
+        lowNormal: null,
+        properties: {
+          addMore: true,
+          hideLabel: false,
+          location: {
+            column: 0,
+            row: 0,
+          },
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+        units: null,
+      };
+      const controlRecord1 = new ControlRecord({
+        control,
+        formFieldPath: formFieldPath1,
+        value: {},
+        active: true,
+        dataSource: new Obs({
+          uuid: 'uuid',
+          concept: obsConcept,
+          formFieldPath: formFieldPath1,
+          formNamespace: 'Bahmni',
+          voided: true,
+        }),
+      });
+      const recordWithoutObsUuid = controlRecord1.removeObsUuidsInDataSource();
+      expect(recordWithoutObsUuid.dataSource.uuid).to.eql(undefined);
+    });
+
+    it('should remove obs uuid in dataSorce for the multiselect control', () => {
+      const obsConcept = {
+        answers: [],
+        datatype: 'Coded',
+        description: [],
+        hiAbsolute: null,
+        hiNormal: null,
+        lowAbsolute: null,
+        lowNormal: null,
+        name: 'TestObs',
+        properties: {
+          allowDecimal: false,
+        },
+        units: null,
+        uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+      };
+      const formFieldPath1 = 'SingleGroup.1/1-0';
+      const control = {
+        concept: obsConcept,
+        hiAbsolute: null,
+        hiNormal: null,
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'TestObs',
+        },
+        lowAbsolute: null,
+        lowNormal: null,
+        properties: {
+          addMore: true,
+          hideLabel: false,
+          location: {
+            column: 0,
+            row: 0,
+          },
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+        units: null,
+      };
+      const controlRecord1 = new ControlRecord({
+        control,
+        formFieldPath: formFieldPath1,
+        value: {},
+        active: true,
+        dataSource: new ObsList({
+          formFieldPath: formFieldPath1,
+          formNamespace: 'Bahmni',
+          obsList: [
+            new Obs({
+              uuid: 'uuid_1',
+            }),
+          ],
+        }),
+      });
+
+      const recordWithoutUuids = controlRecord1.removeObsUuidsInDataSource();
+      expect(recordWithoutUuids.dataSource.obsList[0].uuid).to.eql(undefined);
+    });
+
+    it('should remove obs uuid in dataSource for parent and its children', () => {
+      const obsConcept = {
+        answers: [],
+        datatype: 'Numeric',
+        description: [],
+        hiAbsolute: null,
+        hiNormal: null,
+        lowAbsolute: null,
+        lowNormal: null,
+        name: 'TestObs',
+        properties: {
+          allowDecimal: false,
+        },
+        units: null,
+        uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+      };
+      const formFieldPath1 = 'SingleGroup.1/1-0/2-0';
+      const obsGrpformFieldPath = 'SingleGroup.1/1-0';
+      const control = {
+        concept: obsConcept,
+        hiAbsolute: null,
+        hiNormal: null,
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'TestObs',
+        },
+        lowAbsolute: null,
+        lowNormal: null,
+        properties: {
+          addMore: true,
+          hideLabel: false,
+          location: {
+            column: 0,
+            row: 0,
+          },
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+        units: null,
+      };
+      const obsGroupConcept = {
+        datatype: 'N/A',
+        name: 'TestGroup',
+        set: true,
+        setMembers: [
+          {
+            answers: [],
+            datatype: 'Numeric',
+            description: [],
+            hiAbsolute: null,
+            hiNormal: null,
+            lowAbsolute: null,
+            lowNormal: null,
+            name: 'TestObs',
+            properties: {
+              allowDecimal: false,
+            },
+            units: null,
+            uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+          },
+        ],
+        uuid: 'eafe7d68-904b-459b-b11d-6502ec0143a4',
+      };
+      const controlRecord1 = new ControlRecord({
+        control,
+        formFieldPath: formFieldPath1,
+        value: {},
+        active: true,
+        dataSource: new Obs({
+          concept: obsConcept,
+          formFieldPath: formFieldPath1,
+          formNamespace: 'Bahmni',
+          uuid: 'control_record_1',
+        }),
+      });
+      const obsGroupRecord = new ControlRecord({
+        control: {
+          concept: obsGroupConcept,
+          controls: [
+            {
+              concept: obsConcept,
+              hiAbsolute: null,
+              hiNormal: null,
+              id: '4',
+              label: {
+                type: 'label',
+                value: 'TestObs',
+              },
+              lowAbsolute: null,
+              lowNormal: null,
+              properties: {
+                addMore: true,
+                hideLabel: false,
+                location: {
+                  column: 0,
+                  row: 0,
+                },
+                mandatory: false,
+                notes: false,
+              },
+              type: 'obsControl',
+              units: null,
+            },
+          ],
+          id: '3',
+          label: {
+            type: 'label',
+            value: 'TestGroup',
+          },
+          properties: {
+            abnormal: false,
+            addMore: true,
+            location: {
+              column: 0,
+              row: 0,
+            },
+          },
+          type: 'obsGroupControl',
+        },
+        formFieldPath: obsGrpformFieldPath,
+        children: List.of(controlRecord1),
+        value: {},
+        active: true,
+        dataSource: new Obs({
+          concept: obsGroupConcept,
+          formFieldPath: obsGrpformFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+          uuid: 'obsgrp',
+        }),
+      });
+
+      expect(obsGroupRecord.dataSource.uuid).to.eql('obsgrp');
+      expect(obsGroupRecord.children.get(0).dataSource.uuid).to.eql('control_record_1');
+      const recordWithoutUuid = obsGroupRecord.removeObsUuidsInDataSource();
+      expect(recordWithoutUuid.dataSource.uuid).to.eql(undefined);
+      expect(recordWithoutUuid.children.get(0).dataSource.uuid).to.eql(undefined);
+    });
+
+    it('should remove obs uuid in dataSource for parent and its children,'
+        + 'when child obs is a multiselect', () => {
+      const obsConcept = {
+        answers: [],
+        datatype: 'Coded',
+        description: [],
+        hiAbsolute: null,
+        hiNormal: null,
+        lowAbsolute: null,
+        lowNormal: null,
+        name: 'TestObs',
+        properties: {
+          allowDecimal: false,
+        },
+        units: null,
+        uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+      };
+      const formFieldPath1 = 'SingleGroup.1/1-0/2-0';
+      const obsGrpformFieldPath = 'SingleGroup.1/1-0';
+      const control = {
+        concept: obsConcept,
+        hiAbsolute: null,
+        hiNormal: null,
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'TestObs',
+        },
+        lowAbsolute: null,
+        lowNormal: null,
+        properties: {
+          addMore: true,
+          hideLabel: false,
+          location: {
+            column: 0,
+            row: 0,
+          },
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+        units: null,
+      };
+      const obsGroupConcept = {
+        datatype: 'N/A',
+        name: 'TestGroup',
+        set: true,
+        setMembers: [
+          {
+            answers: [],
+            datatype: 'Numeric',
+            description: [],
+            hiAbsolute: null,
+            hiNormal: null,
+            lowAbsolute: null,
+            lowNormal: null,
+            name: 'TestObs',
+            properties: {
+              allowDecimal: false,
+            },
+            units: null,
+            uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+          },
+        ],
+        uuid: 'eafe7d68-904b-459b-b11d-6502ec0143a4',
+      };
+      const controlRecord1 = new ControlRecord({
+        control,
+        formFieldPath: formFieldPath1,
+        value: {},
+        active: true,
+        dataSource: new ObsList({
+          formFieldPath: formFieldPath1,
+          formNamespace: 'Bahmni',
+          obsList: [
+            new Obs({
+              uuid: 'uuid_1',
+            }),
+          ],
+        }),
+      });
+      const obsGroupRecord = new ControlRecord({
+        control: {
+          concept: obsGroupConcept,
+          controls: [
+            {
+              concept: obsConcept,
+              hiAbsolute: null,
+              hiNormal: null,
+              id: '4',
+              label: {
+                type: 'label',
+                value: 'TestObs',
+              },
+              lowAbsolute: null,
+              lowNormal: null,
+              properties: {
+                addMore: true,
+                hideLabel: false,
+                location: {
+                  column: 0,
+                  row: 0,
+                },
+                mandatory: false,
+                notes: false,
+              },
+              type: 'obsControl',
+              units: null,
+            },
+          ],
+          id: '3',
+          label: {
+            type: 'label',
+            value: 'TestGroup',
+          },
+          properties: {
+            abnormal: false,
+            addMore: true,
+            location: {
+              column: 0,
+              row: 0,
+            },
+          },
+          type: 'obsGroupControl',
+        },
+        formFieldPath: obsGrpformFieldPath,
+        children: List.of(controlRecord1),
+        value: {},
+        active: true,
+        dataSource: new Obs({
+          concept: obsGroupConcept,
+          formFieldPath: obsGrpformFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+          uuid: 'obsgrp',
+        }),
+      });
+      expect(obsGroupRecord.dataSource.uuid).to.eql('obsgrp');
+      expect(obsGroupRecord.children.get(0).dataSource.obsList[0].uuid).to.eql('uuid_1');
+      const recordWithoutUuid = obsGroupRecord.removeObsUuidsInDataSource();
+      expect(recordWithoutUuid.dataSource.uuid).to.eql(undefined);
+      expect(recordWithoutUuid.children.get(0).dataSource.obsList[0].uuid).to.eql(undefined);
+    });
   });
 });

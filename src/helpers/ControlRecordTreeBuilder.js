@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import ValueMapperStore from './ValueMapperStore';
 import { isAnyAncestorOrControlHasAddMore,
     getCurrentFormFieldPathIfAddMore } from 'src/helpers/ControlUtil';
+import { Obs } from './Obs';
 
 export const ControlRecord = new Record({
   valueMapper: undefined,
@@ -19,6 +20,7 @@ export const ControlRecord = new Record({
   showRemove: false,
   errors: [],
   dataSource: undefined,
+  voided: false,
   getObject() {
     return this.mapper.getObject(this.obs);
   },
@@ -57,6 +59,40 @@ export const ControlRecord = new Record({
     }
     return value;
   },
+  remove(formFieldPath) {
+    function findIfNodeHasDataSourceWithValueInDatabase(parent) {
+      if (parent.dataSource.uuid
+        || (parent.dataSource.obsList &&
+          parent.dataSource.obsList.find(o => o.uuid !== undefined))) return true;
+
+      if (parent.children) {
+        for (let i = 0; i < parent.children.size; i++) {
+          if (findIfNodeHasDataSourceWithValueInDatabase(parent.children.get(i))) return true;
+        }
+      }
+      return false;
+    }
+    if (this.children) {
+      let updatedChildren = this.children.filter(child => child.formFieldPath !== formFieldPath);
+      if (updatedChildren.size === this.children.size) {
+        updatedChildren = this.children.map((child) => child.remove(formFieldPath));
+      } else {
+        const removedChild = this.children.find(child => child.formFieldPath === formFieldPath);
+        if (findIfNodeHasDataSourceWithValueInDatabase(removedChild) && removedChild) {
+          let voidedChildRecord = removedChild.set('active', false).set('voided', true)
+            .voidChildRecords();
+          if (voidedChildRecord.dataSource.obsList) {
+            const newDataSource = voidedChildRecord.dataSource.set('obsList',
+              voidedChildRecord.dataSource.obsList.map(o => o.set('voided', true)));
+            voidedChildRecord = voidedChildRecord.set('dataSource', newDataSource);
+          }
+          updatedChildren = updatedChildren.insert(updatedChildren.size, voidedChildRecord);
+        }
+      }
+      return this.set('children', updatedChildren);
+    }
+    return this;
+  },
 
   update(formFieldPath, value, errors, isRemoved) {
     if (this.formFieldPath === formFieldPath) {
@@ -80,9 +116,29 @@ export const ControlRecord = new Record({
       const childRecord = this.children.map(record => record.voidChildRecords());
       return this.set('children', childRecord);
     }
-    return this.set('value', {});
+    return this.set('errors', []).set('voided', true);
   },
-
+  removeObsUuidsInDataSource() {
+    if (this.dataSource && this.active) {
+      let newRecord = this;
+      if (this.dataSource.uuid) {
+        const newDataSource = this.dataSource.set('uuid', undefined);
+        newRecord = this.set('dataSource', newDataSource);
+      }
+      if (this.dataSource.obsList) {
+        const newObsList = this.dataSource.obsList.map((ol) => ol.set('uuid', undefined)
+        );
+        const newDataSource = this.dataSource.set('obsList', newObsList);
+        newRecord = this.set('dataSource', newDataSource);
+      }
+      if (this.children) {
+        const newChildren = this.children.map(child => child.removeObsUuidsInDataSource());
+        newRecord = newRecord.set('children', newChildren);
+      }
+      return newRecord;
+    }
+    return this;
+  },
   getErrors() {
     const errorArray = [];
     const errors = this.get('errors');
@@ -127,10 +183,8 @@ export default class ControlRecordTreeBuilder {
 
   getRecords(controls, formName, formVersion, currentLayerObs, allObs, parentFormFieldPath) {
     let recordList = new List();
-
     controls.forEach(control => {
       const mapper = MapperStore.getMapper(control);
-
       const obsArray = mapper.getInitialObject(
         formName,
         formVersion,
@@ -157,7 +211,6 @@ export default class ControlRecordTreeBuilder {
             allObs,
             isAnyAncestorOrControlHasAddMore(control, parentFormFieldPath) ? data.formFieldPath :
             getCurrentFormFieldPathIfAddMore(formName, formVersion, control, parentFormFieldPath)
-
           ),
         });
 
@@ -167,13 +220,25 @@ export default class ControlRecordTreeBuilder {
     return recordList;
   }
 
+  parseObs(obs) {
+    let newObs = new Obs({
+      ...obs,
+    });
+    if (obs.groupMembers) {
+      newObs = newObs.set('groupMembers',
+        newObs.groupMembers.map(gm => this.parseObs(gm)));
+    }
+    return newObs;
+  }
+
   build(metadata, observation) {
+    const immutableObservations = observation.map((obs) => this.parseObs(obs));
     const records = this.getRecords(
       metadata.controls,
       metadata.name,
       metadata.version,
-      observation,
-      observation
+      immutableObservations,
+      immutableObservations
     );
     return new ControlRecord({ children: records });
   }

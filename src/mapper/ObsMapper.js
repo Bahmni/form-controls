@@ -15,12 +15,14 @@ export class ObsMapper {
   }
 
   getData(record) {
-    const obs = cloneDeep(record.dataSource);
-    if (obs.formFieldPath !== record.formFieldPath) {
+    const obs = cloneDeep(record.dataSource).toJS();
+    if (record.voided) {
+      obs.uuid = record.dataSource.uuid;
+    } else if (obs.formFieldPath !== record.formFieldPath) {
       obs.uuid = undefined;
-      obs.formFieldPath = record.formFieldPath;
     }
-    let value = record.value.value;
+    obs.formFieldPath = record.formFieldPath;
+    let value = record.voided ? undefined : record.value.value;
     if (typeof value === 'string') {
       value = value && value.trim() !== '' ? value.trim() : undefined;
     }

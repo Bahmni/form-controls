@@ -7,32 +7,38 @@ import { isAnyAncestorOrControlHasAddMore } from 'src/helpers/ControlUtil';
 
 export class ObsGroupMapper {
 
-  getInitialObject(formName, formVersion, control, bahmniObservations, allObs,
+  getInitialObject(formName, formVersion, control, currentLayerObservations, allObs,
                    parentFormFieldPath) {
-    this.updateOldObsGroupFormFieldPathForBackwardCompatibility(control, allObs);
-    return createObsFromControl(formName, formVersion, control, bahmniObservations,
+    const updatedObservations = this.updateOldObsGroupFormFieldPathForBackwardCompatibility(control,
+      currentLayerObservations, parentFormFieldPath);
+    return createObsFromControl(formName, formVersion, control, updatedObservations,
         parentFormFieldPath);
   }
-
-  updateOldObsGroupFormFieldPathForBackwardCompatibility(control, bahmniObservations) {
-    if (isEmpty(bahmniObservations) || !isAnyAncestorOrControlHasAddMore(control)) return;
+  updateOldObsGroupFormFieldPathForBackwardCompatibility(control, bahmniObservations
+    , parentFormFieldPath) {
+    if (isEmpty(bahmniObservations) || !isAnyAncestorOrControlHasAddMore(control)) {
+      return bahmniObservations;
+    }
     const controlPrefix = `/${control.id}`;
-    const filteredControlObs = bahmniObservations
-        .filter(obs => obs.formFieldPath.includes(controlPrefix));
-    filteredControlObs.forEach(obs => {
-      this.updateToLatestFormFieldPath(obs, '');
+    const newObservations = bahmniObservations.map((observation) => {
+      if (observation.formFieldPath.includes(controlPrefix)) {
+        return this.updateToLatestFormFieldPath(observation, parentFormFieldPath);
+      }
+      return observation;
     });
+    return newObservations;
   }
 
   updateToLatestFormFieldPath(observation, parentFormFieldPath) {
-    // eslint-disable-next-line no-param-reassign
-    observation.formFieldPath = getUpdatedFormFieldPath(observation, parentFormFieldPath);
-      // eslint-disable-next-line no-unused-expressions
-    observation.groupMembers && observation.groupMembers.forEach(obs => {
-      this.updateToLatestFormFieldPath(obs, observation.formFieldPath);
-    });
+    let updatedObservation = observation.set('formFieldPath',
+      getUpdatedFormFieldPath(observation, parentFormFieldPath));
+    if (observation.groupMembers) {
+      updatedObservation = updatedObservation.set('groupMembers',
+        updatedObservation.groupMembers.map((gm) =>
+          this.updateToLatestFormFieldPath(gm, updatedObservation.formFieldPath)));
+    }
+    return updatedObservation;
   }
-
 
   setValue(obsGroup, obs) {
     let updatedObsGroup = obsGroup.addGroupMember(obs);
@@ -67,7 +73,7 @@ export class ObsGroupMapper {
   }
 
   getData(record) {
-    const obsGroup = cloneDeep(record.dataSource);
+    const obsGroup = cloneDeep(record.dataSource).toJS();
     if (obsGroup.formFieldPath !== record.formFieldPath) {
       obsGroup.uuid = undefined;
       obsGroup.formFieldPath = record.formFieldPath;

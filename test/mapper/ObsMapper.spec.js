@@ -2,6 +2,7 @@ import { ObsMapper } from 'src/mapper/ObsMapper';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
+import { Obs } from 'src/helpers/Obs';
 
 chai.use(chaiEnzyme());
 
@@ -50,12 +51,12 @@ describe('ObsMapper', () => {
     units: '/min',
   };
   const observation = [
-    {
+    new Obs({
       concept: pulseConcept,
       formFieldPath: 'SingleObs.1/1-0',
       formNamespace: 'Bahmni',
       voided: true,
-    },
+    }),
   ];
 
   it('should return value same as obs`s value', () => {
@@ -143,12 +144,12 @@ describe('ObsMapper', () => {
       units: null,
     };
     const formFieldPath = 'ComplexTest.4/23-0';
-    const booleanDataSource = {
+    const booleanDataSource = new Obs({
       concept: booleanConcept,
       formFieldPath,
       formNamespace: 'Bahmni',
       voided: true,
-    };
+    });
 
     const record = new ControlRecord({
       control: booleanControl,
@@ -169,7 +170,7 @@ describe('ObsMapper', () => {
       control: {},
       formFieldPath: 'someUuid',
       value: { value: valueWithSpaces },
-      dataSource: {},
+      dataSource: new Obs({}),
     });
 
     const updatedObs = mapper.getData(record);
@@ -183,7 +184,7 @@ describe('ObsMapper', () => {
       control: {},
       formFieldPath: 'someUuid',
       value: { value: emptyString },
-      dataSource: {},
+      dataSource: new Obs({}),
     });
 
     const updatedObs = mapper.getData(record);
@@ -204,12 +205,12 @@ describe('ObsMapper', () => {
       concept: complexConcept,
     };
     const formFieldPath = 'ComplexTest.4/23-0';
-    const complexDataSource = {
+    const complexDataSource = new Obs({
       concept: complexConcept,
       formFieldPath,
       formNamespace: 'Bahmni',
       voided: false,
-    };
+    });
 
     const record = new ControlRecord({
       control: complexControl,
@@ -234,12 +235,12 @@ describe('ObsMapper', () => {
       concept: complexConcept,
     };
     const formFieldPath = 'ComplexTest.4/23-1';
-    const complexDataSource = {
+    const complexDataSource = new Obs({
       concept: complexConcept,
       formFieldPath,
       formNamespace: 'Bahmni',
       voided: false,
-    };
+    });
 
     const record = new ControlRecord({
       control: complexControl,
@@ -251,5 +252,36 @@ describe('ObsMapper', () => {
     const updatedObs = mapper.getData(record);
 
     expect(updatedObs).to.equal(null);
+  });
+
+  it('should not make the obs uuid for a voided record to undefined', () => {
+    const complexConcept = {
+      answers: [],
+      datatype: 'Complex',
+      name: 'Image',
+      uuid: 'c2a43174-c9db-4e54-8516-17372c83537f',
+    };
+    const complexControl = {
+      concept: complexConcept,
+    };
+    const formFieldPath = 'ComplexTest.4/23-1';
+    const complexDataSource = new Obs({
+      concept: complexConcept,
+      formFieldPath,
+      formNamespace: 'Bahmni',
+      voided: false,
+      uuid: 'uuid',
+    });
+
+    const record = new ControlRecord({
+      control: complexControl,
+      formFieldPath,
+      value: { value: undefined, comment: undefined },
+      dataSource: complexDataSource,
+      voided: true,
+    });
+
+    const updatedObs = mapper.getData(record);
+    expect(updatedObs.uuid).to.equal(complexDataSource.uuid);
   });
 });

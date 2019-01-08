@@ -3,7 +3,8 @@ import ObservationMapper from '../../src/helpers/ObservationMapper';
 import { expect } from 'chai';
 import { ControlRecord } from 'src/helpers/ControlRecordTreeBuilder';
 import { List } from 'immutable';
-
+import { Obs } from 'src/helpers/Obs';
+import { Map as immutableMap } from 'immutable';
 describe('Control Record', () => {
   const updatedValue = { value: 1, comment: undefined };
 
@@ -473,6 +474,9 @@ describe('Control Record', () => {
           showAddMore: true,
           showRemove: false,
           errors: [],
+          dataSource: new Obs({
+            uuid: 'uuid_inner',
+          }),
         }
           );
       const innerObsGrpControlRecord = new ControlRecord(
@@ -499,6 +503,9 @@ describe('Control Record', () => {
           showAddMore: true,
           showRemove: false,
           errors: [],
+          dataSource: immutableMap({
+            uuid: 'uuid_obsgrp',
+          }),
         }
           );
       const parentControl = new ControlRecord(
@@ -523,13 +530,16 @@ describe('Control Record', () => {
           showAddMore: true,
           showRemove: false,
           errors: [],
+          dataSource: {
+            uuid: 'parent',
+          },
         }
           );
+      const rootControl = new ControlRecord({ children: List.of(parentControl) });
       const formFieldPath = 'ObsGroupTEst2.1/1-1';
-      const updatedControlRecord = parentControl.update(formFieldPath, {}, [], true);
-
+      const updatedControlRecord = rootControl.remove(formFieldPath);
       expect(updatedControlRecord.getValue()).to.eql(undefined);
-      expect(updatedControlRecord.active).to.eql(false);
+      expect(updatedControlRecord.children.get(0).active).to.eql(false);
       expect(updatedControlRecord.children.get(0).getValue()).to.eql(undefined);
       expect(updatedControlRecord.children.get(0).children.get(0).getValue()).to.eql(undefined);
     });

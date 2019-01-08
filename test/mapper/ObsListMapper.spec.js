@@ -5,6 +5,7 @@ import { ObsList } from '../../src/helpers/ObsList';
 import { List } from 'immutable';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import { cloneDeep } from 'lodash';
+import { Obs } from 'src/helpers/Obs';
 
 chai.use(chaiEnzyme());
 
@@ -234,7 +235,7 @@ describe('ObsListMapper', () => {
     units: null,
   };
   const formFieldPath = 'multipleSelect.1/2-0';
-  const obs1 = {
+  const obs1 = new Obs({
     concept: multipleSelectConcept,
     formFieldPath,
     formNamespace: 'Bahmni',
@@ -250,8 +251,8 @@ describe('ObsListMapper', () => {
       uuid: 'ffa2244a-8729-47fc-9185-d62a7033b511',
     },
     voided: false,
-  };
-  const obs2 = {
+  });
+  const obs2 = new Obs({
     concept: multipleSelectConcept,
     formFieldPath,
     formNamespace: 'Bahmni',
@@ -267,17 +268,18 @@ describe('ObsListMapper', () => {
       uuid: '1fe0597e-470d-49bd-9d82-9c7b7342dab0',
     },
     voided: false,
-  };
+  });
 
   const obsListData = new ObsList({
     obsList: List.of(obs1, obs2),
     formFieldPath,
-    obs: {
+    obs: new Obs({
       concept: multipleSelectConcept,
       formFieldPath,
       formNamespace: 'Bahmni',
       voided: true,
-    } });
+    }) });
+
 
   it('should get obsList when getInitialObject with empty observation', () => {
     const emptyObservation = [];
@@ -289,7 +291,7 @@ describe('ObsListMapper', () => {
     expect(obsLists[0].formFieldPath).to.equal(formFieldPath);
     expect(obsLists[0].obs.concept).to.equal(multipleSelectConcept);
     expect(obsLists[0].obs.formFieldPath).to.equal(formFieldPath);
-    expect(obsLists[0].obs.voided).to.equal(true);
+    expect(obsLists[0].obs.voided).to.equal(false);
   });
 
   it('should get obsList when getInitialObject with observation', () => {
@@ -302,12 +304,12 @@ describe('ObsListMapper', () => {
     expect(obsLists[0].formFieldPath).to.equal(formFieldPath);
     expect(obsLists[0].obs.concept).to.equal(multipleSelectConcept);
     expect(obsLists[0].obs.formFieldPath).to.equal(formFieldPath);
-    expect(obsLists[0].obs.voided).to.equal(true);
+    expect(obsLists[0].obs.voided).to.equal(false);
   });
 
   it('should get correct obs when getInitialObject with observation', () => {
-    const obs = cloneDeep(obs1);
-    obs.formFieldPath = 'multipleSelect.1/20-0';    // this form field path is part of multipleSelect.1/2
+    let obs = cloneDeep(obs1);
+    obs = obs.set('formFieldPath', 'multipleSelect.1/20-0');    // this form field path is part of multipleSelect.1/2
     const observations = [obs];
 
     const obsLists = new ObsListMapper()
@@ -416,9 +418,8 @@ describe('ObsListMapper', () => {
   });
 
   it('should get value with comment when given record has comment', () => {
-    const obs1WithComment = cloneDeep(obs1);
-    obs1WithComment.comment = 'this is a comment';
-
+    let obs1WithComment = cloneDeep(obs1);
+    obs1WithComment = obs1WithComment.set('comment', 'this is a comment');
     const obsListDataWithComment = new ObsList({
       obsList: List.of(obs1WithComment, obs2),
       formFieldPath,
@@ -601,7 +602,7 @@ describe('ObsListMapper', () => {
       formFieldPath: 'multiSelectThree.7/6-0/7-0',
       dataSource: {
         formFieldPath: 'multiSelectThree.7/6-0/7-0',
-        obs: {
+        obs: new Obs({
           concept: {
             name: 'P/A Presenting Part',
             uuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
@@ -749,9 +750,9 @@ describe('ObsListMapper', () => {
           formNamespace: 'Bahmni',
           formFieldPath: 'multiSelectThree.7/6-0/7-0',
           voided: true,
-        },
+        }),
         obsList: [
-          {
+          new Obs({
             encounterDateTime: 1543830864000,
             visitStartDateTime: null,
             targetObsRelation: null,
@@ -812,8 +813,8 @@ describe('ObsListMapper', () => {
               mappings: [],
               translationKey: 'CEPHALIC_7',
             },
-          },
-          {
+          }),
+          new Obs({
             encounterDateTime: 1543830864000,
             visitStartDateTime: null,
             targetObsRelation: null,
@@ -874,13 +875,11 @@ describe('ObsListMapper', () => {
               mappings: [],
               translationKey: 'BREECH_7',
             },
-          },
+          }),
         ],
       },
     });
-
     const obsArray = new ObsListMapper().getData(multiSelectCtrlRecord);
-
     expect(obsArray.length).to.be.equal(2);
     expect(obsArray[0].uuid).to.be.equal('e4bb9974-e3e6-4a35-a985-741f6a267e7b');
     expect(obsArray[1].uuid).to.be.equal('9e469b18-2859-484a-b8f5-2f12037a0ab2');
@@ -1153,7 +1152,7 @@ describe('ObsListMapper', () => {
       errors: [],
       dataSource: {
         formFieldPath: 'multiSelectThree.7/6-0/7-0',
-        obs: {
+        obs: new Obs({
           concept: {
             name: 'P/A Presenting Part',
             uuid: 'c4517f49-3f10-11e4-adec-0800271c1b75',
@@ -1301,7 +1300,7 @@ describe('ObsListMapper', () => {
           formNamespace: 'Bahmni',
           formFieldPath: 'multiSelectThree.7/6-0/7-0',
           voided: true,
-        },
+        }),
         obsList: [],
       },
     });
@@ -1311,5 +1310,117 @@ describe('ObsListMapper', () => {
     expect(obsArray.length).to.be.equal(2);
     expect(obsArray[0].uuid).to.be.equal(undefined);
     expect(obsArray[1].uuid).to.be.equal(undefined);
+  });
+
+  it('should clone previous observation from obsList of datasource', () => {
+    const value = {
+      uuid: '33958c18-702d-4a44-a4bf-f22b6b563012',
+    };
+    const observation = new Obs({
+      encounterDateTime: 1545031955000,
+      formFieldPath: 'something.1/1-0',
+      observationDateTime: '2018-12-17T07:32:35.000+0000',
+      value,
+    });
+    const record = {
+      formFieldPath: 'something.1/1-0',
+      dataSource: {
+        formFieldPath: 'something.1/1-0',
+        active: true,
+        obsList: List.of(observation),
+      },
+    };
+
+    const obs = new ObsListMapper().buildObs(record, value, 'uuid', 'comment');
+
+    expect(obs.value).to.be.equal(value);
+    expect(obs.observationDateTime).to.be.equal('2018-12-17T07:32:35.000+0000');
+  });
+
+  it('should clone obs from dataSource when obsList is empty', () => {
+    const value = {
+      uuid: '33958c18-702d-4a44-a4bf-f22b6b563012',
+    };
+    const record = {
+      formFieldPath: 'something.1/1-0',
+      dataSource: {
+        formFieldPath: 'something.1/1-0',
+        active: true,
+        obs: new Obs({
+          formFieldPath: 'something.1/1-0',
+        }),
+        obsList: [],
+      },
+    };
+
+    const obs = new ObsListMapper().buildObs(record, value, 'uuid', 'comment');
+
+    expect(obs.value).to.be.equal(value);
+    expect(obs.uuid).to.be.equal('uuid');
+    expect(obs.comment).to.be.equal('comment');
+    expect(obs.encounterDateTime).to.be.equal(undefined);
+    expect(obs.observationDateTime).to.be.equal(undefined);
+  });
+
+  it('should clone obs from dataSource when observation uuid in ' +
+    'obsList does not match with value uuid', () => {
+    const value = {
+      uuid: '33958c18-702d-4a44-a4bf-f22b6b563012',
+    };
+    const observation = new Obs({
+      encounterDateTime: 1545031955000,
+      formFieldPath: 'something.1/1-0',
+      observationDateTime: '2018-12-17T07:32:35.000+0000',
+      value: { uuid: '33958c18-702d-4a44-a4bf-f22b6b563033' },
+    });
+    const record = {
+      formFieldPath: 'something.1/1-0',
+      dataSource: {
+        formFieldPath: 'something.1/1-0',
+        active: true,
+        obs: new Obs({
+          formFieldPath: 'something.1/1-0',
+        }),
+        obsList: List.of(observation),
+      },
+    };
+
+    const obs = new ObsListMapper().buildObs(record, value, 'uuid', 'comment');
+
+    expect(obs.value).to.be.equal(value);
+    expect(obs.uuid).to.be.equal('uuid');
+    expect(obs.comment).to.be.equal('comment');
+    expect(obs.observationDateTime).to.be.equal(undefined);
+  });
+
+  it('should clone obs when observation formFieldPath in obsList and record ' +
+    'formFieldPath are different', () => {
+    const value = {
+      uuid: '33958c18-702d-4a44-a4bf-f22b6b563012',
+    };
+    const observation = new Obs({
+      encounterDateTime: 1545031955000,
+      formFieldPath: 'something.1/1-1',
+      observationDateTime: '2018-12-17T07:32:35.000+0000',
+      value,
+    });
+    const record = {
+      formFieldPath: 'something.1/2-0',
+      dataSource: {
+        formFieldPath: 'something.1/1-0',
+        active: true,
+        obs: new Obs({
+          formFieldPath: 'something.1/1-0',
+        }),
+        obsList: List.of(observation),
+      },
+    };
+
+    const obs = new ObsListMapper().buildObs(record, value, 'uuid', 'comment');
+
+    expect(obs.value).to.be.equal(value);
+    expect(obs.uuid).to.be.equal('uuid');
+    expect(obs.comment).to.be.equal('comment');
+    expect(obs.observationDateTime).to.be.equal(undefined);
   });
 });

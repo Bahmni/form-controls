@@ -10,6 +10,7 @@ export const ImmutableObs = Record({
   value: undefined,
   observationDateTime: undefined,
   voided: false,
+  inactive: false,
   comment: undefined,
   formNamespace: undefined,
   formFieldPath: undefined,
@@ -136,12 +137,12 @@ export class Obs extends ImmutableObs {
 
 export function obsFromMetadata(formNamespaceAndPath, metadata) {
   const { formNamespace, formFieldPath } = formNamespaceAndPath;
-  return {
+  return new Obs({
     concept: metadata.concept,
     formNamespace,
     formFieldPath,
-    voided: true,
-  };
+    voided: false,
+  });
 }
 
 export function createObsFromControl(formName, formVersion, control, bahmniObservations = [],
@@ -151,7 +152,6 @@ export function createObsFromControl(formName, formVersion, control, bahmniObser
     observation.formFieldPath.startsWith(keyPrefix.formFieldPath) &&
       new RegExp(`${keyPrefix.formFieldPath}[^0-9]`).test(observation.formFieldPath)
   );
-
   if (observationsForControl.length > 0) {
     return observationsForControl;
   }

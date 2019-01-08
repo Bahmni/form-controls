@@ -555,4 +555,126 @@ describe('ControlRecordTreeMgr', () => {
     expect(nextObsTree.children.get(0).children.get(0).formFieldPath)
         .to.equal('FormName.V/1-1/2-0/3-0');
   });
+
+  describe('getBrotherTrees', () => {
+    it('should return records that are not voided', () => {
+      const sectionFormFieldPath = 'FormName.V/1-0/2-0';
+      const obsGroupFormFieldPath = 'FormName.V/1-0/2-0/3-0';
+      const obsFormFieldPath = 'FormName.V/1-0/2-0/3-0/4-0';
+      const observationRecord = new ControlRecord({
+        control: obsControl,
+        value: {},
+        dataSource: {
+          concept,
+          formFieldPath: obsFormFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+        },
+        formFieldPath: obsFormFieldPath,
+      });
+
+      const observationRecord2 = new ControlRecord({
+        control: obsControl,
+        value: {},
+        dataSource: {
+          concept,
+          formFieldPath: obsFormFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+        },
+        formFieldPath: obsFormFieldPath,
+      });
+
+      const voidedObsControl = {
+        concept,
+        hiAbsolute: null,
+        hiNormal: 72,
+        id: '1',
+        label: {
+          type: 'label',
+          value: 'Pulse(/min)',
+        },
+        lowAbsolute: null,
+        lowNormal: 72,
+        properties: {
+          addMore: true,
+          hideLabel: false,
+          location: {
+            column: 0,
+            row: 0,
+          },
+          mandatory: true,
+          notes: false,
+        },
+        type: 'obsControl',
+        units: '/min',
+        voided: true,
+      };
+      const obsGroupControl = {
+        type: 'obsGroupControl',
+        label: {
+          translationKey: 'concept set',
+          type: 'label',
+          value: 'concept set',
+          id: '2',
+        },
+        properties: {
+          addMore: true,
+          location: {
+            column: 0,
+            row: 1,
+          },
+        },
+        id: '2',
+        unsupportedProperties: [],
+        controls: [
+          voidedObsControl,
+          obsControl,
+        ],
+      };
+      const voidedObservationRecord = new ControlRecord({
+        control: voidedObsControl,
+        value: {},
+        dataSource: {
+          concept,
+          formFieldPath: obsFormFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+        },
+        formFieldPath: obsFormFieldPath,
+        voided: true,
+      });
+      const obGrpRecord = new ControlRecord({
+        control: obsGroupControl,
+        value: {},
+        dataSource: {
+          concept,
+          formFieldPath: obsGroupFormFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+        },
+        children: List.of(voidedObservationRecord, observationRecord, observationRecord2),
+        formFieldPath: obsGroupFormFieldPath,
+      });
+
+      const sectionRecord = new ControlRecord({
+        control: sectionControl,
+        value: {},
+        dataSource: {
+          concept,
+          formFieldPath: sectionFormFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+        },
+        children: List.of(obGrpRecord),
+        formFieldPath: sectionFormFieldPath,
+      });
+
+      const brotherObsTree = new ControlRecordTreeMgr()
+              .getBrotherTrees(sectionRecord, obsFormFieldPath);
+      expect(brotherObsTree.length).to.equal(2);
+      expect(brotherObsTree[0].formFieldPath).to.equal(obsFormFieldPath);
+      expect(brotherObsTree[1].formFieldPath).to.equal(obsFormFieldPath);
+    });
+  });
 });
