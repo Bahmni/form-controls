@@ -94,17 +94,16 @@ export const ControlRecord = new Record({
     return this;
   },
 
-  update(formFieldPath, value, errors, isRemoved) {
+  update(formFieldPath, value, errors) {
     if (this.formFieldPath === formFieldPath) {
-      return (Object.keys(value).length === 0 && isRemoved ? this.set('active', false)
-          .voidChildRecords() : this)
+      return this
         .set('value', value)
         .set('errors', errors);
     }
 
     if (this.children) {
       const childRecord = this.children.map(
-        r => r.update(formFieldPath, value, errors, isRemoved) || r
+        r => r.update(formFieldPath, value, errors) || r
       );
       return this.set('children', childRecord);
     }
