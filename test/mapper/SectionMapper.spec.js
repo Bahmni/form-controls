@@ -6,6 +6,7 @@ import { createFormNamespaceAndPath } from 'src/helpers/formNamespace';
 import { getKeyPrefixForControl } from '../../src/helpers/formNamespace';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import { List } from 'immutable';
+import { Obs } from 'src/helpers/Obs';
 
 chai.use(chaiEnzyme());
 
@@ -84,6 +85,124 @@ describe('SectionMapper', () => {
       expect(initObject.obsList.length).to.eql(2);
     });
 
+    it('should return two initial objects if observations come from add more sections and' +
+        'obs are segregated by section control ids', () => {
+      const observationControl = {
+        type: 'obsControl',
+        id: '2',
+        concept,
+        properties: {},
+      };
+      const sectionCtrl = {
+        type: 'section',
+        id: '1',
+        controls: [observationControl],
+        properties: {
+          addMore: true,
+        },
+      };
+      const formFieldPathPrefix =
+            getKeyPrefixForControl(formName, formVersion, sectionCtrl.id).formFieldPath;
+      const firstObsFormFieldPathInSection = `${formFieldPathPrefix}-0/2-0`;
+      const secondObsFormFieldPathInSection = `${formFieldPathPrefix}-0/2-1`;
+      const obsFormFieldPathInAddMoreSection = `${formFieldPathPrefix}-1/2-0`;
+
+      const observations = [{
+        formFieldPath: firstObsFormFieldPathInSection,
+        concept,
+      },
+      {
+        formFieldPath: secondObsFormFieldPathInSection,
+        concept,
+      },
+      {
+        formFieldPath: obsFormFieldPathInAddMoreSection,
+        concept,
+      }];
+
+      const initObjects = mapper.getInitialObject(formName, formVersion, sectionCtrl, null,
+          observations);
+      expect(initObjects.length).to.eql(2);
+
+      const initObjectArray = [initObjects[0].toJS(), initObjects[1].toJS()];
+      expect([initObjectArray[0].formFieldPath, initObjectArray[1].formFieldPath])
+          .to.have.members([`${formFieldPathPrefix}-0`, `${formFieldPathPrefix}-1`]);
+
+      let sectionObj = initObjectArray.find(obj =>
+          (obj.formFieldPath === `${formFieldPathPrefix}-0` ? obj : undefined));
+      expect(sectionObj.obsList.length).to.eql(2);
+      expect(sectionObj.obsList.map(obs => obs.formFieldPath))
+          .to.have.members([firstObsFormFieldPathInSection, secondObsFormFieldPathInSection]);
+
+      sectionObj = initObjectArray.find(obj => (obj.formFieldPath === `${formFieldPathPrefix}-1` ?
+        obj : undefined));
+
+      expect(sectionObj.obsList.length).to.eql(1);
+      expect(sectionObj.obsList[0].formFieldPath).to.eql(obsFormFieldPathInAddMoreSection);
+    });
+
+    it('should return two initial objects if observations come from add more sections' +
+        'whose parent is also section with add more property and obs are segregated by' +
+        'current section control ids', () => {
+      const observationCtrl = {
+        type: 'obsControl',
+        id: '3',
+        concept,
+        properties: {},
+      };
+      const sectionCtrl = {
+        type: 'section',
+        id: '2',
+        controls: [observationCtrl],
+        properties: {
+          addMore: true,
+        },
+      };
+      const parentFormFieldPath = createFormNamespaceAndPath(formName, formVersion, 1)
+          .formFieldPath;
+
+      const formFieldPathPrefix =
+              getKeyPrefixForControl(formName, formVersion, sectionCtrl.id, parentFormFieldPath)
+                  .formFieldPath;
+      const firstObsFormFieldPathInSection = `${formFieldPathPrefix}-0/3-0`;
+      const secondObsFormFieldPathInSection = `${formFieldPathPrefix}-0/3-1`;
+      const obsFormFieldPathInAddMoreSection = `${formFieldPathPrefix}-1/3-0`;
+
+      const observations = [{
+        formFieldPath: firstObsFormFieldPathInSection,
+        concept,
+      },
+      {
+        formFieldPath: secondObsFormFieldPathInSection,
+        concept,
+      },
+      {
+        formFieldPath: obsFormFieldPathInAddMoreSection,
+        concept,
+      }];
+
+      const initObjects = mapper.getInitialObject(formName, formVersion, sectionCtrl, null,
+              observations, parentFormFieldPath);
+      expect(initObjects.length).to.eql(2);
+
+      const initObjectArray = [initObjects[0].toJS(), initObjects[1].toJS()];
+      expect([initObjectArray[0].formFieldPath, initObjectArray[1].formFieldPath])
+              .to.have.members([`${formFieldPathPrefix}-0`, `${formFieldPathPrefix}-1`]);
+
+      let sectionObj = initObjectArray.find(obj =>
+          (obj.formFieldPath === `${formFieldPathPrefix}-0` ? obj : undefined));
+      expect(sectionObj.obsList.length).to.eql(2);
+      expect(sectionObj.obsList.map(obs => obs.formFieldPath))
+              .to.have.members([firstObsFormFieldPathInSection, secondObsFormFieldPathInSection]);
+
+      sectionObj = initObjectArray.find(obj =>
+          (obj.formFieldPath === `${formFieldPathPrefix}-1` ? obj : undefined));
+
+      expect(sectionObj.obsList.length).to.eql(1);
+      expect(sectionObj.obsList[0].formFieldPath).to.eql(obsFormFieldPathInAddMoreSection);
+    });
+
+
     it('should get flatten data from records given single layer control record', () => {
       const child = new ControlRecord({
         control: {
@@ -101,13 +220,13 @@ describe('SectionMapper', () => {
         formFieldPath: 'section.1/3-0',
         value: { value: '2', comment: undefined },
         active: true,
-        dataSource: {
+        dataSource: new Obs({
           concept: {
             name: 'HEIGHT',
             uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
           }, formNamespace: 'Bahmni',
           formFieldPath: 'section.1/3-0',
-        },
+        }),
       });
 
       const records = new ControlRecord({
@@ -169,7 +288,7 @@ describe('SectionMapper', () => {
         showAddMore: true,
         showRemove: false,
         errors: [],
-        dataSource: {
+        dataSource: new Obs({
           encounterDateTime: 1488762812000,
           visitStartDateTime: null,
           targetObsRelation: null,
@@ -215,7 +334,7 @@ describe('SectionMapper', () => {
           orderUuid: null,
           conceptNameToDisplay: 'Pulse',
           value: { value: 2, comment: undefined },
-        },
+        }),
       };
 
       const layer2Control = {
@@ -260,53 +379,54 @@ describe('SectionMapper', () => {
         errors: [],
         dataSource: {
           formFieldPath: 'nested_section.3/3-0',
-          obsList: [{
-            encounterDateTime: 1488762812000,
-            visitStartDateTime: null,
-            targetObsRelation: null,
-            groupMembers: [],
-            providers: [{
-              uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
-              name: 'Super Man',
-              encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
-            }],
-            isAbnormal: null,
-            duration: null,
-            type: 'Numeric',
-            encounterUuid: '152b99b8-5f87-4386-a5bb-773d5588a443',
-            obsGroupUuid: null,
-            creatorName: 'Super Man',
-            conceptSortWeight: 1,
-            parentConceptUuid: null,
-            hiNormal: 72,
-            lowNormal: 72,
-            formNamespace: 'Bahmni',
-            formFieldPath: 'nested_section.3/4-0',
-            concept: {
-              uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
-              name: 'Pulse',
-              dataType: 'Numeric',
-              shortName: 'Pulse',
-              units: '/min',
-              conceptClass: 'Misc',
+          obsList: [new Obs(
+            {
+              encounterDateTime: 1488762812000,
+              visitStartDateTime: null,
+              targetObsRelation: null,
+              groupMembers: [],
+              providers: [{
+                uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
+                name: 'Super Man',
+                encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
+              }],
+              isAbnormal: null,
+              duration: null,
+              type: 'Numeric',
+              encounterUuid: '152b99b8-5f87-4386-a5bb-773d5588a443',
+              obsGroupUuid: null,
+              creatorName: 'Super Man',
+              conceptSortWeight: 1,
+              parentConceptUuid: null,
               hiNormal: 72,
               lowNormal: 72,
-              set: false,
-              mappings: [],
-            },
-            valueAsString: '2.0',
-            voided: false,
-            voidReason: null,
-            conceptUuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
-            unknown: false,
-            uuid: 'cf638311-d39e-4daf-81db-5bb61c75cb15',
-            observationDateTime: '2017-03-06T02:10:48.000+0000',
-            comment: null,
-            abnormal: null,
-            orderUuid: null,
-            conceptNameToDisplay: 'Pulse',
-            value: { value: 2, comment: undefined },
-          }],
+              formNamespace: 'Bahmni',
+              formFieldPath: 'nested_section.3/4-0',
+              concept: {
+                uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+                name: 'Pulse',
+                dataType: 'Numeric',
+                shortName: 'Pulse',
+                units: '/min',
+                conceptClass: 'Misc',
+                hiNormal: 72,
+                lowNormal: 72,
+                set: false,
+                mappings: [],
+              },
+              valueAsString: '2.0',
+              voided: false,
+              voidReason: null,
+              conceptUuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+              unknown: false,
+              uuid: 'cf638311-d39e-4daf-81db-5bb61c75cb15',
+              observationDateTime: '2017-03-06T02:10:48.000+0000',
+              comment: null,
+              abnormal: null,
+              orderUuid: null,
+              conceptNameToDisplay: 'Pulse',
+              value: { value: 2, comment: undefined },
+            })],
         },
       };
 
@@ -342,7 +462,7 @@ describe('SectionMapper', () => {
         showAddMore: true,
         showRemove: false,
         errors: [],
-        dataSource: {
+        dataSource: new Obs({
           encounterDateTime: 1488762812000,
           visitStartDateTime: null,
           targetObsRelation: null,
@@ -387,7 +507,7 @@ describe('SectionMapper', () => {
           orderUuid: null,
           conceptNameToDisplay: 'HEIGHT',
           value: { value: 1, comment: undefined },
-        },
+        }),
       };
 
       const layer1 = {
@@ -460,7 +580,7 @@ describe('SectionMapper', () => {
         errors: [],
         dataSource: {
           formFieldPath: 'nested_section.3/1-0',
-          obsList: [{
+          obsList: [new Obs({
             encounterDateTime: 1488762812000,
             visitStartDateTime: null,
             targetObsRelation: null,
@@ -505,9 +625,9 @@ describe('SectionMapper', () => {
             orderUuid: null,
             conceptNameToDisplay: 'HEIGHT',
             value: { value: 1, comment: undefined },
-          }, {
+          }), {
             formFieldPath: 'nested_section.3/3-0',
-            obsList: [{
+            obsList: [new Obs({
               encounterDateTime: 1488762812000,
               visitStartDateTime: null,
               targetObsRelation: null,
@@ -553,7 +673,7 @@ describe('SectionMapper', () => {
               orderUuid: null,
               conceptNameToDisplay: 'Pulse',
               value: { value: 2, comment: undefined },
-            }],
+            })],
           }],
         },
       };

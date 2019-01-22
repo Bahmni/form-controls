@@ -61,7 +61,7 @@ export class Container extends addMoreDecorator(Component) {
 
   getAddMoreMessage(rootTree, formFieldPath) {
     const targetRecordTree = ControlRecordTreeMgr.find(rootTree, formFieldPath);
-    const name = targetRecordTree.getConceptName();
+    const name = targetRecordTree.getConceptName() || targetRecordTree.control.label.value;
     const type = targetRecordTree.getConceptType();
     return (`A new ${name} ${type} has been added`);
   }
@@ -88,7 +88,7 @@ export class Container extends addMoreDecorator(Component) {
     this.setState((previousState) => (
       {
         ...previousState,
-        data: previousState.data.update(formFieldPath, {}, [], true),
+        data: previousState.data.remove(formFieldPath),
         collapse: undefined,
       }
     ));

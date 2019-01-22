@@ -4,8 +4,10 @@ import { Util } from 'src/helpers/Util';
 
 export class ObsMapper {
 
-  getInitialObject(formName, formVersion, control, bahmniObservations) {
-    return createObsFromControl(formName, formVersion, control, bahmniObservations);
+  getInitialObject(formName, formVersion, control, bahmniObservations, allObs,
+                   parentFormFieldPath) {
+    return createObsFromControl(formName, formVersion, control, bahmniObservations,
+        parentFormFieldPath);
   }
 
   getValue(obs) {
@@ -13,12 +15,14 @@ export class ObsMapper {
   }
 
   getData(record) {
-    const obs = cloneDeep(record.dataSource);
-    if (obs.formFieldPath !== record.formFieldPath) {
+    const obs = cloneDeep(record.dataSource).toJS();
+    if (record.voided) {
+      obs.uuid = record.dataSource.uuid;
+    } else if (obs.formFieldPath !== record.formFieldPath) {
       obs.uuid = undefined;
-      obs.formFieldPath = record.formFieldPath;
     }
-    let value = record.value.value;
+    obs.formFieldPath = record.formFieldPath;
+    let value = record.voided ? undefined : record.value.value;
     if (typeof value === 'string') {
       value = value && value.trim() !== '' ? value.trim() : undefined;
     }

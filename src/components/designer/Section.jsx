@@ -4,6 +4,8 @@ import ComponentStore from 'src/helpers/componentStore';
 import { SectionMapper } from '../../mapper/SectionMapper';
 import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 import { LabelDesigner } from 'components/designer/Label.jsx';
+import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
+import find from 'lodash/find';
 
 export class SectionDesigner extends Component {
 
@@ -66,16 +68,31 @@ export class SectionDesigner extends Component {
     event.stopPropagation();
   }
 
+  showAddMore() {
+    const { properties } = this.props.metadata;
+    const isAddMoreEnabled = find(properties, (value, key) => (key === 'addMore' && value));
+    if (isAddMoreEnabled) {
+      return (
+        <AddMoreDesigner />
+      );
+    }
+    return null;
+  }
+
   render() {
     const { metadata } = this.props;
     const controls = metadata.controls || [];
     return (
         <fieldset
           className="form-builder-fieldset"
-          onClick={ (e) => this.stopEventPropagation(e) }
+          onClick={(event) => {
+            this.stopEventPropagation(event);
+            this.props.onSelect(event, metadata);
+          }}
         >
           {this.showDeleteButton()}
           {this.displayLabel()}
+          {this.showAddMore()}
           <div className="obsGroup-controls">
             <Grid
               controls={ controls }
@@ -108,6 +125,7 @@ SectionDesigner.propTypes = {
     }),
     type: PropTypes.string.isRequired,
   }),
+  onSelect: PropTypes.func.isRequired,
   showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,
 };
@@ -144,7 +162,13 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [],
+        attributes: [
+          {
+            name: 'addMore',
+            dataType: 'boolean',
+            defaultValue: false,
+          },
+        ],
       },
     ],
   },

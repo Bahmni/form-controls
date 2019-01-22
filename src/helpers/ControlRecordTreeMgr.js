@@ -1,31 +1,37 @@
 import { Util } from './Util';
 import sortBy from 'lodash/sortBy';
+import { getUpdatedFormFieldPath } from 'src/helpers/formNamespace';
 
 export default class ControlRecordTreeMgr {
 
-  generateNextTree(rootTree, formFieldPath) {
+  generateNextTree(rootTree, formFieldPath, parentFormFieldPath) {
     let updatedTree = this.getLatestBrotherTree(rootTree, formFieldPath);
+    const updatedFormFieldPath = parentFormFieldPath === undefined ?
+        this.getNextFormFieldPath(formFieldPath)
+        : getUpdatedFormFieldPath(updatedTree, parentFormFieldPath);
+    updatedTree = updatedTree.set('formFieldPath', updatedFormFieldPath);
     if (updatedTree.children && updatedTree.children.size > 0) {
       const filteredTree = this.filterChildTree(updatedTree);
       const clonedChildTree = filteredTree.map(r => (
-                this.generateNextTree(rootTree, r.formFieldPath)
+                this.generateNextTree(rootTree, r.formFieldPath, updatedTree.formFieldPath)
             ));
       updatedTree = updatedTree.set('children', clonedChildTree);
     }
-    const nextFormFieldPath = this.generateFormFieldPath(updatedTree);
-    return updatedTree.set('formFieldPath', nextFormFieldPath).set('value', {}).set('active', true);
+    return updatedTree.set('value', {}).set('active', true);
   }
 
   filterChildTree(updatedTree) {
-    const getPrefix = (formFieldPath) => (formFieldPath.split('-')[0]);
+    const getPrefix = (formFieldPath) =>
+        (formFieldPath.substring(0, formFieldPath.lastIndexOf('-')));
 
     return updatedTree.children.groupBy(r => getPrefix(r.formFieldPath))
                       .map(x => x.first()).toList();
   }
 
-  generateFormFieldPath(maxSuffixTree) {
-    const nextSuffix = Util.increment(maxSuffixTree.formFieldPath.split('-')[1]);
-    return `${maxSuffixTree.formFieldPath.split('-')[0]}-${nextSuffix}`;
+  getNextFormFieldPath(formFieldPath) {
+    const lastIndex = formFieldPath.lastIndexOf('-');
+    const nextSuffix = Util.increment(formFieldPath.substring(lastIndex + 1, formFieldPath.length));
+    return `${formFieldPath.substring(0, lastIndex)}-${nextSuffix}`;
   }
 
   findParentTree(parentTree, formFieldPath) {
@@ -68,9 +74,10 @@ export default class ControlRecordTreeMgr {
 
   getBrotherTrees(parentTree, targetFormFieldPath) {
     let brotherTrees = [];
-    const getPrefix = (formFieldPath) => (formFieldPath.split('-')[0]);
-
-    if (getPrefix(parentTree.formFieldPath) === getPrefix(targetFormFieldPath)) {
+    const getPrefix = (formFieldPath) =>
+        (formFieldPath.substring(0, formFieldPath.lastIndexOf('-')));
+    if (getPrefix(parentTree.formFieldPath) === getPrefix(targetFormFieldPath)
+      && !parentTree.voided) {
       brotherTrees.push(parentTree);
     }
 
@@ -87,7 +94,7 @@ export default class ControlRecordTreeMgr {
     const treeMgr = new ControlRecordTreeMgr();
     const parentTree = treeMgr.findParentTree(rootTree, formFieldPath);
     const addedTree = treeMgr.generateNextTree(rootTree, formFieldPath);
-    return treeMgr.addToRootTree(rootTree, parentTree, addedTree);
+    return treeMgr.addToRootTree(rootTree, parentTree, addedTree.removeObsUuidsInDataSource());
   }
 
   static update(rootTree, nodeTree) {

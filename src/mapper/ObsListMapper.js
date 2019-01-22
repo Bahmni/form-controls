@@ -9,11 +9,14 @@ import { cloneDeep } from 'lodash';
 
 export class ObsListMapper {
 
-  getInitialObject(formName, formVersion, control, bahmniObservations) {
-    const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id);
-    const obs = obsFromMetadata(formNamespaceAndPath, control);
+  getInitialObject(formName, formVersion, control, bahmniObservations, allObs,
+                   parentFormFieldpath) {
+    const formNamespaceAndPath = createFormNamespaceAndPath(formName, formVersion, control.id,
+        parentFormFieldpath);
+    let obs = obsFromMetadata(formNamespaceAndPath, control);
 
-    const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id);
+    const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id,
+        parentFormFieldpath);
     const filteredObs = filter(bahmniObservations,
       (observation) => observation.formFieldPath.startsWith(`${keyPrefix.formFieldPath}-`));
     const groupedObs = groupBy(filteredObs, 'formFieldPath');
@@ -24,11 +27,11 @@ export class ObsListMapper {
       let inactive = false;
       for (const observation of groupedObs[formFieldPath]) {
         obsList = obsList.concat(createObsFromControl(formName,
-          formVersion, control, [observation]));
+          formVersion, control, [observation], parentFormFieldpath));
         inactive = observation.inactive;
       }
 
-      obs.formFieldPath = formFieldPath;
+      obs = obs.set('formFieldPath', formFieldPath);
 
       obsLists.push(new ObsList({ obsList, formFieldPath, obs, inactive }));
     });
@@ -55,7 +58,12 @@ export class ObsListMapper {
   }
 
   buildObs(record, value, uuid, comment) {
-    const obs = cloneDeep(record.dataSource.obs);
+    const targetValue = record.dataSource.obsList.filter(
+        (obs) => (value && obs.value.uuid === value.uuid &&
+        obs.formFieldPath === record.formFieldPath)
+    );
+    const obs = (targetValue.size > 0 ? cloneDeep(targetValue.get(0)) :
+      cloneDeep(record.dataSource.obs)).toJS();
     obs.uuid = uuid;
     obs.value = value;
     obs.inactive = !record.active;
@@ -90,10 +98,11 @@ export class ObsListMapper {
       record.value.value.forEach(
         value => {
           const targetValue = record.dataSource.obsList.filter(
-            (obs) => obs.value.uuid === value.uuid
+            (obs) => (obs.value.uuid === value.uuid && obs.formFieldPath === record.formFieldPath)
           );
           const uuid = targetValue.size > 0 ? targetValue.get(0).uuid : undefined;
-          obsArray.push(this.buildObs(record, value, uuid, record.value.comment));
+          const newValue = record.voided ? undefined : value;
+          obsArray.push(this.buildObs(record, newValue, uuid, record.value.comment));
         }
       );
     }

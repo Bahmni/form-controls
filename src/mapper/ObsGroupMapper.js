@@ -2,11 +2,42 @@ import { createObsFromControl } from 'src/helpers/Obs';
 import isEmpty from 'lodash/isEmpty';
 import { cloneDeep } from 'lodash';
 import ObservationMapper from '../helpers/ObservationMapper';
+import { getUpdatedFormFieldPath } from 'src/helpers/formNamespace';
+import { isAnyAncestorOrControlHasAddMore } from 'src/helpers/ControlUtil';
 
 export class ObsGroupMapper {
 
-  getInitialObject(formName, formVersion, control, bahmniObservations) {
-    return createObsFromControl(formName, formVersion, control, bahmniObservations);
+  getInitialObject(formName, formVersion, control, currentLayerObservations, allObs,
+                   parentFormFieldPath) {
+    const updatedObservations = this.updateOldObsGroupFormFieldPathForBackwardCompatibility(control,
+      currentLayerObservations, parentFormFieldPath);
+    return createObsFromControl(formName, formVersion, control, updatedObservations,
+        parentFormFieldPath);
+  }
+  updateOldObsGroupFormFieldPathForBackwardCompatibility(control, bahmniObservations
+    , parentFormFieldPath) {
+    if (isEmpty(bahmniObservations) || !isAnyAncestorOrControlHasAddMore(control)) {
+      return bahmniObservations;
+    }
+    const controlPrefix = `/${control.id}`;
+    const newObservations = bahmniObservations.map((observation) => {
+      if (observation.formFieldPath.includes(controlPrefix)) {
+        return this.updateToLatestFormFieldPath(observation, parentFormFieldPath);
+      }
+      return observation;
+    });
+    return newObservations;
+  }
+
+  updateToLatestFormFieldPath(observation, parentFormFieldPath) {
+    let updatedObservation = observation.set('formFieldPath',
+      getUpdatedFormFieldPath(observation, parentFormFieldPath));
+    if (observation.groupMembers) {
+      updatedObservation = updatedObservation.set('groupMembers',
+        updatedObservation.groupMembers.map((gm) =>
+          this.updateToLatestFormFieldPath(gm, updatedObservation.formFieldPath)));
+    }
+    return updatedObservation;
   }
 
   setValue(obsGroup, obs) {
@@ -42,7 +73,7 @@ export class ObsGroupMapper {
   }
 
   getData(record) {
-    const obsGroup = cloneDeep(record.dataSource);
+    const obsGroup = cloneDeep(record.dataSource).toJS();
     if (obsGroup.formFieldPath !== record.formFieldPath) {
       obsGroup.uuid = undefined;
       obsGroup.formFieldPath = record.formFieldPath;

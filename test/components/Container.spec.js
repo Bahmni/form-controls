@@ -15,6 +15,7 @@ import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import ComponentStore from 'src/helpers/componentStore';
 import Constants from 'src/constants';
 import sinon from 'sinon';
+import { Map as immutableMap } from 'immutable';
 
 
 chai.use(chaiEnzyme());
@@ -86,6 +87,21 @@ describe('Container', () => {
     };
 
     const formFieldPath = 'SingleObs.1/1-0';
+    const dataSource = immutableMap({
+      concept: {
+        conceptClass: 'Misc',
+        dataType: 'Numeric',
+        hiNormal: 72,
+        lowNormal: 72,
+        mappings: [],
+        name: 'Pulse',
+        set: false,
+        shortName: 'Pulse',
+        units: '/min',
+        uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+      },
+      voided: false,
+    });
     const childRecord = new ControlRecord({
       control: {
         concept: {
@@ -122,55 +138,7 @@ describe('Container', () => {
       },
       formFieldPath,
       value: { value: '1', comment: undefined },
-      dataSource: {
-        abnormal: null,
-        comment: null,
-        concept: {
-          conceptClass: 'Misc',
-          dataType: 'Numeric',
-          hiNormal: 72,
-          lowNormal: 72,
-          mappings: [],
-          name: 'Pulse',
-          set: false,
-          shortName: 'Pulse',
-          units: '/min',
-          uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
-        },
-        conceptNameToDisplay: 'Pulse',
-        conceptSortWeight: 1,
-        conceptUuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
-        creatorName: 'Super Man',
-        duration: null,
-        encounterDateTime: 1488523999000,
-        encounterUuid: '8b5f9862-ce75-4d31-bf41-1c47d58c7444',
-        formFieldPath: 'SingleObs.1/1-0',
-        formNamespace: 'Bahmni',
-        groupMembers: [],
-        hiNormal: 72,
-        isAbnormal: null,
-        lowNormal: 72,
-        obsGroupUuid: null,
-        observationDateTime: '2017-03-03T06:53:19.000+0000',
-        orderUuid: null,
-        parentConceptUuid: null,
-        providers: [
-          {
-            encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
-            name: 'Super Man',
-            uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
-          },
-        ],
-        targetObsRelation: null,
-        type: 'Numeric',
-        unknown: false,
-        uuid: '1c2b18ec-ad88-44e5-ae34-3b0e88240a93',
-        value: undefined,
-        valueAsString: '1.0',
-        visitStartDateTime: null,
-        voidReason: null,
-        voided: false,
-      },
+      dataSource,
     });
 
     const translations = {
@@ -402,7 +370,8 @@ describe('Container', () => {
       });
     });
 
-    it('should remove one obs when onControlRemove is triggered with obs in container', () => {
+    it('should remove one obs when onControlRemove is triggered with obs in container' +
+      'and this obs does not have a uuid linked', () => {
       const concept = {
         answers: [],
         datatype: 'Numeric',
@@ -499,8 +468,8 @@ describe('Container', () => {
 
       wrapper.instance().onControlRemove(removableFormFieldPath);
 
+      expect(wrapper.state().data.children.size).to.equal(1);
       expect(wrapper.state().data.children.get(0).active).to.equal(true);
-      expect(wrapper.state().data.children.get(1).active).to.equal(false);
     });
 
     it('should return observation even when given records with errors', () => {
@@ -556,12 +525,12 @@ describe('Container', () => {
         formFieldPath: obsFormFieldPath,
         value: { value: '11.1' },
         errors: [new Errors()],
-        dataSource: {
+        dataSource: immutableMap({
           concept,
           formFieldPath: obsFormFieldPath,
           formNamespace: 'Bahmni',
           voided: true,
-        },
+        }),
       });
       const rootRecord = new ControlRecord({ children: List.of(obsRecord) });
       const wrapper = mount(
@@ -1635,7 +1604,7 @@ describe('Container', () => {
         units: null,
       },
       formFieldPath: 'SingleGroup.3/4-0',
-      dataSource: {
+      dataSource: immutableMap({
         abnormal: null,
         comment: null,
         concept: {
@@ -1682,7 +1651,7 @@ describe('Container', () => {
         visitStartDateTime: null,
         voidReason: null,
         voided: false,
-      },
+      }),
       value: { value: '1', comment: undefined },
     });
     const childRecord = new ControlRecord({
@@ -1766,7 +1735,7 @@ describe('Container', () => {
         type: 'obsGroupControl',
       },
       formFieldPath: 'SingleGroup.3/3-0',
-      dataSource: {
+      dataSource: immutableMap({
         abnormal: null,
         comment: null,
         concept: {
@@ -1862,7 +1831,7 @@ describe('Container', () => {
         visitStartDateTime: null,
         voidReason: null,
         voided: false,
-      },
+      }),
       children: List.of(obsCtrlRecord),
     });
 
@@ -1909,7 +1878,7 @@ describe('Container', () => {
                   validateForm={false}
                 />
             );
-      const formFieldPath = 'SingleGroup.3/4-0';
+      const formFieldPath = 'SingleGroup.3/3-0/4-0';
       const changedValue = { value: '1', comment: undefined };
 
             // const update = sinon.stub(wrapper.state().data, 'update').returns(recordTree);
@@ -2336,9 +2305,8 @@ describe('Container', () => {
         const updatedRootTree = wrapper.state().data;
 
         const obsGroupTree = updatedRootTree.children.get(0);
+        expect(obsGroupTree.children.size).to.equal(1);
         expect(obsGroupTree.children.get(0).active).to.equal(true);
-        expect(obsGroupTree.children.get(1).active).to.equal(false);
-        expect(obsGroupTree.children.get(1).formFieldPath).to.equal(removableFormFieldPath);
       });
     });
 
@@ -2771,9 +2739,8 @@ describe('Container', () => {
         const updatedRootTree = wrapper.state().data;
         const obsGroupTree = updatedRootTree.children.get(0).children.get(0);
 
+        expect(obsGroupTree.children.size).to.equal(1);
         expect(obsGroupTree.children.get(0).active).to.equal(true);
-        expect(obsGroupTree.children.get(1).active).to.equal(false);
-        expect(obsGroupTree.children.get(1).formFieldPath).to.equal(removableFormFieldPath);
       });
     });
 

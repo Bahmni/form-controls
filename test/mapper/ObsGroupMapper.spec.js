@@ -112,8 +112,195 @@ describe('ObsGroupMapper', () => {
     sinon.assert.calledOnce(numericObs.getObject);
   });
 
-  it('should return same amount obsGroups ' +
-    'when call obsGroupMapper\'s getInitialObject methods', () => {
+  it('should return same amount obsGroups having add more property false and group members' +
+        'should not have obs group form field path on calling obsGroupMapper\'s getInitialObject' +
+        'method', () => {
+    const formName = 'Test1';
+    const formVersion = '1';
+    const control = {
+      type: 'obsGroupControl',
+      controls: [
+        {
+          type: 'obsControl',
+          id: 2,
+        },
+      ],
+      id: '1',
+      properties: {
+        addMore: false,
+      },
+    };
+
+    const firstObsGrpFormFieldPath = 'Test1.1/1-0';
+    const firstObsFormFieldPath = 'Test1.1/2-0';
+    const secondObsGrpFormFieldPath = 'Test1.1/1-1';
+    const secondObsFormFieldPath = 'Test1.1/2-1';
+
+    const observation = [
+      new Obs({
+        formFieldPath: firstObsGrpFormFieldPath,
+        groupMembers: [
+          new Obs({
+            formFieldPath: firstObsFormFieldPath,
+          }),
+        ],
+      }),
+      new Obs({
+        formFieldPath: secondObsGrpFormFieldPath,
+        groupMembers: [
+          new Obs({
+            formFieldPath: secondObsFormFieldPath,
+          }),
+        ],
+      }),
+    ];
+    const obsArray = new ObsGroupMapper()
+            .getInitialObject(formName, formVersion, control, observation, observation);
+
+    expect(obsArray.length).to.equal(observation.length);
+
+    expect([obsArray[0].formFieldPath, obsArray[1].formFieldPath])
+            .to.have.members([firstObsGrpFormFieldPath, secondObsGrpFormFieldPath]);
+
+    let obsGrp = obsArray.find(obj => (obj.formFieldPath === firstObsGrpFormFieldPath ?
+        obj : undefined));
+    expect(obsGrp.groupMembers.length).to.eql(1);
+    expect(obsGrp.groupMembers[0].formFieldPath).to.eql(firstObsFormFieldPath);
+
+    obsGrp = obsArray.find(obj => (obj.formFieldPath === secondObsGrpFormFieldPath ?
+        obj : undefined));
+
+    expect(obsGrp.groupMembers.length).to.eql(1);
+    expect(obsGrp.groupMembers[0].formFieldPath).to.eql(secondObsFormFieldPath);
+  });
+
+  it('should return same amount obsGroups having add more property true on calling' +
+        'obsGroupMapper\'s getInitialObject method', () => {
+    const formName = 'Test1';
+    const formVersion = '1';
+    const control = {
+      type: 'obsGroupControl',
+      controls: [
+        {
+          type: 'obsControl',
+          id: 2,
+        },
+      ],
+      id: '1',
+      properties: {
+        addMore: true,
+      },
+    };
+
+    const firstObsGrpFormFieldPath = 'Test1.1/1-0';
+    const firstObsFormFieldPath = 'Test1.1/1-0/2-0';
+    const secondObsGrpFormFieldPath = 'Test1.1/1-1';
+    const secondObsFormFieldPath = 'Test1.1/1-1/2-0';
+
+    const observation = [
+      new Obs({
+        formFieldPath: firstObsGrpFormFieldPath,
+        groupMembers: [
+          new Obs({
+            formFieldPath: firstObsFormFieldPath,
+          }),
+        ],
+      }),
+      new Obs({
+        formFieldPath: secondObsGrpFormFieldPath,
+        groupMembers: [
+          new Obs({
+            formFieldPath: secondObsFormFieldPath,
+          }),
+        ],
+      }),
+    ];
+    const obsArray = new ObsGroupMapper()
+            .getInitialObject(formName, formVersion, control, observation, observation);
+
+    expect(obsArray.length).to.equal(observation.length);
+
+    expect([obsArray[0].formFieldPath, obsArray[1].formFieldPath])
+            .to.have.members([firstObsGrpFormFieldPath, secondObsGrpFormFieldPath]);
+
+    let obsGrp = obsArray.find(obj => (obj.formFieldPath === firstObsGrpFormFieldPath ?
+        obj : undefined));
+    expect(obsGrp.groupMembers.length).to.eql(1);
+    expect(obsGrp.groupMembers[0].formFieldPath).to.eql(firstObsFormFieldPath);
+
+    obsGrp = obsArray.find(obj => (obj.formFieldPath === secondObsGrpFormFieldPath ?
+        obj : undefined));
+
+    expect(obsGrp.groupMembers.length).to.eql(1);
+    expect(obsGrp.groupMembers[0].formFieldPath).to.eql(secondObsFormFieldPath);
+  });
+
+  it('should return same amount obsGroups having add more property false and group members' +
+        'should have all parents form field path if parent form field path is not empty' +
+      ' on calling obsGroupMapper\'s getInitialObject method', () => {
+    const formName = 'Test1';
+    const formVersion = '1';
+    const control = {
+      type: 'obsGroupControl',
+      controls: [
+        {
+          type: 'obsControl',
+          id: 3,
+        },
+      ],
+      id: '2',
+      properties: {
+        addMore: false,
+      },
+    };
+
+    const firstObsGrpFormFieldPath = 'Test1.1/1-0/2-0';
+    const firstObsFormFieldPath = 'Test1.1/1-0/2-0/3-0';
+    const secondObsGrpFormFieldPath = 'Test1.1/1-0/2-1';
+    const secondObsFormFieldPath = 'Test1.1/1-0/2-1/3-0';
+
+    const observation = [
+      new Obs({
+        formFieldPath: firstObsGrpFormFieldPath,
+        groupMembers: [
+          new Obs({
+            formFieldPath: firstObsFormFieldPath,
+          }),
+        ],
+      }),
+      new Obs({
+        formFieldPath: secondObsGrpFormFieldPath,
+        groupMembers: [
+          new Obs({
+            formFieldPath: secondObsFormFieldPath,
+          }),
+        ],
+      }),
+    ];
+    const obsArray = new ObsGroupMapper()
+            .getInitialObject(formName, formVersion, control, observation, observation,
+                'Test1.1/1-0');
+
+    expect(obsArray.length).to.equal(observation.length);
+
+    expect([obsArray[0].formFieldPath, obsArray[1].formFieldPath])
+            .to.have.members([firstObsGrpFormFieldPath, secondObsGrpFormFieldPath]);
+
+    let obsGrp = obsArray.find(obj => (obj.formFieldPath === firstObsGrpFormFieldPath ?
+        obj : undefined));
+    expect(obsGrp.groupMembers.length).to.eql(1);
+    expect(obsGrp.groupMembers[0].formFieldPath).to.eql(firstObsFormFieldPath);
+
+    obsGrp = obsArray.find(obj => (obj.formFieldPath === secondObsGrpFormFieldPath ?
+      obj : undefined));
+
+    expect(obsGrp.groupMembers.length).to.eql(1);
+    expect(obsGrp.groupMembers[0].formFieldPath).to.eql(secondObsFormFieldPath);
+  });
+
+  it('should return same amount obsGroups having add more property true and group members' +
+      'should have obs group form field path for backward compatibility on calling' +
+      ' obsGroupMapper\'s getInitialObject method', () => {
     const formName = 'Test1';
     const formVersion = '1';
     const control = {
@@ -175,64 +362,83 @@ describe('ObsGroupMapper', () => {
       },
       type: 'obsGroupControl',
     };
+    const firstObsGrpFormFieldPath = 'Test1.1/1-0';
+    const firstObsFormFieldPath = 'Test1.1/2-0';
+    const secondObsGrpFormFieldPath = 'Test1.1/1-1';
+    const secondObsFormFieldPath = 'Test1.1/2-1';
+
     const observation = [
-      {
+      new Obs({
         concept: {
           dataType: 'N/A',
           name: 'Bacteriology Additional Attributes',
           uuid: '695e99d6-12b2-11e6-8c00-080027d2adbd',
         },
-        formFieldPath: 'Test1.1/1-0',
+        formFieldPath: firstObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             concept: {
               dataType: 'Text',
               name: 'Consultation Note',
               uuid: '81d6e852-3f10-11e4-adec-0800271c1b75',
             },
-            formFieldPath: 'Test1.1/2-0',
+            formFieldPath: firstObsFormFieldPath,
             groupMembers: [],
             obsGroupUuid: '26a81979-d28c-4e7b-b490-d86dd53b23d7',
             uuid: '20f2e76a-63f2-4f05-9b3a-5cc80af1cdba',
             value: '1',
-          },
+          }),
         ],
         uuid: '26a81979-d28c-4e7b-b490-d86dd53b23d7',
         value: '1',
         voided: false,
-      },
-      {
+      }),
+      new Obs({
         concept: {
           dataType: 'N/A',
           name: 'Bacteriology Additional Attributes',
           uuid: '695e99d6-12b2-11e6-8c00-080027d2adbd',
         },
-        formFieldPath: 'Test1.1/1-1',
+        formFieldPath: secondObsGrpFormFieldPath,
         groupMembers: [
-          {
+          new Obs({
             concept: {
               dataType: 'Text',
               name: 'Consultation Note',
               uuid: '81d6e852-3f10-11e4-adec-0800271c1b75',
             },
-            formFieldPath: 'Test1.1/2-1',
+            formFieldPath: secondObsFormFieldPath,
             groupMembers: [],
             obsGroupUuid: '09f0ddbe-45a2-41d8-8a99-416059f61b21',
             type: 'Text',
             uuid: 'd16dee4e-ac4f-4ad7-ba35-89b73d39220d',
             value: '2',
             voided: false,
-          },
+          }),
         ],
         uuid: '09f0ddbe-45a2-41d8-8a99-416059f61b21',
         value: '2',
         voided: false,
-      },
+      }),
     ];
 
     const obsArray = new ObsGroupMapper()
-      .getInitialObject(formName, formVersion, control, observation);
+      .getInitialObject(formName, formVersion, control, observation, observation);
 
     expect(obsArray.length).to.equal(observation.length);
+
+    expect([obsArray[0].formFieldPath, obsArray[1].formFieldPath])
+          .to.have.members([firstObsGrpFormFieldPath, secondObsGrpFormFieldPath]);
+
+    let obsGrp = obsArray.find(obj => (obj.formFieldPath === firstObsGrpFormFieldPath ?
+        obj : undefined));
+    expect(obsGrp.groupMembers.length).to.eql(1);
+    expect(obsGrp.groupMembers[0].formFieldPath).to.eql('Test1.1/1-0/2-0');
+
+    obsGrp = obsArray.find(obj => (obj.formFieldPath === secondObsGrpFormFieldPath ?
+      obj : undefined));
+
+    expect(obsGrp.groupMembers.length).to.eql(1);
+    expect(obsGrp.groupMembers[0].formFieldPath).to.eql('Test1.1/1-1/2-1');
   });
 });
