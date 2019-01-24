@@ -36,7 +36,7 @@ export class TableMapper {
 
   segregateObsByAddMoreSections(prefix, bahmniObservations) {
     const filteredObs = bahmniObservations.filter(obs =>
-            obs.formFieldPath.startsWith(prefix.formFieldPath));
+        obs.formFieldPath.startsWith(`${prefix.formFieldPath}-`));
     const groupedObs = _.groupBy(filteredObs, obs =>
             obs.formFieldPath.slice(prefix.formFieldPath.length).split('/')[0]);
     return _.values(groupedObs);

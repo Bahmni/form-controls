@@ -197,8 +197,6 @@ export class ObsControlDesigner extends Component {
               {this.showAddMore()}
             </div>
           </div>
-          {this.showAbnormalButton()}
-          {this.showAddMore()}
           {this.showComment()}
         </div>
       );
