@@ -1,7 +1,6 @@
 $lightestGray: #eee;
 .form-builder-row {
   width: 100%;
-  display: flex;
   .form-builder-column {
     min-height: 50px;
     width: 100%;
@@ -14,14 +13,36 @@ $lightestGray: #eee;
     .form-field-wrap {
       position: relative;
       margin-top:5px;
+      .obs-comment-wrap{
+        display: flex;
+        .obs-empty-block{
+          flex:2;
+        }
+        .obs-comment-content{
+          flex:9;
+          textarea{
+            width:85%;
+          }
+        }
+      }
+      .form-field-content-wrap{
+        display: flex;
+      }
+      .obs-comment-section-wrap{
+        textarea{
+          width: 69.3%;
+          float: right;
+          margin-top: 10px;
+        }
+      }
       .label-wrap {
         float: left;
-        width: 230px;
         padding-right: 30px;
         font-size: 12px;
         margin-top: 5px;
         text-align: right;
         position: relative;
+        flex:4;
         label {
           padding-right: 10px;
         }
@@ -30,6 +51,16 @@ $lightestGray: #eee;
           color: $red;
           top: 0;
           right: 20px;
+        }
+      }
+      .obs-control-field{
+        flex:9;
+        textarea{
+          width: 70%;
+          float:left;
+        }
+        .form-control-buttons{
+          width: 70%;
         }
       }
       input {
@@ -121,7 +152,6 @@ $lightestGray: #eee;
         float: left;
         word-wrap: break-word;
         min-height: 53px;
-        width: 500px;
         padding: 2px 10px;
         color: $bahmniTextColor;
         background-color: $white;
@@ -291,8 +321,24 @@ $lightestGray: #eee;
 }
 
 .table-controls{
-  .form-builder-column{
-    border: 1px dotted #BBB;
+  .form-builder-row {
+    display: flex;
+    .form-builder-column{
+      border: 1px dotted #BBB;
+      .form-field-wrap{
+        .form-field-content-wrap{
+          width: 90.5%;
+        }
+        .form-builder-comment-toggle{
+          top: 6px ;
+          right:4px;
+        }
+        button.form-builder-comment-button-toggle{
+          padding: 1px;
+          top: 1px ;
+        }
+      }
+    }
   }
   .header{
     display: flex;
@@ -300,6 +346,10 @@ $lightestGray: #eee;
       flex: 1;
       border: 1px dotted #BBB;
       padding: 2px;
+    }
+    label{
+      font-weight: bold;
+      margin-left: 5px;
     }
   }
 
