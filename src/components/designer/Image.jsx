@@ -1,17 +1,12 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ComponentStore from 'src/helpers/componentStore';
 
-export class ImageDesigner extends PureComponent {
-
-  render() {
-    return (
-      <div className="fl complex-component-designer">
-        <input disabled type="file" />
-      </div>
-    );
-  }
-}
+export const ImageDesigner = () => (
+  <div className="fl complex-component-designer">
+    <input disabled type="file" />
+  </div>
+);
 
 ImageDesigner.propTypes = {
   metadata: PropTypes.shape({

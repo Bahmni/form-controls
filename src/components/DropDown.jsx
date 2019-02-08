@@ -1,20 +1,14 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ComponentStore from 'src/helpers/componentStore';
 import { AutoComplete } from 'src/components/AutoComplete.jsx';
 
-export class DropDown extends PureComponent {
-
-  render() {
-    return (
-        <AutoComplete {...this.props}
-          asynchronous={false}
-          minimumInput={0}
-          searchable={this.props.searchable}
-        />
-    );
-  }
-}
+export const DropDown = (props) =>
+  <AutoComplete {...props}
+    asynchronous={false}
+    minimumInput={0}
+    searchable={props.searchable}
+  />;
 
 DropDown.propTypes = {
   autoFocus: PropTypes.bool,
@@ -51,7 +45,6 @@ const descriptor = {
     ],
   },
 };
-
 
 ComponentStore.registerDesignerComponent('dropDown', descriptor);
 

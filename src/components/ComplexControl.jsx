@@ -1,20 +1,13 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ComponentStore from 'src/helpers/componentStore';
 
-export class ComplexControl extends PureComponent {
-  render() {
-    const { conceptHandler } = this.props;
-    const registeredComplexControl = ComponentStore.getRegisteredComponent(conceptHandler);
+export const ComplexControl = props => {
+  const { conceptHandler } = props;
+  const RegisteredComplexControl = ComponentStore.getRegisteredComponent(conceptHandler);
 
-    if (registeredComplexControl) {
-      return React.createElement(registeredComplexControl, {
-        ...this.props,
-      });
-    }
-    return null;
-  }
-}
+  return RegisteredComplexControl ? <RegisteredComplexControl {...props} /> : null;
+};
 
 
 ComplexControl.propTypes = {
