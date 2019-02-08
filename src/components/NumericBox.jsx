@@ -8,29 +8,48 @@ import constants from 'src/constants';
 import { NumericBoxDesigner } from 'src/components/designer/NumericBoxDesigner.jsx';
 
 export class NumericBox extends Component {
+  static getDefaultValidations() {
+    return [constants.validations.allowRange, constants.validations.minMaxRange];
+  }
+
+  static getErrors(value, props) {
+    const validations = NumericBox.getDefaultValidations().concat(props.validations);
+    const params = {
+      minNormal: props.lowNormal,
+      maxNormal: props.hiNormal,
+      minAbsolute: props.lowAbsolute,
+      maxAbsolute: props.hiAbsolute,
+    };
+    const controlDetails = { validations, value, params };
+    return Validator.getErrors(controlDetails);
+  }
+
+  static hasErrors(errors, errorType) {
+    return !isEmpty(errors.filter((error) => error.type === errorType));
+  }
+
   constructor(props) {
     super(props);
-    this.defaultValidations = [constants.validations.allowRange, constants.validations.minMaxRange];
-    const errors = this._getErrors(props.value) || [];
-    const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
+    const errors = NumericBox.getErrors(props.value, props) || [];
+    const hasWarnings = NumericBox.hasErrors(errors, constants.errorTypes.warning);
     const hasErrors = this._isCreateByAddMore() ?
-      this._hasErrors(errors, constants.errorTypes.error) : false;
+      NumericBox.hasErrors(errors, constants.errorTypes.error) : false;
     this.state = { hasErrors, hasWarnings };
   }
 
   componentDidMount() {
-    const { value, validateForm } = this.props;
+    const { value, validateForm, onChange } = this.props;
     this.input.value = this.props.value;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
-      this.props.onChange(value, this._getErrors(value), true);
+      onChange(value, NumericBox.getErrors(value, this.props), true);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate) {
-      const errors = this._getErrors(nextProps.value);
-      const hasErrors = this._hasErrors(errors, constants.errorTypes.error);
-      const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
+      const errors = NumericBox.getErrors(nextProps.value, nextProps);
+      const hasErrors = NumericBox.hasErrors(errors, constants.errorTypes.error);
+      const hasWarnings = NumericBox.hasErrors(errors, constants.errorTypes.warning);
       this.setState({ hasErrors, hasWarnings });
     }
   }
@@ -46,17 +65,19 @@ export class NumericBox extends Component {
   }
 
   componentDidUpdate() {
-    const errors = this._getErrors(this.props.value);
-    if (this._hasErrors(errors, constants.errorTypes.error)) {
-      this.props.onChange(this.props.value, errors);
+    const { value, onChange } = this.props;
+
+    const errors = NumericBox.getErrors(value, this.props);
+    if (NumericBox.hasErrors(errors, constants.errorTypes.error)) {
+      onChange(value, errors);
     }
     let valueToString;
-    if (this.props.value !== undefined) {
-      valueToString = this.props.value.toString();
+    if (value !== undefined) {
+      valueToString = value.toString();
     }
     if (this.input.value !== valueToString) {
       this.updateInputByPropsValue();
-      this.props.onChange(this.props.value, errors);
+      onChange(value, errors);
     }
   }
 
@@ -67,31 +88,15 @@ export class NumericBox extends Component {
   handleChange(e) {
     let value = e.target.value;
     value = value && value.trim() !== '' ? value.trim() : undefined;
-    const errors = this._getErrors(value);
-    const hasErrors = this._hasErrors(errors, constants.errorTypes.error);
-    const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
+    const errors = NumericBox.getErrors(value, this.props);
+    const hasErrors = NumericBox.hasErrors(errors, constants.errorTypes.error);
+    const hasWarnings = NumericBox.hasErrors(errors, constants.errorTypes.warning);
     this.setState({ hasErrors, hasWarnings });
     this.props.onChange(value, errors);
   }
 
   _isCreateByAddMore() {
     return (this.props.formFieldPath.split('-')[1] !== '0');
-  }
-
-  _hasErrors(errors, errorType) {
-    return !isEmpty(errors.filter((error) => error.type === errorType));
-  }
-
-  _getErrors(value) {
-    const validations = this.defaultValidations.concat(this.props.validations);
-    const params = {
-      minNormal: this.props.lowNormal,
-      maxNormal: this.props.hiNormal,
-      minAbsolute: this.props.lowAbsolute,
-      maxAbsolute: this.props.hiAbsolute,
-    };
-    const controlDetails = { validations, value, params };
-    return Validator.getErrors(controlDetails);
   }
 
   render() {

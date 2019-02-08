@@ -7,6 +7,15 @@ import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
 
 export class RadioButton extends Component {
+  static getErrors(value, validations) {
+    const controlDetails = { validations, value };
+    return Validator.getErrors(controlDetails);
+  }
+
+  static hasErrors(errors) {
+    return !isEmpty(errors);
+  }
+
   constructor(props) {
     super(props);
     this.state = { value: props.value, hasErrors: false };
@@ -14,8 +23,8 @@ export class RadioButton extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate) {
-      const errors = this._getErrors(nextProps.value);
-      this.setState({ hasErrors: this._hasErrors(errors) });
+      const errors = RadioButton.getErrors(nextProps.value, nextProps.validations);
+      this.setState({ hasErrors: RadioButton.hasErrors(errors) });
     }
   }
 
@@ -29,19 +38,9 @@ export class RadioButton extends Component {
   }
 
   changeValue(value) {
-    const errors = this._getErrors(value);
-    this.setState({ value, hasErrors: this._hasErrors(errors) });
+    const errors = RadioButton.getErrors(value, this.props.validations);
+    this.setState({ value, hasErrors: RadioButton.hasErrors(errors) });
     this.props.onValueChange(value, errors);
-  }
-
-  _hasErrors(errors) {
-    return !isEmpty(errors);
-  }
-
-  _getErrors(value) {
-    const validations = this.props.validations;
-    const controlDetails = { validations, value };
-    return Validator.getErrors(controlDetails);
   }
 
   displayRadioButtons() {

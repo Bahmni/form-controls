@@ -7,24 +7,34 @@ import isEmpty from 'lodash/isEmpty';
 import Textarea from 'react-textarea-autosize';
 
 export class TextBox extends Component {
+  static getErrors(value, props) {
+    const validations = props.validations;
+    const controlDetails = { validations, value };
+    return Validator.getErrors(controlDetails);
+  }
+
+  static hasErrors(errors) {
+    return !isEmpty(errors);
+  }
+
   constructor(props) {
     super(props);
-    const errors = this._getErrors(props.value) || [];
-    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
+    const errors = TextBox.getErrors(props.value, props) || [];
+    const hasErrors = this._isCreateByAddMore() ? TextBox.hasErrors(errors) : false;
     this.state = { hasErrors };
   }
 
   componentDidMount() {
     const { value, validateForm } = this.props;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
-      this.props.onChange(value, this._getErrors(value));
+      this.props.onChange(value, TextBox.getErrors(value, this.props));
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate) {
-      const errors = this._getErrors(nextProps.value);
-      this.setState({ hasErrors: this._hasErrors(errors) });
+      const errors = TextBox.getErrors(nextProps.value, nextProps);
+      this.setState({ hasErrors: TextBox.hasErrors(errors) });
     }
   }
 
@@ -39,23 +49,13 @@ export class TextBox extends Component {
   }
 
   componentDidUpdate() {
-    const errors = this._getErrors(this.props.value);
-    if (this._hasErrors(errors)) {
+    const errors = TextBox.getErrors(this.props.value, this.props);
+    if (TextBox.hasErrors(errors)) {
       this.props.onChange(this.props.value, errors);
     }
     if (this.isValueChanged) {
       this.props.onChange(this.props.value, errors);
     }
-  }
-
-  _hasErrors(errors) {
-    return !isEmpty(errors);
-  }
-
-  _getErrors(value) {
-    const validations = this.props.validations;
-    const controlDetails = { validations, value };
-    return Validator.getErrors(controlDetails);
   }
 
   _isCreateByAddMore() {
@@ -64,8 +64,8 @@ export class TextBox extends Component {
 
   handleChange(e) {
     const value = e.target.value;
-    const errors = this._getErrors(value);
-    this.setState({ hasErrors: this._hasErrors(errors) });
+    const errors = TextBox.getErrors(value, this.props);
+    this.setState({ hasErrors: TextBox.hasErrors(errors) });
     this.props.onChange(value, errors);
   }
 

@@ -6,24 +6,35 @@ import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 export class Date extends Component {
+
+  static getErrors(value, props) {
+    const validations = props.validations;
+    const controlDetails = { validations, value };
+    return Validator.getErrors(controlDetails);
+  }
+
+  static hasErrors(errors) {
+    return !isEmpty(errors);
+  }
+
   constructor(props) {
     super(props);
-    const errors = this._getErrors(props.value) || [];
-    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
+    const errors = Date.getErrors(props.value, props) || [];
+    const hasErrors = this._isCreateByAddMore() ? Date.hasErrors(errors) : false;
     this.state = { hasErrors };
   }
 
   componentDidMount() {
-    const { value, validateForm } = this.props;
+    const { value, validateForm, onChange } = this.props;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
-      this.props.onChange(value, this._getErrors(value));
+      onChange(value, Date.getErrors(value, this.props));
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.validate) {
-      const errors = this._getErrors(nextProps.value);
-      this.setState({ hasErrors: this._hasErrors(errors) });
+      const errors = Date.getErrors(nextProps.value, nextProps);
+      this.setState({ hasErrors: Date.hasErrors(errors) });
     }
   }
 
@@ -38,8 +49,8 @@ export class Date extends Component {
   }
 
   componentDidUpdate() {
-    const errors = this._getErrors(this.props.value);
-    if (this._hasErrors(errors)) {
+    const errors = Date.getErrors(this.props.value, this.props);
+    if (Date.hasErrors(errors)) {
       this.props.onChange(this.props.value, errors);
     }
     if (this.isValueChanged) {
@@ -51,23 +62,13 @@ export class Date extends Component {
     let value = e.target.value;
     value = (value === '') ? undefined : value;
 
-    const errors = this._getErrors(value);
-    this.setState({ hasErrors: this._hasErrors(errors) });
+    const errors = Date.getErrors(value, this.props);
+    this.setState({ hasErrors: Date.hasErrors(errors) });
     this.props.onChange(value, errors);
   }
 
   _isCreateByAddMore() {
     return (this.props.formFieldPath.split('-')[1] !== '0');
-  }
-
-  _hasErrors(errors) {
-    return !isEmpty(errors);
-  }
-
-  _getErrors(value) {
-    const validations = this.props.validations;
-    const controlDetails = { validations, value };
-    return Validator.getErrors(controlDetails);
   }
 
   render() {

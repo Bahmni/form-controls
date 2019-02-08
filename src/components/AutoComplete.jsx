@@ -11,6 +11,15 @@ import classNames from 'classnames';
 
 
 export class AutoComplete extends Component {
+  static getErrors(value, validations) {
+    const controlDetails = { validations, value };
+    return Validator.getErrors(controlDetails);
+  }
+
+  static hasErrors(errors) {
+    return !isEmpty(errors);
+  }
+
   constructor(props) {
     super(props);
     this.optionsUrl = props.optionsUrl;
@@ -21,8 +30,8 @@ export class AutoComplete extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
-    const errors = this._getErrors(props.value) || [];
-    const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
+    const errors = AutoComplete.getErrors(props.value, props.validations) || [];
+    const hasErrors = this._isCreateByAddMore() ? AutoComplete.hasErrors(errors) : false;
     this.state = {
       value: get(props, 'value'),
       hasErrors,
@@ -38,15 +47,17 @@ export class AutoComplete extends Component {
   }
 
   componentDidMount() {
-    if (this.state.hasErrors || this.props.value !== undefined || this.props.validateForm) {
-      this.props.onValueChange(this.props.value, this._getErrors(this.props.value));
+    const { validations, value, validateForm, onValueChange } = this.props;
+
+    if (this.state.hasErrors || value !== undefined || validateForm) {
+      onValueChange(value, AutoComplete.getErrors(value, validations));
     }
   }
 
   componentWillReceiveProps(nextProps) {
     const value = get(nextProps, 'value');
-    const errors = this._getErrors(value);
-    const hasErrors = this._hasErrors(errors);
+    const errors = AutoComplete.getErrors(value, nextProps.validations);
+    const hasErrors = AutoComplete.hasErrors(errors);
     const options = (this.state.options !== nextProps.options && !this.props.searchable) ?
       nextProps.options : this.state.options;
     this.setState({ value, hasErrors, options });
@@ -68,8 +79,8 @@ export class AutoComplete extends Component {
   }
 
   componentDidUpdate() {
-    const errors = this._getErrors(this.state.value);
-    if (this._hasErrors(errors)) {
+    const errors = AutoComplete.getErrors(this.state.value, this.props.validations);
+    if (AutoComplete.hasErrors(errors)) {
       this.props.onValueChange(this.state.value, errors);
     }
   }
@@ -107,11 +118,11 @@ export class AutoComplete extends Component {
   }
 
   handleChange(value) {
-    const errors = this._getErrors(value);
+    const errors = AutoComplete.getErrors(value, this.props.validations);
     if (!this.props.asynchronous && this.props.minimumInput !== 0) {
       this.setState({ options: [], noResultsText: '' });
     }
-    this.setState({ value, hasErrors: this._hasErrors(errors) });
+    this.setState({ value, hasErrors: AutoComplete.hasErrors(errors) });
     if (this.props.onValueChange) {
       this.props.onValueChange(value, errors);
     }
@@ -125,16 +136,6 @@ export class AutoComplete extends Component {
     if (this.childRef) {
       this.childRef.loadOptions('');
     }
-  }
-
-  _getErrors(value) {
-    const validations = this.props.validations;
-    const controlDetails = { validations, value };
-    return Validator.getErrors(controlDetails);
-  }
-
-  _hasErrors(errors) {
-    return !isEmpty(errors);
   }
 
   _isCreateByAddMore() {
