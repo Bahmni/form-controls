@@ -142,10 +142,10 @@ export class AutoComplete extends Component {
   }
 
   render() {
-    const { autofocus, autoload, cache, enabled, filterOptions, labelKey, valueKey,
+    const { autoFocus, autoload, cache, enabled, filterOptions, labelKey, valueKey,
                   asynchronous, multiSelect, minimumInput, searchable } = this.props;
     const props = {
-      autofocus,
+      autoFocus,
       backspaceRemoves: true,
       disabled: !enabled,
       filterOptions,
@@ -190,7 +190,7 @@ export class AutoComplete extends Component {
 
 AutoComplete.propTypes = {
   asynchronous: PropTypes.bool,
-  autofocus: PropTypes.bool,
+  autoFocus: PropTypes.bool,
   autoload: PropTypes.bool,
   cache: PropTypes.bool,
   enabled: PropTypes.bool,
@@ -211,7 +211,7 @@ AutoComplete.propTypes = {
 
 AutoComplete.defaultProps = {
   asynchronous: true,
-  autofocus: false,
+  autoFocus: false,
   autoload: false,
   cache: false,
   enabled: true,

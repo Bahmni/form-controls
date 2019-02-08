@@ -65,7 +65,7 @@ Location.propTypes = {
 };
 
 Location.defaultProps = {
-  autofocus: false,
+  autoFocus: false,
   enabled: true,
   labelKey: 'name',
   valueKey: 'id',
