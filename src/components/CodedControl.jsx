@@ -102,12 +102,9 @@ export class CodedControl extends Component {
   render() {
     const { properties } = this.props;
     const displayType = this._getDisplayType(properties);
-    const registeredComponent = ComponentStore.getRegisteredComponent(displayType);
-    if (registeredComponent) {
-      const childProps = this._getChildProps(displayType);
-      return React.createElement(registeredComponent, childProps);
-    }
-    return null;
+    const RegisteredComponent = ComponentStore.getRegisteredComponent(displayType);
+    return RegisteredComponent ?
+      <RegisteredComponent {...this._getChildProps(displayType)} /> : null;
   }
 }
 

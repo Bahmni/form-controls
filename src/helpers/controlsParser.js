@@ -11,10 +11,6 @@ function getRecordsForControl(control, records) {
   return records.filter((record) => record.control.id === control.id);
 }
 
-function createReactComponent(component, props) {
-  return React.createElement(component, props);
-}
-
 export function setupAddRemoveButtonsForAddMore(records) {
   return records.map((record, index) =>
     record.set('showRemove', index > 0).set('showAddMore', index === records.length - 1));
@@ -22,27 +18,26 @@ export function setupAddRemoveButtonsForAddMore(records) {
 
 export function getControls(controls, records, props) {
   return controls.map((control) => {
-    const registeredControl = ComponentStore.getRegisteredComponent(control.type);
-    if (registeredControl) {
+    const RegisteredControl = ComponentStore.getRegisteredComponent(control.type);
+    if (RegisteredControl) {
       let recordsForControl = getRecordsForControl(control, records);
       if (recordsForControl.length > 1) {
         recordsForControl = sortBy(recordsForControl,
           record => Util.toInt(record.formFieldPath.split('-')[1]));
         recordsForControl = setupAddRemoveButtonsForAddMore(recordsForControl);
       }
-      const components = recordsForControl.map((record) => createReactComponent(registeredControl, {
-        ...props,
-        enabled: record.enabled && props.enabled,
-        hidden: record.hidden,
-        key: control.id,
-        metadata: control,
-        value: record.value,
-        formFieldPath: record.formFieldPath,
-        showAddMore: record.showAddMore,
-        showRemove: record.showRemove,
-        children: record.children,
-      }));
-      return components;
+
+      return recordsForControl.map((record) => <RegisteredControl
+        {...props}
+        children={record.children}
+        enabled={record.enabled && props.enabled}
+        formFieldPath={record.formFieldPath}
+        hidden={record.hidden}
+        metadata={control}
+        showAddMore={record.showAddMore}
+        showRemove={record.showRemove}
+        value={record.value}
+      />);
     }
     return undefined;
   }).filter(element => element !== undefined);

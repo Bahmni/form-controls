@@ -9,7 +9,6 @@ import isEqual from 'lodash/isEqual';
 import ComponentStore from 'src/helpers/componentStore';
 
 const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
-const defaultCellControl = React.createElement(() => <div className="cell"></div>);
 
 export class CellDesigner extends DropTarget {
   constructor(props) {
@@ -77,23 +76,23 @@ export class CellDesigner extends DropTarget {
   getComponents() {
     const data = this.state.data;
     if (isEmpty(data)) {
-      return defaultCellControl;
+      return <div className="cell"></div>;
     }
-    return data.map((metadata, key) =>
-            React.createElement(this.props.wrapper,
-              {
-                key,
-                idGenerator: this.props.idGenerator,
-                metadata,
-                parentRef: this,
-                ref: this.storeChildRef,
-                wrapper: this.props.wrapper,
-                deleteControl: this.deleteControl,
-                setError: this.props.setError,
-                showDeleteButton: this.props.showDeleteButton,
-              }
-            )
-        );
+    return data.map((metadata, key) => {
+      const { wrapper: Wrapper, idGenerator, setError, showDeleteButton } = this.props;
+
+      return (<Wrapper
+        deleteControl={this.deleteControl}
+        idGenerator={idGenerator}
+        key={key}
+        metadata={metadata}
+        parentRef={this}
+        ref={this.storeChildRef}
+        setError={setError}
+        showDeleteButton={showDeleteButton}
+        wrapper={Wrapper}
+      />);
+    });
   }
 
   changeHandler(cellLocation) {

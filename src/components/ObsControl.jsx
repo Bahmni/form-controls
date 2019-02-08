@@ -57,7 +57,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     );
   }
 
-  displayObsControl(registeredComponent) {
+  displayObsControl(RegisteredComponent) {
     const { onControlAdd, hidden, enabled, metadata,
       metadata: { concept }, validate, validateForm, formFieldPath, showNotification } = this.props;
     const options = metadata.options || concept.answers;
@@ -65,7 +65,8 @@ export class ObsControl extends addMoreDecorator(Component) {
     const validations = getValidations(metadata.properties, concept.properties);
     const isAddMoreEnabled =
       find(metadata.properties, (value, key) => (key === 'addMore' && value));
-    return React.createElement(registeredComponent, {
+
+    const childProps = {
       hidden,
       enabled,
       properties: metadata.properties,
@@ -84,7 +85,9 @@ export class ObsControl extends addMoreDecorator(Component) {
       showNotification,
       conceptClass,
       conceptHandler,
-    });
+    };
+
+    return <RegisteredComponent {...childProps} />;
   }
 
   _numericContext(metadata) {

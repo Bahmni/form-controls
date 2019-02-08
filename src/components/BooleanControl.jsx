@@ -37,8 +37,8 @@ export class BooleanControl extends Component {
 
   render() {
     const { formFieldPath, enabled, options, validations, validate, validateForm } = this.props;
-    const registeredComponent = ComponentStore.getRegisteredComponent('button');
-    if (registeredComponent) {
+    const RegisteredComponent = ComponentStore.getRegisteredComponent('button');
+    if (RegisteredComponent) {
       const initialValue = this._getValue(options, this.props.value);
       const childProps = {
         enabled,
@@ -50,7 +50,7 @@ export class BooleanControl extends Component {
         validateForm,
         validations,
       };
-      return React.createElement(registeredComponent, childProps);
+      return <RegisteredComponent {...childProps} />;
     }
     return (
         <div>

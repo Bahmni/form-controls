@@ -34,7 +34,7 @@ describe('FormRenderer', () => {
     ],
   };
   beforeEach(() => {
-    sinon.stub(React, 'createElement');
+    sinon.stub(React, 'createElement'); // TODO: REMOVE THIS ONCE REACT IS MIGRATED TO V16.*.*
     sinon.stub(ReactDOM, 'render');
     sinon.stub(ReactDOM, 'unmountComponentAtNode');
     sinon.stub(document, 'getElementById');
