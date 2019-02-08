@@ -14,11 +14,9 @@ export class BooleanControlDesigner extends Component {
     ];
     const { metadata, metadata: { options = defaultOptions } } = this.props;
     this.updatedMetadata = Object.assign({}, { options }, metadata);
-    const registeredComponent = ComponentStore.getDesignerComponent('button');
-    if (registeredComponent) {
-      return React.createElement(registeredComponent.control, {
-        options,
-      });
+    const RegisteredComponent = ComponentStore.getDesignerComponent('button');
+    if (RegisteredComponent) {
+      return <RegisteredComponent.control options={options} />;
     }
     return null;
   }

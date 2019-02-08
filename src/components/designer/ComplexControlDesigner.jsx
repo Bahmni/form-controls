@@ -9,11 +9,8 @@ export class ComplexControlDesigner extends Component {
 
   render() {
     const { metadata: { concept: { conceptHandler } } } = this.props;
-    const registeredComponent = ComponentStore.getDesignerComponent(conceptHandler);
-    if (registeredComponent) {
-      return React.createElement(registeredComponent.control, { ...this.props });
-    }
-    return null;
+    const RegisteredComponent = ComponentStore.getDesignerComponent(conceptHandler);
+    return RegisteredComponent ? <RegisteredComponent.control {...this.props} /> : null;
   }
 }
 

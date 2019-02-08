@@ -48,12 +48,14 @@ export class CodedControlDesigner extends Component {
     const displayType = this._getDisplayType(metadata.properties);
     const registeredComponent = ComponentStore.getDesignerComponent(displayType);
     if (registeredComponent) {
-      return React.createElement(registeredComponent.control, {
-        asynchronous: false,
-        labelKey: 'name',
-        options: this._getOptionsRepresentation(concept.answers),
-        ref: this.storeChildRef,
-      });
+      return (
+        <registeredComponent.control
+          asynchronous={false}
+          labelKey="name"
+          options={this._getOptionsRepresentation(concept.answers)}
+          ref={this.storeChildRef}
+        />
+      );
     }
     return null;
   }

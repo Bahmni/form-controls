@@ -43,12 +43,10 @@ export class ObsControlDesigner extends Component {
 
   displayObsControl(designerComponent) {
     const { metadata, setError } = this.props;
-    return React.createElement(designerComponent.control, {
-      metadata,
-      ref: this.storeChildRef,
-      setError,
-      ...this._numericContext(metadata),
-    });
+
+    return (<designerComponent.control metadata={metadata} ref={this.storeChildRef}
+      setError={setError} {...this._numericContext(metadata)}
+    />);
   }
 
   _numericContext(metadata) {
