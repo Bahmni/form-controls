@@ -75,7 +75,8 @@ describe('TableDesigner', () => {
         type: 'table',
         label: tableHeader,
         properties,
-        controls: [column1LabelJson, column2LabelJson, childControl],
+        columnHeaders: [column1LabelJson, column2LabelJson],
+        controls: [childControl],
       };
 
       const textBoxDescriptor = { control: DummyControl };
@@ -128,8 +129,10 @@ describe('TableDesigner', () => {
       sinon.assert.calledWith(onSelectSpy, sinon.match.any, metadata);
     });
 
-    it('should render column names as Column1 and Column2 when controls are not defined', () => {
+    it('should render column names as Column1 and Column2 when columnHeaders ' +
+        'are not defined', () => {
       metadata.controls = undefined;
+      metadata.columnHeaders = undefined;
       wrapper = shallow(
         <TableDesigner
           clearSelectedControl={() => {}}
@@ -260,8 +263,6 @@ describe('TableDesigner', () => {
       ];
       instance.headerControl = { getJsonDefinition: sinon.stub().returns(tableHeader) };
       metadata.controls = [
-        column1LabelJson,
-        column2LabelJson,
         childControl,
       ];
       expect(instance.getJsonDefinition()).to.deep.eql(metadata);

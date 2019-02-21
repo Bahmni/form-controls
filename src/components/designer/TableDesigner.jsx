@@ -8,6 +8,8 @@ import { GridDesigner } from 'components/designer/Grid.jsx';
 const supportedControlTypes = ['obsControl'];
 const unsupportedProperties = ['addMore'];
 
+const NO_OF_TABLE_COLUMNS = 2;
+
 export class TableDesigner extends Component {
 
   constructor(props) {
@@ -24,16 +26,18 @@ export class TableDesigner extends Component {
   getJsonDefinition() {
     if (!this.gridRef) return undefined;
     const controls = [];
+    const columnHeaders = [];
     const { metadata } = this.props;
     if (this.labelControls.length > 0) {
       this.labelControls.forEach(
         (labelControl) => {
-          controls.push(labelControl.getJsonDefinition());
+          columnHeaders.push(labelControl.getJsonDefinition());
         });
     }
     const headerJsonDefinition = this.headerControl && this.headerControl.getJsonDefinition();
     if (metadata) {controls.push(...this.gridRef.getControls());}
-    return Object.assign({}, metadata, { controls }, { label: headerJsonDefinition });
+    return Object.assign({}, metadata, { controls }, { label: headerJsonDefinition },
+        { columnHeaders });
   }
 
   storeGridRef(ref) {
@@ -94,6 +98,15 @@ export class TableDesigner extends Component {
     );
   }
 
+  displayColumnHeaders(columnHeaders) {
+    const columnHeaderLabels = [];
+    for (let columnIndex = 0; columnIndex < NO_OF_TABLE_COLUMNS; columnIndex++) {
+      columnHeaderLabels.push(this.displayLabel(columnHeaders.length > 0 ?
+         columnHeaders[columnIndex].value : `Column${columnIndex + 1}`));
+    }
+    return columnHeaderLabels;
+  }
+
   stopEventPropagation(event) {
     this.props.dispatch();
     event.stopPropagation();
@@ -110,6 +123,7 @@ export class TableDesigner extends Component {
   render() {
     const { metadata } = this.props;
     const controls = metadata.controls || [];
+    const columnHeaders = metadata.columnHeaders || [];
     return (
       <fieldset
         className="form-builder-fieldset"
@@ -122,13 +136,12 @@ export class TableDesigner extends Component {
         {this.showDeleteButton()}
         <div className="table-controls">
           <div className="header">
-            {this.displayLabel(controls[0] ? controls[0].value : 'Column1')}
-            {this.displayLabel(controls[1] ? controls[1].value : 'Column2')}
+            {this.displayColumnHeaders(columnHeaders)}
           </div>
           <GridDesigner
-            controls={controls.slice(2)}
+            controls={controls}
             idGenerator={this.props.idGenerator}
-            minColumns={2}
+            minColumns={NO_OF_TABLE_COLUMNS}
             minRows={2}
             onControlDrop ={this.handleControlDrop}
             ref={this.storeGridRef}

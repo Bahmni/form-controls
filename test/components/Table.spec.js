@@ -25,7 +25,7 @@ describe('Table', () => {
     uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
   };
   const metadata = {
-    controls: [
+    columnHeaders: [
       {
         translationKey: 'COLUMN1_2',
         type: 'label',
@@ -38,6 +38,8 @@ describe('Table', () => {
         value: 'Column2',
         id: '2',
       },
+    ],
+    controls: [
       {
         concept: obsConcept,
         hiAbsolute: null,
@@ -135,13 +137,13 @@ describe('Table', () => {
 
       expect(allFormattedMessage.get(0).props.defaultMessage).to.eql(metadata.label.value);
       labeledMessage.forEach((node) => {
-        const columnName = metadata.controls[index].value;
+        const columnName = metadata.columnHeaders[index].value;
         expect(node.prop('defaultMessage')).to.eql(columnName);
         index++;
       });
       expect(wrapper.find('Row').length).to.eql(1);
       expect(wrapper.find('Row').prop('records')[0]).to.eql(children.get(0));
-      expect(wrapper.find('Row').prop('controls')[0]).to.eql(metadata.controls[2]);
+      expect(wrapper.find('Row').prop('controls')[0]).to.eql(metadata.controls[0]);
     });
 
     it('should pass enabled, formName,formVersion,validate,validateForm,onValueChanged,'
@@ -173,6 +175,28 @@ describe('Table', () => {
       expect(wrapper.find('Row').prop('formVersion')).to.eql(formVersion);
       expect(wrapper.find('Row').prop('formName')).to.eql(formName);
       expect(wrapper.find('Row').prop('isInTable')).to.eql(true);
+    });
+
+    it('should call onValueChanged prop when onChange is called', () => {
+      const onValueChangedSpy = sinon.spy();
+      const wrapper = shallow(
+            <Table
+              children={children}
+              formFieldPath={tableFormFieldPath}
+              formName={formName}
+              formVersion={formVersion}
+              metadata={metadata}
+              onValueChanged={onValueChangedSpy}
+              showNotification={showNotification}
+              validate={false}
+              validateForm={false}
+            />);
+      const formFieldPath = 'FFP';
+      const value = {};
+      const errors = [];
+      const onActionDone = () => {};
+      wrapper.instance().onChange(formFieldPath, value, errors, onActionDone);
+      expect(onValueChangedSpy.calledWith(formFieldPath, value, errors, onActionDone)).to.eql(true);
     });
   });
 });

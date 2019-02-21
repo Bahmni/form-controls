@@ -12,6 +12,7 @@ export class Table extends Component {
     super(props);
     this.state = { errors: [] };
     this.onChange = this.onChange.bind(this);
+    this.displayColumnHeaders = this.displayColumnHeaders.bind(this);
   }
 
   onChange(formFieldPath, value, errors, onActionDone) {
@@ -25,6 +26,10 @@ export class Table extends Component {
             id={label.translationKey || 'defaultId'}
           /></strong>
            </div>);
+  }
+
+  displayColumnHeaders(columnHeaders) {
+    return columnHeaders.map(columnHeader => this.displayLabel(columnHeader));
   }
 
   render() {
@@ -50,7 +55,7 @@ export class Table extends Component {
       patientUuid,
       showNotification,
     };
-    const groupedRowControls = getGroupedControls(this.props.metadata.controls.slice(2), 'row');
+    const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     return (
       <div>
         <strong className="table-header">
@@ -61,8 +66,7 @@ export class Table extends Component {
         </strong>
         <div className="table-controls">
           <div className="header">
-            {this.displayLabel({ value: this.props.metadata.controls[0].value })}
-            {this.displayLabel({ value: this.props.metadata.controls[1].value })}
+              {this.displayColumnHeaders(this.props.metadata.columnHeaders)}
           </div>
           <div>
             {displayRowControls(groupedRowControls, this.props.children.toArray(),
@@ -88,6 +92,12 @@ Table.propTypes = {
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
     controls: PropTypes.array,
+    columnHeaders: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string,
+      translationKey: PropTypes.string,
+      type: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    })).isRequired,
   }),
   onEventTrigger: PropTypes.func,
   onValueChanged: PropTypes.func.isRequired,
