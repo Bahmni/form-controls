@@ -41,19 +41,17 @@ export class GridDesigner extends Component {
     for (let i = 0; i < rowCount; ++i) {
       rows.push(
         <RowDesigner
-          allowMultipleControls = { this.props.allowMultipleControls }
           columns={this.props.minColumns}
           dragAllowed={this.props.dragAllowed}
           idGenerator={this.props.idGenerator}
           key={i}
           onChange={this.changeHandler}
+          onControlDrop={this.props.onControlDrop}
           ref={this.rowReference}
           rowData={get(this.rowData, i, [])}
           rowPosition={i}
           setError={this.props.setError}
           showDeleteButton={this.props.showDeleteButton}
-          supportedControlTypes = {this.props.supportedControlTypes}
-          unsupportedProperties = {this.props.unsupportedProperties}
           wrapper={this.props.wrapper}
         />);
     }
@@ -76,24 +74,20 @@ export class GridDesigner extends Component {
 }
 
 GridDesigner.propTypes = {
-  allowMultipleControls: PropTypes.bool,
   controls: PropTypes.array.isRequired,
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
   minColumns: PropTypes.number,
   minRows: PropTypes.number,
+  onControlDrop: PropTypes.func,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
-  supportedControlTypes: PropTypes.arrayOf(PropTypes.string),
-  unsupportedProperties: PropTypes.arrayOf(PropTypes.string),
   wrapper: PropTypes.func.isRequired,
 };
 
 GridDesigner.defaultProps = {
-  allowMultipleControls: true,
   minColumns: constants.Grid.minColumns,
   minRows: constants.Grid.minRows,
-  supportedControlTypes: constants.Grid.supportedControlTypes,
   unsupportedProperties: [],
 };
 

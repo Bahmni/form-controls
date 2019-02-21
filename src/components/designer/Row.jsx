@@ -36,18 +36,16 @@ export class RowDesigner extends Component {
     for (let i = 0; i < columns; ++i) {
       cells.push(
                 <CellDesigner
-                  allowMultipleControls= { this.props.allowMultipleControls }
                   cellData={ get(this.cellData, i, []) }
                   dragAllowed={ this.props.dragAllowed }
                   idGenerator={ this.props.idGenerator }
                   key={i}
                   location={{ column: i, row: this.props.rowPosition }}
                   onChange={ this.changeHandler }
+                  onControlDrop={this.props.onControlDrop}
                   ref={ this.cellReference }
                   setError={this.props.setError}
                   showDeleteButton={ this.props.showDeleteButton }
-                  supportedControlTypes = {this.props.supportedControlTypes}
-                  unsupportedProperties={this.props.unsupportedProperties}
                   wrapper={ this.props.wrapper }
                 />);
     }
@@ -72,23 +70,20 @@ export class RowDesigner extends Component {
 }
 
 RowDesigner.propTypes = {
-  allowMultipleControls: PropTypes.bool,
   columns: PropTypes.number,
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  onControlDrop: PropTypes.func,
   rowData: PropTypes.array.isRequired,
   rowPosition: PropTypes.number.isRequired,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
-  supportedControlTypes: PropTypes.arrayOf(PropTypes.string),
-  unsupportedProperties: PropTypes.arrayOf(PropTypes.string),
   wrapper: PropTypes.func.isRequired,
 };
 
 RowDesigner.defaultProps = {
   columns: rowWidth,
-  allowMultipleControls: true,
 };
 
 

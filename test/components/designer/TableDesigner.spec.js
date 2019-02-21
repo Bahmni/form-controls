@@ -262,8 +262,7 @@ describe('TableDesigner', () => {
       expect(instance.getJsonDefinition()).to.deep.eql(metadata);
     });
 
-    it('should have addMore in unsupportedProperties and obsControl ' +
-      'in supportedControlTypes', () => {
+    it('should have addMore in unsupportedProperties', () => {
       wrapper = shallow(
         <TableDesigner
           clearSelectedControl={() => {}}
@@ -274,11 +273,42 @@ describe('TableDesigner', () => {
           onSelect={() => {}}
           wrapper={() => {}}
         />);
+      const processDropSuccessCallback = sinon.spy();
+      wrapper.instance().handleControlDrop({ type: 'obsControl' }, [], processDropSuccessCallback);
+      expect('addMore', processDropSuccessCallback.getCall(0).args[0][1]);
+    });
 
-      expect(wrapper).to.have.descendants('GridDesigner');
-      const grid = wrapper.find('GridDesigner');
-      expect(grid.prop('unsupportedProperties')).to.eql(['addMore']);
-      expect(grid.prop('supportedControlTypes')).to.eql(['obsControl']);
+    it('should not allow unsupported controls to be dropped', () => {
+      wrapper = shallow(
+        <TableDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
+          idGenerator={idGenerator}
+          metadata={metadata}
+          onSelect={() => {}}
+          wrapper={() => {}}
+        />);
+      const processDropSuccessCallback = sinon.spy();
+      wrapper.instance().handleControlDrop({ type: 'section' }, [], processDropSuccessCallback);
+      sinon.assert.notCalled(processDropSuccessCallback);
+    });
+
+    it('should not allow more than one control to be dropped in a cell', () => {
+      wrapper = shallow(
+        <TableDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
+          idGenerator={idGenerator}
+          metadata={metadata}
+          onSelect={() => {}}
+          wrapper={() => {}}
+        />);
+      const processDropSuccessCallback = sinon.spy();
+      wrapper.instance().handleControlDrop({ type: 'obsControl' },
+        [{ type: 'obsControl' }], processDropSuccessCallback);
+      sinon.assert.notCalled(processDropSuccessCallback);
     });
   });
 });

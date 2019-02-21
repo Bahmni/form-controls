@@ -5,12 +5,16 @@ import React from 'react';
 import { LabelDesigner } from 'components/designer/Label.jsx';
 import { GridDesigner } from 'components/designer/Grid.jsx';
 
+const supportedControlTypes = ['obsControl'];
+const unsupportedProperties = ['addMore'];
+
 export class TableDesigner extends Component {
 
   constructor(props) {
     super(props);
     this.metadata = props.metadata;
     this.labelControls = [];
+    this.handleDropTarget = this.handleControlDrop.bind(this);
     this.storeGridRef = this.storeGridRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
     this.deleteControl = this.deleteControl.bind(this);
@@ -76,6 +80,14 @@ export class TableDesigner extends Component {
     event.stopPropagation();
   }
 
+  handleControlDrop(metadata, cellMetadata, successCallback) {
+    const hasOnlySupportedControlTypes = supportedControlTypes.includes(metadata.type);
+    const hasNoElementInCell = cellMetadata.length === 0;
+    if (hasOnlySupportedControlTypes && hasNoElementInCell) {
+      successCallback(Object.assign({}, metadata, { unsupportedProperties }));
+    }
+  }
+
   render() {
     const { metadata } = this.props;
     const controls = metadata.controls || [];
@@ -94,15 +106,13 @@ export class TableDesigner extends Component {
             {this.displayLabel(controls[1] ? controls[1].value : 'Column2')}
           </div>
           <GridDesigner
-            allowMultipleControls = {false}
             controls={controls.slice(2)}
             idGenerator={this.props.idGenerator}
             minColumns={2}
             minRows={2}
+            onControlDrop ={this.handleControlDrop}
             ref={this.storeGridRef}
             showDeleteButton
-            supportedControlTypes={['obsControl']}
-            unsupportedProperties={['addMore']}
             wrapper={this.props.wrapper}
           />
         </div>

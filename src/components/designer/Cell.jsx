@@ -52,27 +52,32 @@ export class CellDesigner extends DropTarget {
   /* eslint-disable no-param-reassign */
   processDrop(metadata) {
     const { data } = this.state;
-    const { supportedControlTypes, allowMultipleControls } = this.props;
-    if (this.props.dragAllowed === false ||
-      (!allowMultipleControls && data.length >= 1)
-      || !(supportedControlTypes.includes(metadata.type))) {
-      return;
+    const { onControlDrop } = this.props;
+    const successCallback = (dropControlMetadata) => {
+      if (this.props.dragAllowed === false) {
+        return;
+      }
+      const oldLocation = dropControlMetadata.properties.location;
+      const currentLocation = this.props.location;
+      CellDesigner.dropLoc = Object.assign({}, this.props.location);
+      if (oldLocation && isEqual(oldLocation, currentLocation)) {
+        return;
+      }
+      const dataClone = data.slice();
+      const metadataClone = Object.assign({}, dropControlMetadata);
+      const location = { location: this.props.location };
+      metadataClone.properties = Object.assign({}, dropControlMetadata.properties, location);
+      dataClone.push(metadataClone);
+      this.changeHandler(this.cellPosition);
+      this.className = classNames('form-builder-column', { active: false });
+      this.setState({ data: dataClone });
+    };
+
+    if (onControlDrop) {
+      onControlDrop(metadata, data, successCallback);
+    } else {
+      successCallback(metadata);
     }
-    metadata.unsupportedProperties = this.props.unsupportedProperties;
-    const oldLocation = metadata.properties.location;
-    const currentLocation = this.props.location;
-    CellDesigner.dropLoc = Object.assign({}, this.props.location);
-    if (oldLocation && isEqual(oldLocation, currentLocation)) {
-      return;
-    }
-    const dataClone = data.slice();
-    const metadataClone = Object.assign({}, metadata);
-    const location = { location: this.props.location };
-    metadataClone.properties = Object.assign({}, metadata.properties, location);
-    dataClone.push(metadataClone);
-    this.changeHandler(this.cellPosition);
-    this.className = classNames('form-builder-column', { active: false });
-    this.setState({ data: dataClone });
   }
 
   storeChildRef(ref) {
@@ -138,7 +143,6 @@ CellDesigner.dropLoc = {
 };
 
 CellDesigner.propTypes = {
-  allowMultipleControls: PropTypes.bool,
   cellData: PropTypes.array.isRequired,
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
@@ -147,10 +151,9 @@ CellDesigner.propTypes = {
     row: PropTypes.number,
   }).isRequired,
   onChange: PropTypes.func.isRequired,
+  onControlDrop: PropTypes.func,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
-  supportedControlTypes: PropTypes.arrayOf(PropTypes.string),
-  unsupportedProperties: PropTypes.arrayOf(PropTypes.string),
   wrapper: PropTypes.func.isRequired,
 };
 

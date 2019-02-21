@@ -3,7 +3,6 @@ const Constants = {
     defaultRowWidth: 1,
     minColumns: 1,
     minRows: 4,
-    supportedControlTypes: ['obsControl', 'section', 'obsGroupControl', 'table', 'label'],
   },
   validations: {
     mandatory: 'mandatory',
