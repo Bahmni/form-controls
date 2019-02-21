@@ -32,6 +32,7 @@ export class Table extends Component {
       enabled,
       formName,
       formVersion,
+      metadata: { label },
       onEventTrigger,
       patientUuid,
       validate,
@@ -51,13 +52,22 @@ export class Table extends Component {
     };
     const groupedRowControls = getGroupedControls(this.props.metadata.controls.slice(2), 'row');
     return (
-      <div className="table-controls">
-        <div className="header">
-          {this.displayLabel({ value: this.props.metadata.controls[0].value })}
-          {this.displayLabel({ value: this.props.metadata.controls[1].value })}
-        </div>
-        <div >
-          {displayRowControls(groupedRowControls, this.props.children.toArray(), childProps, true)}
+      <div>
+        <strong className="table-header">
+            <FormattedMessage
+              defaultMessage={label.value}
+              id={label.translationKey || 'defaultId'}
+            />
+        </strong>
+        <div className="table-controls">
+          <div className="header">
+            {this.displayLabel({ value: this.props.metadata.controls[0].value })}
+            {this.displayLabel({ value: this.props.metadata.controls[1].value })}
+          </div>
+          <div>
+            {displayRowControls(groupedRowControls, this.props.children.toArray(),
+              childProps, true)}
+          </div>
         </div>
       </div>
     );

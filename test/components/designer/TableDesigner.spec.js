@@ -29,6 +29,7 @@ describe('TableDesigner', () => {
   const onSelectSpy = sinon.spy();
 
   context('when table is rendered', () => {
+    const tableHeader = { id: 6, value: 'TableHeader' };
     const label = {
       type: 'label',
       value: concept.name,
@@ -72,9 +73,9 @@ describe('TableDesigner', () => {
       metadata = {
         id: '123',
         type: 'table',
+        label: tableHeader,
         properties,
         controls: [column1LabelJson, column2LabelJson, childControl],
-        label,
       };
 
       const textBoxDescriptor = { control: DummyControl };
@@ -141,17 +142,20 @@ describe('TableDesigner', () => {
         />);
 
       expect(wrapper).to.have.descendants('fieldset');
-      expect(wrapper.find('LabelDesigner').length).to.eql(2);
-      expect(wrapper.find('LabelDesigner').get(0).props.metadata.value).to.eql('Column1');
-      expect(wrapper.find('LabelDesigner').get(1).props.metadata.value).to.eql('Column2');
+      expect(wrapper.find('LabelDesigner').length).to.eql(3);
+      expect(wrapper.find('LabelDesigner').get(0).props.metadata.value).to.eql('TableHeader');
+      expect(wrapper.find('LabelDesigner').get(1).props.metadata.value).to.eql('Column1');
+      expect(wrapper.find('LabelDesigner').get(2).props.metadata.value).to.eql('Column2');
     });
 
     it('should render column names as what is passed in controls', () => {
       expect(wrapper).to.have.descendants('fieldset');
-      expect(wrapper.find('LabelDesigner').length).to.eql(2);
+      expect(wrapper.find('LabelDesigner').length).to.eql(3);
       expect(wrapper.find('LabelDesigner').get(0)
-        .props.metadata.value).to.eql(column1LabelJson.value);
+        .props.metadata.value).to.eql(tableHeader.value);
       expect(wrapper.find('LabelDesigner').get(1)
+        .props.metadata.value).to.eql(column1LabelJson.value);
+      expect(wrapper.find('LabelDesigner').get(2)
         .props.metadata.value).to.eql(column2LabelJson.value);
     });
 
@@ -254,6 +258,7 @@ describe('TableDesigner', () => {
           getJsonDefinition: sinon.stub().returns(column2LabelJson),
         },
       ];
+      instance.headerControl = { getJsonDefinition: sinon.stub().returns(tableHeader) };
       metadata.controls = [
         column1LabelJson,
         column2LabelJson,

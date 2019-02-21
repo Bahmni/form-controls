@@ -130,7 +130,11 @@ describe('Table', () => {
                   validateForm={false}
                 />);
       let index = 0;
-      wrapper.find('FormattedMessage').forEach((node) => {
+      const allFormattedMessage = wrapper.find('FormattedMessage');
+      const labeledMessage = allFormattedMessage.slice(1);
+
+      expect(allFormattedMessage.get(0).props.defaultMessage).to.eql(metadata.label.value);
+      labeledMessage.forEach((node) => {
         const columnName = metadata.controls[index].value;
         expect(node.prop('defaultMessage')).to.eql(columnName);
         index++;
