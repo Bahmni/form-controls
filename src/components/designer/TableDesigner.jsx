@@ -79,6 +79,7 @@ export class TableDesigner extends Component {
     const data = Object.assign({}, label, { id, value });
     return (
       <LabelDesigner
+        key={value}
         metadata={data}
         ref={this.storeLabelRef}
         showDeleteButton={false}
