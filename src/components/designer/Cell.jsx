@@ -25,8 +25,9 @@ export class CellDesigner extends DropTarget {
     this._setActiveClass(false);
   }
 
-  deleteControl() {
-    this.setState({ data: [] });
+  deleteControl(controlId) {
+    const newStateData = this.state.data.filter((control) => control.id !== controlId);
+    this.setState({ data: newStateData });
   }
 
   _setActiveClass(active = false) {

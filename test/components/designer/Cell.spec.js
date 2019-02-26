@@ -56,7 +56,7 @@ describe('Cell', () => {
     eventData.preventDefault.restore();
   });
 
-  it('should set data to null when deleteControl called', () => {
+  it('should set data to null when deleteControl called on cell with single control', () => {
     const idGenerator = new IDGenerator();
     const cellDesigner = shallow(
             <CellDesigner
@@ -72,6 +72,28 @@ describe('Cell', () => {
     cellDesigner.instance().deleteControl();
 
     expect(cellDesigner.state('data')).to.eql([]);
+  });
+
+  it('should remove particular control from data when deleteControl called on cell ' +
+    'with multiple controls', () => {
+    const idGenerator = new IDGenerator();
+    const cellDesigner = shallow(
+      <CellDesigner
+        cellData={[]}
+        idGenerator={idGenerator}
+        location={location}
+        onChange={() => {
+        }}
+        wrapper={ TestComponent }
+      />
+    );
+    const control1 = { id: '1' };
+    const control2 = { id: '2' };
+    cellDesigner.setState({ data: [control1, control2] });
+
+    cellDesigner.instance().deleteControl('1');
+
+    expect(cellDesigner.state('data')).to.eql([control2]);
   });
 
   it('should call appropriate processDrop when a component is dropped', () => {
