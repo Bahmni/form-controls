@@ -125,6 +125,66 @@ describe('Row', () => {
     });
   });
 
+  describe('in table', () => {
+    it('should render empty div on the left when first column has no obs'
+    + ' and column 2 has obs', () => {
+      const tableControls = [
+        {
+          id: '100',
+          type: 'randomType',
+          value: 'Pulse',
+          properties: { location: { row: 0, column: 1 } },
+        }];
+      const tableRecords = tableControls.map((control) => ({
+        control,
+        obs: new Obs({ formFieldPath: `${formName}.${formVersion}/${control.id}` }),
+        mapper: new ObsMapper(),
+      }));
+
+      const wrapper = shallow(<Row
+        controls={tableControls}
+        formName={formName}
+        formVersion={formVersion}
+        id={0}
+        isInTable
+        onValueChanged={onChangeSpy}
+        records={tableRecords}
+        validate={false}
+        validateForm={false}
+      />);
+      expect(wrapper.find('.form-builder-column-empty-left').length).to.eql(1);
+    });
+
+    it('should render empty div on the right when first column has' +
+    'obs and column 2 has no obs', () => {
+      const tableControls = [
+        {
+          id: '100',
+          type: 'randomType',
+          value: 'Pulse',
+          properties: { location: { row: 0, column: 0 } },
+        }];
+      const tableRecords = tableControls.map((control) => ({
+        control,
+        obs: new Obs({ formFieldPath: `${formName}.${formVersion}/${control.id}` }),
+        mapper: new ObsMapper(),
+      }));
+
+      const wrapper = shallow(<Row
+        controls={tableControls}
+        formName={formName}
+        formVersion={formVersion}
+        id={0}
+        isInTable
+        onValueChanged={onChangeSpy}
+        records={tableRecords}
+        validate={false}
+        validateForm={false}
+      />);
+      expect(wrapper.find('.form-builder-column-empty-right').length).to.eql(1);
+    });
+  });
+
   it('should hide the row when control is hidden', () => {
     records[0].hidden = true;
     const wrapper = shallow(

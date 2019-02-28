@@ -3,6 +3,7 @@ import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
 import { SectionMapper } from 'src/mapper/SectionMapper';
 import { ObsListMapper } from 'src/mapper/ObsListMapper';
+import { TableMapper } from 'src/mapper/TableMapper';
 
 class MapperStore {
 
@@ -21,6 +22,10 @@ class MapperStore {
 
     if (control.type === 'section') {
       return new SectionMapper();
+    }
+
+    if (control.type === 'table') {
+      return new TableMapper();
     }
 
     return new ObsMapper();

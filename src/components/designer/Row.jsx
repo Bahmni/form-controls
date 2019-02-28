@@ -42,6 +42,7 @@ export class RowDesigner extends Component {
                   key={i}
                   location={{ column: i, row: this.props.rowPosition }}
                   onChange={ this.changeHandler }
+                  onControlDrop={this.props.onControlDrop}
                   ref={ this.cellReference }
                   setError={this.props.setError}
                   showDeleteButton={ this.props.showDeleteButton }
@@ -73,6 +74,7 @@ RowDesigner.propTypes = {
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  onControlDrop: PropTypes.func,
   rowData: PropTypes.array.isRequired,
   rowPosition: PropTypes.number.isRequired,
   setError: PropTypes.func,

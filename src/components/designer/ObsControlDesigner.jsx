@@ -183,16 +183,20 @@ export class ObsControlDesigner extends Component {
         <div className="form-field-wrap clearfix"
           onClick={ (event) => this.props.onSelect(event, metadata) }
         >
-          {this.showDeleteButton()}
-          {this.showScriptButton()}
-          <div className="label-wrap fl">
-            {this.displayLabel()}
-            {this.markMandatory()}
-            {this.showHelperText()}
+          <div className="form-field-content-wrap">
+            {this.showDeleteButton()}
+            {this.showScriptButton()}
+            <div className="label-wrap fl">
+              {this.displayLabel()}
+              {this.markMandatory()}
+              {this.showHelperText()}
+            </div>
+            <div className={classNames('obs-control-field')}>
+              {this.displayObsControl(designerComponent)}
+              {this.showAbnormalButton()}
+              {this.showAddMore()}
+            </div>
           </div>
-          {this.displayObsControl(designerComponent)}
-          {this.showAbnormalButton()}
-          {this.showAddMore()}
           {this.showComment()}
         </div>
       );

@@ -3,6 +3,7 @@ import MapperStore from 'src/helpers/MapperStore';
 import { ObsMapper } from 'src/mapper/ObsMapper';
 import { AbnormalObsGroupMapper } from 'src/mapper/AbnormalObsGroupMapper';
 import { ObsGroupMapper } from 'src/mapper/ObsGroupMapper';
+import { TableMapper } from 'src/mapper/TableMapper';
 import { ObsListMapper } from 'src/mapper/ObsListMapper';
 
 describe('MapperStore', () => {
@@ -34,6 +35,12 @@ describe('MapperStore', () => {
       control.properties = { abnormal: true };
       const mapper = MapperStore.getMapper(control);
       expect(mapper instanceof AbnormalObsGroupMapper).to.eql(true);
+    });
+
+    it('should return tableMapper when control type is table', () => {
+      control.type = 'table';
+      const mapper = MapperStore.getMapper(control);
+      expect(mapper instanceof TableMapper).to.eql(true);
     });
   });
 });

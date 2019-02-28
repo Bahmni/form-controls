@@ -3,7 +3,6 @@ import { shallow, mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
-
 import { CellDesigner } from 'components/designer/Cell.jsx';
 import { IDGenerator } from 'src/helpers/idGenerator';
 
@@ -11,7 +10,7 @@ chai.use(chaiEnzyme());
 
 describe('Cell', () => {
   let eventData;
-  const metadata = { id: '123', properties: {} };
+  const metadata = { id: '123', properties: {}, type: 'obsControl', unsupportedProperties: [] };
   const TestComponent = () => <div>TestComponent</div>;
 
   before(() => {
@@ -44,6 +43,7 @@ describe('Cell', () => {
               onChange={() => {
               }}
               wrapper={ TestComponent }
+
             />
         );
 
@@ -280,8 +280,41 @@ describe('Cell', () => {
               wrapper={ TestComponent }
             />
         );
-    wrapper.instance().processDrop(context);
 
+    wrapper.instance().processDrop(context);
     expect(wrapper.state('data')).to.eql([]);
+  });
+
+
+  it('should invoke onControlDrop prop if the prop is passed on call of processDrop', () => {
+    const idGenerator = new IDGenerator();
+    const context =
+      {
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'Label',
+        },
+        properties: {
+          addMore: false,
+          hideLabel: false,
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+      };
+    const onControlDropSpy = sinon.spy();
+    const wrapper = shallow(
+      <CellDesigner
+        cellData={[]}
+        idGenerator={idGenerator}
+        location={location}
+        onChange={() => { }}
+        onControlDrop={onControlDropSpy}
+        wrapper={TestComponent}
+      />
+    );
+    wrapper.instance().processDrop(context);
+    sinon.assert.calledOnce(onControlDropSpy);
   });
 });

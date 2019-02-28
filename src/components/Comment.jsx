@@ -44,7 +44,7 @@ export class Comment extends Component {
       return '';
     }
     return (<button
-      className={classNames('form-builder-comment-toggle',
+      className={classNames('form-builder-comment-toggle', 'form-builder-comment-button-toggle',
         { active: this.state.showCommentSection === true,
           'has-notes': this.state.hasNote === true })}
       onClick={() => this.setState({ showCommentSection: !this.state.showCommentSection })}
