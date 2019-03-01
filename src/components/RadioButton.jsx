@@ -16,16 +16,20 @@ export class RadioButton extends Component {
     return !isEmpty(errors);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.validate) {
+      const errors = RadioButton.getErrors(nextProps.value, nextProps.validations);
+      const hasErrors = RadioButton.hasErrors(errors);
+      if (hasErrors !== prevState.hasErrors) {
+        return { hasErrors };
+      }
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
     this.state = { value: props.value, hasErrors: false };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.validate) {
-      const errors = RadioButton.getErrors(nextProps.value, nextProps.validations);
-      this.setState({ hasErrors: RadioButton.hasErrors(errors) });
-    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {

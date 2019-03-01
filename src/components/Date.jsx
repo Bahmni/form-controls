@@ -17,6 +17,17 @@ export class Date extends Component {
     return !isEmpty(errors);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.validate) {
+      const hasErrors = Date.hasErrors(Date.getErrors(nextProps.value, nextProps));
+
+      if (prevState.hasErrors !== hasErrors) {
+        return { hasErrors };
+      }
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
     const errors = Date.getErrors(props.value, props) || [];
@@ -28,13 +39,6 @@ export class Date extends Component {
     const { value, validateForm, onChange } = this.props;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
       onChange(value, Date.getErrors(value, this.props));
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.validate) {
-      const errors = Date.getErrors(nextProps.value, nextProps);
-      this.setState({ hasErrors: Date.hasErrors(errors) });
     }
   }
 

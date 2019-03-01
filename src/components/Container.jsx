@@ -12,31 +12,34 @@ import Constants from '../constants';
 import { IntlProvider } from 'react-intl';
 
 export class Container extends addMoreDecorator(Component) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return prevState.collapse === nextProps.collapse ?
+      null : { collapse: nextProps.collapse };
+  }
+
   constructor(props) {
     super(props);
     this.childControls = {};
     const { observations, metadata } = this.props;
     const controlRecordTree = new ControlRecordTreeBuilder().build(metadata, observations);
-    this.state = { errors: [], data: controlRecordTree,
-      collapse: props.collapse, notification: {} };
+
+    const initScript = props.metadata.events && props.metadata.events.onFormInit;
+
+    this.state = {
+      errors: [],
+      data: initScript ?
+        new ScriptRunner(controlRecordTree, props.patient).execute(initScript) :
+        controlRecordTree,
+      collapse: props.collapse,
+      notification: {},
+    };
+
     this.storeChildRef = this.storeChildRef.bind(this);
     this.onValueChanged = this.onValueChanged.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
     this.onControlRemove = this.onControlRemove.bind(this);
     this.onEventTrigger = this.onEventTrigger.bind(this);
     this.showNotification = this.showNotification.bind(this);
-  }
-
-  componentWillMount() {
-    const initScript = this.props.metadata.events && this.props.metadata.events.onFormInit;
-    if (initScript) {
-      const updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(initScript);
-      this.setState({ data: updatedTree });
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ collapse: nextProps.collapse });
   }
 
   onEventTrigger(sender, eventName) {

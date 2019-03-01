@@ -109,6 +109,6 @@ describe('DropDown', () => {
     const onChange = wrapper.find('Select').props().onChange;
     onChange(undefined);
     const mandatoryError = new Error({ message: constants.validations.mandatory });
-    sinon.assert.calledTwice(onValueChange.withArgs(undefined, [mandatoryError]));
+    sinon.assert.calledOnce(onValueChange.withArgs(undefined, [mandatoryError]));
   });
 });

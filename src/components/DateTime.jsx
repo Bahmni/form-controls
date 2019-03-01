@@ -50,6 +50,27 @@ export class DateTime extends Component {
     return !isEmpty(errors);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { dateValue, timeValue } = prevState;
+    const updatedDateValue = DateTime.getDateValue(nextProps);
+    const updatedTimeValue = DateTime.getTimeValue(nextProps);
+
+    if (dateValue === updatedDateValue && timeValue === updatedTimeValue) {
+      return null;
+    }
+
+    if (nextProps.validate) {
+      const state = {
+        dateValue: updatedDateValue,
+        timeValue: updatedTimeValue,
+      };
+
+      const hasErrors = DateTime.hasErrors(DateTime.getAllErrors(state, nextProps));
+      return { ...state, hasErrors };
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
     const initState = {
@@ -66,19 +87,6 @@ export class DateTime extends Component {
     const { value, validateForm } = this.props;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
       this.props.onChange(value, DateTime.getAllErrors(this.state, this.props));
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.validate) {
-      const state = {
-        dateValue: DateTime.getDateValue(nextProps),
-        timeValue: DateTime.getTimeValue(nextProps),
-      };
-
-      const errors = DateTime.getAllErrors(state, nextProps);
-
-      this.setState({ ...state, hasErrors: DateTime.hasErrors(errors) });
     }
   }
 

@@ -9,23 +9,23 @@ import { FormattedMessage } from 'react-intl';
 
 export class Section extends addMoreDecorator(Component) {
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.collapse !== undefined && nextProps.collapse !== prevState.prevCollapseProp) {
+      return { collapse: nextProps.collapse, prevCollapseProp: nextProps.collapse };
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
     const { collapse } = this.props;
-    this.state = { errors: [], collapse };
+    this.state = { errors: [], collapse, prevCollapseProp: collapse };
     this.onChange = this.onChange.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
     this.onControlRemove = this.onControlRemove.bind(this);
     this.onAddControl = this.onAddControl.bind(this);
     this.onRemoveControl = this.onRemoveControl.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.collapse !== undefined && (nextProps.collapse !== this.props.collapse ||
-      nextProps.collapse !== this.state.collapse)) {
-      this.setState({ collapse: nextProps.collapse });
-    }
   }
 
   onChange(formFieldPath, value, errors, onActionDone) {

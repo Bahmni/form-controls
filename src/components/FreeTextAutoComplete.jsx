@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
+import { Creatable } from 'react-select';
 import ComponentStore from 'src/helpers/componentStore';
 
 export class FreeTextAutoComplete extends Component {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.options !== prevState.options) {
+      return { options: nextProps.options, value: nextProps.value };
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
     const { options, value } = props;
     this.state = { options, value };
     this.handleOnChange = this.handleOnChange.bind(this);
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (this.props.options !== newProps.options) {
-      this.setState({ options: newProps.options, value: newProps.value });
-    }
   }
 
   handleOnChange(value) {
@@ -27,7 +28,7 @@ export class FreeTextAutoComplete extends Component {
     const { options, value } = this.state;
     const { multi, clearable, backspaceRemoves, deleteRemoves } = this.props;
     return (
-      <Select.Creatable
+      <Creatable
         backspaceRemoves={backspaceRemoves}
         clearable={clearable}
         deleteRemoves={deleteRemoves}

@@ -84,7 +84,7 @@ describe('DateTime', () => {
   it('should throw error on fail of validations', () => {
     const validations = [constants.validations.mandatory];
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <DateTime
         formFieldPath="test1.1/1-0"
         onChange={onChangeSpy}
@@ -98,9 +98,11 @@ describe('DateTime', () => {
     const dateTimeError = new Error({ message: 'Incorrect Date Time' });
     wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
 
-    sinon.assert.callCount(onChangeSpy, 2);
+    sinon.assert.callCount(onChangeSpy, 3);
 
-    sinon.assert.calledWithMatch(onChangeSpy, '', [mandatoryError, dateTimeError]);
+    sinon.assert.calledWithExactly(onChangeSpy.getCall(0), '2016-12-29 22:10', []);
+    sinon.assert.calledWithMatch(onChangeSpy.getCall(1), ' 22:10', [mandatoryError, dateTimeError]);
+
     expect(wrapper.find('input').at(0)).to.have.className('form-builder-error');
     expect(wrapper.find('input').at(1)).to.have.className('form-builder-error');
   });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Select from 'react-select';
+import Select, { Async } from 'react-select';
 import { httpInterceptor } from 'src/helpers/httpInterceptor';
 import ComponentStore from 'src/helpers/componentStore';
 import get from 'lodash/get';
@@ -8,7 +8,6 @@ import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
-
 
 export class AutoComplete extends Component {
   static getErrors(value, validations) {
@@ -18,6 +17,21 @@ export class AutoComplete extends Component {
 
   static hasErrors(errors) {
     return !isEmpty(errors);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.value === prevState.value || nextProps.value === prevState.prevPropValue) {
+      return null;
+    }
+
+    const value = get(nextProps, 'value');
+    const errors = AutoComplete.getErrors(value, nextProps.validations);
+    const hasErrors = AutoComplete.hasErrors(errors);
+
+    const options = (prevState.options !== nextProps.options && !prevState.searchable) ?
+      nextProps.options : prevState.options;
+
+    return { value, hasErrors, options, searchable: nextProps.searchable, prevPropValue: value };
   }
 
   constructor(props) {
@@ -35,15 +49,11 @@ export class AutoComplete extends Component {
     this.state = {
       value: get(props, 'value'),
       hasErrors,
-      options: [],
+      options: (!props.asynchronous && props.minimumInput === 0) ? props.options : [],
       noResultsText: '',
+      searchable: props.searchable,
+      prevPropValue: get(props, 'value'),
     };
-  }
-
-  componentWillMount() {
-    if (!this.props.asynchronous && this.props.minimumInput === 0) {
-      this.setState({ options: this.props.options });
-    }
   }
 
   componentDidMount() {
@@ -52,15 +62,6 @@ export class AutoComplete extends Component {
     if (this.state.hasErrors || value !== undefined || validateForm) {
       onValueChange(value, AutoComplete.getErrors(value, validations));
     }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const value = get(nextProps, 'value');
-    const errors = AutoComplete.getErrors(value, nextProps.validations);
-    const hasErrors = AutoComplete.hasErrors(errors);
-    const options = (this.state.options !== nextProps.options && !this.props.searchable) ?
-      nextProps.options : this.state.options;
-    this.setState({ value, hasErrors, options });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -73,12 +74,11 @@ export class AutoComplete extends Component {
       this.props.enabled !== nextProps.enabled;
   }
 
-  componentWillUpdate(nextState) {
-    return !isEqual(this.state.options, nextState.options)
-      || this.state.hasErrors !== nextState.hasErrors;
-  }
-
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    if (isEqual(this.state.options, prevState.options)
+      || this.state.hasErrors !== prevState.hasErrors) {
+      return;
+    }
     const errors = AutoComplete.getErrors(this.state.value, this.props.validations);
     if (AutoComplete.hasErrors(errors)) {
       this.props.onValueChange(this.state.value, errors);
@@ -87,12 +87,10 @@ export class AutoComplete extends Component {
 
   onInputChange(input) {
     if (input.length >= this.props.minimumInput) {
-      this.setState({ options: this.props.options });
-      this.setState({ noResultsText: 'No Results Found' });
-      return;
+      this.setState({ options: this.props.options, noResultsText: 'No Results Found' });
+    } else {
+      this.setState({ options: [], noResultsText: 'Type to search' });
     }
-    this.setState({ noResultsText: 'Type to search' });
-    this.setState({ options: [] });
   }
 
   getOptions(input = '') {
@@ -118,13 +116,15 @@ export class AutoComplete extends Component {
   }
 
   handleChange(value) {
-    const errors = AutoComplete.getErrors(value, this.props.validations);
-    if (!this.props.asynchronous && this.props.minimumInput !== 0) {
+    const { validations, asynchronous, minimumInput, onValueChange } = this.props;
+
+    const errors = AutoComplete.getErrors(value, validations);
+    if (!asynchronous && minimumInput !== 0) {
       this.setState({ options: [], noResultsText: '' });
     }
     this.setState({ value, hasErrors: AutoComplete.hasErrors(errors) });
-    if (this.props.onValueChange) {
-      this.props.onValueChange(value, errors);
+    if (onValueChange) {
+      onValueChange(value, errors);
     }
   }
 
@@ -164,7 +164,7 @@ export class AutoComplete extends Component {
     if (asynchronous) {
       return (
         <div className={className}>
-          <Select.Async
+          <Async
             { ...props }
             autoload={autoload}
             cache={cache}

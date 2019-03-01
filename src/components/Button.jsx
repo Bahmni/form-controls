@@ -20,24 +20,26 @@ export class Button extends Component {
     return !isEmpty(errors);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.validate || !isEqual(prevState.value, nextProps.value)) {
+      const errors = Button.getErrors(nextProps.value, nextProps.validations);
+      return { hasErrors: Button.hasErrors(errors), value: nextProps.value };
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
-    const errors = Button.getErrors(props.value, props.validations) || [];
+    const value = props.value;
+    const errors = Button.getErrors(value, props.validations) || [];
     const hasErrors = this._isCreateByAddMore() ? Button.hasErrors(errors) : false;
-    this.state = { hasErrors };
+    this.state = { hasErrors, value };
   }
 
   componentDidMount() {
     const { value, validateForm, validations } = this.props;
     if (this.state.hasErrors || value !== undefined || validateForm) {
       this.props.onValueChange(value, Button.getErrors(value, validations));
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.validate || !isEqual(this.props.value, nextProps.value)) {
-      const errors = Button.getErrors(nextProps.value, nextProps.validations);
-      this.setState({ hasErrors: Button.hasErrors(errors) });
     }
   }
 

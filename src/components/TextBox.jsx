@@ -17,6 +17,16 @@ export class TextBox extends Component {
     return !isEmpty(errors);
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.validate) {
+      const hasErrors = TextBox.hasErrors(TextBox.getErrors(nextProps.value, nextProps));
+      if (prevState.hasErrors !== hasErrors) {
+        return { hasErrors };
+      }
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
     const errors = TextBox.getErrors(props.value, props) || [];
@@ -28,13 +38,6 @@ export class TextBox extends Component {
     const { value, validateForm } = this.props;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
       this.props.onChange(value, TextBox.getErrors(value, this.props));
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.validate) {
-      const errors = TextBox.getErrors(nextProps.value, nextProps);
-      this.setState({ hasErrors: TextBox.hasErrors(errors) });
     }
   }
 

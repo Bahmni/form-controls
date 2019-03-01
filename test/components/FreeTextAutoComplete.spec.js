@@ -29,7 +29,7 @@ describe('FreeTextAutoComplete', () => {
     expect(instance.state.value).to.be.eql(undefined);
     const props = wrapper.find('Select').props();
     expect(props.options).to.be.eql(options);
-    expect(props.value).to.be.eql(undefined);
+    expect(props.value).to.be.eql(null);
     expect(props.clearable).to.be.eql(false);
     expect(props.backspaceRemoves).to.be.eql(false);
     expect(props.deleteRemoves).to.be.eql(false);
@@ -57,7 +57,7 @@ describe('FreeTextAutoComplete', () => {
         value={'One'}
       />);
     const onChange = wrapper.find('Select').props().onChange;
-    onChange('One');
+    onChange('One', { action: 'select-option' }); // This things is needed for React-select 2.*. The select component does the same internally
     sinon.assert.calledOnce(onChangeSpy.withArgs('One', 'label', 'SOME_KEY', 'en'));
   });
 

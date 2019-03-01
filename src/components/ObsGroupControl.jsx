@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ComponentStore from 'src/helpers/componentStore';
-import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
+import { displayRowControls, getGroupedControls } from '../helpers/controlsParser';
 import classNames from 'classnames';
 import addMoreDecorator from './AddMoreDecorator';
 import { List } from 'immutable';
@@ -12,7 +12,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
   constructor(props) {
     super(props);
     const { collapse } = this.props;
-    this.state = { errors: [], collapse };
+    this.state = { errors: [], collapse, prevCollapseProp: collapse };
     this.onChange = this.onChange.bind(this);
     this.onControlAdd = this.onControlAdd.bind(this);
     this.onControlRemove = this.onControlRemove.bind(this);
@@ -21,11 +21,11 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     this.onRemoveControl = this.onRemoveControl.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.collapse !== undefined && (nextProps.collapse !== this.props.collapse ||
-      nextProps.collapse !== this.state.collapse)) {
-      this.setState({ collapse: nextProps.collapse });
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.collapse !== undefined && nextProps.collapse !== prevState.prevCollapseProp) {
+      return { collapse: nextProps.collapse, prevCollapseProp: nextProps.collapse };
     }
+    return null;
   }
 
   onChange(formFieldPath, value, errors, onActionDone) {

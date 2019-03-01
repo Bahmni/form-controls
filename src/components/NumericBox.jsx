@@ -28,6 +28,16 @@ export class NumericBox extends Component {
     return !isEmpty(errors.filter((error) => error.type === errorType));
   }
 
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.validate) {
+      const errors = NumericBox.getErrors(nextProps.value, nextProps);
+      const hasErrors = NumericBox.hasErrors(errors, constants.errorTypes.error);
+      const hasWarnings = NumericBox.hasErrors(errors, constants.errorTypes.warning);
+      return { hasErrors, hasWarnings };
+    }
+    return null;
+  }
+
   constructor(props) {
     super(props);
     const errors = NumericBox.getErrors(props.value, props) || [];
@@ -42,15 +52,6 @@ export class NumericBox extends Component {
     this.input.value = this.props.value;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
       onChange(value, NumericBox.getErrors(value, this.props), true);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.validate) {
-      const errors = NumericBox.getErrors(nextProps.value, nextProps);
-      const hasErrors = NumericBox.hasErrors(errors, constants.errorTypes.error);
-      const hasWarnings = NumericBox.hasErrors(errors, constants.errorTypes.warning);
-      this.setState({ hasErrors, hasWarnings });
     }
   }
 
