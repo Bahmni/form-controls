@@ -17,5 +17,5 @@ window.unMountForm = (container) => {
   return false;
 };
 
-window.getRecordTree = (metadata, observations) =>
-    new ControlRecordTreeBuilder().build(metadata, observations);
+window.getRecordTree = (formDef, observations) =>
+    new ControlRecordTreeBuilder().build(formDef, observations);
