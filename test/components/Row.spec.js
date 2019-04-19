@@ -183,6 +183,113 @@ describe('Row', () => {
       />);
       expect(wrapper.find('.form-builder-column-empty-right').length).to.eql(1);
     });
+
+    it('should show the cell skeleton and hide it\'s content, when one of the two cells is ' +
+      'hidden and other is visible', () => {
+      const tableControls = [
+        {
+          id: '100',
+          type: 'randomType',
+          value: 'Pulse',
+          properties: { location: { row: 0, column: 0 } },
+        }, {
+          id: '101',
+          type: 'randomType',
+          value: 'Node',
+          properties: { location: { row: 0, column: 1 } },
+        }];
+      const tableRecords = tableControls.map((control) => ({
+        control,
+        obs: new Obs({ formFieldPath: `${formName}.${formVersion}/${control.id}` }),
+        mapper: new ObsMapper(),
+        hidden: control.properties.location.column === 1,
+      }));
+
+      const wrapper = shallow(<Row
+        controls={tableControls}
+        formName={formName}
+        formVersion={formVersion}
+        id={0}
+        isInTable
+        onValueChanged={onChangeSpy}
+        records={tableRecords}
+        validate={false}
+        validateForm={false}
+      />);
+      expect(wrapper.find('.form-builder-row .form-builder-column-wrapper').length)
+        .to.eql(2);
+      expect(wrapper.find('.form-builder-row .form-builder-column').length)
+        .to.eql(2);
+      expect(wrapper.find('.form-builder-row .form-builder-column.hidden').length)
+        .to.eql(1);
+    });
+
+    it('should hide the entire row if the two cells are hidden', () => {
+      const tableControls = [
+        {
+          id: '100',
+          type: 'randomType',
+          value: 'Pulse',
+          properties: { location: { row: 0, column: 0 } },
+        }, {
+          id: '101',
+          type: 'randomType',
+          value: 'Node',
+          properties: { location: { row: 0, column: 1 } },
+        }];
+      const tableRecords = tableControls.map((control) => ({
+        control,
+        obs: new Obs({ formFieldPath: `${formName}.${formVersion}/${control.id}` }),
+        mapper: new ObsMapper(),
+        hidden: true,
+      }));
+
+      const wrapper = shallow(<Row
+        controls={tableControls}
+        formName={formName}
+        formVersion={formVersion}
+        id={0}
+        isInTable
+        onValueChanged={onChangeSpy}
+        records={tableRecords}
+        validate={false}
+        validateForm={false}
+      />);
+      expect(wrapper.find('.form-builder-row .form-builder-column-wrapper').length)
+        .to.eql(0);
+      expect(wrapper.find('.form-builder-row .form-builder-column').length)
+        .to.eql(0);
+    });
+
+    it('should hide the entire row if one column has no obs and second is hidden', () => {
+      const tableControls = [
+        {
+          id: '100',
+          type: 'randomType',
+          value: 'Pulse',
+          properties: { location: { row: 0, column: 0 } },
+        }];
+      const tableRecords = tableControls.map((control) => ({
+        control,
+        obs: new Obs({ formFieldPath: `${formName}.${formVersion}/${control.id}` }),
+        mapper: new ObsMapper(),
+        hidden: true,
+      }));
+
+      const wrapper = shallow(<Row
+        controls={tableControls}
+        formName={formName}
+        formVersion={formVersion}
+        id={0}
+        isInTable
+        onValueChanged={onChangeSpy}
+        records={tableRecords}
+        validate={false}
+        validateForm={false}
+      />);
+      expect(wrapper.find('.form-builder-row').length).to.eql(1);
+      expect(wrapper.find('.form-builder-row')).to.be.blank();
+    });
   });
 
   it('should hide the row when control is hidden', () => {

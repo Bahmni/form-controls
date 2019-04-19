@@ -331,6 +331,10 @@ $lightestGray: #eee;
   }
 }
 
+.hidden {
+  display: none;
+}
+
 .form-builder-radio {
   display: inline-block;
 }
@@ -357,6 +361,12 @@ $lightestGray: #eee;
             padding: 1px;
             top: 1px ;
           }
+        }
+      }
+      .hidden {
+        display: block !important;
+        > div {
+          display: none !important;
         }
       }
     }
@@ -414,10 +424,6 @@ $lightestGray: #eee;
 
 .disabled-label {
   color: grey;
-}
-
-.hidden {
-  display: none;
 }
 
 .video-upload {
