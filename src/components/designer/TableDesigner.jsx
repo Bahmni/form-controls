@@ -41,6 +41,12 @@ export class TableDesigner extends Component {
         { columnHeaders });
   }
 
+  getColumnHeaderLabelObject(columnIndex) {
+    const columnHeaders = this.props.metadata.columnHeaders;
+    return columnHeaders && columnHeaders.length > 0 ? columnHeaders[columnIndex]
+        : { type: 'label' };
+  }
+
   storeGridRef(ref) {
     if (ref) {
       this.gridRef = ref;
@@ -75,8 +81,9 @@ export class TableDesigner extends Component {
     return null;
   }
 
-  displayLabel(value) {
-    const { metadata: { label, id } } = this.props;
+  displayLabel(value, columnIndex) {
+    const { metadata: { id } } = this.props;
+    const label = this.getColumnHeaderLabelObject(columnIndex);
     const data = Object.assign({}, label, { id, value });
     return (
       <LabelDesigner
@@ -104,7 +111,7 @@ export class TableDesigner extends Component {
     const columnHeaderLabels = [];
     for (let columnIndex = 0; columnIndex < NO_OF_TABLE_COLUMNS; columnIndex++) {
       columnHeaderLabels.push(this.displayLabel(columnHeaders.length > 0 ?
-         columnHeaders[columnIndex].value : `Column${columnIndex + 1}`));
+         columnHeaders[columnIndex].value : `Column${columnIndex + 1}`, columnIndex));
     }
     return columnHeaderLabels;
   }
@@ -173,6 +180,7 @@ TableDesigner.propTypes = {
   idGenerator: PropTypes.object.isRequired,
   isBeingDragged: PropTypes.bool,
   metadata: PropTypes.shape({
+    columnHeaders: PropTypes.arrayOf(PropTypes.string),
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     label: PropTypes.object,
