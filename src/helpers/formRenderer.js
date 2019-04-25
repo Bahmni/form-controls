@@ -1,6 +1,7 @@
 import { Container } from 'components/Container.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 
 window.renderWithControls =
   function renderWithControls(formDetails, observations, nodeId,
@@ -15,3 +16,6 @@ window.unMountForm = (container) => {
   if (container) return ReactDOM.unmountComponentAtNode(container);
   return false;
 };
+
+window.getRecordTree = (formDef, observations) =>
+    new ControlRecordTreeBuilder().build(formDef, observations);
