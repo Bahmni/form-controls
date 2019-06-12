@@ -5,7 +5,6 @@ import Constants from 'src/constants';
 import each from 'lodash/each';
 import isEmpty from 'lodash/isEmpty';
 import classNames from 'classnames';
-import isEqual from 'lodash/isEqual';
 import ComponentStore from 'src/helpers/componentStore';
 
 const cellPosition = (row, column) => (Constants.Grid.defaultRowWidth * row + column);
@@ -14,7 +13,7 @@ const defaultCellControl = React.createElement(() => <div className="cell"></div
 export class CellDesigner extends DropTarget {
   constructor(props) {
     super(props);
-    this.state = { data: props.cellData };
+    this.state = { data: props.cellData, type: 'is drop cell' };
     const { row, column } = props.location;
     this.cellPosition = cellPosition(row, column);
     this.getCellDefinition = this.getCellDefinition.bind(this);
@@ -22,6 +21,7 @@ export class CellDesigner extends DropTarget {
     this.childControls = {};
     this.storeChildRef = this.storeChildRef.bind(this);
     this.deleteControl = this.deleteControl.bind(this);
+    this.updateMetadata = this.updateMetadata.bind(this);
     this._setActiveClass(false);
   }
 
@@ -35,10 +35,8 @@ export class CellDesigner extends DropTarget {
   }
 
   processMove(metadata) {
-    if (!isEqual(this.props.location, CellDesigner.dropLoc)) {
-      const filteredData = this.state.data.filter((data) => data.id !== metadata.id);
-      this.setState({ data: filteredData });
-    }
+    const filteredData = this.state.data.filter((data) => data.id !== metadata.id);
+    this.setState({ data: filteredData });
   }
 
   processDragEnter() {
@@ -50,18 +48,17 @@ export class CellDesigner extends DropTarget {
     this._setActiveClass(false);
     this.forceUpdate();
   }
+  updateMetadata(newMetadata) {
+    const arrayOfMetadata = [];
+    arrayOfMetadata.push(newMetadata);
+    this.setState({ data: arrayOfMetadata });
+  }
   /* eslint-disable no-param-reassign */
   processDrop(metadata) {
     const { data } = this.state;
     const { onControlDrop } = this.props;
     const successCallback = (dropControlMetadata) => {
       if (this.props.dragAllowed === false) {
-        return;
-      }
-      const oldLocation = dropControlMetadata.properties.location;
-      const currentLocation = this.props.location;
-      CellDesigner.dropLoc = Object.assign({}, this.props.location);
-      if (oldLocation && isEqual(oldLocation, currentLocation)) {
         return;
       }
       const dataClone = data.slice();
@@ -74,10 +71,8 @@ export class CellDesigner extends DropTarget {
       this.setState({ data: dataClone });
     };
 
-    if (onControlDrop) {
-      onControlDrop(metadata, data, successCallback);
-    } else {
-      successCallback(metadata);
+    if (this.props.dragAllowed !== false) {
+      onControlDrop({ cellMetadata: data, dropCell: this, successCallback, metadata });
     }
   }
 
@@ -90,21 +85,22 @@ export class CellDesigner extends DropTarget {
     if (isEmpty(data)) {
       return defaultCellControl;
     }
-    return data.map((metadata, key) =>
-            React.createElement(this.props.wrapper,
-              {
-                key,
-                idGenerator: this.props.idGenerator,
-                metadata,
-                parentRef: this,
-                ref: this.storeChildRef,
-                wrapper: this.props.wrapper,
-                deleteControl: this.deleteControl,
-                setError: this.props.setError,
-                showDeleteButton: this.props.showDeleteButton,
-              }
-            )
-        );
+    return data.map((metadata, key) => React.createElement(this.props.wrapper,
+      {
+        key,
+        idGenerator: this.props.idGenerator,
+        metadata,
+        parentRef: this,
+        ref: this.storeChildRef,
+        wrapper: this.props.wrapper,
+        deleteControl: this.deleteControl,
+        setError: this.props.setError,
+        showDeleteButton: this.props.showDeleteButton,
+        dragSourceCell: this.props.dragSourceCell,
+        isBeingDragged: this.props.isBeingDragged,
+        dragAllowed: this.props.dragAllowed,
+      }
+      ));
   }
 
   changeHandler(cellLocation) {
@@ -125,15 +121,19 @@ export class CellDesigner extends DropTarget {
 
   render() {
     return (
-            <div
-              className={ this.className }
-              onDragEnter={ this.onDragEnter }
-              onDragLeave={ this.onDragLeave }
-              onDragOver={ this.onDragOver }
-              onDrop={ this.onDrop }
-            >
-                { this.getComponents() }
-            </div>
+      <div className="form-builder-column-wrapper">
+        {!this.props.isBeingDragged ?
+          <div
+            className={this.className}
+            onDragOver={(e) => {e.preventDefault();}}
+            onDrop={this.onDrop}
+          >
+          {this.getComponents()}
+        </div> : <div
+          className={this.className}
+        >
+        {this.getComponents()}
+      </div>}</div>
     );
   }
 }
@@ -147,6 +147,7 @@ CellDesigner.propTypes = {
   cellData: PropTypes.array.isRequired,
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
+  isBeingDragged: PropTypes.bool,
   location: PropTypes.shape({
     column: PropTypes.number,
     row: PropTypes.number,
@@ -184,4 +185,4 @@ const descriptor = {
   },
 };
 
-ComponentStore.registerDesignerComponent('cell', descriptor);
+ComponentStore.registerDesignerComponent('dropCell', descriptor);

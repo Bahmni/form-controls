@@ -1,5 +1,6 @@
 import { Component } from 'react';
 
+
 export class DropTarget extends Component {
   constructor(data) {
     super(data);

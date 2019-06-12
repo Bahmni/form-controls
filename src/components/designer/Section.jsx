@@ -6,6 +6,7 @@ import { GridDesigner as Grid } from 'components/designer/Grid.jsx';
 import { LabelDesigner } from 'components/designer/Label.jsx';
 import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
 import find from 'lodash/find';
+import { CellDesigner } from 'components/designer/Cell.jsx';
 
 export class SectionDesigner extends Component {
 
@@ -96,8 +97,11 @@ export class SectionDesigner extends Component {
           <div className="obsGroup-controls">
             <Grid
               controls={ controls }
+              dragSourceCell={this.props.dragSourceCell}
               idGenerator={this.props.idGenerator}
+              isBeingDragged ={this.props.isBeingDragged}
               minRows={2}
+              onControlDrop ={this.props.onControlDrop}
               ref={ this.storeGridRef }
               showDeleteButton
               wrapper={this.props.wrapper}
@@ -112,7 +116,9 @@ SectionDesigner.propTypes = {
   clearSelectedControl: PropTypes.func.isRequired,
   deleteControl: PropTypes.func.isRequired,
   dispatch: PropTypes.func,
+  dragSourceCell: PropTypes.instanceOf(CellDesigner),
   idGenerator: PropTypes.object.isRequired,
+  isBeingDragged: PropTypes.bool,
   metadata: PropTypes.shape({
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
@@ -125,6 +131,7 @@ SectionDesigner.propTypes = {
     }),
     type: PropTypes.string.isRequired,
   }),
+  onControlDrop: PropTypes.func,
   onSelect: PropTypes.func.isRequired,
   showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,

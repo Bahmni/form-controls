@@ -7,6 +7,7 @@ import groupBy from 'lodash/groupBy';
 import get from 'lodash/get';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';
+import { CellDesigner } from 'components/designer/Cell.jsx';
 
 export class GridDesigner extends Component {
   constructor(props) {
@@ -16,6 +17,10 @@ export class GridDesigner extends Component {
     this.changeHandler = this.changeHandler.bind(this);
     this.rowReference = this.rowReference.bind(this);
     this.rowRef = {};
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.rowData = groupBy(nextProps.controls, 'properties.location.row');
   }
 
   getControls() {
@@ -43,7 +48,10 @@ export class GridDesigner extends Component {
         <RowDesigner
           columns={this.props.minColumns}
           dragAllowed={this.props.dragAllowed}
+          dragSourceCell={this.props.dragSourceCell}
           idGenerator={this.props.idGenerator}
+          index={i}
+          isBeingDragged ={this.props.isBeingDragged}
           key={i}
           onChange={this.changeHandler}
           onControlDrop={this.props.onControlDrop}
@@ -76,7 +84,9 @@ export class GridDesigner extends Component {
 GridDesigner.propTypes = {
   controls: PropTypes.array.isRequired,
   dragAllowed: PropTypes.bool,
+  dragSourceCell: PropTypes.instanceOf(CellDesigner),
   idGenerator: PropTypes.object.isRequired,
+  isBeingDragged: PropTypes.bool,
   minColumns: PropTypes.number,
   minRows: PropTypes.number,
   onControlDrop: PropTypes.func,

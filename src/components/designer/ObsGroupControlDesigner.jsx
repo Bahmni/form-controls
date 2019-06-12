@@ -8,6 +8,7 @@ import { Metadata } from '../../helpers/Metadata';
 import { LabelDesigner } from 'components/designer/Label.jsx';
 import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
 import find from 'lodash/find';
+import { CellDesigner } from 'components/designer/Cell.jsx';
 
 export class ObsGroupControlDesigner extends Component {
 
@@ -93,9 +94,12 @@ export class ObsGroupControlDesigner extends Component {
             <Grid
               controls={ metadata.controls }
               dragAllowed={false}
+              dragSourceCell={this.props.dragSourceCell}
               idGenerator={this.props.idGenerator}
+              isBeingDragged ={this.props.isBeingDragged}
               isShowDeleteButton={false}
               minRows={0}
+              onControlDrop ={() => {}}
               ref={ this.storeGridRef }
               wrapper={this.props.wrapper}
             />
@@ -116,7 +120,9 @@ export class ObsGroupControlDesigner extends Component {
 ObsGroupControlDesigner.propTypes = {
   clearSelectedControl: PropTypes.func.isRequired,
   deleteControl: PropTypes.func.isRequired,
+  dragSourceCell: PropTypes.instanceOf(CellDesigner),
   idGenerator: PropTypes.object.isRequired,
+  isBeingDragged: PropTypes.bool,
   metadata: PropTypes.shape({
     concept: PropTypes.object,
     displayType: PropTypes.string,
@@ -130,6 +136,7 @@ ObsGroupControlDesigner.propTypes = {
     }),
     type: PropTypes.string.isRequired,
   }),
+  onControlDrop: PropTypes.func,
   onSelect: PropTypes.func.isRequired,
   showDeleteButton: PropTypes.bool,
   wrapper: PropTypes.func.isRequired,

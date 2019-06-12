@@ -19,13 +19,15 @@ export default class Row extends Component {
   getAddMoreControls(controls, className) {
     return controls.map((control, index) => (
       control.map(ctrl =>
-        <div className={classNames(`${className}-index${index}`, { hidden: ctrl.props.hidden },
-          { 'same-line': find(ctrl.props.metadata.properties,
-            (value, key) => (key === 'sameLine' && value)) }
-          )}
-          key={ ctrl.props.formFieldPath }
-        >
-          {ctrl}
+        <div className="form-builder-column-wrapper">
+          <div className={classNames(`${className}-index${index}`, { hidden: ctrl.props.hidden },
+            { 'same-line': find(ctrl.props.metadata.properties,
+              (value, key) => (key === 'sameLine' && value)) }
+            )}
+            key={ ctrl.props.formFieldPath }
+          >
+            {ctrl}
+          </div>
         </div>
       )
     ));
@@ -47,12 +49,16 @@ export default class Row extends Component {
     return (
       <div className="form-builder-row">
         {shouldDisplayLeftEmptyCell &&
-          <div className={classNames('form-builder-column', 'form-builder-column-empty-left')}>
+          <div className="form-builder-column-wrapper">
+            <div className={classNames('form-builder-column', 'form-builder-column-empty-left')}>
+            </div>
           </div>
         }
         {this.getControlsByColumn(groupedColumnControls, records, childProps)}
         {shouldDisplayRightEmptyCell &&
-          <div className={classNames('form-builder-column', 'form-builder-column-empty-right')}>
+         <div className="form-builder-column-wrapper">
+            <div className={classNames('form-builder-column', 'form-builder-column-empty-right')}>
+            </div>
           </div>
         }
       </div>

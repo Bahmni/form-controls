@@ -1,290 +1,311 @@
 $lightestGray: #eee;
 .form-builder-row {
   width: 100%;
-  .form-builder-column {
+  .form-builder-column-wrapper{
     min-height: 50px;
     width: 100%;
     padding: 5px 10px;
     box-sizing: border-box;
     clear: both;
-    &.active {
-      border: 1px dotted $gray500;
-    }
-    .form-field-wrap {
-      position: relative;
-      margin-top:5px;
-      .obs-comment-wrap{
-        display: flex;
-        .obs-empty-block{
-          flex:2;
-        }
-        .obs-comment-content{
-          flex:9;
-          textarea{
-            width:85%;
+    .form-builder-column {
+      min-height: 50px;
+      width: 100%;
+      padding: 5px 10px;
+      box-sizing: border-box;
+      clear: both;
+      &.active {
+        border: 1px dotted $gray500;
+      }
+      .form-field-wrap {
+        position: relative;
+        margin-top:5px;
+        .obs-comment-wrap{
+          display: flex;
+          .obs-empty-block{
+            flex:2;
+          }
+          .obs-comment-content{
+            flex:9;
+            textarea{
+              width:85%;
+            }
           }
         }
-      }
-      .form-field-content-wrap{
-        display: flex;
-      }
-      .obs-comment-section-wrap{
-        textarea{
-          width: 69.3%;
-          float: right;
-          margin-top: 10px;
+        .form-field-content-wrap{
+          display: flex;
         }
-      }
-      .label-wrap {
-        float: left;
-        padding-right: 30px;
-        font-size: 12px;
-        margin-top: 5px;
-        text-align: right;
-        position: relative;
-        flex:4;
-        label {
-          padding-right: 10px;
+        .obs-comment-section-wrap{
+          textarea{
+            width: 69.3%;
+            float: right;
+            margin-top: 10px;
+          }
         }
-        .form-builder-asterisk {
-          position: absolute;
-          color: $red;
-          top: 0;
-          right: 20px;
-        }
-      }
-      .obs-control-field{
-        flex:9;
-        textarea{
-          width: 70%;
-          float:left;
-        }
-        .form-control-buttons{
-          width: 70%;
-        }
-      }
-      input {
-        width: 12.5em;
-        color: $bahmniTextColor;
-        padding: 2px 10px;
-        margin: 0 10px 5px 0;
-        background-color: $white;
-        border: 1px solid $gray300;
-        font-size: 14px;
-        &.form-builder-label{
-          margin-top:-4px;
-        }
-        &[type = "date"], &[type = "time"] {
+        .label-wrap {
           float: left;
+          padding-right: 30px;
+          font-size: 12px;
+          margin-top: 5px;
+          text-align: right;
+          position: relative;
+          flex:4;
+          label {
+            padding-right: 10px;
+          }
+          .form-builder-asterisk {
+            position: absolute;
+            color: $red;
+            top: 0;
+            right: 20px;
+          }
         }
-        &.form-builder-warning {
-          outline: 2px solid $warningOutline;
-          background: $warningBg;
-          color: $red;
+        .obs-control-field{
+          flex:9;
+          textarea{
+            width: 70%;
+            float:left;
+          }
+          .form-control-buttons{
+            width: 70%;
+          }
         }
-        &.form-builder-error {
-          outline: 2px solid $error;
-          background: $errorBg;
+        input {
+          width: 12.5em;
+          color: $bahmniTextColor;
+          padding: 2px 10px;
+          margin: 0 10px 5px 0;
+          background-color: $white;
+          border: 1px solid $gray300;
+          font-size: 14px;
+          &.form-builder-label{
+            margin-top:-4px;
+          }
+          &[type = "date"], &[type = "time"] {
+            float: left;
+          }
+          &.form-builder-warning {
+            outline: 2px solid $warningOutline;
+            background: $warningBg;
+            color: $red;
+          }
+          &.form-builder-error {
+            outline: 2px solid $error;
+            background: $errorBg;
+          }
+          &[disabled] {
+            background: #eee;
+            border: #ccc 1px solid;
+            color: #ccc;
+            font-style: normal;
+            cursor: not-allowed;
+          }
         }
-        &[disabled] {
-          background: #eee;
-          border: #ccc 1px solid;
-          color: #ccc;
-          font-style: normal;
-          cursor: not-allowed;
+
+        input.computed-value{
+          border: 0;
+          color: #363463;
+          background: #FFFFFF;
+          pointer-events: none;
         }
-      }
-      .form-builder-valid-range {
-        color: $gray600;
-        font-size: 13px;
-        padding-right:10px;
-      }
-      .form-builder-comment-wrap{
-        clear: both;
-        overflow: hidden;
-      }
-      .form-builder-comment-toggle {
-        position: absolute;
-        right: 10px;
-        top: -2px;
-        padding: 5px;
-        &.active {
+
+        .form-builder-valid-range {
+          color: $gray600;
+          font-size: 13px;
+          padding-right:10px;
+        }
+        .form-builder-comment-wrap{
+          clear: both;
+          overflow: hidden;
+        }
+        .form-builder-comment-toggle {
+          position: absolute;
+          right: 10px;
+          top: -2px;
+          padding: 5px;
+          &.active {
+            .fa-file-o {
+              .fa-plus-circle {
+                display: none;
+              }
+              .fa-minus-circle {
+                display: block;
+              }
+            }
+          }
+
           .fa-file-o {
-            .fa-plus-circle {
+            position: relative;
+            color: $gray600;
+            .fa-minus-circle {
               display: none;
             }
-            .fa-minus-circle {
+            .fa-plus-circle, .fa-ok-sign, .fa-plus, .fa-minus-circle {
+              position: absolute;
+              right: 2px;
+              bottom: 2px;
+              font-size: 10px;
+              color: $green;
+              background: $white;
+              border-radius: 8px;
+              padding: 0;
+            }
+          }
+          .fa-file-text-o {
+            display: none;
+          }
+          &.has-notes {
+            .fa-file-o {
+              display: none;
+            }
+            .fa-file-text-o {
               display: block;
             }
           }
         }
-
-        .fa-file-o {
-          position: relative;
-          color: $gray600;
-          .fa-minus-circle {
-            display: none;
+        textarea {
+          float: left;
+          word-wrap: break-word;
+          min-height: 53px;
+          padding: 2px 10px;
+          color: $bahmniTextColor;
+          background-color: $white;
+          border: 1px solid $gray300;
+          box-sizing: border-box;
+          resize: vertical;
+          margin:0 10px 5px 0;
+          &.form-builder-error {
+            outline: 2px solid $error;
+            background: $errorBg;
           }
-          .fa-plus-circle, .fa-ok-sign, .fa-plus, .fa-minus-circle {
-            position: absolute;
-            right: 2px;
-            bottom: 2px;
-            font-size: 10px;
-            color: $green;
-            background: $white;
-            border-radius: 8px;
-            padding: 0;
-          }
-        }
-        .fa-file-text-o {
-          display: none;
-        }
-        &.has-notes {
-          .fa-file-o {
-            display: none;
-          }
-          .fa-file-text-o {
-            display: block;
+          &[disabled] {
+            background: #eee;
+            border: #ccc 1px solid;
+            color: #ccc;
+            font-style: normal;
+            cursor: not-allowed;
           }
         }
-      }
-      textarea {
-        float: left;
-        word-wrap: break-word;
-        min-height: 53px;
-        padding: 2px 10px;
-        color: $bahmniTextColor;
-        background-color: $white;
-        border: 1px solid $gray300;
-        box-sizing: border-box;
-        resize: vertical;
-        margin:0 10px 5px 0;
-        &.form-builder-error {
-          outline: 2px solid $error;
-          background: $errorBg;
-        }
-        &[disabled] {
-          background: #eee;
-          border: #ccc 1px solid;
-          color: #ccc;
-          font-style: normal;
-          cursor: not-allowed;
-        }
-      }
-      .form-builder-tooltip-wrap {
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        right: 2px;
-        .form-builder-tooltip-trigger {
-          cursor: pointer;
+        .form-builder-tooltip-wrap {
           display: inline-block;
-          width: 18px;
-          height: 18px;
-          line-height: 18px;
-          text-align: center;
-          border-radius: 100%;
-          font-size: 20px;
-          color: $bahmniSecondaryColor;
-          box-shadow: 1px 1px 1px $gray400;
-          background: $white;
-          padding: 0;
-          position: relative;
-
-        }
-        .form-builder-tooltip-description {
-          bottom: calc(100% + 10px);
-          margin-left: 0;
-          margin-top: 0;
-          text-align: left;
           position: absolute;
-          display: none;
-          z-index: 9;
-          .details {
+          top: 0;
+          right: 2px;
+          .form-builder-tooltip-trigger {
+            cursor: pointer;
             display: inline-block;
-            font-size: 12px;
-            padding: 5px;
-            border-radius: 5px;
-            background: $black;
-            color: $white;
-            width: 200px;
-          }
-          i {
-            position: absolute;
-            bottom: -16px;
-            left: 1%;
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+            border-radius: 100%;
             font-size: 20px;
-            color: $black;
+            color: $bahmniSecondaryColor;
+            box-shadow: 1px 1px 1px $gray400;
+            background: $white;
+            padding: 0;
+            position: relative;
+
           }
-          p {
-            margin-bottom: 5px;
-            line-height: 1.1;
-          }
-        }
-        &.active {
           .form-builder-tooltip-description {
-            display: block;
-          }
-        }
-
-      }
-    }
-    .form-builder-clone{
-      //margin-top: 3px;
-      float:left;
-      .form-builder-add-more{
-        padding: 2px 0;
-        color: $green;
-        margin:0;
-      }
-      .form-builder-remove{
-        padding: 2px 0;
-        color:#9D0101;
-        margin-left: 10px;
-      }
-    }
-
-    .abnormal-button{
-      margin-right: 10px;
-      float: left;
-      line-height: 1;
-      i {
-        padding: 0;
-      }
-    }
-
-    legend {
-      padding: 2px 10px;
-      color: $gray600;
-      border: 1px solid #999;
-      border-radius: 20px;
-      text-transform: none;
-      font-size: 12px;
-      background: $white;
-      position: absolute;
-      top: -11px;
-      left: 10px;
-      &.form-builder-toggle{
-        cursor: pointer;
-        i {
-          width: 1.25em;
-          text-align: center;
-          margin-left: 1.25em;
-        }
-        .fa-caret-right{
-          display: inline-block;
-        }
-        .fa-caret-down{
-          display: none;
-        }
-        &.active{
-          background: $white;
-          .fa-caret-right{
+            bottom: calc(100% + 10px);
+            margin-left: 0;
+            margin-top: 0;
+            text-align: left;
+            position: absolute;
             display: none;
+            z-index: 9;
+            .details {
+              display: inline-block;
+              font-size: 12px;
+              padding: 5px;
+              border-radius: 5px;
+              background: $black;
+              color: $white;
+              width: 200px;
+            }
+            i {
+              position: absolute;
+              bottom: -16px;
+              left: 1%;
+              font-size: 20px;
+              color: $black;
+            }
+            p {
+              margin-bottom: 5px;
+              line-height: 1.1;
+            }
+          }
+          &.active {
+            .form-builder-tooltip-description {
+              display: block;
+            }
+          }
+
+        }
+      }
+      .form-builder-clone{
+        //margin-top: 3px;
+        float:left;
+        .form-builder-add-more{
+          padding: 2px 0;
+          color: $green;
+          margin:0;
+        }
+        .form-builder-remove{
+          padding: 2px 0;
+          color:#9D0101;
+          margin-left: 10px;
+        }
+      }
+
+      .abnormal-button{
+        margin-right: 10px;
+        float: left;
+        line-height: 1;
+        i {
+          padding: 0;
+        }
+      }
+
+      legend {
+        padding: 2px 10px;
+        color: $gray600;
+        border: 1px solid #999;
+        border-radius: 20px;
+        text-transform: none;
+        font-size: 12px;
+        background: $white;
+        position: absolute;
+        top: -11px;
+        left: 10px;
+        &.form-builder-toggle{
+          cursor: pointer;
+          i {
+            width: 1.25em;
+            text-align: center;
+            margin-left: 1.25em;
+          }
+          .fa-caret-right{
+            display: inline-block;
           }
           .fa-caret-down{
-            display: inline-block;
-            width: 1.2em;
+            display: none;
+          }
+          &.active{
+            background: $white;
+            .fa-caret-right{
+              display: none;
+            }
+            .fa-caret-down{
+              display: inline-block;
+              width: 1.2em;
+            }
+            &.disabled{
+              background: #eee;
+              border: #ccc 1px solid;
+              color: grey;
+              font-style: normal;
+            }
           }
           &.disabled{
             background: #eee;
@@ -293,24 +314,18 @@ $lightestGray: #eee;
             font-style: normal;
           }
         }
-        &.disabled{
-          background: #eee;
-          border: #ccc 1px solid;
-          color: grey;
-          font-style: normal;
-        }
       }
-    }
-    .form-builder-fieldset {
-      border-top: 1px solid #c0c0c0;
-      margin: 15px 2px 10px;
-      box-sizing: border-box;
-      border-radius: 5px;
-      position: relative;
-      > .form-builder-clone {
-        position: absolute;
-        right: 20px;
-        top: -7px;
+      .form-builder-fieldset {
+        border-top: 1px solid #c0c0c0;
+        margin: 15px 2px 10px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        position: relative;
+        > .form-builder-clone {
+          position: absolute;
+          right: 20px;
+          top: -7px;
+        }
       }
     }
   }
@@ -327,19 +342,21 @@ $lightestGray: #eee;
   }
   .form-builder-row {
     display: flex;
-    .form-builder-column{
-      border: 1px dotted #BBB;
-      .form-field-wrap{
-        .form-field-content-wrap{
-          width: 90.5%;
-        }
-        .form-builder-comment-toggle{
-          top: 6px ;
-          right:4px;
-        }
-        button.form-builder-comment-button-toggle{
-          padding: 1px;
-          top: 1px ;
+    .form-builder-column-wrapper{
+       border: 1px dotted #BBB;
+      .form-builder-column{
+        .form-field-wrap{
+          .form-field-content-wrap{
+            width: 90.5%;
+          }
+          .form-builder-comment-toggle{
+            top: 6px ;
+            right:4px;
+          }
+          button.form-builder-comment-button-toggle{
+            padding: 1px;
+            top: 1px ;
+          }
         }
       }
     }
