@@ -27,7 +27,7 @@ export class Location extends Component {
 
   onValueChange(value, errors) {
     const updatedValue = value ? value.id : undefined;
-    this.props.onChange(updatedValue, errors);
+    this.props.onChange({ value: updatedValue, errors });
   }
 
   _getValue(val) {

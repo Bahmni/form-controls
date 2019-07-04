@@ -32,7 +32,7 @@ export class Image extends Component {
   componentDidUpdate() {
     const errors = this._getErrors(this.props.value);
     if (this._hasErrors(errors)) {
-      this.props.onChange(this.props.value, errors);
+      this.props.onChange({ value: this.props.value, errors });
     }
   }
 
@@ -68,7 +68,7 @@ export class Image extends Component {
   update(value) {
     const errors = this._getErrors(value);
     this.setState({ loading: false, hasErrors: this._hasErrors(errors) });
-    this.props.onChange(value, errors);
+    this.props.onChange({ value, errors });
   }
 
   handleChange(e) {

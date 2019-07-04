@@ -25,13 +25,17 @@ export class ObsControl extends addMoreDecorator(Component) {
     this.setAbnormal = this.setAbnormal.bind(this);
   }
 
-  onValueChangeDone() {
-    if (this.props.onEventTrigger) {
+  isAllowedToTriggerControlEvent(triggerControlEvent) {
+    return triggerControlEvent === undefined || triggerControlEvent;
+  }
+
+  onValueChangeDone(triggerControlEvent) {
+    if (this.props.onEventTrigger && this.isAllowedToTriggerControlEvent(triggerControlEvent)) {
       this.props.onEventTrigger(this.props.formFieldPath, 'onValueChange');
     }
   }
 
-  onChange(value, errors, calledOnMount) {
+  onChange({ value, errors, calledOnMount, triggerControlEvent }) {
     const { metadata: { properties } } = this.props;
 
     const isAbnormalPropertyEnabled = find(properties, (val, key) => (key === 'abnormal' && val));
@@ -46,7 +50,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       this.props.formFieldPath,
       obsValue,
       errors,
-      this.onValueChangeDone);
+       () => this.onValueChangeDone(triggerControlEvent));
   }
 
   onCommentChange(comment) {

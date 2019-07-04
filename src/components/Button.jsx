@@ -21,7 +21,7 @@ export class Button extends Component {
   componentDidMount() {
     const { value, validateForm } = this.props;
     if (this.state.hasErrors || value !== undefined || validateForm) {
-      this.props.onValueChange(value, this._getErrors(value));
+      this.props.onValueChange(value, this._getErrors(value), true);
     }
   }
 

@@ -19,7 +19,7 @@ export class DateTime extends Component {
   componentDidMount() {
     const { value, validateForm } = this.props;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
-      this.props.onChange(value, this._getAllErrors());
+      this.props.onChange({ value, errors: this._getAllErrors(), triggerControlEvent: false });
     }
   }
 
@@ -46,9 +46,9 @@ export class DateTime extends Component {
     const errors = this._getAllErrors();
     const dateTimeValue = !this.valueNotFilled() ?
       `${this.dateValue} ${this.timeValue}` : undefined;
-    this.props.onChange(dateTimeValue, errors);
+    this.props.onChange({ value: dateTimeValue, errors });
     if (this.isValueChanged) {
-      this.props.onChange(this.props.value, errors);
+      this.props.onChange({ value: this.props.value, errors });
     }
   }
 
@@ -67,7 +67,7 @@ export class DateTime extends Component {
     const dateTimeValue = !this.valueNotFilled() ?
       `${this.dateValue} ${this.timeValue}` : undefined;
     this.setState({ hasErrors: this._hasErrors(errors) });
-    this.props.onChange(dateTimeValue, errors);
+    this.props.onChange({ value: dateTimeValue, errors });
   }
 
   _hasErrors(errors) {

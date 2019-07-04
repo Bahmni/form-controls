@@ -14,7 +14,7 @@ export class BooleanControl extends Component {
 
   onValueChange(value, errors) {
     const updatedValue = value ? value.value : undefined;
-    this.props.onChange(updatedValue, errors);
+    this.props.onChange({ value: updatedValue, errors });
   }
 
   _getOptionsRepresentation(options) {
