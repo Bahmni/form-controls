@@ -80,7 +80,7 @@ describe('BooleanControl', () => {
       />);
     const instance = wrapper.instance();
     instance.onValueChange(options[0], []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(true, []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: true, errors: [] }));
   });
 
   it('should reRender on change of value in props', () => {
@@ -128,6 +128,6 @@ describe('BooleanControl', () => {
       />);
     const instance = wrapper.instance();
     instance.onValueChange(undefined, []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: undefined, errors: [] }));
   });
 });
