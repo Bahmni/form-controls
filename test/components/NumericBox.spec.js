@@ -62,7 +62,7 @@ describe('NumericBox', () => {
       />
     );
     wrapper.find('input').simulate('change', { target: { value: '999' } });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('999', []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: '999', errors: [] }));
   });
 
   it('should throw error on fail of validations', () => {
@@ -79,7 +79,7 @@ describe('NumericBox', () => {
     );
     const allowDecimalError = new Error({ message: validations[0] });
     wrapper.find('input').simulate('change', { target: { value: '50.32' } });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('50.32', [allowDecimalError]));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: '50.32', errors: [allowDecimalError] }));
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
@@ -148,7 +148,7 @@ describe('NumericBox', () => {
       message: constants.validations.allowRange,
     });
     wrapper.find('input').simulate('change', { target: { value: '51' } });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('51', [allowRangeWarning]));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: '51', errors: [allowRangeWarning] }));
   });
 
   it('should throw error when the value is not in correct range and the ' +
@@ -171,7 +171,7 @@ describe('NumericBox', () => {
     });
 
     wrapper.find('input').simulate('change', { target: { value: '51' } });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('51', [allowRangeError]));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: '51', errors: [allowRangeError] }));
   });
 
   it('should set the input value when the value of the numeric box is calculated', () => {
@@ -354,6 +354,6 @@ describe('NumericBox', () => {
     );
 
     wrapper.setProps({ value: '20' });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('20', []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: '20', errors: [] }));
   });
 });

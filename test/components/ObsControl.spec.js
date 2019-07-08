@@ -199,7 +199,7 @@ describe('ObsControl', () => {
           value={domainValue}
         />
       );
-      wrapper.instance().onChange(true, []);
+      wrapper.instance().onChange({ value: true, errors: [] });
       sinon.assert.calledOnce(
         onChangeSpy.withArgs(
           wrapper.prop('formFieldPath'),
@@ -229,7 +229,7 @@ describe('ObsControl', () => {
         />
       );
       const instance = wrapper.instance();
-      instance.onChange(undefined, errors);
+      instance.onChange({ value: undefined, errors });
       sinon.assert.calledOnce(
         onChangeSpy.withArgs(
           wrapper.prop('formFieldPath'),
