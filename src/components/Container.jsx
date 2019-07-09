@@ -29,12 +29,13 @@ export class Container extends addMoreDecorator(Component) {
 
   componentWillMount() {
     const initScript = this.props.metadata.events && this.props.metadata.events.onFormInit;
+    let updatedTree;
     if (initScript) {
-      const ut = new ScriptRunner(this.state.data, this.props.patient).execute(initScript);
-      this.setState({ data: ut });
+      updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(initScript);
+      this.setState({ data: updatedTree });
     }
     const controls = this.props.metadata.controls;
-    let updatedTree = this.state.data;
+    updatedTree = updatedTree || this.state.data;
     updatedTree = this.executeAllControlEvents(controls, updatedTree);
     this.setState({
       data: updatedTree,
@@ -48,8 +49,11 @@ export class Container extends addMoreDecorator(Component) {
         formControlTree = this.executeAllControlEvents(control.controls, formControlTree);
       } else {
         if (control.events) {
-          const script = control.events['onValueChange'];
-          formControlTree = new ScriptRunner(formControlTree, this.props.patient).execute(script);
+          const eventKeys = Object.keys(control.events);
+          eventKeys.forEach(eventKey => {
+            const script = control.events[eventKey];
+            formControlTree = new ScriptRunner(formControlTree, this.props.patient).execute(script);
+          });
         }
       }
     });

@@ -70,7 +70,7 @@ describe('Video Control', () => {
       wrapper.find('input').simulate('change', { target: { files: [{ type: 'video/mp4' }] } });
 
       sinon.assert.calledOnce(uploadSpy.withArgs(result));
-      sinon.assert.calledOnce(onChangeSpy.withArgs('someUrl'));
+      sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'someUrl', errors: [] }));
       stub.restore();
       uploadSpy.restore();
     });
@@ -135,7 +135,7 @@ describe('Video Control', () => {
 
       wrapper.find('input').simulate('change', { target: { files: undefined } });
 
-      sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
+      sinon.assert.called(onChangeSpy.withArgs({ value: undefined, errors: [mandatoryError] }));
       expect(wrapper.find('input')).to.have.className('form-builder-error');
     });
 
@@ -146,7 +146,8 @@ describe('Video Control', () => {
 
       wrapper.setProps({ validate: true, value: 'someValuevoided' });
 
-      sinon.assert.calledOnce(onChangeSpy.withArgs('someValuevoided', [mandatoryError]));
+      sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'someValuevoided',
+        errors: [mandatoryError] }));
     });
 
     it('should not throw error when the complex control is created by add more', () => {
@@ -156,14 +157,14 @@ describe('Video Control', () => {
       wrapper.find('.delete-button').simulate('click');
       wrapper.setProps({ validate: true, value: 'someValuevoided' });
 
-      sinon.assert.calledOnce(onChangeSpy.withArgs('someValuevoided', []));
+      sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'someValuevoided', errors: [] }));
     });
 
     it('should not update the component when the value is not change', () => {
       wrapper.setProps({ value: 'someValue' });
       wrapper.setProps({ value: 'someValue' });
 
-      sinon.assert.notCalled(onChangeSpy.withArgs('someValue'));
+      sinon.assert.notCalled(onChangeSpy.withArgs({ value: 'someValue', errors: [] }));
     });
 
     it('should check disabled attribute when enabled prop is false', () => {
@@ -173,7 +174,8 @@ describe('Video Control', () => {
     });
 
     it('should show spinner when the file is uploading', () => {
-      wrapper.find('input').simulate('change', { target: { files: [{ type: 'video/mp4' }] } });
+      wrapper.find('input').simulate('change',
+        { target: { files: [new Blob(['fileContent'], { type: 'video/mp4' })] } });
 
       expect(wrapper.find('Spinner').props().show).to.equal(true);
     });

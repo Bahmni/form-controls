@@ -61,8 +61,8 @@ describe('DateTime', () => {
     wrapper.find('input').at(1).simulate('change', { target: { value: '22:10' } });
 
     sinon.assert.callCount(onChangeSpy, 4);
-    sinon.assert.calledWithMatch(onChangeSpy, '2016-12-31', [error]);
-    sinon.assert.calledTwice(onChangeSpy.withArgs('2016-12-31 22:10', []));
+    sinon.assert.calledWithMatch(onChangeSpy, { value: '2016-12-31 ', errors: [error] });
+    sinon.assert.calledTwice(onChangeSpy.withArgs({ value: '2016-12-31 22:10', errors: [] }));
   });
 
   it('should return undefined when value is empty string', () => {
@@ -78,7 +78,7 @@ describe('DateTime', () => {
     wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
     wrapper.find('input').at(1).simulate('change', { target: { value: '' } });
 
-    sinon.assert.calledTwice(onChangeSpy.withArgs(undefined, []));
+    sinon.assert.calledTwice(onChangeSpy.withArgs({ value: undefined, errors: [] }));
   });
 
   it('should throw error on fail of validations', () => {
@@ -100,7 +100,8 @@ describe('DateTime', () => {
 
     sinon.assert.callCount(onChangeSpy, 2);
 
-    sinon.assert.calledWithMatch(onChangeSpy, '', [mandatoryError, dateTimeError]);
+    sinon.assert.calledWithMatch(onChangeSpy, { value: ' 22:10',
+      errors: [mandatoryError, dateTimeError] });
     expect(wrapper.find('input').at(0)).to.have.className('form-builder-error');
     expect(wrapper.find('input').at(1)).to.have.className('form-builder-error');
   });
@@ -120,7 +121,7 @@ describe('DateTime', () => {
     );
     const mandatoryError = new Error({ message: validations[0] });
     wrapper.setProps({ validate: true, value: undefined });
-    sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.called(onChangeSpy.withArgs({ value: undefined, errors: [mandatoryError] }));
     expect(wrapper.find('input').at(0)).to.have.className('form-builder-error');
     expect(wrapper.find('input').at(1)).to.have.className('form-builder-error');
   });
@@ -231,6 +232,6 @@ describe('DateTime', () => {
     );
 
     wrapper.setProps({ value: '2016-12-29 22:10' });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('2016-12-29 22:10', []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: '2016-12-29 22:10', errors: [] }));
   });
 });
