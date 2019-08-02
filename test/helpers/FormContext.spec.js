@@ -277,4 +277,168 @@ describe('FormContext', () => {
     const formContext = new FormContext(recordTree, patient);
     expect(formContext.getPatient()).to.eql(patient);
   });
+
+  describe('getAll', () => {
+    const firstObsRecord = new ControlRecord({
+      control: {
+        type: 'obsControl',
+        label: {
+          translationKey: 'MTC,_DRUG_PRESCRIBED_DAYS_2',
+        },
+        properties: {
+          addMore: true,
+        },
+        id: '2',
+        concept: {
+          name: 'MTC, Drug prescribed days',
+        },
+      },
+      formFieldPath: 'Vitals.2/2-0',
+      dataSource: {
+        concept: {
+          name: 'MTC, Drug prescribed days',
+        },
+        formFieldPath: 'Vitals.2/2-0',
+      },
+    });
+    const secondObsRecord = new ControlRecord({
+      control: {
+        type: 'obsControl',
+        label: {
+          translationKey: 'MTC,_DRUG_PRESCRIBED_DAYS_2',
+        },
+        properties: {
+          addMore: true,
+        },
+        id: '2',
+        concept: {
+          name: 'MTC, Drug prescribed days',
+        },
+      },
+      formFieldPath: 'Vitals.2/2-1',
+      dataSource: {
+        concept: {
+          name: 'MTC, Drug prescribed days',
+        },
+        formFieldPath: 'Vitals.2/2-1',
+      },
+    });
+
+    const firstSectionRecord = new ControlRecord({
+      control: {
+        type: 'section',
+        label: {
+          value: 'Section',
+          id: 1,
+        },
+        properties: {
+          addMore: true,
+        },
+        id: 1,
+      },
+      formFieldPath: 'Vitals.2/1-0',
+    });
+
+    const secondSectionRecord = new ControlRecord({
+      control: {
+        type: 'section',
+        label: {
+          value: 'Section',
+          id: 1,
+        },
+        properties: {
+          addMore: true,
+        },
+        id: 1,
+      },
+      formFieldPath: 'Vitals.2/1-1',
+    });
+
+    const obsRecordTree = new ControlRecord({
+      children: List.of(firstObsRecord, secondObsRecord),
+    });
+
+    const rootSectionRecord = new ControlRecord({
+      control: {
+        type: 'section',
+        label: {
+          value: 'Section',
+          id: 0,
+        },
+        properties: {
+          addMore: true,
+        },
+        id: 0,
+      },
+      formFieldPath: 'Vitals.2/0-0',
+      children: List.of(obsRecordTree),
+    });
+
+    const obsGroupRecord = new ControlRecord({
+      control: {
+        type: 'obsGroupControl',
+        label: {
+          value: 'BMI',
+          id: 3,
+        },
+        properties: {
+          addMore: true,
+        },
+        id: 3,
+        concept: {
+          name: 'BMI Data',
+        },
+      },
+      formFieldPath: 'Vitals.2/1-0/3-0',
+      children: List.of(firstObsRecord),
+    });
+
+    it('should get first obs record out of two add-more records with the given concept name',
+        () => {
+          const formContext = new FormContext(obsRecordTree);
+          const targetRecordWrapper = formContext.getFromParent('MTC, Drug prescribed days');
+          expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/2-0');
+        });
+
+    it('should get first section record out of two add-more records with the given label name',
+        () => {
+          const sectionRecordTree = new ControlRecord({
+            children: List.of(firstSectionRecord, secondSectionRecord),
+          });
+
+          const formContext = new FormContext(undefined, undefined, sectionRecordTree);
+          const targetRecordWrapper = formContext.getFromParent('Section');
+          expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/1-0');
+        });
+
+    it('should get first obs record out of two add-more records with the given concept name ' +
+          'where obs lies under a section', () => {
+      const rootRecord = new ControlRecord({
+        children: List.of(rootSectionRecord),
+      });
+
+      const formContext = new FormContext(rootRecord, undefined, rootSectionRecord);
+      const targetRecordWrapper = formContext.getFromParent('MTC, Drug prescribed days');
+      expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/2-0');
+    });
+
+    it('should get obs group record with the given concept name where obs group lies ' +
+        'under a section', () => {
+      const rootRecord = new ControlRecord({
+        children: List.of(obsGroupRecord),
+      });
+
+      const formContext = new FormContext(rootRecord, undefined, obsGroupRecord);
+      const targetRecordWrapper = formContext.getFromParent('BMI Data');
+      expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/1-0/3-0');
+    });
+
+    it('should log warning message if no record available for given concept name', () => {
+      const warningSpy = sinon.spy(console, 'warn');
+      const formContext = new FormContext(new ControlRecord());
+      formContext.getFromParent('BMI Data');
+      const expectedMessage = '[FormEventHandler] Control with name[BMI Data] is not exist';
+      sinon.assert.calledOnce(warningSpy.withArgs(expectedMessage));
+    });
+  });
 });

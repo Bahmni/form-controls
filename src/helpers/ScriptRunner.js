@@ -2,8 +2,8 @@ import FormContext from './FormContext';
 
 export default class ScriptRunner {
 
-  constructor(formRecords, patient) {
-    this.formContext = new FormContext(formRecords, patient);
+  constructor(formRecords, patient, parentRecord) {
+    this.formContext = new FormContext(formRecords, patient, parentRecord);
   }
 
   execute(eventJs) {
