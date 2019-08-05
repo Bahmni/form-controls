@@ -34,30 +34,28 @@ export class Container extends addMoreDecorator(Component) {
       updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(initScript);
       this.setState({ data: updatedTree });
     }
-    const controls = this.props.metadata.controls;
     updatedTree = updatedTree || this.state.data;
-    updatedTree = this.executeAllControlEvents(controls, updatedTree);
+    updatedTree = this.executeEventsForAllRecords(updatedTree);
     this.setState({
       data: updatedTree,
     });
   }
 
-  executeAllControlEvents(controls, updatedTree) {
-    let formControlTree = updatedTree;
-    controls.forEach((control) => {
-      if (control.controls) {
-        formControlTree = this.executeAllControlEvents(control.controls, formControlTree);
-      } else {
-        if (control.events) {
-          const eventKeys = Object.keys(control.events);
-          eventKeys.forEach(eventKey => {
-            const script = control.events[eventKey];
-            formControlTree = new ScriptRunner(formControlTree, this.props.patient).execute(script);
-          });
-        }
+  executeEventsForAllRecords(parentRecord, rootRecord) {
+    let recordTree = rootRecord || parentRecord;
+    if (!parentRecord.children) return recordTree;
+    parentRecord.children.forEach(record => {
+      recordTree = this.executeEventsForAllRecords(record, recordTree);
+      if (record.control && record.control.events) {
+        const eventKeys = Object.keys(record.control.events);
+        eventKeys.forEach(eventKey => {
+          const script = record.control.events[eventKey];
+          recordTree = new ScriptRunner(recordTree, this.props.patient, parentRecord)
+                        .execute(script);
+        });
       }
     });
-    return formControlTree;
+    return recordTree;
   }
 
   componentWillReceiveProps(nextProps) {

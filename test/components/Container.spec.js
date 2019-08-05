@@ -5128,6 +5128,169 @@ describe('Container', () => {
         expect(obsGroupTree.children.get(1).active).to.equal(false);
         expect(obsGroupTree.children.get(1).formFieldPath).to.equal(removeFormFieldPath);
       });
+
+      it('should enable a record with form conditions using new api getFromParent', () => {
+        const metadataWithSection = {
+          name: 'AddMoreHideTest',
+          id: 78,
+          uuid: '7e6b3120-4e40-41a0-8ef4-0d1ddacd8496',
+          defaultLocale: 'en',
+          version: 2,
+          controls: [
+            {
+              type: 'section',
+              label: {
+                translationKey: 'SECTION_4',
+                type: 'label',
+                value: 'Section',
+                id: 4,
+              },
+              properties: {
+                addMore: true,
+                location: {
+                  column: 0,
+                  row: 1,
+                },
+              },
+              id: 4,
+              controls: [
+                {
+                  options: [
+                    {
+                      name: 'Yes',
+                      translationKey: 'BOOLEAN_YES',
+                      value: true,
+                    },
+                    {
+                      name: 'No',
+                      translationKey: 'BOOLEAN_NO',
+                      value: false,
+                    },
+                  ],
+                  type: 'obsControl',
+                  label: {
+                    translationKey: 'IS_ABNORMAL_5',
+                    id: 5,
+                    units: '',
+                    type: 'label',
+                    value: 'IS_ABNORMAL',
+                  },
+                  properties: {
+                    mandatory: false,
+                    notes: false,
+                    addMore: false,
+                    hideLabel: false,
+                    controlEvent: false,
+                    location: {
+                      column: 0,
+                      row: 0,
+                    },
+                  },
+                  id: 5,
+                  concept: {
+                    name: 'IS_ABNORMAL',
+                    uuid: '7e697913-e42f-11e5-8c3e-08002715d519',
+                    datatype: 'Boolean',
+                    conceptClass: 'Finding',
+                    conceptHandler: null,
+                    answers: [],
+                    properties: {
+                      allowDecimal: null,
+                    },
+                  },
+                  units: null,
+                  hiNormal: null,
+                  lowNormal: null,
+                  hiAbsolute: null,
+                  lowAbsolute: null,
+                  events: {
+                    onValueChange: `function(form) {
+	if (form.getFromParent('IS_ABNORMAL').getValue()) {
+        form.getFromParent('Reason case is pending').setHidden(false);
+    }else {
+        form.getFromParent('Reason case is pending').setHidden(true);
+    }
+}`,
+                  },
+                },
+                {
+                  type: 'obsControl',
+                  label: {
+                    translationKey: 'REASON_CASE_IS_PENDING_6',
+                    id: 6,
+                    units: '',
+                    type: 'label',
+                    value: 'Reason case is pending',
+                  },
+                  properties: {
+                    mandatory: false,
+                    notes: false,
+                    addMore: false,
+                    hideLabel: false,
+                    controlEvent: false,
+                    location: {
+                      column: 0,
+                      row: 1,
+                    },
+                  },
+                  id: 6,
+                  concept: {
+                    name: 'Reason case is pending',
+                    uuid: '9fbec55e-c329-4bf1-9728-c89f24540d43',
+                    datatype: 'Text',
+                    conceptClass: 'Misc',
+                    conceptHandler: null,
+                    answers: [],
+                    properties: {
+                      allowDecimal: null,
+                    },
+                  },
+                  units: null,
+                  hiNormal: null,
+                  lowNormal: null,
+                  hiAbsolute: null,
+                  lowAbsolute: null,
+                },
+              ],
+            },
+          ],
+          translationsUrl: '/openmrs/ws/rest/v1/bahmniie/form/translations',
+        };
+
+        const translationsWithSection = {
+          en: {
+            concepts: {
+              REASON_CASE_IS_PENDING_6: 'Reason case is pending',
+              IS_ABNORMAL_5: 'IS_ABNORMAL',
+            },
+            labels: {
+              BOOLEAN_NO: 'No',
+              BOOLEAN_YES: 'Yes',
+              SECTION_4: 'Section2',
+            },
+          },
+        };
+
+        const wrapper = shallow(
+                <Container
+                  collapse
+                  locale="en"
+                  metadata={metadataWithSection}
+                  observations={[]}
+                  patient={patient}
+                  translations={translationsWithSection}
+                  validate={false}
+                  validateForm={false}
+                />
+            );
+
+        const changedValue = { value: 'Yes', comment: undefined };
+
+        wrapper.instance().onValueChanged('AddMoreHideTest.2/4-0/6-0', changedValue);
+
+        const isHidden = wrapper.state().data.children.get(0).children.get(0).hidden;
+        expect(isHidden).to.equal(false);
+      });
     });
   });
 });
