@@ -278,12 +278,13 @@ describe('FormContext', () => {
     expect(formContext.getPatient()).to.eql(patient);
   });
 
-  describe('getAll', () => {
+  describe('getFromParent And getFromParentById', () => {
     const firstObsRecord = new ControlRecord({
       control: {
         type: 'obsControl',
         label: {
           translationKey: 'MTC,_DRUG_PRESCRIBED_DAYS_2',
+          id: '2',
         },
         properties: {
           addMore: true,
@@ -306,6 +307,7 @@ describe('FormContext', () => {
         type: 'obsControl',
         label: {
           translationKey: 'MTC,_DRUG_PRESCRIBED_DAYS_2',
+          id: '2',
         },
         properties: {
           addMore: true,
@@ -329,12 +331,12 @@ describe('FormContext', () => {
         type: 'section',
         label: {
           value: 'Section',
-          id: 1,
+          id: '1',
         },
         properties: {
           addMore: true,
         },
-        id: 1,
+        id: '1',
       },
       formFieldPath: 'Vitals.2/1-0',
     });
@@ -344,12 +346,12 @@ describe('FormContext', () => {
         type: 'section',
         label: {
           value: 'Section',
-          id: 1,
+          id: '1',
         },
         properties: {
           addMore: true,
         },
-        id: 1,
+        id: '1',
       },
       formFieldPath: 'Vitals.2/1-1',
     });
@@ -363,12 +365,12 @@ describe('FormContext', () => {
         type: 'section',
         label: {
           value: 'Section',
-          id: 0,
+          id: '0',
         },
         properties: {
           addMore: true,
         },
-        id: 0,
+        id: '0',
       },
       formFieldPath: 'Vitals.2/0-0',
       children: List.of(obsRecordTree),
@@ -379,12 +381,12 @@ describe('FormContext', () => {
         type: 'obsGroupControl',
         label: {
           value: 'BMI',
-          id: 3,
+          id: '3',
         },
         properties: {
           addMore: true,
         },
-        id: 3,
+        id: '3',
         concept: {
           name: 'BMI Data',
         },
@@ -411,17 +413,6 @@ describe('FormContext', () => {
           expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/1-0');
         });
 
-    it('should get first obs record out of two add-more records with the given concept name ' +
-          'where obs lies under a section', () => {
-      const rootRecord = new ControlRecord({
-        children: List.of(rootSectionRecord),
-      });
-
-      const formContext = new FormContext(rootRecord, undefined, rootSectionRecord);
-      const targetRecordWrapper = formContext.getFromParent('MTC, Drug prescribed days');
-      expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/2-0');
-    });
-
     it('should get obs group record with the given concept name where obs group lies ' +
         'under a section', () => {
       const rootRecord = new ControlRecord({
@@ -437,8 +428,58 @@ describe('FormContext', () => {
       const warningSpy = sinon.spy(console, 'warn');
       const formContext = new FormContext(new ControlRecord());
       formContext.getFromParent('BMI Data');
-      const expectedMessage = '[FormEventHandler] Control with name[BMI Data] is not exist';
+      const expectedMessage = '[FormEventHandler] Control with name[BMI Data] does not exist';
       sinon.assert.calledOnce(warningSpy.withArgs(expectedMessage));
+      warningSpy.restore();
+    });
+
+    it('should get first obs record out of two add-more records with the given id',
+    () => {
+      const formContext = new FormContext(obsRecordTree);
+      const targetRecordWrapper = formContext.getFromParentById(2);
+      expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/2-0');
+    });
+
+    it('should get first section record out of two add-more records with the given id',
+      () => {
+        const sectionRecordTree = new ControlRecord({
+          children: List.of(firstSectionRecord, secondSectionRecord),
+        });
+
+        const formContext = new FormContext(undefined, undefined, sectionRecordTree);
+        const targetRecordWrapper = formContext.getFromParentById(1);
+        expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/1-0');
+      });
+
+    it('should get first obs record out of two add-more records with the given id ' +
+      'where obs lies under a section', () => {
+      const rootRecord = new ControlRecord({
+        children: List.of(rootSectionRecord),
+      });
+
+      const formContext = new FormContext(rootRecord, undefined, rootSectionRecord);
+      const targetRecordWrapper = formContext.getFromParentById(2);
+      expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/2-0');
+    });
+
+    it('should get obs group record with the given id where obs group lies ' +
+      'under a section', () => {
+      const rootRecord = new ControlRecord({
+        children: List.of(obsGroupRecord),
+      });
+
+      const formContext = new FormContext(rootRecord, undefined, obsGroupRecord);
+      const targetRecordWrapper = formContext.getFromParentById(3);
+      expect(targetRecordWrapper.currentRecord.formFieldPath).to.equal('Vitals.2/1-0/3-0');
+    });
+
+    it('should log warning message if no record available for given id', () => {
+      const warningSpy = sinon.spy(console, 'warn');
+      const formContext = new FormContext(new ControlRecord());
+      formContext.getFromParentById(10);
+      const expectedMessage = '[FormEventHandler] Control with id - 10 does not exist';
+      sinon.assert.calledOnce(warningSpy.withArgs(expectedMessage));
+      warningSpy.restore();
     });
   });
 });

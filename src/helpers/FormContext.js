@@ -42,13 +42,14 @@ export default class FormContext {
 
   static logWarning(message) {
     /* eslint-disable */
-    console.warn(`[FormEventHandler] Control with ${message} is not exist`);
+    console.warn(`[FormEventHandler] Control with ${message} does not exist`);
   }
 
   getFromParent(name) {
     const records = this.find(this.parentRecord || this.rootRecord, name);
       if (records.length <= 0) {
-        FormContext.logWarning(`name[${name}]`);
+        const message = `name[${name}]`;
+        FormContext.logWarning(message);
       }
       /*Methods in ControlRecordWrapper(setHidden, setEnabled, etc) will work on
       all brother trees(i.e. add more controls)*/
@@ -79,7 +80,7 @@ export default class FormContext {
     if (!currentRecord) {
       const message = `id - ${id}`;
       /* eslint-disable */
-      console.warn(`[FormEventHandler] Control with ${message} does not exist`);
+      FormContext.logWarning(message);
     }
     return this.wrapper.set(currentRecord);
   }
@@ -88,4 +89,13 @@ export default class FormContext {
     return this.wrapper.getRecords();
   }
 
+  getFromParentById(id) {
+    const records = this.findById(this.parentRecord || this.rootRecord, id);
+    if (records.length <= 0) {
+      const message = `id - ${id}`;
+      /* eslint-disable */
+      FormContext.logWarning(message);
+    }
+    return this.wrapper.set(records[0]);
+  }
 }
