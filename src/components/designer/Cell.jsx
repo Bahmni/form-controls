@@ -185,4 +185,4 @@ const descriptor = {
   },
 };
 
-ComponentStore.registerDesignerComponent('dropCell', descriptor);
+ComponentStore.registerDesignerComponent('cell', descriptor);
