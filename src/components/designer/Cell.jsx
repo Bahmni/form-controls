@@ -13,7 +13,7 @@ const defaultCellControl = React.createElement(() => <div className="cell"></div
 export class CellDesigner extends DropTarget {
   constructor(props) {
     super(props);
-    this.state = { data: props.cellData, type: 'is drop cell' };
+    this.state = { data: props.cellData };
     const { row, column } = props.location;
     this.cellPosition = cellPosition(row, column);
     this.getCellDefinition = this.getCellDefinition.bind(this);
