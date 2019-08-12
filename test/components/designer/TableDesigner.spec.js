@@ -276,11 +276,13 @@ describe('TableDesigner', () => {
           dispatch={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
+          onControlDrop ={ ({ successCallback }) => successCallback()}
           onSelect={() => {}}
           wrapper={() => {}}
         />);
       const processDropSuccessCallback = sinon.spy();
-      wrapper.instance().handleControlDrop({ type: 'obsControl' }, [], processDropSuccessCallback);
+      wrapper.instance().handleControlDrop({ metadata: { type: 'obsControl' }, cellMetadata: [],
+        successCallback: processDropSuccessCallback });
       expect('addMore', processDropSuccessCallback.getCall(0).args[0][1]);
     });
 
@@ -292,12 +294,37 @@ describe('TableDesigner', () => {
           dispatch={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
+          onControlDrop ={ ({ successCallback }) => successCallback()}
           onSelect={() => {}}
           wrapper={() => {}}
         />);
       const processDropSuccessCallback = sinon.spy();
-      wrapper.instance().handleControlDrop({ type: 'section' }, [], processDropSuccessCallback);
+      wrapper.instance().handleControlDrop({ metadata: { type: 'section' }, cellMetadata: [],
+        successCallback: processDropSuccessCallback });
       sinon.assert.notCalled(processDropSuccessCallback);
+    });
+
+    it('should update metadata of drag source cell when drop is not allowed ', () => {
+      const dragSourceCell = {
+        updateMetadata: sinon.spy(),
+      };
+      wrapper = shallow(
+        <TableDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          dispatch={() => {}}
+          dragSourceCell={dragSourceCell}
+          idGenerator={idGenerator}
+          metadata={metadata}
+          onControlDrop ={ ({ successCallback }) => successCallback()}
+          onSelect={() => {}}
+          wrapper={() => {}}
+        />);
+      const processDropSuccessCallback = sinon.spy();
+      wrapper.instance().handleControlDrop({ metadata: { type: 'section' }, cellMetadata: [],
+        successCallback: processDropSuccessCallback });
+      sinon.assert.notCalled(processDropSuccessCallback);
+      sinon.assert.calledOnce(dragSourceCell.updateMetadata);
     });
 
     it('should not allow more than one control to be dropped in a cell', () => {
@@ -308,12 +335,13 @@ describe('TableDesigner', () => {
           dispatch={() => {}}
           idGenerator={idGenerator}
           metadata={metadata}
+          onControlDrop ={ ({ successCallback }) => successCallback()}
           onSelect={() => {}}
           wrapper={() => {}}
         />);
       const processDropSuccessCallback = sinon.spy();
-      wrapper.instance().handleControlDrop({ type: 'obsControl' },
-        [{ type: 'obsControl' }], processDropSuccessCallback);
+      wrapper.instance().handleControlDrop({ metadata: { type: 'obsControl' },
+        cellMetadata: [{ type: 'obsControl' }], successCallback: processDropSuccessCallback });
       sinon.assert.notCalled(processDropSuccessCallback);
     });
   });

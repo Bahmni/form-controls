@@ -19,6 +19,10 @@ export class RowDesigner extends Component {
     this.cellData = groupBy(props.rowData, 'properties.location.column');
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.cellData = groupBy(nextProps.rowData, 'properties.location.column');
+  }
+
   getRowDefinition() {
     const cells = map(this.cellRef, (ref) => ref.getCellDefinition()) || [];
     return [].concat(...cells);
@@ -35,19 +39,20 @@ export class RowDesigner extends Component {
     const cells = [];
     for (let i = 0; i < columns; ++i) {
       cells.push(
-                <CellDesigner
-                  cellData={ get(this.cellData, i, []) }
-                  dragAllowed={ this.props.dragAllowed }
-                  idGenerator={ this.props.idGenerator }
-                  key={i}
-                  location={{ column: i, row: this.props.rowPosition }}
-                  onChange={ this.changeHandler }
-                  onControlDrop={this.props.onControlDrop}
-                  ref={ this.cellReference }
-                  setError={this.props.setError}
-                  showDeleteButton={ this.props.showDeleteButton }
-                  wrapper={ this.props.wrapper }
-                />);
+        <CellDesigner cellData={get(this.cellData, i, [])}
+          dragAllowed={this.props.dragAllowed}
+          dragSourceCell={this.props.dragSourceCell}
+          idGenerator={this.props.idGenerator}
+          isBeingDragged={this.props.isBeingDragged}
+          key={i}
+          location={{ column: i, row: this.props.rowPosition }}
+          onChange={this.changeHandler}
+          onControlDrop={this.props.onControlDrop}
+          ref={this.cellReference}
+          setError={this.props.setError}
+          showDeleteButton={this.props.showDeleteButton}
+          wrapper={this.props.wrapper}
+        />);
     }
     return cells;
   }
@@ -72,7 +77,9 @@ export class RowDesigner extends Component {
 RowDesigner.propTypes = {
   columns: PropTypes.number,
   dragAllowed: PropTypes.bool,
+  dragSourceCell: PropTypes.instanceOf(CellDesigner),
   idGenerator: PropTypes.object.isRequired,
+  isBeingDragged: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   onControlDrop: PropTypes.func,
   rowData: PropTypes.array.isRequired,
