@@ -16,7 +16,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import Constants from 'src/constants';
 import sinon from 'sinon';
 import { Map as immutableMap } from 'immutable';
-
+import * as ExecuteEvents from '../../src/helpers/ExecuteEvents';
 
 chai.use(chaiEnzyme());
 
@@ -148,7 +148,11 @@ describe('Container', () => {
     };
     const recordTree = new ControlRecord({ children: List.of(childRecord) });
 
+    // should refactor other tests similarly i.e to stub executeEventsFromCurrentRecord before mount
     it('should render a control when given single layer tree data', () => {
+      const executeEventsFromCurrentRecordStub =
+        sinon.stub(ExecuteEvents, 'executeEventsFromCurrentRecord');
+      executeEventsFromCurrentRecordStub.returns(recordTree);
       const wrapper = mount(
             <Container
               collapse
@@ -165,6 +169,7 @@ describe('Container', () => {
       wrapper.setState({ data: recordTree });
 
       expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+      executeEventsFromCurrentRecordStub.restore();
     });
 
     it('should initialize the states of controls before mount', () => {
@@ -291,6 +296,7 @@ describe('Container', () => {
         uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
       };
       const addedFormFieldPath = 'singleObs.1/1-0';
+      const expectedFormFieldPath = 'singleObs.1/1-1';
       const childRecordTree = new ControlRecord({
         control: {
           concept,
@@ -325,9 +331,49 @@ describe('Container', () => {
           voided: true,
         },
       });
+      const addedControlOfChildRecordTree = new ControlRecord({
+        control: {
+          concept,
+          hiAbsolute: null,
+          hiNormal: null,
+          id: '1',
+          label: {
+            type: 'label',
+            value: 'HEIGHT',
+          },
+          lowAbsolute: null,
+          lowNormal: null,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: {
+              column: 0,
+              row: 0,
+            },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: null,
+        },
+        formFieldPath: expectedFormFieldPath,
+        value: {},
+        dataSource: {
+          concept,
+          formFieldPath: expectedFormFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+        },
+      });
       const obsTree = new ControlRecord({ children: List.of(childRecordTree) });
+      const obsTreeWithAddedControl = new
+      ControlRecord({ children: List.of(childRecordTree, addedControlOfChildRecordTree) });
 
+      // should refactor other tests to stub executeEventsFromCurrentRecord while onControlAdd
       it('should add one obs when onControlAdd is triggered with obs in container', () => {
+        const executeEventsFromCurrentRecordStub =
+          sinon.stub(ExecuteEvents, 'executeEventsFromCurrentRecord');
+        executeEventsFromCurrentRecordStub.returns(obsTree);
         const wrapper = mount(
           <Container
             collapse
@@ -340,14 +386,15 @@ describe('Container', () => {
             validateForm={false}
           />
         );
+        executeEventsFromCurrentRecordStub.returns(obsTreeWithAddedControl);
         wrapper.setState({ data: obsTree });
         wrapper.instance().onControlAdd(addedFormFieldPath);
 
-        const expectedFormFieldPath = 'singleObs.1/1-1';
         const updatedRootTree = wrapper.state().data;
         expect(updatedRootTree.children.size).to.equal(2);
         expect(updatedRootTree.children.get(0).formFieldPath).to.equal(addedFormFieldPath);
         expect(updatedRootTree.children.get(1).formFieldPath).to.equal(expectedFormFieldPath);
+        executeEventsFromCurrentRecordStub.restore();
       });
 
       it('should not render notification when add more with notification shown false', () => {

@@ -10,6 +10,7 @@ import ObservationMapper from '../helpers/ObservationMapper';
 import NotificationContainer from '../helpers/Notification';
 import Constants from '../constants';
 import { IntlProvider } from 'react-intl';
+import { executeEventsFromCurrentRecord } from '../helpers/ExecuteEvents';
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
@@ -35,27 +36,10 @@ export class Container extends addMoreDecorator(Component) {
       this.setState({ data: updatedTree });
     }
     updatedTree = updatedTree || this.state.data;
-    updatedTree = this.executeEventsFromCurrentRecord(updatedTree);
+    updatedTree = executeEventsFromCurrentRecord(updatedTree, updatedTree, this.props.patient);
     this.setState({
       data: updatedTree,
     });
-  }
-
-  executeEventsFromCurrentRecord(currentRecord, rootRecord) {
-    let recordTree = rootRecord || currentRecord;
-    if (!currentRecord.children) return recordTree;
-    currentRecord.children.forEach(record => {
-      recordTree = this.executeEventsFromCurrentRecord(record, recordTree);
-      if (record.control && record.control.events) {
-        const eventKeys = Object.keys(record.control.events);
-        eventKeys.forEach(eventKey => {
-          const script = record.control.events[eventKey];
-          recordTree = new ScriptRunner(recordTree, this.props.patient, currentRecord)
-                        .execute(script);
-        });
-      }
-    });
-    return recordTree;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -95,7 +79,7 @@ export class Container extends addMoreDecorator(Component) {
     let updatedRecordTree = ControlRecordTreeMgr.add(this.state.data, formFieldPath);
     const parentRecordTree = new ControlRecordTreeMgr()
             .findParentTree(updatedRecordTree, formFieldPath);
-    updatedRecordTree = this.executeEventsFromCurrentRecord(parentRecordTree, updatedRecordTree);
+    updatedRecordTree = executeEventsFromCurrentRecord(parentRecordTree, updatedRecordTree);
     const addMoreMessage = this.getAddMoreMessage(this.state.data, formFieldPath);
     if (isNotificationShown) {
       this.setState({
