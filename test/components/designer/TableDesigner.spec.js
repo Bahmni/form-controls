@@ -46,14 +46,14 @@ describe('TableDesigner', () => {
       translationKey: 'COLUMN1_1',
       type: 'label',
       value: 'Label1',
-      id: '1',
+      id: '6',
     };
 
     const column2LabelJson = {
       translationKey: 'COLUMN2_2',
       type: 'label',
       value: 'Label2',
-      id: '2',
+      id: '6',
     };
 
 
@@ -160,6 +160,36 @@ describe('TableDesigner', () => {
         .props.metadata.value).to.eql(column1LabelJson.value);
       expect(wrapper.find('LabelDesigner').get(2)
         .props.metadata.value).to.eql(column2LabelJson.value);
+    });
+
+    it('should render column names as they were when the table' +
+        'control dropped from one cell to other', () => {
+      metadata = {
+        id: '6',
+        type: 'table',
+        label: { id: '6', translationKey: 'TABLE_6', type: 'label', value: 'TableHeader' },
+        properties,
+        columnHeaders: [column1LabelJson, column2LabelJson],
+        controls: [childControl],
+      };
+      wrapper = shallow(
+            <TableDesigner
+              clearSelectedControl={() => {}}
+              deleteControl={() => {}}
+              dispatch={() => {}}
+              idGenerator={idGenerator}
+              metadata={metadata}
+              onSelect={() => {}}
+              wrapper={() => {}}
+            />);
+      expect(wrapper).to.have.descendants('fieldset');
+      expect(wrapper.find('LabelDesigner').length).to.eql(3);
+      expect(wrapper.find('LabelDesigner').get(0)
+              .props.metadata.value).to.eql(tableHeader.value);
+      expect(wrapper.find('LabelDesigner').get(1)
+              .props.metadata.value).to.eql(column1LabelJson.value);
+      expect(wrapper.find('LabelDesigner').get(2)
+              .props.metadata.value).to.eql(column2LabelJson.value);
     });
 
     it('should render a grid with appropriate props', () => {
