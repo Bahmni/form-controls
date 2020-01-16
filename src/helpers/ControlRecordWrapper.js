@@ -74,4 +74,34 @@ export default class ControlRecordWrapper {
       this.update(updatedRecord);
     });
   }
+
+  hideAndClear() {
+    this.setHidden(true);
+    this.clearObs();
+  }
+
+  setObsValueAndCommentToUndefined(controlRecord) {
+    const value = Object.assign(controlRecord.value, { value: undefined, comment: undefined });
+    return controlRecord.set('value', value);
+  }
+
+  clearObs() {
+    const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
+
+    brotherTrees.forEach(r => {
+      const updatedRecord = this.clearObsValuesAndComment(r);
+      this.update(updatedRecord);
+    });
+  }
+
+  clearObsValuesAndComment(controlRecord) {
+    let updatedRecord = controlRecord;
+    if (updatedRecord.control.type === 'obsControl') {
+      updatedRecord = this.setObsValueAndCommentToUndefined(updatedRecord);
+    } else if (updatedRecord.children) {
+      const children = updatedRecord.children;
+      children.map(child => this.clearObsValuesAndComment(child));
+    }
+    return updatedRecord;
+  }
 }
