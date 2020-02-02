@@ -118,7 +118,8 @@ describe('CodedControl', () => {
       />);
     const instance = wrapper.instance();
     instance.onValueChange({ value: 'answer1uuid' }, []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(options[0], []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: options[0], errors: [],
+      triggerControlEvent: undefined }));
   });
 
   it('should return the autoComplete control value', () => {
@@ -136,7 +137,8 @@ describe('CodedControl', () => {
     expect(wrapper.find('DummyControl')).to.have.prop('labelKey').to.eql('name');
     const instance = wrapper.instance();
     instance.onValueChange({ value: 'answer1uuid' }, []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(options[0], []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: options[0], errors: [],
+      triggerControlEvent: undefined }));
     ComponentStore.deRegisterComponent('autoComplete');
   });
 
@@ -212,7 +214,8 @@ describe('CodedControl', () => {
       />);
     const instance = wrapper.instance();
     instance.onValueChange([expectedOptions[0], expectedOptions[2]], []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs([options[0], options[2]], []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: [options[0], options[2]], errors: [],
+      triggerControlEvent: undefined }));
     ComponentStore.deRegisterComponent('autoComplete');
   });
 
@@ -228,6 +231,7 @@ describe('CodedControl', () => {
       />);
     const instance = wrapper.instance();
     instance.onValueChange(undefined, []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: undefined, errors: [],
+      triggerControlEvent: undefined }));
   });
 });

@@ -63,7 +63,7 @@ describe('Image Control', () => {
       wrapper.find('input').simulate('change', { target: { files: [{ type: 'image/gif' }] } });
 
       sinon.assert.calledOnce(uploadSpy.withArgs(result));
-      sinon.assert.calledOnce(onChangeSpy.withArgs('someUrl'));
+      sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'someUrl', errors: [] }));
       stub.restore();
       uploadSpy.restore();
     });
@@ -72,8 +72,8 @@ describe('Image Control', () => {
       wrapper.find('input').simulate('change', { target: { files: [{ type: 'random' }] } });
       const uploadSpy = sinon.spy();
       sinon.assert.calledOnce(showNotificationSpy.withArgs(
-      constants.errorMessage.fileTypeNotSupported,
-      constants.messageType.error));
+        constants.errorMessage.fileTypeNotSupported,
+        constants.messageType.error));
       sinon.assert.notCalled(uploadSpy);
     });
 
@@ -162,7 +162,7 @@ describe('Image Control', () => {
 
       wrapper.find('input').simulate('change', { target: { files: undefined } });
 
-      sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
+      sinon.assert.called(onChangeSpy.withArgs({ value: undefined, errors: [mandatoryError] }));
       expect(wrapper.find('input')).to.have.className('form-builder-error');
     });
 
@@ -173,7 +173,8 @@ describe('Image Control', () => {
 
       wrapper.setProps({ validate: true, value: 'someValuevoided' });
 
-      sinon.assert.calledOnce(onChangeSpy.withArgs('someValuevoided', [mandatoryError]));
+      sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'someValuevoided',
+        errors: [mandatoryError] }));
     });
 
     it('should not throw error when the complex control is created by add more', () => {
@@ -183,14 +184,14 @@ describe('Image Control', () => {
       wrapper.find('.delete-button').simulate('click');
       wrapper.setProps({ validate: true, value: 'someValuevoided' });
 
-      sinon.assert.calledOnce(onChangeSpy.withArgs('someValuevoided', []));
+      sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'someValuevoided', errors: [] }));
     });
 
     it('should not update the component when the value is not change', () => {
       wrapper.setProps({ value: 'someValue' });
       wrapper.setProps({ value: 'someValue' });
 
-      sinon.assert.notCalled(onChangeSpy.withArgs('someValue'));
+      sinon.assert.notCalled(onChangeSpy.withArgs({ value: 'someValue', errors: [] }));
     });
 
     it('should check disabled attribute when enabled prop is false', () => {
@@ -200,8 +201,8 @@ describe('Image Control', () => {
     });
 
     it('should show spinner when the file is uploading', () => {
-      wrapper.find('input').simulate('change', { target: { files: [{ type: 'image/gif' }] } });
-
+      wrapper.find('input').simulate('change',
+        { target: { files: [new Blob(['fileContent'], { type: 'image/gif' })] } });
       expect(wrapper.find('Spinner').props().show).to.equal(true);
     });
 

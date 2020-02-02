@@ -104,6 +104,6 @@ describe('Location', () => {
       />);
     const onValueChange = wrapper.find('AutoComplete').props().onValueChange;
     onValueChange(locationData.results[0], []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs(1, []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 1, errors: [] }));
   });
 });

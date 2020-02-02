@@ -17,7 +17,7 @@ export class TextBox extends Component {
   componentDidMount() {
     const { value, validateForm } = this.props;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
-      this.props.onChange(value, this._getErrors(value));
+      this.props.onChange({ value, errors: this._getErrors(value), triggerControlEvent: false });
     }
   }
 
@@ -41,10 +41,10 @@ export class TextBox extends Component {
   componentDidUpdate() {
     const errors = this._getErrors(this.props.value);
     if (this._hasErrors(errors)) {
-      this.props.onChange(this.props.value, errors);
+      this.props.onChange({ value: this.props.value, errors });
     }
     if (this.isValueChanged) {
-      this.props.onChange(this.props.value, errors);
+      this.props.onChange({ value: this.props.value, errors });
     }
   }
 
@@ -66,7 +66,7 @@ export class TextBox extends Component {
     const value = e.target.value;
     const errors = this._getErrors(value);
     this.setState({ hasErrors: this._hasErrors(errors) });
-    this.props.onChange(value, errors);
+    this.props.onChange({ value, errors });
   }
 
   render() {

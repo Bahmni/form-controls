@@ -22,7 +22,8 @@ export class NumericBox extends Component {
     const { value, validateForm } = this.props;
     this.input.value = this.props.value;
     if (this.state.hasErrors || typeof value !== 'undefined' || validateForm) {
-      this.props.onChange(value, this._getErrors(value), true);
+      this.props.onChange({ value, errors: this._getErrors(value), triggerControlEvent: false,
+        calledOnMount: true });
     }
   }
 
@@ -48,7 +49,7 @@ export class NumericBox extends Component {
   componentDidUpdate() {
     const errors = this._getErrors(this.props.value);
     if (this._hasErrors(errors, constants.errorTypes.error)) {
-      this.props.onChange(this.props.value, errors);
+      this.props.onChange({ value: this.props.value, errors });
     }
     let valueToString;
     if (this.props.value !== undefined) {
@@ -56,7 +57,7 @@ export class NumericBox extends Component {
     }
     if (this.input.value !== valueToString) {
       this.updateInputByPropsValue();
-      this.props.onChange(this.props.value, errors);
+      this.props.onChange({ value: this.props.value, errors });
     }
   }
 
@@ -71,7 +72,7 @@ export class NumericBox extends Component {
     const hasErrors = this._hasErrors(errors, constants.errorTypes.error);
     const hasWarnings = this._hasErrors(errors, constants.errorTypes.warning);
     this.setState({ hasErrors, hasWarnings });
-    this.props.onChange(value, errors);
+    this.props.onChange({ value, errors });
   }
 
   _isCreateByAddMore() {

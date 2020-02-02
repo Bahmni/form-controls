@@ -56,7 +56,7 @@ describe('TextBox', () => {
       />
     );
     wrapper.find('textarea').simulate('change', { target: { value: 'My new value' } });
-    sinon.assert.called(onChangeSpy.withArgs('My new value', []));
+    sinon.assert.called(onChangeSpy.withArgs({ value: 'My new value', errors: [] }));
   });
 
   it('should return whole value when given value with spaces but not empty string', () => {
@@ -72,7 +72,7 @@ describe('TextBox', () => {
     const valueWithSpaces = ' abc efg ';
     wrapper.find('textarea').simulate('change', { target: { value: valueWithSpaces } });
 
-    sinon.assert.called(onChangeSpy.withArgs(valueWithSpaces, []));
+    sinon.assert.called(onChangeSpy.withArgs({ value: valueWithSpaces, errors: [] }));
   });
 
   it('should throw error on fail of validations', () => {
@@ -90,7 +90,7 @@ describe('TextBox', () => {
     );
     const mandatoryError = new Error({ message: validations[0] });
     wrapper.find('textarea').simulate('change', { target: { value: undefined } });
-    sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.called(onChangeSpy.withArgs({ value: undefined, errors: [mandatoryError] }));
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 
@@ -109,7 +109,7 @@ describe('TextBox', () => {
     );
     const mandatoryError = new Error({ message: validations[0] });
     wrapper.setProps({ validate: true, value: undefined });
-    sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.called(onChangeSpy.withArgs({ value: undefined, errors: [mandatoryError] }));
     expect(wrapper.find('textarea')).to.have.className('form-builder-error');
   });
 
@@ -216,6 +216,6 @@ describe('TextBox', () => {
     );
 
     wrapper.setProps({ value: 'defaultText' });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('defaultText', []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'defaultText', errors: [] }));
   });
 });

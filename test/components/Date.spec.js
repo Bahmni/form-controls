@@ -57,7 +57,7 @@ describe('Date', () => {
     );
     wrapper.find('input').simulate('change', { target: { value: '2016-12-31' } });
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs('2016-12-31', []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: '2016-12-31', errors: [] }));
   });
 
   it('should return undefined when value is undefined', () => {
@@ -72,7 +72,7 @@ describe('Date', () => {
     );
     wrapper.find('input').simulate('change', { target: { value: undefined } });
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: undefined, errors: [] }));
   });
 
   it('should return undefined when value is empty string', () => {
@@ -87,7 +87,7 @@ describe('Date', () => {
     );
     wrapper.find('input').simulate('change', { target: { value: '' } });
 
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: undefined, errors: [] }));
   });
 
   it('should throw error on fail of validations', () => {
@@ -105,7 +105,7 @@ describe('Date', () => {
     );
     const mandatoryError = new Error({ message: validations[0] });
     wrapper.find('input').simulate('change', { target: { value: undefined } });
-    sinon.assert.calledOnce(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: undefined, errors: [mandatoryError] }));
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
@@ -124,7 +124,7 @@ describe('Date', () => {
     );
     const mandatoryError = new Error({ message: validations[0] });
     wrapper.setProps({ validate: true, value: undefined });
-    sinon.assert.called(onChangeSpy.withArgs(undefined, [mandatoryError]));
+    sinon.assert.called(onChangeSpy.withArgs({ value: undefined, errors: [mandatoryError] }));
     expect(wrapper.find('input')).to.have.className('form-builder-error');
   });
 
@@ -233,6 +233,6 @@ describe('Date', () => {
     );
 
     wrapper.setProps({ value: '2016-12-29' });
-    sinon.assert.calledOnce(onChangeSpy.withArgs('2016-12-29', []));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: '2016-12-29', errors: [] }));
   });
 });
