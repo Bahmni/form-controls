@@ -145,9 +145,8 @@ export class ObsControl extends addMoreDecorator(Component) {
             <i className="fa fa-caret-down"></i>
             <span className="details hint">
                 <FormattedMessage
-                  defaultMessage="{msg}"
+                  defaultMessage={description.value}
                   id={description.translationKey || 'defaultId'}
-                  vallue={{ msg: description.value }}
                 />
             </span>
           </p>
