@@ -67,26 +67,28 @@ export class ObsControlDesigner extends Component {
 
   displayLabel() {
     const { metadata, metadata: { properties, label, id } } = this.props;
+    const { concept: { description } } = this.props.metadata;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     const units = this._getUnits(metadata.units);
     const labelMetadata = Object.assign({ id, units }, label) ||
       { type: 'label', value: metadata.concept.name, id };
     const showHintButton = this.state && this.state.showHintButton;
-    if (!hideLabel) {
+    const labelComponent = (<LabelDesigner
+      metadata={labelMetadata}
+      onSelect={(event) => this.props.onSelect(event, metadata)}
+      ref={this.storeLabelRef}
+      showDeleteButton={false}
+    />);
+    if (!hideLabel && description && description.value) {
       return (
-              <div>
-                  <LabelDesigner
-                    metadata={labelMetadata}
-                    onSelect={(event) => this.props.onSelect(event, metadata)}
-                    ref={this.storeLabelRef}
-                    showDeleteButton={false}
-                  />
-                  <i className="fa fa-question-circle form-builder-tooltip-trigger"
-                    onClick={() => this.setState({ showHintButton: !showHintButton })}
-                  />
-              </div>
+        <div>
+            {labelComponent}
+            <i className="fa fa-question-circle form-builder-tooltip-trigger"
+              onClick={() => this.setState({ showHintButton: !showHintButton })}
+            />
+        </div>
       );
-    }
+    } else if (!hideLabel) {return (labelComponent);}
     return null;
   }
 
