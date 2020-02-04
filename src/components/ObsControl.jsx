@@ -10,7 +10,7 @@ import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import addMoreDecorator from './AddMoreDecorator';
 import constants from 'src/constants';
 import { Util } from 'src/helpers/Util';
-import { FormattedMessage } from 'react-intl';
+import { FormattedHTMLMessage } from 'react-intl';
 
 export class ObsControl extends addMoreDecorator(Component) {
 
@@ -144,7 +144,7 @@ export class ObsControl extends addMoreDecorator(Component) {
           <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
             <span className="details hint">
-                <FormattedMessage
+                <FormattedHTMLMessage
                   defaultMessage={description.value}
                   id={description.translationKey || 'defaultId'}
                 />
