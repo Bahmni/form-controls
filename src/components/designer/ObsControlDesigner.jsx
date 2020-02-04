@@ -71,14 +71,20 @@ export class ObsControlDesigner extends Component {
     const units = this._getUnits(metadata.units);
     const labelMetadata = Object.assign({ id, units }, label) ||
       { type: 'label', value: metadata.concept.name, id };
+    const showHintButton = this.state && this.state.showHintButton;
     if (!hideLabel) {
       return (
-          <LabelDesigner
-            metadata={ labelMetadata }
-            onSelect={ (event) => this.props.onSelect(event, metadata) }
-            ref={ this.storeLabelRef }
-            showDeleteButton={false}
-          />
+              <div>
+                  <LabelDesigner
+                    metadata={labelMetadata}
+                    onSelect={(event) => this.props.onSelect(event, metadata)}
+                    ref={this.storeLabelRef}
+                    showDeleteButton={false}
+                  />
+                  <i className="fa fa-question-circle form-builder-tooltip-trigger"
+                    onClick={() => this.setState({ showHintButton: !showHintButton })}
+                  />
+              </div>
       );
     }
     return null;
@@ -100,10 +106,6 @@ export class ObsControlDesigner extends Component {
       return (
         <div className={classNames('form-builder-tooltip-wrap',
            { active: showHintButton === true })}>
-          <i className="fa fa-question-circle form-builder-tooltip-trigger"
-            onClick={() => this.setState({ showHintButton: !showHintButton })}
-          >
-          </i>
           <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
             <span className="details hint">{description.value}</span>
@@ -185,13 +187,13 @@ export class ObsControlDesigner extends Component {
         <div className="form-field-wrap clearfix"
           onClick={ (event) => this.props.onSelect(event, metadata) }
         >
+            {this.showHelperText()}
           <div className="form-field-content-wrap">
             {this.showDeleteButton()}
             {this.showScriptButton()}
             <div className="label-wrap fl">
               {this.displayLabel()}
               {this.markMandatory()}
-              {this.showHelperText()}
             </div>
             <div className={classNames('obs-control-field')}>
               {this.displayObsControl(designerComponent)}

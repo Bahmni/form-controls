@@ -108,9 +108,15 @@ export class ObsControl extends addMoreDecorator(Component) {
     const { enabled, hidden, metadata: { properties, label, units } } = this.props;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     const labelMetadata = { ...label, units: this._getUnits(units) };
+    const showHintButton = this.state && this.state.showHintButton;
     if (!hideLabel) {
       return (
-            <Label enabled={enabled} hidden={hidden} metadata={labelMetadata} />
+          <div>
+              <Label enabled={enabled} hidden={hidden} metadata={labelMetadata} />
+              <i className="fa fa-question-circle form-builder-tooltip-trigger"
+                onClick={() => this.setState({ showHintButton: !showHintButton })}
+              />
+          </div>
       );
     }
     return null;
@@ -127,22 +133,19 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   showHelperText() {
     const { concept: { description } } = this.props.metadata;
-    const showHintButton = this.state && this.state.showHintButton;
     if (description && description.value) {
       return (
-        <div className={classNames('form-builder-tooltip-wrap fr',
-           { active: showHintButton === true }) }>
-          <i className="fa fa-question-circle form-builder-tooltip-trigger"
-            onClick={() => this.setState({ showHintButton: !showHintButton })}
-          />
+          <div className={classNames('form-builder-tooltip-wrap',
+              { active: this.state.showHintButton === true })}>
           <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
             <span className="details hint">
-              <FormattedMessage
-                defaultMessage={description.value}
-                id={description.translationKey || 'defaultId'}
-              />
-              </span>
+                <FormattedMessage
+                  defaultMessage="{msg}"
+                  id={description.translationKey || 'defaultId'}
+                  vallue={{ msg: description.value }}
+                />
+            </span>
           </p>
         </div>
       );
@@ -204,25 +207,25 @@ export class ObsControl extends addMoreDecorator(Component) {
     const { concept } = this.props.metadata;
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
     const complexClass = Util.isComplexMediaConcept(concept) ? 'complex-component' : '';
-    const addMoreComplexClass =
-      complexClass && this.isCreateByAddMore() ? 'add-more-complex-component' : '';
+    const addMoreComplexClass = complexClass && this.isCreateByAddMore() ?
+        'add-more-complex-component' : '';
     if (registeredComponent) {
       return (
-        <div className={ classNames('form-field-wrap clearfix', `${complexClass}`) }>
-          <div className="form-field-content-wrap">
-          <div className={ classNames('label-wrap fl', `${addMoreComplexClass}`) }>
-            {this.displayLabel()}
-            {this.markMandatory()}
-            {this.showHelperText()}
+          <div className={classNames('form-field-wrap clearfix', `${complexClass}`)}>
+              {this.showHelperText()}
+              <div className="form-field-content-wrap">
+                  <div className={classNames('label-wrap fl', `${addMoreComplexClass}`)}>
+                      {this.displayLabel()}
+                      {this.markMandatory()}
+                  </div>
+                  <div className={classNames('obs-control-field')}>
+                      {this.displayObsControl(registeredComponent)}
+                      {this.showAbnormalButton()}
+                      {this.showAddMore()}
+                  </div>
+              </div>
+              {this.showComment()}
           </div>
-          <div className= {classNames('obs-control-field')}>
-            {this.displayObsControl(registeredComponent)}
-            {this.showAbnormalButton()}
-            {this.showAddMore()}
-          </div>
-          </div>
-          {this.showComment()}
-        </div>
       );
     }
     return (

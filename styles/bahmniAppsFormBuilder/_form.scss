@@ -18,7 +18,7 @@ $lightestGray: #eee;
       }
       .form-field-wrap {
         position: relative;
-        margin-top:5px;
+        width: 100%;
         .obs-comment-wrap{
           display: flex;
           .obs-comment-content{
@@ -30,10 +30,11 @@ $lightestGray: #eee;
         }
         .form-field-content-wrap{
           display: flex;
+          justify-content: flex-end;
         }
         .label-wrap {
           float: left;
-          padding-right: 30px;
+          margin-right: 20px;
           font-size: 12px;
           margin-top: 5px;
           text-align: right;
@@ -44,6 +45,22 @@ $lightestGray: #eee;
             color: $red;
             top: 0;
             right: 20px;
+          }
+          .form-builder-tooltip-trigger {
+            cursor: pointer;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+            border-radius: 100%;
+            font-size: 20px;
+            color: $bahmniSecondaryColor;
+            box-shadow: 1px 1px 1px $gray400;
+            background: $white;
+            padding: 0;
+            position: relative;
+            margin-left: 5px;
           }
         }
         .obs-control-field{
@@ -185,34 +202,21 @@ $lightestGray: #eee;
           }
         }
         .form-builder-tooltip-wrap {
-          display: inline-block;
-          position: absolute;
-          top: 0;
-          right: 2px;
-          .form-builder-tooltip-trigger {
-            cursor: pointer;
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            line-height: 18px;
-            text-align: center;
-            border-radius: 100%;
-            font-size: 20px;
-            color: $bahmniSecondaryColor;
-            box-shadow: 1px 1px 1px $gray400;
-            background: $white;
-            padding: 0;
-            position: relative;
-
+          display: none;
+          width: 100%;
+          margin-bottom: 5px;
+          text-align: left;
+          float: none;
+          position: relative;
+          &.active {
+            display: block;
           }
           .form-builder-tooltip-description {
-            bottom: calc(100% + 10px);
-            margin-left: 0;
-            margin-top: 0;
-            text-align: left;
-            position: absolute;
             display: none;
-            z-index: 9;
+            text-align: left;
+            position: relative;
+            width: 82%;
+            right: -17%;
             .details {
               display: inline-block;
               font-size: 12px;
@@ -220,14 +224,17 @@ $lightestGray: #eee;
               border-radius: 5px;
               background: $black;
               color: $white;
-              width: 200px;
+              width: fit-content;
+              background: #000;
+              position: sticky;
+              bottom: 6px;
             }
             i {
               position: absolute;
-              bottom: -16px;
-              left: 1%;
               font-size: 20px;
               color: $black;
+              bottom: -16px;
+              right: 95%;
             }
             p {
               margin-bottom: 5px;
@@ -243,7 +250,6 @@ $lightestGray: #eee;
         }
       }
       .form-builder-clone{
-        //margin-top: 3px;
         float:left;
         .form-builder-add-more{
           padding: 2px 0;
@@ -324,6 +330,25 @@ $lightestGray: #eee;
           position: absolute;
           right: 20px;
           top: -7px;
+        }
+      }
+      .control-wrapper {
+        .form-field-wrap {
+          .form-builder-tooltip-wrap {
+            .form-builder-tooltip-description {
+              right: -16%;
+            }
+          }
+          .form-field-content-wrap {
+            .control-wrapper-content {
+              label {
+                margin: 0 25px;
+              }
+            }
+            i {
+              bottom: 15px;
+            }
+          }
         }
       }
     }
