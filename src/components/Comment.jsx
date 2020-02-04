@@ -27,6 +27,7 @@ export class Comment extends Component {
       return (
         <div className="obs-comment-section-wrap">
           <div className="label-wrap"></div>
+          <div className="obs-control-field text-area-wrap">
           <Textarea
             className="obs-comment-section fl"
             defaultValue={this.props.comment}
@@ -34,6 +35,7 @@ export class Comment extends Component {
             onChange={(e) => this.handleChange(e)}
             placeholder="Notes"
           />
+          </div>
         </div>);
     }
     return null;

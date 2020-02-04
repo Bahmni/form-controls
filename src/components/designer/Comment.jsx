@@ -12,10 +12,12 @@ export class CommentDesigner extends PureComponent { // PureComponent has been a
       return (
         <div className="obs-comment-section-wrap">
             <div className="label-wrap"></div>
-            <Textarea
-              className="obs-comment-section fl"
-              placeholder="Notes"
-            />
+            <div className="obs-control-field">
+              <Textarea
+                className="obs-comment-section fl"
+                placeholder="Notes"
+              />
+        </div>
         </div>);
     }
     return null;

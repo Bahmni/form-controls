@@ -120,7 +120,6 @@ export class ObsControlDesigner extends Component {
     if (isAddCommentsEnabled) {
       return (
         <div className={classNames('obs-comment-wrap')}>
-          <div className={classNames('obs-empty-block')}></div>
           <div className={classNames('obs-comment-content')}><CommentDesigner /></div>
         </div>
       );

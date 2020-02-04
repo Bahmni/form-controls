@@ -4,7 +4,7 @@ $lightestGray: #eee;
   .form-builder-column-wrapper{
     min-height: 50px;
     width: 100%;
-    padding: 5px 10px;
+    padding: 5px 0;
     box-sizing: border-box;
     clear: both;
     .form-builder-column {
@@ -21,9 +21,6 @@ $lightestGray: #eee;
         margin-top:5px;
         .obs-comment-wrap{
           display: flex;
-          .obs-empty-block{
-            flex:2;
-          }
           .obs-comment-content{
             flex:9;
             textarea{
@@ -34,13 +31,6 @@ $lightestGray: #eee;
         .form-field-content-wrap{
           display: flex;
         }
-        .obs-comment-section-wrap{
-          textarea{
-            width: 69.3%;
-            float: right;
-            margin-top: 10px;
-          }
-        }
         .label-wrap {
           float: left;
           padding-right: 30px;
@@ -48,10 +38,7 @@ $lightestGray: #eee;
           margin-top: 5px;
           text-align: right;
           position: relative;
-          flex:4;
-          label {
-            padding-right: 10px;
-          }
+          flex:2.5;
           .form-builder-asterisk {
             position: absolute;
             color: $red;
@@ -116,6 +103,18 @@ $lightestGray: #eee;
         .form-builder-comment-wrap{
           clear: both;
           overflow: hidden;
+          .obs-comment-section-wrap {
+            display: flex;
+            .text-area-wrap {
+              flex: 9;
+              margin-right: 15px;
+              textarea {
+                width: 100%;
+                margin-top: 10px;
+                margin-left: 3px;
+              }
+            }
+          }
         }
         .form-builder-comment-toggle {
           position: absolute;
@@ -346,7 +345,7 @@ $lightestGray: #eee;
        border: 1px dotted #BBB;
       .form-builder-column{
         .form-field-wrap{
-          .form-field-content-wrap{
+          > div {
             width: 90.5%;
           }
           .form-builder-comment-toggle{
