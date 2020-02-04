@@ -106,18 +106,22 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   displayLabel() {
     const { enabled, hidden, metadata: { properties, label, units } } = this.props;
+    const { concept: { description } } = this.props.metadata;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     const labelMetadata = { ...label, units: this._getUnits(units) };
     const showHintButton = this.state && this.state.showHintButton;
-    if (!hideLabel) {
+    const labelComponent = <Label enabled={enabled} hidden={hidden} metadata={labelMetadata} />;
+    if (!hideLabel && description && description.value) {
       return (
-          <div>
-              <Label enabled={enabled} hidden={hidden} metadata={labelMetadata} />
-              <i className="fa fa-question-circle form-builder-tooltip-trigger"
-                onClick={() => this.setState({ showHintButton: !showHintButton })}
-              />
-          </div>
+              <div>
+                  {labelComponent}
+                  <i className="fa fa-question-circle form-builder-tooltip-trigger"
+                    onClick={() => this.setState({ showHintButton: !showHintButton })}
+                  />
+              </div>
       );
+    } else if (!hideLabel) {
+      return (labelComponent);
     }
     return null;
   }
