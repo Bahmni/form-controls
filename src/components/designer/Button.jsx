@@ -10,7 +10,7 @@ export class ButtonDesigner extends Component {
 
   displayButtons() {
     return map(this.props.options, (option, index) =>
-      <button key={index}>{option.name}</button>
+      <button key={index} title={option.name}>{option.name}</button>
     );
   }
 

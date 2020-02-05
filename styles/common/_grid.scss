@@ -2,14 +2,17 @@
   float: left;
   margin-right: 10px;
   button {
-    margin: 0 2px 4px 0;
+    margin: 0 2px 2px 0;
     text-align: center;
-    width: auto;
+    width: 175px;
     padding-left: 15px;
     padding-right: 15px;
     font-size: 12px;
     float: none;
     line-height: 1em !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     i.fa-ok {
       display: none;
       padding-top: 0;

@@ -4,13 +4,13 @@ $lightestGray: #eee;
   .form-builder-column-wrapper{
     min-height: 50px;
     width: 100%;
-    padding: 5px 0;
+    padding-top: 10px;
     box-sizing: border-box;
     clear: both;
     .form-builder-column {
       min-height: 50px;
       width: 100%;
-      padding: 5px 10px;
+      padding: 5px 5px;
       box-sizing: border-box;
       clear: both;
       &.active {
@@ -70,7 +70,7 @@ $lightestGray: #eee;
             float:left;
           }
           .form-control-buttons{
-            width: 70%;
+            width: 83%;
           }
         }
         input {
@@ -135,7 +135,7 @@ $lightestGray: #eee;
         }
         .form-builder-comment-toggle {
           position: absolute;
-          right: 10px;
+          right: 0;
           top: -2px;
           padding: 5px;
           &.active {
@@ -252,7 +252,7 @@ $lightestGray: #eee;
       .form-builder-clone{
         float:left;
         .form-builder-add-more{
-          padding: 2px 0;
+          padding: 0;
           color: $green;
           margin:0;
         }
@@ -260,6 +260,9 @@ $lightestGray: #eee;
           padding: 2px 0;
           color:#9D0101;
           margin-left: 10px;
+        }
+        .fa {
+          padding: 3px;
         }
       }
 
@@ -322,7 +325,7 @@ $lightestGray: #eee;
       }
       .form-builder-fieldset {
         border-top: 1px solid #c0c0c0;
-        margin: 15px 2px 10px;
+        margin: 15px 3px 3px;
         box-sizing: border-box;
         border-radius: 5px;
         position: relative;
@@ -409,7 +412,7 @@ $lightestGray: #eee;
 
 .active-group-controls {
   display: block;
-  padding: 15px 10px 10px;
+  padding: 15px 3px 3px;
   border-radius: 5px;
   border: 1px solid #c0c0c0;
   border-top: none;
