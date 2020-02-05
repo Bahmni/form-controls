@@ -47,6 +47,8 @@ export class Concept {
     if (concept.set) {
       return {
         set: concept.set,
+        description: !isEmpty(concept.descriptions) ?
+              { value: get(concept, 'descriptions[0].display') } : undefined,
         setMembers: this._getSetMembers(concept),
       };
     }

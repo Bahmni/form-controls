@@ -331,6 +331,9 @@ $lightestGray: #eee;
           right: 20px;
           top: -7px;
         }
+        .description{
+          margin: 10px;
+        }
       }
       .control-wrapper {
         .form-field-wrap {
@@ -410,6 +413,7 @@ $lightestGray: #eee;
   border-radius: 5px;
   border: 1px solid #c0c0c0;
   border-top: none;
+
 }
 
 .closing-group-controls {

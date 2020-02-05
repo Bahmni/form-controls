@@ -5,7 +5,7 @@ import { getGroupedControls, displayRowControls } from '../helpers/controlsParse
 import classNames from 'classnames';
 import addMoreDecorator from './AddMoreDecorator';
 import { List } from 'immutable';
-import { FormattedMessage } from 'react-intl';
+import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
 
 export class ObsGroupControl extends addMoreDecorator(Component) {
 
@@ -17,6 +17,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
     this.onControlAdd = this.onControlAdd.bind(this);
     this.onControlRemove = this.onControlRemove.bind(this);
     this._onCollapse = this._onCollapse.bind(this);
+    this.showDescription = this.showDescription.bind(this);
     this.onAddControl = this.onAddControl.bind(this);
     this.onRemoveControl = this.onRemoveControl.bind(this);
   }
@@ -43,6 +44,21 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
   _onCollapse() {
     const collapse = !this.state.collapse;
     this.setState({ collapse });
+  }
+
+  showDescription() {
+    const { description } = this.props.metadata.concept;
+    if (description && description.value) {
+      return (
+              <div className={classNames('description')}>
+                  <FormattedHTMLMessage
+                    defaultMessage={description.value}
+                    id={description.translationKey || 'defaultId'}
+                  />
+              </div>
+      );
+    }
+    return null;
   }
 
   render() {
@@ -91,6 +107,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
         </legend>
         {this.showAddMore()}
         <div className={`obsGroup-controls ${obsGroupClass}${disableClass}`}>
+          { this.showDescription() }
           { displayRowControls(groupedRowControls, this.props.children.toArray(), childProps) }
         </div>
       </fieldset>
