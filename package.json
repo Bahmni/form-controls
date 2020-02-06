@@ -85,7 +85,7 @@
     "prop-types": "^15.6.2",
     "react-intl": "2.2.3",
     "react-select": "^1.0.0-rc.2",
-    "react-test-renderer": "^15.5.4",
+    "react-test-renderer": "^16.12.0",
     "react-textarea-autosize": "^4.0.5",
     "sinon-as-promised": "^4.0.3",
     "whatwg-fetch": "^1.0.0"
