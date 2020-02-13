@@ -4,7 +4,7 @@ $lightestGray: #eee;
   .form-builder-column-wrapper{
     min-height: 50px;
     width: 100%;
-    padding-top: 10px;
+    padding-top: 5px;
     box-sizing: border-box;
     clear: both;
     .form-builder-column {
@@ -127,7 +127,7 @@ $lightestGray: #eee;
               margin-right: 15px;
               textarea {
                 width: 100%;
-                margin-top: 10px;
+                margin-top: 5px;
                 margin-left: 3px;
               }
             }
@@ -137,7 +137,7 @@ $lightestGray: #eee;
           position: absolute;
           right: 0;
           top: -2px;
-          padding: 5px;
+          padding: 3px;
           &.active {
             .fa-file-o {
               .fa-plus-circle {
