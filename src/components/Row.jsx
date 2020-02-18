@@ -1,5 +1,6 @@
-import React, { PropTypes, Component } from 'react';
+import React, {  Component } from 'react';
 import { getControls, getGroupedControls } from '../helpers/controlsParser';
+import PropTypes from 'prop-types';
 import map from 'lodash/map';
 import classNames from 'classnames';
 import find from 'lodash/find';
