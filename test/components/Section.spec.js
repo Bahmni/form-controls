@@ -374,7 +374,7 @@ describe('Section', () => {
           validate={false}
           validateForm={false}
         />);
-      expect(wrapper.find('span').at(0).text()).to.eql('test value');
+      expect(wrapper.find('FormattedMessage').at(0).text()).to.eql('test value');
     });
   });
 });

@@ -510,9 +510,8 @@ describe('ObsGroupControl', () => {
           value={emptyValue}
         />
       );
-
       expect(wrapper).to.have.exactly(1).descendants('ObsControl');
-      expect(wrapper.find('span').at(0).text()).to.eql('test value');
+      expect(wrapper.find('FormattedMessage').at(0).text()).to.eql('test value');
     });
 
     it('should show description with html tags when obsGroup has description', () => {
