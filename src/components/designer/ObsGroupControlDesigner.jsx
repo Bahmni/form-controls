@@ -26,6 +26,10 @@ export class ObsGroupControlDesigner extends Component {
     if (!this.gridRef) return undefined;
     const controls = this.gridRef.getControls();
     const labelJsonDefinition = this.labelControl && this.labelControl.getJsonDefinition();
+    const { description } = this.props.metadata.concept;
+    if (description && !description.translationKey) {
+      description.translationKey = `${labelJsonDefinition.translationKey}_DESC`;
+    }
     return Object.assign({}, this.props.metadata, { controls }, { label: labelJsonDefinition });
   }
 

@@ -7,6 +7,7 @@ import * as Grid from 'components/designer/Grid.jsx';
 import { IDGenerator } from 'src/helpers/idGenerator';
 import sinon from 'sinon';
 import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
+import cloneDeep from 'lodash/cloneDeep';
 
 chai.use(chaiEnzyme());
 
@@ -285,6 +286,20 @@ describe('ObsGroupControlDesigner', () => {
 
     it('should show concept description if present', () => {
       expect(wrapper.find('.description').length).to.equal(1);
+    });
+
+    it('should include translationKey if description is present', () => {
+      const instance = wrapper.instance();
+      const clonedConcept = cloneDeep(conceptWithDesc);
+      clonedConcept.description.translationKey = 'DUMMYPULSE_123_DESC';
+
+      const expectedLabelMetadata = { translationKey: 'DUMMYPULSE_123', id: '123',
+        type: 'label', value: 'dummyPulse', properties: {} };
+
+      const expectedJson = { concept: clonedConcept, label: expectedLabelMetadata,
+        controls: [], properties: {}, id: '123', type: 'obsGroupControl' };
+
+      expect(instance.getJsonDefinition()).to.eql(expectedJson);
     });
   });
 });
