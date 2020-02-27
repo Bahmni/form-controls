@@ -4,9 +4,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ComponentStore from 'src/helpers/componentStore';
-import { FormattedMessage } from 'react-intl';
-
-
+import { IntlShape } from 'react-intl';
 export class Label extends Component {
 
   _getUnits(units) {
@@ -14,16 +12,17 @@ export class Label extends Component {
   }
 
   render() {
-    const { enabled, metadata: { value, units } } = this.props;
+    const { intl, enabled, metadata: { value, units } } = this.props;
     const disableClass = enabled ? '' : 'disabled-label';
     return (<label
       className={`${disableClass}`}
     >
-      <FormattedMessage
-        defaultMessage={value}
-        id={this.props.metadata.translationKey || 'defaultId'}
-      />
-     {this._getUnits(units)}
+      {intl.formatMessage({
+        defaultMessage: value,
+        id: this.props.metadata.translationKey || 'defaultId',
+      })
+      }
+      {this._getUnits(units)}
     </label>);
   }
 }
@@ -31,6 +30,7 @@ export class Label extends Component {
 Label.propTypes = {
   enabled: PropTypes.bool,
   hidden: PropTypes.bool,
+  intl: IntlShape,
   metadata: PropTypes.shape({
     type: PropTypes.string.isRequired,
     units: PropTypes.string,
