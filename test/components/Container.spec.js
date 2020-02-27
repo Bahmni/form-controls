@@ -8,15 +8,14 @@ import { Label } from 'components/Label.jsx';
 import { TextBox } from 'components/TextBox.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { Button } from 'components/Button.jsx';
-import { ObsControl } from 'components/ObsControl.jsx';
-import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
+import { ObsControlWithIntl as ObsControl } from 'components/ObsControl.jsx';
+import { ObsGroupControlWithIntl as ObsGroupControl } from 'components/ObsGroupControl.jsx';
 import { CodedControl } from 'components/CodedControl.jsx';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import ComponentStore from 'src/helpers/componentStore';
 import Constants from 'src/constants';
 import sinon from 'sinon';
 import { Map as immutableMap } from 'immutable';
-import * as ExecuteEvents from '../../src/helpers/ExecuteEvents';
 
 chai.use(chaiEnzyme());
 
