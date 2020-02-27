@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import Row from 'components/Row.jsx';
+import { Row } from 'components/Row.jsx';
 import sinon from 'sinon';
 import ComponentStore from 'src/helpers/componentStore';
 import { ObsMapper } from '../../src/mapper/ObsMapper';
 import { Obs } from '../../src/helpers/Obs';
+import { mountWithIntl, shallowWithIntl } from '../intlEnzymeTest';
 
 chai.use(chaiEnzyme());
 
@@ -71,7 +72,7 @@ describe('Row', () => {
 
   describe('render', () => {
     it('should render rows', () => {
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <Row
           controls={controls}
           formName={formName}
@@ -90,7 +91,7 @@ describe('Row', () => {
 
     it('should pass enabled value of records when parent\'s enabled value is true', () => {
       const records1 = [{ id: 'someId', enabled: false, control: { id: '101' } }];
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <Row
           controls={controls}
           enabled
@@ -294,7 +295,7 @@ describe('Row', () => {
 
   it('should hide the row when control is hidden', () => {
     records[0].hidden = true;
-    const wrapper = shallow(
+    const wrapper = shallowWithIntl(
       <Row
         controls={controls}
         formName={formName}
@@ -310,7 +311,7 @@ describe('Row', () => {
   });
 
   it('should set same line class to the row when control is set same line', () => {
-    const wrapper = shallow(
+    const wrapper = shallowWithIntl(
       <Row
         controls={controls}
         formName={formName}

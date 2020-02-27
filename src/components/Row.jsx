@@ -4,10 +4,9 @@ import PropTypes from 'prop-types';
 import map from 'lodash/map';
 import classNames from 'classnames';
 import find from 'lodash/find';
+import { injectIntl } from 'react-intl';
 
-
-export default class Row extends Component {
-
+export class Row extends Component {
   getControlsByColumn(sortedColumnControls, records, childProps) {
     const columnControls = [];
     map(sortedColumnControls, control => {
@@ -100,3 +99,6 @@ Row.propTypes = {
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,
 };
+const RowWithIntl = injectIntl(Row, { forwardRef: true });
+
+export default RowWithIntl;
