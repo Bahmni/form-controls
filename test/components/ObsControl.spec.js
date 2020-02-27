@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
@@ -69,7 +69,7 @@ describe('ObsControl', () => {
         properties,
         units: '/min',
       };
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -99,7 +99,7 @@ describe('ObsControl', () => {
         options: [],
       };
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -124,7 +124,7 @@ describe('ObsControl', () => {
       };
       metadata.concept.answers = [];
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -146,7 +146,7 @@ describe('ObsControl', () => {
         properties: { mandatory: true },
       };
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -155,9 +155,8 @@ describe('ObsControl', () => {
           validateForm={false}
           value={domainValue}
         />);
-
-      expect(wrapper.find('span').at(1).text()).to.eql('*');
-      expect(wrapper.find('span').at(1)).to.have.className('form-builder-asterisk');
+      expect(wrapper.find('span').at(0).text()).to.eql('*');
+      expect(wrapper.find('span').at(0)).to.have.className('form-builder-asterisk');
     });
 
     it('should return null when registered component not found', () => {
@@ -178,7 +177,6 @@ describe('ObsControl', () => {
           validateForm={false}
           value={domainValue}
         />);
-
       expect(wrapper).to.have.exactly(1).descendants('div');
       expect(wrapper.find('div').at(0).text()).to.eql('<UnSupportedComponent />');
     });
@@ -221,7 +219,7 @@ describe('ObsControl', () => {
       };
       const errors = [constants.validations.mandatory];
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -250,7 +248,7 @@ describe('ObsControl', () => {
         properties: { notes: true },
       };
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -295,7 +293,7 @@ describe('ObsControl', () => {
         properties,
       };
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -330,7 +328,7 @@ describe('ObsControl', () => {
         properties,
       };
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -354,7 +352,7 @@ describe('ObsControl', () => {
       };
       metadata.properties.hideLabel = false;
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -383,7 +381,7 @@ describe('ObsControl', () => {
       };
       metadata.properties.hideLabel = false;
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -416,7 +414,7 @@ describe('ObsControl', () => {
       };
       metadata.properties.hideLabel = false;
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -442,7 +440,7 @@ describe('ObsControl', () => {
         label,
         properties,
       };
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -466,7 +464,7 @@ describe('ObsControl', () => {
         properties: { abnormal: true },
       };
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -490,7 +488,7 @@ describe('ObsControl', () => {
         properties: { abnormal: true },
       };
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -520,7 +518,7 @@ describe('ObsControl', () => {
         properties: { abnormal: true },
       };
 
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsControl
           metadata={metadata}
           onValueChanged={onChangeSpy}
@@ -572,7 +570,7 @@ describe('ObsControl', () => {
 
 
       it('should make label disabled when given obs control with enabled is false', () => {
-        const wrapper = mount(
+        const wrapper = mountWithIntl(
           <ObsControl
             enabled={false}
             metadata={metadata}
@@ -587,7 +585,7 @@ describe('ObsControl', () => {
       });
 
       it('should make label enabled when given obs control with enabled is true', () => {
-        const wrapper = mount(
+        const wrapper = mountWithIntl(
           <ObsControl
             enabled
             metadata={metadata}
@@ -601,7 +599,7 @@ describe('ObsControl', () => {
       });
 
       it('should make label enabled when given obs control without enabled', () => {
-        const wrapper = mount(
+        const wrapper = mountWithIntl(
           <ObsControl
             metadata={metadata}
             onValueChanged={onChangeSpy}

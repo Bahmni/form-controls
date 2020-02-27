@@ -10,7 +10,7 @@ import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import addMoreDecorator from './AddMoreDecorator';
 import constants from 'src/constants';
 import { Util } from 'src/helpers/Util';
-import { FormattedHTMLMessage } from 'react-intl';
+import { FormattedHTMLMessage, injectIntl } from 'react-intl';
 
 export class ObsControl extends addMoreDecorator(Component) {
 
@@ -105,12 +105,14 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayLabel() {
-    const { enabled, hidden, metadata: { properties, label, units } } = this.props;
+    const { enabled, intl, hidden, metadata: { properties, label, units } } = this.props;
     const { concept: { description } } = this.props.metadata;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     const labelMetadata = { ...label, units: this._getUnits(units) };
     const showHintButton = this.state && this.state.showHintButton;
-    const labelComponent = <Label enabled={enabled} hidden={hidden} metadata={labelMetadata} />;
+    const labelComponent = (<Label enabled={enabled} hidden={hidden}
+      intl={intl} metadata={labelMetadata}
+    />);
     if (!hideLabel && description && description.value) {
       return (
               <div>
@@ -273,5 +275,9 @@ ObsControl.defaultProps = {
   showAddMore: false,
   showRemove: false,
 };
+
+const ObsControlWithIntl = injectIntl(ObsControl, { forwardRef: true });
+
+export { ObsControlWithIntl };
 
 ComponentStore.registerComponent('obsControl', ObsControl);
