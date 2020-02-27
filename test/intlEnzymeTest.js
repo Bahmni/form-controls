@@ -19,19 +19,6 @@ function nodeWithIntlProp(node) {
   return React.cloneElement(node, { intl });
 }
 
-/**
- * Export these methods.
- */
-// export function shallowWithIntl(node) {
-//   return shallow(nodeWithIntlProp(node), { context: { intl } });
-// }
-
-// export function mountWithIntl(node) {
-//   return mount(nodeWithIntlProp(node), {
-//     context: { intl },
-//     childContextTypes: { intl: intlShape },
-//   });
-// }
 const defaultLocale = 'en';
 const locale = defaultLocale;
 
