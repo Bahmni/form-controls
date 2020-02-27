@@ -1,13 +1,12 @@
 import React from 'react';
 import { List } from 'immutable';
-import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import ComponentStore from 'src/helpers/componentStore';
-import { ObsGroupControl } from 'components/ObsGroupControl.jsx';
-import { ObsControl } from 'components/ObsControl.jsx';
+import { ObsGroupControlWithIntl, ObsGroupControl } from 'components/ObsGroupControl.jsx';
+import { ObsControlWithIntl as ObsControl } from 'components/ObsControl.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { Label } from 'components/Label.jsx';
 import * as FormmatedMsg from 'react-intl';
@@ -233,8 +232,8 @@ describe('ObsGroupControl', () => {
     });
 
     it('should render obsGroupControl contain obsControl', () => {
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse
           formName={formName}
@@ -254,8 +253,8 @@ describe('ObsGroupControl', () => {
     it('should render obsGroup control with only the registered controls', () => {
       ComponentStore.deRegisterComponent('obsControl');
 
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse
           formName={formName}
@@ -274,8 +273,8 @@ describe('ObsGroupControl', () => {
     });
 
     it('should collapse all child controls on click of collapse icon', () => {
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse={false}
           formName={formName}
@@ -301,8 +300,8 @@ describe('ObsGroupControl', () => {
     });
 
     it('should collapse all child controls on change of collapse props', () => {
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse={false}
           formName={formName}
@@ -331,8 +330,8 @@ describe('ObsGroupControl', () => {
       const updatedProperties = Object.assign({}, metadata.properties, { addMore: true });
       const updatedMetadata = Object.assign({}, metadata, { properties: updatedProperties });
 
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse={false}
           formName={formName}
@@ -350,7 +349,7 @@ describe('ObsGroupControl', () => {
     });
 
     it('should call onValueChanged in obsGroup when onChange be triggered', () => {
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <ObsGroupControl
           children={children}
           collapse={false}
@@ -373,8 +372,8 @@ describe('ObsGroupControl', () => {
     });
 
     it('should disable children in obsGroup when obsGroup is set disable', () => {
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse={false}
           enabled
@@ -393,8 +392,8 @@ describe('ObsGroupControl', () => {
     });
 
     it('should show as disabled when obsGroup is set to be disabled', () => {
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse={false}
           enabled
@@ -413,8 +412,8 @@ describe('ObsGroupControl', () => {
     });
 
     it('should show as enabled when obsGroup is set to be enabled', () => {
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse={false}
           enabled
@@ -433,8 +432,8 @@ describe('ObsGroupControl', () => {
     });
 
     it('should show as hidden when obsGroup is set to be hidden', () => {
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse={false}
           formName={formName}
@@ -453,8 +452,8 @@ describe('ObsGroupControl', () => {
     });
 
     it('should show as display when obsGroup is set not to be hidden', () => {
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse={false}
           formName={formName}
@@ -473,8 +472,8 @@ describe('ObsGroupControl', () => {
     });
 
     it('should pass onEventTrigger property to children', () => {
-      const wrapper = mount(
-        <ObsGroupControl
+      const wrapper = mountWithIntl(
+        <ObsGroupControlWithIntl
           children={children}
           collapse={false}
           formName={formName}
@@ -497,7 +496,7 @@ describe('ObsGroupControl', () => {
   context('with i18n', () => {
     it('should render obsGroupControl contain obsControl with translations', () => {
       const wrapper = mountWithIntl(
-        <ObsGroupControl
+        <ObsGroupControlWithIntl
           children={children}
           collapse
           formName={formName}
@@ -511,12 +510,12 @@ describe('ObsGroupControl', () => {
         />
       );
       expect(wrapper).to.have.exactly(1).descendants('ObsControl');
-      expect(wrapper.find('FormattedMessage').at(0).text()).to.eql('test value');
+      expect(wrapper.find('.test-obsgrp-header').text()).to.eql('test value');
     });
 
     it('should show description with html tags when obsGroup has description', () => {
       const wrapper = mountWithIntl(
-                    <ObsGroupControl
+                    <ObsGroupControlWithIntl
                       children={children}
                       collapse={false}
                       formName={formName}
@@ -536,7 +535,7 @@ describe('ObsGroupControl', () => {
 
     it('should not show description class when obsGroup does not have description', () => {
       const wrapper = mountWithIntl(
-                    <ObsGroupControl
+                    <ObsGroupControlWithIntl
                       children={children}
                       collapse={false}
                       formName={formName}
