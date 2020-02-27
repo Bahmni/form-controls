@@ -2,15 +2,15 @@ import React from 'react';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
-import { shallow } from 'enzyme';
 import { List } from 'immutable';
 import { ControlRecord } from '../../src/helpers/ControlRecordTreeBuilder';
 import ComponentStore from 'src/helpers/componentStore';
-import { ObsControl } from 'components/ObsControl.jsx';
+import { ObsControlWithIntl as ObsControl } from 'components/ObsControl.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { Label } from 'components/Label.jsx';
 import { Table } from 'components/Table.jsx';
 import * as FormmatedMsg from 'react-intl';
+import { shallowWithIntl } from '../intlEnzymeTest';
 chai.use(chaiEnzyme());
 
 describe('Table', () => {
@@ -83,6 +83,7 @@ describe('Table', () => {
   const tableFormFieldPath = 'Table_Test.1/1-0';
   const obsFormFieldPath = 'Table_Test.1/2-0';
   const children = List.of(new ControlRecord({
+    id: '2',
     control: metadata.controls[2],
     formFieldPath: obsFormFieldPath,
     dataSource: {
@@ -119,7 +120,7 @@ describe('Table', () => {
     });
 
     it('should render table with header and rows', () => {
-      const wrapper = shallow(
+      const wrapper = shallowWithIntl(
                 <Table
                   children={children}
                   formFieldPath={tableFormFieldPath}
@@ -131,24 +132,19 @@ describe('Table', () => {
                   validate={false}
                   validateForm={false}
                 />);
-      let index = 0;
-      const allFormattedMessage = wrapper.find('FormattedMessage');
-      const labeledMessage = allFormattedMessage.slice(1);
-
-      expect(allFormattedMessage.get(0).props.defaultMessage).to.eql(metadata.label.value);
-      labeledMessage.forEach((node) => {
-        const columnName = metadata.columnHeaders[index].value;
-        expect(node.prop('defaultMessage')).to.eql(columnName);
-        index++;
-      });
-      expect(wrapper.find('Row').length).to.eql(1);
-      expect(wrapper.find('Row').prop('records')[0]).to.eql(children.get(0));
-      expect(wrapper.find('Row').prop('controls')[0]).to.eql(metadata.controls[0]);
+      const allFormattedMessage = wrapper.find('.test-table-label');
+      expect(allFormattedMessage.get(0).props.children).to.eql(metadata.label.value);
+      expect(allFormattedMessage.get(1).props.children).to.eql(metadata.columnHeaders[0].value);
+      expect(allFormattedMessage.get(2).props.children).to.eql(metadata.columnHeaders[1].value);
+      expect(wrapper.find('IntlProvider').find('ForwardRef')
+          .prop('records')[0]).to.eql(children.get(0));
+      expect(wrapper.find('IntlProvider').find('ForwardRef')
+          .prop('controls')[0]).to.eql(metadata.controls[0]);
     });
 
     it('should pass enabled, formName,formVersion,validate,validateForm,onValueChanged,'
         + 'onEventTrigger,patientUuid, showNotification,props to row', () => {
-      const wrapper = shallow(
+      const wrapper = shallowWithIntl(
                 <Table
                   children={children}
                   enabled
@@ -165,21 +161,26 @@ describe('Table', () => {
 
                 />);
 
-      expect(wrapper.find('Row').prop('onEventTrigger')).to.eql(onEventTrigger);
-      expect(wrapper.find('Row').prop('patientUuid')).to.eql('patientUuid');
-      expect(wrapper.find('Row').prop('showNotification')).to.eql(showNotification);
-      expect(wrapper.find('Row').prop('validateForm')).to.eql(false);
-      expect(wrapper.find('Row').prop('validate')).to.eql(false);
-      expect(wrapper.find('Row').prop('onValueChanged')).to.eql(wrapper.instance().onChange);
-      expect(wrapper.find('Row').prop('enabled')).to.eql(true);
-      expect(wrapper.find('Row').prop('formVersion')).to.eql(formVersion);
-      expect(wrapper.find('Row').prop('formName')).to.eql(formName);
-      expect(wrapper.find('Row').prop('isInTable')).to.eql(true);
+      expect(wrapper.find('IntlProvider').find('ForwardRef')
+          .prop('onEventTrigger')).to.eql(onEventTrigger);
+      expect(wrapper.find('IntlProvider').find('ForwardRef')
+          .prop('patientUuid')).to.eql('patientUuid');
+      expect(wrapper.find('IntlProvider').find('ForwardRef')
+          .prop('showNotification')).to.eql(showNotification);
+      expect(wrapper.find('IntlProvider').find('ForwardRef').prop('validateForm')).to.eql(false);
+      expect(wrapper.find('IntlProvider').find('ForwardRef').prop('validate')).to.eql(false);
+      expect(wrapper.find('IntlProvider').find('ForwardRef')
+          .prop('onValueChanged')).to.eql(wrapper.instance().onChange);
+      expect(wrapper.find('IntlProvider').find('ForwardRef').prop('enabled')).to.eql(true);
+      expect(wrapper.find('IntlProvider').find('ForwardRef')
+          .prop('formVersion')).to.eql(formVersion);
+      expect(wrapper.find('IntlProvider').find('ForwardRef').prop('formName')).to.eql(formName);
+      expect(wrapper.find('IntlProvider').find('ForwardRef').prop('isInTable')).to.eql(true);
     });
 
     it('should call onValueChanged prop when onChange is called', () => {
       const onValueChangedSpy = sinon.spy();
-      const wrapper = shallow(
+      const wrapper = shallowWithIntl(
             <Table
               children={children}
               formFieldPath={tableFormFieldPath}
