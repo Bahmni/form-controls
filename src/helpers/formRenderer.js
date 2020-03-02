@@ -2,6 +2,7 @@ import { Container } from 'components/Container.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
+import ScriptRunner from './ScriptRunner';
 
 window.renderWithControls =
   function renderWithControls(formDetails, observations, nodeId,
@@ -19,3 +20,9 @@ window.unMountForm = (container) => {
 
 window.getRecordTree = (formDef, observations) =>
     new ControlRecordTreeBuilder().build(formDef, observations);
+
+window.runScript = (form) => {
+  const component = form.component;
+  return new ScriptRunner(component.state.data, component.props.patient)
+      .execute(form.events.onFormSave);
+};
