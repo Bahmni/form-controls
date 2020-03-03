@@ -112,8 +112,8 @@ export class CellDesigner extends DropTarget {
   getCellDefinition() {
     const cellDefinition = [];
     each(this.childControls, (childControl) => {
-      if (childControl.getWrappedInstance()) {
-        cellDefinition.push(childControl.getWrappedInstance().getJsonDefinition());
+      if (childControl) {
+        cellDefinition.push(childControl.getJsonDefinition());
       }
     });
     return cellDefinition;
@@ -156,7 +156,7 @@ CellDesigner.propTypes = {
   onControlDrop: PropTypes.func,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
-  wrapper: PropTypes.func.isRequired,
+  wrapper: PropTypes.object.isRequired,
 };
 
 
