@@ -227,14 +227,14 @@ $lightestGray: #eee;
               width: fit-content;
               background: #000;
               position: sticky;
-              bottom: 6px;
+              margin-left: calc(5% - 15px);
             }
             i {
               position: absolute;
               font-size: 20px;
               color: $black;
               bottom: -16px;
-              right: 95%;
+              right: calc(95% - 10px);
             }
             p {
               margin-bottom: 5px;
@@ -353,6 +353,24 @@ $lightestGray: #eee;
             }
             i {
               bottom: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.grid {
+  .form-builder-row {
+    .form-builder-column-wrapper {
+      .form-builder-column {
+        .form-field-wrap {
+          .form-builder-tooltip-wrap {
+            .form-builder-tooltip-description {
+              .details {
+                margin-left: calc(5% - 7px);
+              }
             }
           }
         }
