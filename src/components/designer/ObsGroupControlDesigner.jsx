@@ -157,7 +157,7 @@ ObsGroupControlDesigner.propTypes = {
   onControlDrop: PropTypes.func,
   onSelect: PropTypes.func.isRequired,
   showDeleteButton: PropTypes.bool,
-  wrapper: PropTypes.func.isRequired,
+  wrapper: PropTypes.object.isRequired,
 };
 
 ObsGroupControlDesigner.injectConceptToMetadata = (metadata, concept, idGenerator) => {

@@ -4,7 +4,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import each from 'lodash/each';
-import { injectIntl, IntlShape } from 'react-intl';
+import { IntlShape } from 'react-intl';
 
 export class CodedControl extends Component {
   constructor(props) {
@@ -125,4 +125,4 @@ CodedControl.propTypes = {
   value: PropTypes.any,
 };
 
-ComponentStore.registerComponent('Coded', injectIntl(CodedControl));
+ComponentStore.registerComponent('Coded', CodedControl);

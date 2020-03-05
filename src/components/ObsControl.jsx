@@ -63,7 +63,8 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   displayObsControl(registeredComponent) {
     const { onControlAdd, hidden, enabled, metadata,
-      metadata: { concept }, validate, validateForm, formFieldPath, showNotification } = this.props;
+      metadata: { concept }, validate, validateForm, formFieldPath,
+      showNotification, intl } = this.props;
     const options = metadata.options || concept.answers;
     const { conceptClass, conceptHandler } = concept;
     const validations = getValidations(metadata.properties, concept.properties);
@@ -88,6 +89,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       showNotification,
       conceptClass,
       conceptHandler,
+      intl,
     });
   }
 

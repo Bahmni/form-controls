@@ -6,7 +6,6 @@ import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import map from 'lodash/map';
 import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
-import { injectIntl } from 'react-intl';
 
 export class BooleanControl extends Component {
   constructor(props) {
@@ -80,4 +79,4 @@ BooleanControl.defaultProps = {
   enabled: true,
 };
 
-ComponentStore.registerComponent('boolean', injectIntl(BooleanControl));
+ComponentStore.registerComponent('boolean', BooleanControl);
