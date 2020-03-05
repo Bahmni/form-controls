@@ -229,9 +229,9 @@ export class ObsControl extends addMoreDecorator(Component) {
                       {this.displayObsControl(registeredComponent)}
                       {this.showAbnormalButton()}
                       {this.showAddMore()}
+                      {this.showComment()}
                   </div>
               </div>
-              {this.showComment()}
           </div>
       );
     }

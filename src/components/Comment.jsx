@@ -26,7 +26,6 @@ export class Comment extends Component {
     if (this.state.showCommentSection || (isComplexMediaConcept && this.props.value)) {
       return (
         <div className="obs-comment-section-wrap">
-          <div className="label-wrap"></div>
           <div className="obs-control-field text-area-wrap">
           <Textarea
             className="obs-comment-section fl"

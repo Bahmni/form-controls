@@ -20,9 +20,7 @@ $lightestGray: #eee;
         position: relative;
         width: 100%;
         .obs-comment-wrap{
-          display: flex;
           .obs-comment-content{
-            flex:9;
             textarea{
               width:85%;
             }
@@ -31,6 +29,7 @@ $lightestGray: #eee;
         .form-field-content-wrap{
           display: flex;
           justify-content: flex-end;
+          position: relative;
         }
         .label-wrap {
           float: left;
@@ -70,7 +69,7 @@ $lightestGray: #eee;
             float:left;
           }
           .form-control-buttons{
-            width: 83%;
+            max-width: 83%;
           }
         }
         input {
@@ -128,7 +127,6 @@ $lightestGray: #eee;
               textarea {
                 width: 100%;
                 margin-top: 5px;
-                margin-left: 3px;
               }
             }
           }
@@ -136,7 +134,7 @@ $lightestGray: #eee;
         .form-builder-comment-toggle {
           position: absolute;
           right: 0;
-          top: -2px;
+          top: 0;
           padding: 3px;
           &.active {
             .fa-file-o {
@@ -150,7 +148,6 @@ $lightestGray: #eee;
           }
 
           .fa-file-o {
-            position: relative;
             color: $gray600;
             .fa-minus-circle {
               display: none;

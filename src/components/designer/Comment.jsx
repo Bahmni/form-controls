@@ -11,7 +11,6 @@ export class CommentDesigner extends PureComponent { // PureComponent has been a
     if (this.state.showCommentSection) {
       return (
         <div className="obs-comment-section-wrap">
-            <div className="label-wrap"></div>
             <div className="obs-control-field">
               <Textarea
                 className="obs-comment-section fl"
