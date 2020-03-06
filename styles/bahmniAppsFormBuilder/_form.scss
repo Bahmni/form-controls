@@ -61,6 +61,9 @@ $lightestGray: #eee;
             position: relative;
             margin-left: 5px;
           }
+          .hidden-label{
+            visibility: hidden;
+          }
         }
         .obs-control-field{
           flex:9;

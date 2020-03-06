@@ -78,6 +78,7 @@ export class ObsControlDesigner extends Component {
       onSelect={(event) => this.props.onSelect(event, metadata)}
       ref={this.storeLabelRef}
       showDeleteButton={false}
+      visible={!hideLabel}
     />);
     if (!hideLabel && description && description.value) {
       return (
@@ -88,8 +89,7 @@ export class ObsControlDesigner extends Component {
             />
         </div>
       );
-    } else if (!hideLabel) {return (labelComponent);}
-    return null;
+    } return (labelComponent);
   }
 
   markMandatory() {

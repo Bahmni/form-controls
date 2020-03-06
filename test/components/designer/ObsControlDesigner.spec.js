@@ -279,7 +279,7 @@ describe('ObsControlDesigner', () => {
       expect(wrapper).to.not.have.descendants('CommentDesigner');
     });
 
-    it('should not render label if hideLabel is true', () => {
+    it('should not to show label if hideLabel is true', () => {
       metadata = {
         id: '123',
         type: 'obsControl',
@@ -294,7 +294,7 @@ describe('ObsControlDesigner', () => {
         onSelect={onSelectSpy}
         showDeleteButton={false}
       />);
-      expect(wrapper).to.not.have.descendants('LabelDesigner');
+      expect(wrapper.find('LabelDesigner').find('hidden-label')).to.not.eql(null);
     });
 
     it('should construct label object when hideLabel is set to false', () => {
