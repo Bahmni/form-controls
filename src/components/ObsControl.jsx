@@ -10,7 +10,7 @@ import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import addMoreDecorator from './AddMoreDecorator';
 import constants from 'src/constants';
 import { Util } from 'src/helpers/Util';
-import { FormattedHTMLMessage, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 
 export class ObsControl extends addMoreDecorator(Component) {
 
@@ -142,16 +142,16 @@ export class ObsControl extends addMoreDecorator(Component) {
   showHelperText() {
     const { concept: { description } } = this.props.metadata;
     if (description && description.value) {
+      const showHelperTextHtml = this.props.intl.formatHTMLMessage({
+        defaultMessage: description.value,
+        id: description.translationKey || 'defaultId',
+      });
       return (
           <div className={classNames('form-builder-tooltip-wrap',
               { active: this.state.showHintButton === true })}>
           <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
-            <span className="details hint">
-                <FormattedHTMLMessage
-                  defaultMessage={description.value}
-                  id={description.translationKey || 'defaultId'}
-                />
+            <span className="details hint" dangerouslySetInnerHTML={{ __html: showHelperTextHtml }}>
             </span>
           </p>
         </div>

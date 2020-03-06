@@ -5,7 +5,7 @@ import { getGroupedControls, displayRowControls } from '../helpers/controlsParse
 import classNames from 'classnames';
 import addMoreDecorator from './AddMoreDecorator';
 import { List } from 'immutable';
-import { FormattedHTMLMessage, IntlProvider, injectIntl } from 'react-intl';
+import { IntlProvider, injectIntl } from 'react-intl';
 
 export class ObsGroupControl extends addMoreDecorator(Component) {
 
@@ -48,13 +48,16 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
 
   showDescription() {
     const { description } = this.props.metadata.concept;
+
     if (description && description.value) {
+      const showHelperTextHtml = this.props.intl.formatHTMLMessage({
+        defaultMessage: description.value,
+        id: description.translationKey || 'defaultId',
+      });
       return (
-              <div className={classNames('description')}>
-                  <FormattedHTMLMessage
-                    defaultMessage={description.value}
-                    id={description.translationKey || 'defaultId'}
-                  />
+              <div className={classNames('description')}
+                dangerouslySetInnerHTML={{ __html: showHelperTextHtml }}
+              >
               </div>
       );
     }
