@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { LabelDesigner } from 'components/designer/Label.jsx';
@@ -186,25 +186,26 @@ export class ObsControlDesigner extends Component {
     const designerComponent = concept && ComponentStore.getDesignerComponent(concept.datatype);
     if (designerComponent) {
       return (
-        <div className="form-field-wrap clearfix"
-          onClick={ (event) => this.props.onSelect(event, metadata) }
-        >
+        <Fragment>
+          {this.showDeleteButton()}
+          <div className="form-field-wrap clearfix"
+            onClick={(event) => this.props.onSelect(event, metadata)}
+          >
             {this.showHelperText()}
-          <div className="form-field-content-wrap">
-            {this.showDeleteButton()}
-            {this.showScriptButton()}
-            <div className="label-wrap fl">
-              {this.displayLabel()}
-            </div>
-            <div className={classNames('obs-control-field')}>
-              {this.displayObsControl(designerComponent)}
-              {this.showAbnormalButton()}
-              {this.showAddMore()}
-              {this.showComment()}
+            <div className="form-field-content-wrap">
+              {this.showScriptButton()}
+              <div className="label-wrap fl">
+                {this.displayLabel()}
+              </div>
+              <div className={classNames('obs-control-field')}>
+                {this.displayObsControl(designerComponent)}
+                {this.showAbnormalButton()}
+                {this.showAddMore()}
+                {this.showComment()}
+              </div>
             </div>
           </div>
-        </div>
-      );
+        </Fragment>);
     }
     return (
       <div className="control-wrapper-content"
