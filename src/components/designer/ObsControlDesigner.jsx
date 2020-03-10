@@ -80,16 +80,16 @@ export class ObsControlDesigner extends Component {
       showDeleteButton={false}
       visible={!hideLabel}
     />);
-    if (!hideLabel && description && description.value) {
-      return (
+    return (
         <div>
-            {labelComponent}
+          {labelComponent}
+          {!hideLabel && this.markMandatory()}
+          {(!hideLabel && description && description.value) && (
             <i className="fa fa-question-circle form-builder-tooltip-trigger"
               onClick={() => this.setState({ showHintButton: !showHintButton })}
-            />
+            />)}
         </div>
-      );
-    } return (labelComponent);
+    );
   }
 
   markMandatory() {
@@ -195,7 +195,6 @@ export class ObsControlDesigner extends Component {
             {this.showScriptButton()}
             <div className="label-wrap fl">
               {this.displayLabel()}
-              {this.markMandatory()}
             </div>
             <div className={classNames('obs-control-field')}>
               {this.displayObsControl(designerComponent)}

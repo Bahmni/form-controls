@@ -40,10 +40,8 @@ $lightestGray: #eee;
           position: relative;
           flex:2.5;
           .form-builder-asterisk {
-            position: absolute;
             color: $red;
-            top: 0;
-            right: 20px;
+            padding-left: 3px;
           }
           .form-builder-tooltip-trigger {
             cursor: pointer;
@@ -347,12 +345,7 @@ $lightestGray: #eee;
           }
           .form-field-content-wrap {
             .control-wrapper-content {
-              label {
-                margin: 0 25px;
-              }
-            }
-            i {
-              bottom: 15px;
+              display: inline;
             }
           }
         }
