@@ -10,6 +10,7 @@ import ObservationMapper from '../helpers/ObservationMapper';
 import NotificationContainer from '../helpers/Notification';
 import Constants from '../constants';
 import { IntlProvider } from 'react-intl';
+import { executeEventsFromCurrentRecord } from '../helpers/ExecuteEvents';
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
@@ -34,30 +35,11 @@ export class Container extends addMoreDecorator(Component) {
       updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(initScript);
       this.setState({ data: updatedTree });
     }
-    const controls = this.props.metadata.controls;
     updatedTree = updatedTree || this.state.data;
-    updatedTree = this.executeAllControlEvents(controls, updatedTree);
+    updatedTree = executeEventsFromCurrentRecord(updatedTree, updatedTree, this.props.patient);
     this.setState({
       data: updatedTree,
     });
-  }
-
-  executeAllControlEvents(controls, updatedTree) {
-    let formControlTree = updatedTree;
-    controls.forEach((control) => {
-      if (control.controls) {
-        formControlTree = this.executeAllControlEvents(control.controls, formControlTree);
-      } else {
-        if (control.events) {
-          const eventKeys = Object.keys(control.events);
-          eventKeys.forEach(eventKey => {
-            const script = control.events[eventKey];
-            formControlTree = new ScriptRunner(formControlTree, this.props.patient).execute(script);
-          });
-        }
-      }
-    });
-    return formControlTree;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,7 +50,9 @@ export class Container extends addMoreDecorator(Component) {
     const eventScripts = ControlRecordTreeMgr.find(this.state.data, sender).getEventScripts();
     const script = eventScripts && eventScripts[eventName];
     if (script) {
-      const updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(script);
+      const parentRecordTree = new ControlRecordTreeMgr().findParentTree(this.state.data, sender);
+      const updatedTree = new ScriptRunner(this.state.data, this.props.patient, parentRecordTree)
+            .execute(script);
       this.setState({
         data: updatedTree,
       });
@@ -92,8 +76,10 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   onControlAdd(formFieldPath, isNotificationShown = true) {
-    const updatedRecordTree = ControlRecordTreeMgr.add(this.state.data, formFieldPath);
-
+    let updatedRecordTree = ControlRecordTreeMgr.add(this.state.data, formFieldPath);
+    const parentRecordTree = new ControlRecordTreeMgr()
+            .findParentTree(updatedRecordTree, formFieldPath);
+    updatedRecordTree = executeEventsFromCurrentRecord(parentRecordTree, updatedRecordTree);
     const addMoreMessage = this.getAddMoreMessage(this.state.data, formFieldPath);
     if (isNotificationShown) {
       this.setState({

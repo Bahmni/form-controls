@@ -16,7 +16,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import Constants from 'src/constants';
 import sinon from 'sinon';
 import { Map as immutableMap } from 'immutable';
-
+import * as ExecuteEvents from '../../src/helpers/ExecuteEvents';
 
 chai.use(chaiEnzyme());
 
@@ -148,7 +148,11 @@ describe('Container', () => {
     };
     const recordTree = new ControlRecord({ children: List.of(childRecord) });
 
+    // should refactor other tests similarly i.e to stub executeEventsFromCurrentRecord before mount
     it('should render a control when given single layer tree data', () => {
+      const executeEventsFromCurrentRecordStub =
+        sinon.stub(ExecuteEvents, 'executeEventsFromCurrentRecord');
+      executeEventsFromCurrentRecordStub.returns(recordTree);
       const wrapper = mount(
             <Container
               collapse
@@ -165,6 +169,7 @@ describe('Container', () => {
       wrapper.setState({ data: recordTree });
 
       expect(wrapper).to.have.exactly(1).descendants('ObsControl');
+      executeEventsFromCurrentRecordStub.restore();
     });
 
     it('should initialize the states of controls before mount', () => {
@@ -291,6 +296,7 @@ describe('Container', () => {
         uuid: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAA',
       };
       const addedFormFieldPath = 'singleObs.1/1-0';
+      const expectedFormFieldPath = 'singleObs.1/1-1';
       const childRecordTree = new ControlRecord({
         control: {
           concept,
@@ -325,9 +331,49 @@ describe('Container', () => {
           voided: true,
         },
       });
+      const addedControlOfChildRecordTree = new ControlRecord({
+        control: {
+          concept,
+          hiAbsolute: null,
+          hiNormal: null,
+          id: '1',
+          label: {
+            type: 'label',
+            value: 'HEIGHT',
+          },
+          lowAbsolute: null,
+          lowNormal: null,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: {
+              column: 0,
+              row: 0,
+            },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: null,
+        },
+        formFieldPath: expectedFormFieldPath,
+        value: {},
+        dataSource: {
+          concept,
+          formFieldPath: expectedFormFieldPath,
+          formNamespace: 'Bahmni',
+          voided: true,
+        },
+      });
       const obsTree = new ControlRecord({ children: List.of(childRecordTree) });
+      const obsTreeWithAddedControl = new
+      ControlRecord({ children: List.of(childRecordTree, addedControlOfChildRecordTree) });
 
+      // should refactor other tests to stub executeEventsFromCurrentRecord while onControlAdd
       it('should add one obs when onControlAdd is triggered with obs in container', () => {
+        const executeEventsFromCurrentRecordStub =
+          sinon.stub(ExecuteEvents, 'executeEventsFromCurrentRecord');
+        executeEventsFromCurrentRecordStub.returns(obsTree);
         const wrapper = mount(
           <Container
             collapse
@@ -340,14 +386,15 @@ describe('Container', () => {
             validateForm={false}
           />
         );
+        executeEventsFromCurrentRecordStub.returns(obsTreeWithAddedControl);
         wrapper.setState({ data: obsTree });
         wrapper.instance().onControlAdd(addedFormFieldPath);
 
-        const expectedFormFieldPath = 'singleObs.1/1-1';
         const updatedRootTree = wrapper.state().data;
         expect(updatedRootTree.children.size).to.equal(2);
         expect(updatedRootTree.children.get(0).formFieldPath).to.equal(addedFormFieldPath);
         expect(updatedRootTree.children.get(1).formFieldPath).to.equal(expectedFormFieldPath);
+        executeEventsFromCurrentRecordStub.restore();
       });
 
       it('should not render notification when add more with notification shown false', () => {
@@ -5128,6 +5175,190 @@ describe('Container', () => {
         expect(obsGroupTree.children.get(1).active).to.equal(false);
         expect(obsGroupTree.children.get(1).formFieldPath).to.equal(removeFormFieldPath);
       });
+      const metadataWithSection = {
+        name: 'AddMoreHideTest',
+        id: 78,
+        uuid: '7e6b3120-4e40-41a0-8ef4-0d1ddacd8496',
+        defaultLocale: 'en',
+        version: '2',
+        controls: [
+          {
+            type: 'section',
+            label: {
+              translationKey: 'SECTION_4',
+              type: 'label',
+              value: 'Section',
+              id: 4,
+            },
+            properties: {
+              addMore: true,
+              location: {
+                column: 0,
+                row: 1,
+              },
+            },
+            id: 4,
+            controls: [
+              {
+                options: [
+                  {
+                    name: 'Yes',
+                    translationKey: 'BOOLEAN_YES',
+                    value: true,
+                  },
+                  {
+                    name: 'No',
+                    translationKey: 'BOOLEAN_NO',
+                    value: false,
+                  },
+                ],
+                type: 'obsControl',
+                label: {
+                  translationKey: 'IS_ABNORMAL_5',
+                  id: 5,
+                  units: '',
+                  type: 'label',
+                  value: 'IS_ABNORMAL',
+                },
+                properties: {
+                  mandatory: false,
+                  notes: false,
+                  addMore: false,
+                  hideLabel: false,
+                  controlEvent: false,
+                  location: {
+                    column: 0,
+                    row: 0,
+                  },
+                },
+                id: 5,
+                concept: {
+                  name: 'IS_ABNORMAL',
+                  uuid: '7e697913-e42f-11e5-8c3e-08002715d519',
+                  datatype: 'Boolean',
+                  conceptClass: 'Finding',
+                  conceptHandler: null,
+                  answers: [],
+                  properties: {
+                    allowDecimal: null,
+                  },
+                },
+                units: null,
+                hiNormal: null,
+                lowNormal: null,
+                hiAbsolute: null,
+                lowAbsolute: null,
+                events: {
+                  onValueChange: `function(form) {
+	if (form.getFromParent('IS_ABNORMAL').getValue()) {
+        form.getFromParent('Reason case is pending').setHidden(false);
+    }else {
+        form.getFromParent('Reason case is pending').setHidden(true);
+    }
+}`,
+                },
+              },
+              {
+                type: 'obsControl',
+                label: {
+                  translationKey: 'REASON_CASE_IS_PENDING_6',
+                  id: 6,
+                  units: '',
+                  type: 'label',
+                  value: 'Reason case is pending',
+                },
+                properties: {
+                  mandatory: false,
+                  notes: false,
+                  addMore: false,
+                  hideLabel: false,
+                  controlEvent: false,
+                  location: {
+                    column: 0,
+                    row: 1,
+                  },
+                },
+                id: 6,
+                concept: {
+                  name: 'Reason case is pending',
+                  uuid: '9fbec55e-c329-4bf1-9728-c89f24540d43',
+                  datatype: 'Text',
+                  conceptClass: 'Misc',
+                  conceptHandler: null,
+                  answers: [],
+                  properties: {
+                    allowDecimal: null,
+                  },
+                },
+                units: null,
+                hiNormal: null,
+                lowNormal: null,
+                hiAbsolute: null,
+                lowAbsolute: null,
+              },
+            ],
+          },
+        ],
+        translationsUrl: '/openmrs/ws/rest/v1/bahmniie/form/translations',
+      };
+
+      const translationsWithSection = {
+        en: {
+          concepts: {
+            REASON_CASE_IS_PENDING_6: 'Reason case is pending',
+            IS_ABNORMAL_5: 'IS_ABNORMAL',
+          },
+          labels: {
+            BOOLEAN_NO: 'No',
+            BOOLEAN_YES: 'Yes',
+            SECTION_4: 'Section2',
+          },
+        },
+      };
+
+      it('should hide a record with form conditions using new api getFromParent', () => {
+        const wrapper = shallow(
+                <Container
+                  collapse
+                  locale="en"
+                  metadata={metadataWithSection}
+                  observations={[]}
+                  patient={patient}
+                  translations={translationsWithSection}
+                  validate={false}
+                  validateForm={false}
+                />
+            );
+
+        const changedValue = { value: true, comment: undefined };
+        const containerComponent = wrapper.instance();
+        containerComponent.onValueChanged('AddMoreHideTest.2/4-0/5-0', changedValue);
+        containerComponent.onEventTrigger('AddMoreHideTest.2/4-0/5-0', 'onValueChange');
+
+        const isHidden = wrapper.state().data.children.get(0).children.get(1).hidden;
+        expect(isHidden).to.equal(false);
+      });
+
+      it('should create a new section record and execute form conditions on add-more action',
+          () => {
+            const wrapper = shallow(
+                <Container
+                  collapse
+                  locale="en"
+                  metadata={metadataWithSection}
+                  observations={[]}
+                  patient={patient}
+                  translations={translationsWithSection}
+                  validate={false}
+                  validateForm={false}
+                />
+            );
+
+            wrapper.instance().onControlAdd('AddMoreHideTest.2/4-0');
+
+            expect(wrapper.state().data.children.size).to.equal(2);
+            expect(wrapper.state().data.children.get(1).children.get(1).hidden).to.equal(true);
+          });
     });
   });
 });

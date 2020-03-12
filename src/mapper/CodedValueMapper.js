@@ -3,7 +3,7 @@ import ValueMapperStore from '../helpers/ValueMapperStore';
 export class CodedValueMapper {
 
   getValue(control, value) {
-    return value && (value.displayString || value.shortName);
+    return value && (value.displayString || value.name);
   }
 
   setValue(control, value) {
