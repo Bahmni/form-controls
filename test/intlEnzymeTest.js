@@ -6,7 +6,7 @@ enzyme.configure({ adapter: new Adapter() });
 const { shallow, mount } = enzyme;
 
 // You can pass your messages to the IntlProvider. Optional: remove if unneeded.
-const messages = { TEST_KEY: 'test value' }; // en.json
+const messages = { TEST_KEY: 'test value', HTML_DESC_KEY: 'test value <h1>Heading goes here</h1>' }; // en.json
 
 // Create the IntlProvider to retrieve context for wrapping around.
 const intlProvider = new IntlProvider({ locale: 'en', messages }, {});

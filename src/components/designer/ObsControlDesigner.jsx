@@ -67,20 +67,28 @@ export class ObsControlDesigner extends Component {
 
   displayLabel() {
     const { metadata, metadata: { properties, label, id } } = this.props;
+    const { concept: { description } } = this.props.metadata;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     const units = this._getUnits(metadata.units);
     const labelMetadata = Object.assign({ id, units }, label) ||
       { type: 'label', value: metadata.concept.name, id };
-    if (!hideLabel) {
+    const showHintButton = this.state && this.state.showHintButton;
+    const labelComponent = (<LabelDesigner
+      metadata={labelMetadata}
+      onSelect={(event) => this.props.onSelect(event, metadata)}
+      ref={this.storeLabelRef}
+      showDeleteButton={false}
+    />);
+    if (!hideLabel && description && description.value) {
       return (
-          <LabelDesigner
-            metadata={ labelMetadata }
-            onSelect={ (event) => this.props.onSelect(event, metadata) }
-            ref={ this.storeLabelRef }
-            showDeleteButton={false}
-          />
+        <div>
+            {labelComponent}
+            <i className="fa fa-question-circle form-builder-tooltip-trigger"
+              onClick={() => this.setState({ showHintButton: !showHintButton })}
+            />
+        </div>
       );
-    }
+    } else if (!hideLabel) {return (labelComponent);}
     return null;
   }
 
@@ -100,10 +108,6 @@ export class ObsControlDesigner extends Component {
       return (
         <div className={classNames('form-builder-tooltip-wrap',
            { active: showHintButton === true })}>
-          <i className="fa fa-question-circle form-builder-tooltip-trigger"
-            onClick={() => this.setState({ showHintButton: !showHintButton })}
-          >
-          </i>
           <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
             <span className="details hint">{description.value}</span>
@@ -120,7 +124,6 @@ export class ObsControlDesigner extends Component {
     if (isAddCommentsEnabled) {
       return (
         <div className={classNames('obs-comment-wrap')}>
-          <div className={classNames('obs-empty-block')}></div>
           <div className={classNames('obs-comment-content')}><CommentDesigner /></div>
         </div>
       );
@@ -186,13 +189,13 @@ export class ObsControlDesigner extends Component {
         <div className="form-field-wrap clearfix"
           onClick={ (event) => this.props.onSelect(event, metadata) }
         >
+            {this.showHelperText()}
           <div className="form-field-content-wrap">
             {this.showDeleteButton()}
             {this.showScriptButton()}
             <div className="label-wrap fl">
               {this.displayLabel()}
               {this.markMandatory()}
-              {this.showHelperText()}
             </div>
             <div className={classNames('obs-control-field')}>
               {this.displayObsControl(designerComponent)}

@@ -19,12 +19,17 @@ export class ObsGroupControlDesigner extends Component {
     this.storeGridRef = this.storeGridRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
     this.deleteButton = this.deleteButton.bind(this);
+    this.showDescription = this.showDescription.bind(this);
   }
 
   getJsonDefinition() {
     if (!this.gridRef) return undefined;
     const controls = this.gridRef.getControls();
     const labelJsonDefinition = this.labelControl && this.labelControl.getJsonDefinition();
+    const { description } = this.props.metadata.concept;
+    if (description && !description.translationKey) {
+      description.translationKey = `${labelJsonDefinition.translationKey}_DESC`;
+    }
     return Object.assign({}, this.props.metadata, { controls }, { label: labelJsonDefinition });
   }
 
@@ -36,6 +41,18 @@ export class ObsGroupControlDesigner extends Component {
 
   storeLabelRef(ref) {
     this.labelControl = ref;
+  }
+
+  showDescription() {
+    const { description } = this.props.metadata.concept;
+    if (description && description.value) {
+      return (
+              <div className="description">
+                  <span>{description.value}</span>
+              </div>
+      );
+    }
+    return null;
   }
 
   displayLabel() {
@@ -91,6 +108,7 @@ export class ObsGroupControlDesigner extends Component {
           {this.showDeleteButton()}
           <legend><strong>{this.displayLabel()}</strong></legend>
           <div className="obsGroup-controls">
+              {this.showDescription()}
             <Grid
               controls={ metadata.controls }
               dragAllowed={false}

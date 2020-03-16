@@ -15,6 +15,7 @@ describe('ObsControl', () => {
   const DummyControl = () => <input />;
 
   const FormattedMessageStub = () => <span />;
+  const FormattedHTMLMessageStub = () => <span />;
 
   before(() => {
     ComponentStore.componentList = {};
@@ -51,10 +52,12 @@ describe('ObsControl', () => {
   context('without i18n', () => {
     before(() => {
       sinon.stub(FormmatedMsg, 'FormattedMessage', FormattedMessageStub);
+      sinon.stub(FormmatedMsg, 'FormattedHTMLMessage', FormattedHTMLMessageStub);
     });
 
     after(() => {
       FormmatedMsg.FormattedMessage.restore();
+      FormmatedMsg.FormattedHTMLMessage.restore();
     });
 
     it('should render dummyControl', () => {
@@ -664,6 +667,31 @@ describe('ObsControl', () => {
           value={domainValue}
         />);
       expect(wrapper.find('.details')).text().to.eql('test value');
+    });
+
+    it('should render helper text with html content', () => {
+      const conceptDetail = getConcept('Text');
+      conceptDetail.description = {
+        value: 'some desc<h1>Heading</h1>',
+        translationKey: 'HTML_DESC_KEY',
+      };
+      const metadata = {
+        id: '100',
+        type: 'obsControl',
+        concept: conceptDetail,
+        label,
+        properties,
+      };
+      const wrapper = mountWithIntl(
+        <ObsControl
+          metadata={metadata}
+          onValueChanged={onChangeSpy}
+          showNotification={showNotificationSpy}
+          validate={false}
+          validateForm={false}
+          value={domainValue}
+        />);
+      expect(wrapper.find('.details')).text().to.eql('test value Heading goes here');
     });
   });
 });

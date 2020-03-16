@@ -4,13 +4,13 @@ $lightestGray: #eee;
   .form-builder-column-wrapper{
     min-height: 50px;
     width: 100%;
-    padding: 5px 10px;
+    padding-top: 5px;
     box-sizing: border-box;
     clear: both;
     .form-builder-column {
       min-height: 50px;
       width: 100%;
-      padding: 5px 10px;
+      padding: 5px 5px;
       box-sizing: border-box;
       clear: both;
       &.active {
@@ -18,12 +18,9 @@ $lightestGray: #eee;
       }
       .form-field-wrap {
         position: relative;
-        margin-top:5px;
+        width: 100%;
         .obs-comment-wrap{
           display: flex;
-          .obs-empty-block{
-            flex:2;
-          }
           .obs-comment-content{
             flex:9;
             textarea{
@@ -33,30 +30,37 @@ $lightestGray: #eee;
         }
         .form-field-content-wrap{
           display: flex;
-        }
-        .obs-comment-section-wrap{
-          textarea{
-            width: 69.3%;
-            float: right;
-            margin-top: 10px;
-          }
+          justify-content: flex-end;
         }
         .label-wrap {
           float: left;
-          padding-right: 30px;
+          margin-right: 20px;
           font-size: 12px;
           margin-top: 5px;
           text-align: right;
           position: relative;
-          flex:4;
-          label {
-            padding-right: 10px;
-          }
+          flex:2.5;
           .form-builder-asterisk {
             position: absolute;
             color: $red;
             top: 0;
             right: 20px;
+          }
+          .form-builder-tooltip-trigger {
+            cursor: pointer;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+            text-align: center;
+            border-radius: 100%;
+            font-size: 20px;
+            color: $bahmniSecondaryColor;
+            box-shadow: 1px 1px 1px $gray400;
+            background: $white;
+            padding: 0;
+            position: relative;
+            margin-left: 5px;
           }
         }
         .obs-control-field{
@@ -66,7 +70,7 @@ $lightestGray: #eee;
             float:left;
           }
           .form-control-buttons{
-            width: 70%;
+            width: 83%;
           }
         }
         input {
@@ -116,12 +120,24 @@ $lightestGray: #eee;
         .form-builder-comment-wrap{
           clear: both;
           overflow: hidden;
+          .obs-comment-section-wrap {
+            display: flex;
+            .text-area-wrap {
+              flex: 9;
+              margin-right: 15px;
+              textarea {
+                width: 100%;
+                margin-top: 5px;
+                margin-left: 3px;
+              }
+            }
+          }
         }
         .form-builder-comment-toggle {
           position: absolute;
-          right: 10px;
+          right: 0;
           top: -2px;
-          padding: 5px;
+          padding: 3px;
           &.active {
             .fa-file-o {
               .fa-plus-circle {
@@ -186,34 +202,21 @@ $lightestGray: #eee;
           }
         }
         .form-builder-tooltip-wrap {
-          display: inline-block;
-          position: absolute;
-          top: 0;
-          right: 2px;
-          .form-builder-tooltip-trigger {
-            cursor: pointer;
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            line-height: 18px;
-            text-align: center;
-            border-radius: 100%;
-            font-size: 20px;
-            color: $bahmniSecondaryColor;
-            box-shadow: 1px 1px 1px $gray400;
-            background: $white;
-            padding: 0;
-            position: relative;
-
+          display: none;
+          width: 100%;
+          margin-bottom: 5px;
+          text-align: left;
+          float: none;
+          position: relative;
+          &.active {
+            display: block;
           }
           .form-builder-tooltip-description {
-            bottom: calc(100% + 10px);
-            margin-left: 0;
-            margin-top: 0;
-            text-align: left;
-            position: absolute;
             display: none;
-            z-index: 9;
+            text-align: left;
+            position: relative;
+            width: 82%;
+            right: -17%;
             .details {
               display: inline-block;
               font-size: 12px;
@@ -221,14 +224,17 @@ $lightestGray: #eee;
               border-radius: 5px;
               background: $black;
               color: $white;
-              width: 200px;
+              width: fit-content;
+              background: #000;
+              position: sticky;
+              margin-left: calc(5% - 15px);
             }
             i {
               position: absolute;
-              bottom: -16px;
-              left: 1%;
               font-size: 20px;
               color: $black;
+              bottom: -16px;
+              right: calc(95% - 10px);
             }
             p {
               margin-bottom: 5px;
@@ -244,10 +250,9 @@ $lightestGray: #eee;
         }
       }
       .form-builder-clone{
-        //margin-top: 3px;
         float:left;
         .form-builder-add-more{
-          padding: 2px 0;
+          padding: 0;
           color: $green;
           margin:0;
         }
@@ -255,6 +260,9 @@ $lightestGray: #eee;
           padding: 2px 0;
           color:#9D0101;
           margin-left: 10px;
+        }
+        .fa {
+          padding: 3px;
         }
       }
 
@@ -317,7 +325,7 @@ $lightestGray: #eee;
       }
       .form-builder-fieldset {
         border-top: 1px solid #c0c0c0;
-        margin: 15px 2px 10px;
+        margin: 15px 3px 3px;
         box-sizing: border-box;
         border-radius: 5px;
         position: relative;
@@ -325,6 +333,46 @@ $lightestGray: #eee;
           position: absolute;
           right: 20px;
           top: -7px;
+        }
+        .description{
+          margin: 10px;
+        }
+      }
+      .control-wrapper {
+        .form-field-wrap {
+          .form-builder-tooltip-wrap {
+            .form-builder-tooltip-description {
+              right: -16%;
+            }
+          }
+          .form-field-content-wrap {
+            .control-wrapper-content {
+              label {
+                margin: 0 25px;
+              }
+            }
+            i {
+              bottom: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.grid {
+  .form-builder-row {
+    .form-builder-column-wrapper {
+      .form-builder-column {
+        .form-field-wrap {
+          .form-builder-tooltip-wrap {
+            .form-builder-tooltip-description {
+              .details {
+                margin-left: calc(5% - 7px);
+              }
+            }
+          }
         }
       }
     }
@@ -346,7 +394,7 @@ $lightestGray: #eee;
        border: 1px dotted #BBB;
       .form-builder-column{
         .form-field-wrap{
-          .form-field-content-wrap{
+          > div {
             width: 90.5%;
           }
           .form-builder-comment-toggle{
@@ -382,10 +430,11 @@ $lightestGray: #eee;
 
 .active-group-controls {
   display: block;
-  padding: 15px 10px 10px;
+  padding: 15px 3px 3px;
   border-radius: 5px;
   border: 1px solid #c0c0c0;
   border-top: none;
+
 }
 
 .closing-group-controls {

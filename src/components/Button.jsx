@@ -110,6 +110,7 @@ export class Button extends Component {
         disabled={!this.props.enabled}
         key={index}
         onClick={() => this.changeValue(option)}
+        title={option[this.props.nameKey]}
       >
         <i className="fa fa-ok"></i>{option[this.props.nameKey]}
       </button>

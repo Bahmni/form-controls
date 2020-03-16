@@ -7,11 +7,14 @@ import * as Grid from 'components/designer/Grid.jsx';
 import { IDGenerator } from 'src/helpers/idGenerator';
 import sinon from 'sinon';
 import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
+import cloneDeep from 'lodash/cloneDeep';
 
 chai.use(chaiEnzyme());
 
 const concept = { name: 'dummyPulse', datatype: 'text', uuid: 'dummyUuid' };
 const properties = {};
+const conceptWithDesc = Object.assign({}, concept);
+conceptWithDesc.description = { value: 'concept set description' };
 
 class DummyControl extends Component {
   getJsonDefinition() {
@@ -20,6 +23,12 @@ class DummyControl extends Component {
 
   render() {
     return <input />;
+  }
+}
+
+class DummyControlWithDescription extends DummyControl {
+  getJsonDefinition() {
+    return { concept: conceptWithDesc, properties };
   }
 }
 
@@ -58,6 +67,7 @@ describe('ObsGroupControlDesigner', () => {
         uuid: 'someUuid',
         set: true,
         setMembers: [],
+        description: undefined,
       },
       label: {
         type: 'label',
@@ -238,6 +248,58 @@ describe('ObsGroupControlDesigner', () => {
       });
 
       sinon.assert.calledOnce(deleteControlSpy);
+    });
+  });
+  context('when concept set has description', () => {
+    const label = {
+      type: 'label',
+      value: concept.name,
+      properties: {},
+    };
+    beforeEach(() => {
+      metadata = {
+        id: '123',
+        type: 'obsGroupControl',
+        concept: conceptWithDesc,
+        label,
+        properties,
+      };
+
+      const textBoxDescriptor = { control: DummyControlWithDescription };
+      componentStore.registerDesignerComponent('text', textBoxDescriptor); // eslint-disable-line no-undef
+      onSelectSpy = sinon.spy();
+      const idGenerator = new IDGenerator();
+      wrapper = mount(
+            <ObsGroupControlDesigner
+              clearSelectedControl={() => {}}
+              deleteControl={() => {}}
+              idGenerator={idGenerator}
+              metadata={metadata}
+              onSelect={onSelectSpy}
+              wrapper={() => {}}
+            />);
+    });
+
+    after(() => {
+      componentStore.deRegisterDesignerComponent('text'); // eslint-disable-line no-undef
+    });
+
+    it('should show concept description if present', () => {
+      expect(wrapper.find('.description').length).to.equal(1);
+    });
+
+    it('should include translationKey if description is present', () => {
+      const instance = wrapper.instance();
+      const clonedConcept = cloneDeep(conceptWithDesc);
+      clonedConcept.description.translationKey = 'DUMMYPULSE_123_DESC';
+
+      const expectedLabelMetadata = { translationKey: 'DUMMYPULSE_123', id: '123',
+        type: 'label', value: 'dummyPulse', properties: {} };
+
+      const expectedJson = { concept: clonedConcept, label: expectedLabelMetadata,
+        controls: [], properties: {}, id: '123', type: 'obsGroupControl' };
+
+      expect(instance.getJsonDefinition()).to.eql(expectedJson);
     });
   });
 });

@@ -19,7 +19,6 @@ describe('ObsGroupControl', () => {
   const obsConcept = {
     answers: [],
     datatype: 'Numeric',
-    description: [],
     hiAbsolute: null,
     hiNormal: null,
     lowAbsolute: null,
@@ -94,6 +93,74 @@ describe('ObsGroupControl', () => {
   const formVersion = '3';
   const metadata = {
     concept: obsGroupConcept,
+    controls: [
+      {
+        concept: obsConcept,
+        hiAbsolute: null,
+        hiNormal: null,
+        id: '4',
+        label: {
+          type: 'label',
+          value: 'TestObs',
+        },
+        lowAbsolute: null,
+        lowNormal: null,
+        properties: {
+          addMore: true,
+          hideLabel: false,
+          location: {
+            column: 0,
+            row: 0,
+          },
+          mandatory: false,
+          notes: false,
+        },
+        type: 'obsControl',
+        units: null,
+      },
+    ],
+    id: '3',
+    label: {
+      type: 'label',
+      translationKey: 'TEST_KEY',
+      value: 'TestGroup',
+    },
+    properties: {
+      abnormal: false,
+      addMore: false,
+      location: {
+        column: 0,
+        row: 0,
+      },
+    },
+    type: 'obsGroupControl',
+  };
+  const obsGroupConceptTwo = {
+    datatype: 'N/A',
+    name: 'TestGroup',
+    set: true,
+    description: { value: '<h1>concept set description</h1>' },
+    setMembers: [
+      {
+        answers: [],
+        datatype: 'Numeric',
+        description: [],
+        hiAbsolute: null,
+        hiNormal: null,
+        lowAbsolute: null,
+        lowNormal: null,
+        name: 'TestObs',
+        properties: {
+          allowDecimal: false,
+        },
+        units: null,
+        uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+      },
+    ],
+    uuid: 'eafe7d68-904b-459b-b11d-6502ec0143a4',
+  };
+  const metadataTwo = {
+    concept: obsGroupConceptTwo,
     controls: [
       {
         concept: obsConcept,
@@ -446,6 +513,45 @@ describe('ObsGroupControl', () => {
 
       expect(wrapper).to.have.exactly(1).descendants('ObsControl');
       expect(wrapper.find('span').at(0).text()).to.eql('test value');
+    });
+
+    it('should show description with html tags when obsGroup has description', () => {
+      const wrapper = mountWithIntl(
+                    <ObsGroupControl
+                      children={children}
+                      collapse={false}
+                      formName={formName}
+                      formVersion={formVersion}
+                      metadata={metadataTwo}
+                      onValueChanged={onChangeSpy}
+                      showNotification={showNotificationSpy}
+                      validate={false}
+                      validateForm={false}
+                      value={emptyValue}
+                    />
+                );
+      wrapper.setProps({ metadataTwo });
+      expect(wrapper.find('.description').length).to.equal(1);
+      expect(wrapper.find('.description')).text().to.eql('concept set description');
+    });
+
+    it('should not show description class when obsGroup does not have description', () => {
+      const wrapper = mountWithIntl(
+                    <ObsGroupControl
+                      children={children}
+                      collapse={false}
+                      formName={formName}
+                      formVersion={formVersion}
+                      metadata={metadata}
+                      onValueChanged={onChangeSpy}
+                      showNotification={showNotificationSpy}
+                      validate={false}
+                      validateForm={false}
+                      value={emptyValue}
+                    />
+                );
+      wrapper.setProps({ metadata });
+      expect(wrapper.find('.description').length).to.equal(0);
     });
   });
 });
