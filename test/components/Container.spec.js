@@ -16,6 +16,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import Constants from 'src/constants';
 import sinon from 'sinon';
 import { Map as immutableMap } from 'immutable';
+import * as ExecuteEvents from '../../src/helpers/ExecuteEvents';
 
 chai.use(chaiEnzyme());
 
