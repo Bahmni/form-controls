@@ -4,6 +4,7 @@ import sinon from 'sinon';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { expect } from 'chai';
+import ScriptRunner from '../../src/helpers/ScriptRunner';
 
 describe('FormRenderer', () => {
   const formDetails = {
@@ -70,5 +71,17 @@ describe('FormRenderer', () => {
 
   it('should return false if there is no container', () => {
     expect(unMountForm()).to.eql(false); // eslint-disable-line no-undef
+  });
+
+  it('should call script runner execute method on call of runScript', () => {
+    const stub = sinon.stub(ScriptRunner.prototype, 'execute').callsFake(() => {});
+
+    const data = { component: { state: { data: {} },
+      props: { patient: {} } },
+      events: { onFormSave: {} } };
+    runScript(data);// eslint-disable-line no-undef
+
+    sinon.assert.calledOnce(stub);
+    sinon.assert.calledWith(stub, data.events.onFormSave);
   });
 });
