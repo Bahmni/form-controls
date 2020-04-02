@@ -98,7 +98,7 @@ describe('DateTime', () => {
     const dateTimeError = new Error({ message: 'Incorrect Date Time' });
     wrapper.find('input').at(0).simulate('change', { target: { value: '' } });
 
-    sinon.assert.callCount(onChangeSpy, 2);
+    sinon.assert.callCount(onChangeSpy, 1);
 
     sinon.assert.calledWithMatch(onChangeSpy, { value: ' 22:10',
       errors: [mandatoryError, dateTimeError] });

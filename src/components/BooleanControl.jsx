@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { IntlShape } from 'react-intl';
 
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
@@ -24,7 +25,7 @@ export class BooleanControl extends Component {
         id: option.translationKey || 'defaultId',
         defaultMessage: option.name,
       };
-      const formattedMessage = this.context.intl.formatMessage(message);
+      const formattedMessage = this.props.intl.formatMessage(message);
       optionsRepresentation.push({ name: formattedMessage, value: option.value });
     });
     return optionsRepresentation;
@@ -65,6 +66,7 @@ export class BooleanControl extends Component {
 BooleanControl.propTypes = {
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
+  intl: IntlShape,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
@@ -75,10 +77,6 @@ BooleanControl.propTypes = {
 
 BooleanControl.defaultProps = {
   enabled: true,
-};
-
-BooleanControl.contextTypes = {
-  intl: PropTypes.object.isRequired,
 };
 
 ComponentStore.registerComponent('boolean', BooleanControl);

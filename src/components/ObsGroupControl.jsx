@@ -5,7 +5,7 @@ import { getGroupedControls, displayRowControls } from '../helpers/controlsParse
 import classNames from 'classnames';
 import addMoreDecorator from './AddMoreDecorator';
 import { List } from 'immutable';
-import { FormattedHTMLMessage, FormattedMessage } from 'react-intl';
+import { IntlProvider, injectIntl } from 'react-intl';
 
 export class ObsGroupControl extends addMoreDecorator(Component) {
 
@@ -48,13 +48,16 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
 
   showDescription() {
     const { description } = this.props.metadata.concept;
+
     if (description && description.value) {
+      const showHelperTextHtml = this.props.intl.formatHTMLMessage({
+        defaultMessage: description.value,
+        id: description.translationKey || 'defaultId',
+      });
       return (
-              <div className={classNames('description')}>
-                  <FormattedHTMLMessage
-                    defaultMessage={description.value}
-                    id={description.translationKey || 'defaultId'}
-                  />
+              <div className={classNames('description')}
+                dangerouslySetInnerHTML={{ __html: showHelperTextHtml }}
+              >
               </div>
       );
     }
@@ -98,18 +101,21 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
         <legend className={`${toggleClass}${disableClass}`} onClick={ this._onCollapse}>
           <i className="fa fa-caret-down"></i>
           <i className="fa fa-caret-right"></i>
-          <strong>
-            <FormattedMessage
-              defaultMessage={label.value}
-              id={label.translationKey || 'defaultId'}
-            />
+          <strong className="test-obsgrp-header">
+             {
+              this.props.intl.formatMessage({
+                defaultMessage: label.value,
+                id: label.translationKey || 'defaultId',
+              })}
           </strong>
         </legend>
         {this.showAddMore()}
-        <div className={`obsGroup-controls ${obsGroupClass}${disableClass}`}>
-          { this.showDescription() }
-          { displayRowControls(groupedRowControls, this.props.children.toArray(), childProps) }
-        </div>
+        <IntlProvider {...this.props.intl}>
+          <div className={`obsGroup-controls ${obsGroupClass}${disableClass}`}>
+            {this.showDescription()}
+            {displayRowControls(groupedRowControls, this.props.children.toArray(), childProps)}
+          </div>
+        </IntlProvider>
       </fieldset>
     );
   }
@@ -152,5 +158,8 @@ ObsGroupControl.defaultProps = {
   showRemove: false,
   children: List.of([]),
 };
+const ObsGroupControlWithIntl = injectIntl(ObsGroupControl, { forwardRef: true });
+
+export { ObsGroupControlWithIntl };
 
 ComponentStore.registerComponent('obsGroupControl', ObsGroupControl);

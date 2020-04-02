@@ -27,6 +27,7 @@ export class CellDesigner extends DropTarget {
 
   deleteControl(controlId) {
     const newStateData = this.state.data.filter((control) => control.id !== controlId);
+    delete this.childControls[controlId];
     this.setState({ data: newStateData });
   }
 
@@ -112,8 +113,8 @@ export class CellDesigner extends DropTarget {
   getCellDefinition() {
     const cellDefinition = [];
     each(this.childControls, (childControl) => {
-      if (childControl.getWrappedInstance()) {
-        cellDefinition.push(childControl.getWrappedInstance().getJsonDefinition());
+      if (childControl) {
+        cellDefinition.push(childControl.getJsonDefinition());
       }
     });
     return cellDefinition;
@@ -156,7 +157,7 @@ CellDesigner.propTypes = {
   onControlDrop: PropTypes.func,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
-  wrapper: PropTypes.func.isRequired,
+  wrapper: PropTypes.object.isRequired,
 };
 
 

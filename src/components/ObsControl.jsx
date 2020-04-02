@@ -10,7 +10,7 @@ import { UnSupportedComponent } from 'components/UnSupportedComponent.jsx';
 import addMoreDecorator from './AddMoreDecorator';
 import constants from 'src/constants';
 import { Util } from 'src/helpers/Util';
-import { FormattedHTMLMessage } from 'react-intl';
+import { injectIntl } from 'react-intl';
 
 export class ObsControl extends addMoreDecorator(Component) {
 
@@ -63,7 +63,8 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   displayObsControl(registeredComponent) {
     const { onControlAdd, hidden, enabled, metadata,
-      metadata: { concept }, validate, validateForm, formFieldPath, showNotification } = this.props;
+      metadata: { concept }, validate, validateForm, formFieldPath,
+      showNotification, intl } = this.props;
     const options = metadata.options || concept.answers;
     const { conceptClass, conceptHandler } = concept;
     const validations = getValidations(metadata.properties, concept.properties);
@@ -88,6 +89,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       showNotification,
       conceptClass,
       conceptHandler,
+      intl,
     });
   }
 
@@ -105,12 +107,14 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayLabel() {
-    const { enabled, hidden, metadata: { properties, label, units } } = this.props;
+    const { enabled, intl, hidden, metadata: { properties, label, units } } = this.props;
     const { concept: { description } } = this.props.metadata;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
     const labelMetadata = { ...label, units: this._getUnits(units) };
     const showHintButton = this.state && this.state.showHintButton;
-    const labelComponent = <Label enabled={enabled} hidden={hidden} metadata={labelMetadata} />;
+    const labelComponent = (<Label enabled={enabled} hidden={hidden}
+      intl={intl} metadata={labelMetadata}
+    />);
     if (!hideLabel && description && description.value) {
       return (
               <div>
@@ -138,16 +142,16 @@ export class ObsControl extends addMoreDecorator(Component) {
   showHelperText() {
     const { concept: { description } } = this.props.metadata;
     if (description && description.value) {
+      const showHelperTextHtml = this.props.intl.formatHTMLMessage({
+        defaultMessage: description.value,
+        id: description.translationKey || 'defaultId',
+      });
       return (
           <div className={classNames('form-builder-tooltip-wrap',
               { active: this.state.showHintButton === true })}>
           <p className="form-builder-tooltip-description">
             <i className="fa fa-caret-down"></i>
-            <span className="details hint">
-                <FormattedHTMLMessage
-                  defaultMessage={description.value}
-                  id={description.translationKey || 'defaultId'}
-                />
+            <span className="details hint" dangerouslySetInnerHTML={{ __html: showHelperTextHtml }}>
             </span>
           </p>
         </div>
@@ -273,5 +277,9 @@ ObsControl.defaultProps = {
   showAddMore: false,
   showRemove: false,
 };
+
+const ObsControlWithIntl = injectIntl(ObsControl, { forwardRef: true });
+
+export { ObsControlWithIntl };
 
 ComponentStore.registerComponent('obsControl', ObsControl);

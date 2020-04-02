@@ -86,7 +86,7 @@ RowDesigner.propTypes = {
   rowPosition: PropTypes.number.isRequired,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
-  wrapper: PropTypes.func.isRequired,
+  wrapper: PropTypes.object.isRequired,
 };
 
 RowDesigner.defaultProps = {

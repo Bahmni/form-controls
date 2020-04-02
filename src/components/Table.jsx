@@ -4,7 +4,7 @@ import { List } from 'immutable';
 import classNames from 'classnames';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, IntlProvider, IntlShape } from 'react-intl';
 
 export class Table extends Component {
 
@@ -21,11 +21,14 @@ export class Table extends Component {
 
   displayLabel(label) {
     return (<div className={classNames('control-wrapper-content')}>
-          <strong><FormattedMessage
-            defaultMessage={label.value}
-            id={label.translationKey || 'defaultId'}
-          /></strong>
-           </div>);
+      <strong className="test-table-label">
+        {
+          this.props.intl.formatMessage({
+            defaultMessage: label.value,
+            id: label.translationKey || 'defaultId',
+          })}
+      </strong>
+    </div>);
   }
 
   displayColumnHeaders(columnHeaders) {
@@ -58,20 +61,24 @@ export class Table extends Component {
     const groupedRowControls = getGroupedControls(this.props.metadata.controls, 'row');
     return (
       <div>
-        <strong className="table-header">
-            <FormattedMessage
-              defaultMessage={label.value}
-              id={label.translationKey || 'defaultId'}
-            />
+        <strong className="table-header test-table-label">
+          {
+            this.props.intl.formatMessage({
+              defaultMessage: label.value,
+              id: label.translationKey || 'defaultId',
+            })}
         </strong>
         <div className="table-controls">
           <div className="header">
               {this.displayColumnHeaders(this.props.metadata.columnHeaders)}
           </div>
-          <div>
-            {displayRowControls(groupedRowControls, this.props.children.toArray(),
-              childProps, true)}
-          </div>
+            <div className="test-Rows">
+              <IntlProvider {...this.props.intl}>
+              {displayRowControls(groupedRowControls, this.props.children.toArray(),
+                childProps, true)}
+              </IntlProvider>
+
+            </div>
         </div>
       </div>
     );
@@ -83,6 +90,7 @@ Table.propTypes = {
   enabled: PropTypes.bool,
   formName: PropTypes.string.isRequired,
   formVersion: PropTypes.string.isRequired,
+  intl: IntlShape,
   metadata: PropTypes.shape({
     id: PropTypes.string.isRequired,
     label: PropTypes.shape({
@@ -112,5 +120,7 @@ Table.defaultProps = {
   enabled: true,
 };
 
+const TableWithIntl = injectIntl(Table, { forwardRef: true });
 
+export { TableWithIntl };
 ComponentStore.registerComponent('table', Table);

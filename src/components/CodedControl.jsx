@@ -4,6 +4,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import find from 'lodash/find';
 import each from 'lodash/each';
+import { IntlShape } from 'react-intl';
 
 export class CodedControl extends Component {
   constructor(props) {
@@ -40,7 +41,7 @@ export class CodedControl extends Component {
         id: option.translationKey || 'defaultId',
         defaultMessage: option.name.display || option.name,
       };
-      const formattedMessage = this.context.intl.formatMessage(message);
+      const formattedMessage = this.props.intl.formatMessage(message);
       optionsRepresentation.push({ name: formattedMessage, value: option.uuid });
     });
     return optionsRepresentation;
@@ -114,6 +115,7 @@ export class CodedControl extends Component {
 CodedControl.propTypes = {
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
+  intl: IntlShape,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   properties: PropTypes.object.isRequired,
@@ -121,10 +123,6 @@ CodedControl.propTypes = {
   validateForm: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
   value: PropTypes.any,
-};
-
-CodedControl.contextTypes = {
-  intl: PropTypes.object.isRequired,
 };
 
 ComponentStore.registerComponent('Coded', CodedControl);

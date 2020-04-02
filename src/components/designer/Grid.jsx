@@ -92,7 +92,7 @@ GridDesigner.propTypes = {
   onControlDrop: PropTypes.func,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
-  wrapper: PropTypes.func.isRequired,
+  wrapper: PropTypes.object.isRequired,
 };
 
 GridDesigner.defaultProps = {

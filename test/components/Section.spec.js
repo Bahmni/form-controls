@@ -1,11 +1,10 @@
 import React from 'react';
-import { mount } from 'enzyme';
 import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
-import { Section } from 'components/Section.jsx';
+import { SectionWithIntl, Section } from 'components/Section.jsx';
 import sinon from 'sinon';
 import ComponentStore from 'src/helpers/componentStore';
-import { ObsControl } from 'components/ObsControl.jsx';
+import { ObsControlWithIntl as ObsControl } from 'components/ObsControl.jsx';
 import { NumericBox } from 'components/NumericBox.jsx';
 import { List } from 'immutable';
 import { Label } from 'components/Label.jsx';
@@ -133,8 +132,8 @@ describe('Section', () => {
     });
 
     it('should render section control collapse equal to true', () => {
-      const wrapper = mount(
-        <Section
+      const wrapper = mountWithIntl(
+        <SectionWithIntl
           children={children}
           collapse
           formFieldPath={sectionFormFieldPath}
@@ -151,8 +150,8 @@ describe('Section', () => {
     });
 
     it('should pass enabled property to its child component', () => {
-      const wrapper = mount(
-        <Section
+      const wrapper = mountWithIntl(
+        <SectionWithIntl
           children={children}
           collapse
           enabled={false}
@@ -170,8 +169,8 @@ describe('Section', () => {
     });
 
     it('should set enabled as true by default', () => {
-      const wrapper = mount(
-        <Section
+      const wrapper = mountWithIntl(
+        <SectionWithIntl
           children={children}
           collapse
           formFieldPath={sectionFormFieldPath}
@@ -189,8 +188,8 @@ describe('Section', () => {
 
     it('should render section control with only the registered controls', () => {
       ComponentStore.deRegisterComponent('obsControl');
-      const wrapper = mount(
-        <Section
+      const wrapper = mountWithIntl(
+        <SectionWithIntl
           children={children}
           collapse
           formFieldPath={sectionFormFieldPath}
@@ -208,8 +207,8 @@ describe('Section', () => {
     });
 
     it('should collapse all child controls on click of collapse icon', () => {
-      const wrapper = mount(
-        <Section
+      const wrapper = mountWithIntl(
+        <SectionWithIntl
           children={children}
           collapse={false}
           enabled
@@ -235,8 +234,8 @@ describe('Section', () => {
     });
 
     it('should collapse all child controls on change of collapse props', () => {
-      const wrapper = mount(
-        <Section
+      const wrapper = mountWithIntl(
+        <SectionWithIntl
           children={children}
           collapse={false}
           enabled
@@ -262,7 +261,7 @@ describe('Section', () => {
     });
 
     it('should collapse all child controls on change of collapse state', () => {
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <Section
           children={children}
           collapse={false}
@@ -290,8 +289,8 @@ describe('Section', () => {
     });
 
     it('should show as disabled when Section is set to be disabled', () => {
-      const wrapper = mount(
-        <Section
+      const wrapper = mountWithIntl(
+        <SectionWithIntl
           children={children}
           collapse={false}
           enabled={false}
@@ -312,7 +311,7 @@ describe('Section', () => {
     });
 
     it('should call onValueChanged when onChange be triggered', () => {
-      const wrapper = mount(
+      const wrapper = mountWithIntl(
         <Section
           children={children}
           collapse
@@ -328,14 +327,13 @@ describe('Section', () => {
 
       const updatedValue = { value: 1, comment: undefined };
       wrapper.instance().onChange(obsFormFieldPath, updatedValue, undefined, undefined);
-
       sinon.assert.calledOnce(
         onChangeSpy.withArgs(obsFormFieldPath, updatedValue, undefined, undefined));
     });
 
     it('should pass onEventTrigger property to children control', () => {
-      const wrapper = mount(
-        <Section
+      const wrapper = mountWithIntl(
+        <SectionWithIntl
           children={children}
           collapse
           formFieldPath={sectionFormFieldPath}
@@ -362,7 +360,7 @@ describe('Section', () => {
       };
       metadata.label = label;
       const wrapper = mountWithIntl(
-        <Section
+        <SectionWithIntl
           children={children}
           collapse
           formFieldPath={sectionFormFieldPath}
@@ -374,7 +372,7 @@ describe('Section', () => {
           validate={false}
           validateForm={false}
         />);
-      expect(wrapper.find('span').at(0).text()).to.eql('test value');
+      expect(wrapper.find('.test-section-label').text()).to.eql('test value');
     });
   });
 });

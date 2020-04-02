@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import ComponentStore from 'src/helpers/componentStore';
 import { getGroupedControls, displayRowControls } from '../helpers/controlsParser';
 import addMoreDecorator from './AddMoreDecorator';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, IntlProvider } from 'react-intl';
 
 export class Section extends addMoreDecorator(Component) {
 
@@ -84,15 +84,18 @@ export class Section extends addMoreDecorator(Component) {
           <legend className={`${toggleClass}${disableClass}`} onClick={ this._onCollapse}>
             <i className="fa fa-caret-down"></i>
             <i className="fa fa-caret-right"></i>
-            <strong>
-              <FormattedMessage
-                defaultMessage={label.value}
-                id={label.translationKey || 'defaultId'}
-              />
+            <strong className="test-section-label">
+              {
+              this.props.intl.formatMessage({
+                defaultMessage: label.value,
+                id: label.translationKey || 'defaultId',
+              })}
             </strong>
           </legend>
           <div className={`obsGroup-controls ${sectionClass}${disableClass}`} >
+          <IntlProvider {...this.props.intl}>
             {displayRowControls(groupedRowControls, this.props.children.toArray(), childProps)}
+           </IntlProvider>
           </div>
         </fieldset>
     );
@@ -128,5 +131,7 @@ Section.defaultProps = {
   enabled: true,
 };
 
+const SectionWithIntl = injectIntl(Section, { forwardRef: true });
+export { SectionWithIntl };
 
 ComponentStore.registerComponent('section', Section);
