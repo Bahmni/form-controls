@@ -4,7 +4,7 @@ import { displayRowControls, getGroupedControls } from '../helpers/controlsParse
 import isEmpty from 'lodash/isEmpty';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
 import ControlRecordTreeMgr from 'src/helpers/ControlRecordTreeMgr';
-import ScriptRunner from 'src/helpers/ScriptRunner';
+import ScriptRunner from 'src/helpers/scriptRunner';
 import addMoreDecorator from './AddMoreDecorator';
 import ObservationMapper from '../helpers/ObservationMapper';
 import NotificationContainer from '../helpers/Notification';

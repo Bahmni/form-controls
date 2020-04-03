@@ -2,7 +2,7 @@ import { Container } from 'components/Container.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ControlRecordTreeBuilder from 'src/helpers/ControlRecordTreeBuilder';
-import ScriptRunner from './ScriptRunner';
+import ScriptRunner from './scriptRunner';
 
 window.renderWithControls =
   function renderWithControls(formDetails, observations, nodeId,

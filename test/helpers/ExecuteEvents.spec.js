@@ -2,7 +2,7 @@ import { executeEventsFromCurrentRecord } from 'src/helpers/ExecuteEvents';
 import { expect } from 'chai';
 import { ControlRecord } from 'src/helpers/ControlRecordTreeBuilder';
 import { List } from 'immutable/dist/immutable';
-import ScriptRunner from 'src/helpers/ScriptRunner';
+import ScriptRunner from 'src/helpers/scriptRunner';
 import sinon from 'sinon';
 
 describe('execute control events', () => {

@@ -1,4 +1,4 @@
-import ScriptRunner from 'src/helpers/ScriptRunner';
+import ScriptRunner from 'src/helpers/scriptRunner';
 
 export function executeEventsFromCurrentRecord(currentRecord, rootRecord, patient) {
   let recordTree = rootRecord || currentRecord;
