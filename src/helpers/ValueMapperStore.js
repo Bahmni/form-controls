@@ -10,8 +10,14 @@ class ValueMapperStore {
   }
 
   getMapper(control) {
-    const datatype = control && control.concept && control.concept.datatype;
-    return datatype && this.mapperList[datatype];
+    const dataType = control && control.concept && control.concept.datatype;
+    let controlType;
+    if (dataType === 'Coded' && control.properties && control.properties.multiSelect) {
+      controlType = 'CodedMultiSelect';
+    } else {
+      controlType = dataType;
+    }
+    return controlType && this.mapperList[controlType];
   }
 
   registerValueMapper(type, controlMapper) {

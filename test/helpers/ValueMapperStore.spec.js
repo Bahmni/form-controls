@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import ValueMapperStore from '../../src/helpers/ValueMapperStore';
 import { BooleanValueMapper } from '../../src/mapper/BooleanValueMapper';
 import { CodedValueMapper } from '../../src/mapper/CodedValueMapper';
-
+import { CodedMultiSelectValueMapper } from '../../src/mapper/CodedMultiSelectValueMapper';
 
 describe('ValueMapperStore', () => {
   it('should get undefined when given obs control\'s type is not boolean or coded', () => {
@@ -43,6 +43,19 @@ describe('ValueMapperStore', () => {
     const datatypeMapper = ValueMapperStore.getMapper(codedObsControl);
 
     expect(datatypeMapper instanceof CodedValueMapper).to.equal(true);
+  });
+
+  it('should get codedMultiSelect value mapper when given obs control is coded multiSelect', () => {
+    const codedMultiSelectObsControl = {
+      properties: { multiSelect: true },
+      concept: {
+        datatype: 'Coded',
+      },
+    };
+
+    const datatypeMapper = ValueMapperStore.getMapper(codedMultiSelectObsControl);
+
+    expect(datatypeMapper instanceof CodedMultiSelectValueMapper).to.equal(true);
   });
 });
 
