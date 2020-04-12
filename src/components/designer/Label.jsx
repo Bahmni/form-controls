@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ComponentStore from 'src/helpers/componentStore';
 import TranslationKeyGenerator from 'src/services/TranslationKeyService';
+import classNames from 'classnames';
 
 export class LabelDesigner extends Component {
   constructor(props) {
@@ -83,6 +84,10 @@ export class LabelDesigner extends Component {
   }
 
   render() {
+    const wrapperClassNames = ['control-wrapper-content'];
+    if (!this.props.visible) {
+      wrapperClassNames.push('hidden-label');
+    }
     if (this.state.isEditable) {
       return (
           <input
@@ -94,7 +99,7 @@ export class LabelDesigner extends Component {
       );
     }
     return (
-      <div className="control-wrapper-content" onClick={(e) => this.stopEventPropagation(e) }>
+      <div className={classNames(wrapperClassNames)} onClick={(e) => this.stopEventPropagation(e) }>
         <label
           onDoubleClick={ this.onDoubleClick }
         >
@@ -125,6 +130,10 @@ LabelDesigner.propTypes = {
     }),
   }),
   showDeleteButton: PropTypes.bool.isRequired,
+  visible: PropTypes.bool.isRequired,
+};
+LabelDesigner.defaultProps = {
+  visible: true,
 };
 
 const descriptor = {

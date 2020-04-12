@@ -115,19 +115,16 @@ export class ObsControl extends addMoreDecorator(Component) {
     const labelComponent = (<Label enabled={enabled} hidden={hidden}
       intl={intl} metadata={labelMetadata}
     />);
-    if (!hideLabel && description && description.value) {
-      return (
-              <div>
-                  {labelComponent}
-                  <i className="fa fa-question-circle form-builder-tooltip-trigger"
-                    onClick={() => this.setState({ showHintButton: !showHintButton })}
-                  />
-              </div>
-      );
-    } else if (!hideLabel) {
-      return (labelComponent);
-    }
-    return null;
+    return (
+      <div>
+        {!hideLabel && labelComponent}
+        {!hideLabel && this.markMandatory()}
+        {!hideLabel && description && description.value &&
+        <i className="fa fa-question-circle form-builder-tooltip-trigger"
+          onClick={() => this.setState({ showHintButton: !showHintButton })}
+        />}
+      </div>
+    );
   }
 
   markMandatory() {
@@ -223,15 +220,14 @@ export class ObsControl extends addMoreDecorator(Component) {
               <div className="form-field-content-wrap">
                   <div className={classNames('label-wrap fl', `${addMoreComplexClass}`)}>
                       {this.displayLabel()}
-                      {this.markMandatory()}
                   </div>
                   <div className={classNames('obs-control-field')}>
                       {this.displayObsControl(registeredComponent)}
                       {this.showAbnormalButton()}
                       {this.showAddMore()}
+                      {this.showComment()}
                   </div>
               </div>
-              {this.showComment()}
           </div>
       );
     }
