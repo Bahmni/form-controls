@@ -45,6 +45,7 @@ export class RowDesigner extends Component {
           idGenerator={this.props.idGenerator}
           isBeingDragged={this.props.isBeingDragged}
           key={i}
+          loadFormJson={this.props.loadFormJson}
           location={{ column: i, row: this.props.rowPosition }}
           onChange={this.changeHandler}
           onControlDrop={this.props.onControlDrop}
@@ -80,6 +81,7 @@ RowDesigner.propTypes = {
   dragSourceCell: PropTypes.instanceOf(CellDesigner),
   idGenerator: PropTypes.object.isRequired,
   isBeingDragged: PropTypes.bool,
+  loadFormJson: PropTypes.func,
   onChange: PropTypes.func.isRequired,
   onControlDrop: PropTypes.func,
   rowData: PropTypes.array.isRequired,
