@@ -36,8 +36,7 @@ export class CellDesigner extends DropTarget {
   }
 
   processMove(metadata) {
-    const filteredData = this.state.data.filter((data) => data.id !== metadata.id);
-    this.setState({ data: filteredData });
+    this.deleteControl(metadata.id);
   }
 
   processDragEnter() {
