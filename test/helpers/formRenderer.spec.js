@@ -4,8 +4,8 @@ import sinon from 'sinon';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { expect } from 'chai';
-import ScriptRunner from '../../src/helpers/ScriptRunner';
 import ObservationMapper from 'src/helpers/ObservationMapper';
+import ScriptRunner from 'src/helpers/scriptRunner';
 
 describe('FormRenderer', () => {
   const formDetails = {
