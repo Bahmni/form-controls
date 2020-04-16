@@ -4,7 +4,8 @@ import sinon from 'sinon';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { expect } from 'chai';
-import ScriptRunner from '../../src/helpers/scriptRunner';
+import ObservationMapper from 'src/helpers/ObservationMapper';
+import ScriptRunner from 'src/helpers/scriptRunner';
 
 describe('FormRenderer', () => {
   const formDetails = {
@@ -73,15 +74,26 @@ describe('FormRenderer', () => {
     expect(unMountForm()).to.eql(false); // eslint-disable-line no-undef
   });
 
-  it('should call script runner execute method on call of runScript', () => {
+  it('should call script runner execute method on call of runEventScript', () => {
     const stub = sinon.stub(ScriptRunner.prototype, 'execute').callsFake(() => {});
 
     const data = { component: { state: { data: {} },
       props: { patient: {} } },
       events: { onFormSave: {} } };
-    runScript(data);// eslint-disable-line no-undef
+    /* eslint-disable no-undef */
+    runEventScript(data.component.state.data, data.events.onFormSave, data.component.props.patient);
 
     sinon.assert.calledOnce(stub);
     sinon.assert.calledWith(stub, data.events.onFormSave);
+  });
+
+  it('should call from method of ObservationMapper when getObservations is called', () => {
+    const stub = sinon.stub(ObservationMapper.prototype, 'from').callsFake(() => {});
+
+    getObservations([]);
+
+    sinon.assert.calledOnce(stub);
+    sinon.assert.calledWith(stub, []);
+    stub.restore();
   });
 });
