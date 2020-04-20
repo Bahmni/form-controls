@@ -55,6 +55,7 @@ export { default as ComponentStore } from 'src/helpers/componentStore';
 // -------------------------- mappers ---------------------
 export { BooleanValueMapper } from 'src/mapper/BooleanValueMapper';
 export { CodedValueMapper } from 'src/mapper/CodedValueMapper';
+export { CodedMultiSelectValueMapper } from 'src/mapper/CodedMultiSelectValueMapper';
 
 // -------------------------- services ---------------------
 export { TranslationKeyGenerator } from 'src/services/TranslationKeyService';
