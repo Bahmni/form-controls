@@ -53,6 +53,7 @@ export class GridDesigner extends Component {
           index={i}
           isBeingDragged ={this.props.isBeingDragged}
           key={i}
+          loadFormJson={this.props.loadFormJson}
           onChange={this.changeHandler}
           onControlDrop={this.props.onControlDrop}
           ref={this.rowReference}
@@ -87,6 +88,7 @@ GridDesigner.propTypes = {
   dragSourceCell: PropTypes.instanceOf(CellDesigner),
   idGenerator: PropTypes.object.isRequired,
   isBeingDragged: PropTypes.bool,
+  loadFormJson: PropTypes.func,
   minColumns: PropTypes.number,
   minRows: PropTypes.number,
   onControlDrop: PropTypes.func,

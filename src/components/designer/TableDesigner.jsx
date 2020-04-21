@@ -159,6 +159,7 @@ export class TableDesigner extends Component {
             dragSourceCell={this.props.dragSourceCell}
             idGenerator={this.props.idGenerator}
             isBeingDragged ={this.props.isBeingDragged}
+            loadFormJson={this.props.loadFormJson}
             minColumns={NO_OF_TABLE_COLUMNS}
             minRows={2}
             onControlDrop ={this.handleControlDrop}
@@ -179,6 +180,7 @@ TableDesigner.propTypes = {
   dragSourceCell: PropTypes.instanceOf(CellDesigner),
   idGenerator: PropTypes.object.isRequired,
   isBeingDragged: PropTypes.bool,
+  loadFormJson: PropTypes.func,
   metadata: PropTypes.shape({
     columnHeaders: PropTypes.arrayOf(PropTypes.string),
     displayType: PropTypes.string,

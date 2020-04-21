@@ -100,6 +100,7 @@ export class SectionDesigner extends Component {
               dragSourceCell={this.props.dragSourceCell}
               idGenerator={this.props.idGenerator}
               isBeingDragged ={this.props.isBeingDragged}
+              loadFormJson={this.props.loadFormJson}
               minRows={2}
               onControlDrop ={this.props.onControlDrop}
               ref={ this.storeGridRef }
@@ -119,6 +120,7 @@ SectionDesigner.propTypes = {
   dragSourceCell: PropTypes.instanceOf(CellDesigner),
   idGenerator: PropTypes.object.isRequired,
   isBeingDragged: PropTypes.bool,
+  loadFormJson: PropTypes.func,
   metadata: PropTypes.shape({
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,

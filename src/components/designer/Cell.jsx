@@ -36,8 +36,7 @@ export class CellDesigner extends DropTarget {
   }
 
   processMove(metadata) {
-    const filteredData = this.state.data.filter((data) => data.id !== metadata.id);
-    this.setState({ data: filteredData });
+    this.deleteControl(metadata.id);
   }
 
   processDragEnter() {
@@ -95,6 +94,7 @@ export class CellDesigner extends DropTarget {
         ref: this.storeChildRef,
         wrapper: this.props.wrapper,
         deleteControl: this.deleteControl,
+        loadFormJson: this.props.loadFormJson,
         setError: this.props.setError,
         showDeleteButton: this.props.showDeleteButton,
         dragSourceCell: this.props.dragSourceCell,
@@ -149,6 +149,7 @@ CellDesigner.propTypes = {
   dragAllowed: PropTypes.bool,
   idGenerator: PropTypes.object.isRequired,
   isBeingDragged: PropTypes.bool,
+  loadFormJson: PropTypes.func,
   location: PropTypes.shape({
     column: PropTypes.number,
     row: PropTypes.number,

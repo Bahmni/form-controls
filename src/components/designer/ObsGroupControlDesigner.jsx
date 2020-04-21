@@ -116,6 +116,7 @@ export class ObsGroupControlDesigner extends Component {
               idGenerator={this.props.idGenerator}
               isBeingDragged ={this.props.isBeingDragged}
               isShowDeleteButton={false}
+              loadFormJson={this.props.loadFormJson}
               minRows={0}
               onControlDrop ={() => {}}
               ref={ this.storeGridRef }
@@ -141,6 +142,7 @@ ObsGroupControlDesigner.propTypes = {
   dragSourceCell: PropTypes.instanceOf(CellDesigner),
   idGenerator: PropTypes.object.isRequired,
   isBeingDragged: PropTypes.bool,
+  loadFormJson: PropTypes.func,
   metadata: PropTypes.shape({
     concept: PropTypes.object,
     displayType: PropTypes.string,
