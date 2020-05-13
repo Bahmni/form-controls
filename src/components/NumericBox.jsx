@@ -95,6 +95,11 @@ export class NumericBox extends Component {
     return Validator.getErrors(controlDetails);
   }
 
+  isComputed() {
+    const { conceptClass } = this.props;
+    return conceptClass === 'Computed';
+  }
+
   render() {
     const { lowNormal, hiNormal } = this.props;
     if (NumericBoxDesigner.getRange(lowNormal, hiNormal) !== '') {
@@ -119,7 +124,8 @@ export class NumericBox extends Component {
     return (
       <div className="fl">
         <input
-          className={ classNames({ 'form-builder-error': this.state.hasErrors }) }
+          className={ classNames({ 'form-builder-error': this.state.hasErrors,
+            'computed-value': this.isComputed() }) }
           disabled={ !this.props.enabled }
           onChange={ (e) => this.handleChange(e) }
           ref={(elem) => {
@@ -133,6 +139,7 @@ export class NumericBox extends Component {
 }
 
 NumericBox.propTypes = {
+  conceptClass: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string.isRequired,
   hiAbsolute: PropTypes.number,

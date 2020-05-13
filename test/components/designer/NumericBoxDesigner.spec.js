@@ -29,6 +29,14 @@ describe('NumericBoxDesigner', () => {
     expect(wrapper.find('input').props().type).to.eql('number');
   });
 
+  it('should not render the input when concept class is computed', () => {
+    metadata.concept.conceptClass = 'Computed';
+    wrapper = shallow(<NumericBoxDesigner metadata={metadata} />);
+
+    expect(wrapper).to.not.have.descendants('input');
+  });
+
+
   it('should return json definition', () => {
     const instance = wrapper.instance();
     expect(instance.getJsonDefinition()).to.deep.eql(metadata);

@@ -615,3 +615,8 @@ $lightestGray: #eee;
   width: 30% !important;
   vertical-align: top;
 }
+
+input.computed-value{
+  border: 0 !important;
+  pointer-events: none;
+}
