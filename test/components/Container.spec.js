@@ -87,6 +87,7 @@ describe('Container', () => {
     };
 
     const formFieldPath = 'SingleObs.1/1-0';
+    const addedFormFieldPath = 'SingleObs.1/1-1';
     const dataSource = immutableMap({
       concept: {
         conceptClass: 'Misc',
@@ -137,6 +138,45 @@ describe('Container', () => {
         units: '/min',
       },
       formFieldPath,
+      value: { value: '1', comment: undefined },
+      dataSource,
+    });
+
+    const addedChildRecord = new ControlRecord({
+      control: {
+        concept: {
+          answers: [],
+          datatype: 'Numeric',
+          description: [],
+          name: 'Pulse',
+          properties: {
+            allowDecimal: true,
+          },
+          uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+        },
+        hiAbsolute: null,
+        hiNormal: 72,
+        id: '1',
+        label: {
+          type: 'label',
+          value: 'Pulse(/min)',
+        },
+        lowAbsolute: null,
+        lowNormal: 72,
+        properties: {
+          addMore: true,
+          hideLabel: false,
+          location: {
+            column: 0,
+            row: 0,
+          },
+          mandatory: true,
+          notes: false,
+        },
+        type: 'obsControl',
+        units: '/min',
+      },
+      formFieldPath: addedFormFieldPath,
       value: { value: '1', comment: undefined },
       dataSource,
     });
@@ -411,9 +451,36 @@ describe('Container', () => {
           />
         );
         wrapper.setState({ data: obsTree });
+        wrapper.instance().updatedControlRecordTree = obsTree;
         wrapper.instance().onControlAdd(addedFormFieldPath, false);
 
         expect(wrapper.find('NotificationContainer').props().notification).to.eql({});
+      });
+    });
+
+    describe('canAddNextFormFieldPath', () => {
+      const obsTree = new ControlRecord({ children: List.of(childRecord) });
+      const obsTreeWithAddedControl = new
+      ControlRecord({ children: List.of(childRecord, addedChildRecord) });
+      const wrapper = mount(
+        <Container
+          collapse
+          locale="en"
+          metadata={metadata}
+          observations={[]}
+          patient={patient}
+          translations={translations}
+          validate={false}
+          validateForm={false}
+        />
+      );
+
+      it('should return true if formFieldPath is latest', () => {
+        expect(wrapper.instance().canAddNextFormFieldPath(obsTree, formFieldPath)).to.be.eql(true);
+      });
+
+      it('should return false if formFieldPath is not latest', () => {
+        expect(wrapper.instance().canAddNextFormFieldPath(obsTreeWithAddedControl, formFieldPath)).to.be.eql(false);
       });
     });
 
