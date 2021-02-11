@@ -18,6 +18,7 @@ export class Container extends addMoreDecorator(Component) {
     this.childControls = {};
     const { observations, metadata } = this.props;
     const controlRecordTree = new ControlRecordTreeBuilder().build(metadata, observations);
+    this.updatedControlRecordTree = controlRecordTree;
     this.state = { errors: [], data: controlRecordTree,
       collapse: props.collapse, notification: {} };
     this.storeChildRef = this.storeChildRef.bind(this);
@@ -87,18 +88,31 @@ export class Container extends addMoreDecorator(Component) {
     return (`A new ${name} ${type} has been added`);
   }
 
+  canAddNextFormFieldPath(controlRecordTree, formFieldPath) {
+    const latestBrotherTree = new ControlRecordTreeMgr()
+      .getLatestBrotherTree(controlRecordTree, formFieldPath);
+    const latestFormFieldPath = latestBrotherTree ? latestBrotherTree.formFieldPath : '';
+    return formFieldPath === latestFormFieldPath;
+  }
+
   onControlAdd(formFieldPath, isNotificationShown = true) {
-    let updatedRecordTree = ControlRecordTreeMgr.add(this.state.data, formFieldPath);
+    if (!isNotificationShown && !this.canAddNextFormFieldPath(
+      this.updatedControlRecordTree, formFieldPath)) {
+      return;
+    }
+    let updatedRecordTree = ControlRecordTreeMgr.add(
+        isNotificationShown ? this.state.data : this.updatedControlRecordTree, formFieldPath);
     const parentRecordTree = new ControlRecordTreeMgr()
             .findParentTree(updatedRecordTree, formFieldPath);
     updatedRecordTree = executeEventsFromCurrentRecord(parentRecordTree, updatedRecordTree);
-    const addMoreMessage = this.getAddMoreMessage(this.state.data, formFieldPath);
     if (isNotificationShown) {
+      const addMoreMessage = this.getAddMoreMessage(this.state.data, formFieldPath);
       this.setState({
         data: updatedRecordTree,
         notification: { message: addMoreMessage, type: Constants.messageType.success },
       });
     } else {
+      this.updatedControlRecordTree = updatedRecordTree;
       this.setState({
         data: updatedRecordTree,
       });
