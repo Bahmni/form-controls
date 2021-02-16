@@ -87,7 +87,7 @@ describe('Container', () => {
     };
 
     const formFieldPath = 'SingleObs.1/1-0';
-    const addedFormFieldPath = 'SingleObs.1/1-1';
+    const newFormFieldPath = 'SingleObs.1/1-1';
     const dataSource = immutableMap({
       concept: {
         conceptClass: 'Misc',
@@ -176,7 +176,7 @@ describe('Container', () => {
         type: 'obsControl',
         units: '/min',
       },
-      formFieldPath: addedFormFieldPath,
+      formFieldPath: newFormFieldPath,
       value: { value: '1', comment: undefined },
       dataSource,
     });
@@ -480,7 +480,8 @@ describe('Container', () => {
       });
 
       it('should return false if formFieldPath is not latest', () => {
-        expect(wrapper.instance().canAddNextFormFieldPath(obsTreeWithAddedControl, formFieldPath)).to.be.eql(false);
+        expect(wrapper.instance()
+          .canAddNextFormFieldPath(obsTreeWithAddedControl, formFieldPath)).to.be.eql(false);
       });
     });
 
