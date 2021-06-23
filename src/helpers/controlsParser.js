@@ -19,6 +19,16 @@ export function setupAddRemoveButtonsForAddMore(records) {
   return records.map((record, index) =>
     record.set('showRemove', index > 0).set('showAddMore', index === records.length - 1));
 }
+function validateFormFieldPath(formFieldPath) {
+  let inValidControlId;
+  const path = formFieldPath.split('/');
+  if (path && path.length > 1) {
+    path.shift();
+    inValidControlId = path.find(p => !/\d+-\d+/.test(p));
+    return !(inValidControlId && inValidControlId.length > 0);
+  }
+  return true;
+}
 
 export function getControls(controls, records, props) {
   return controls.map((control) => {
@@ -26,7 +36,9 @@ export function getControls(controls, records, props) {
     if (registeredControl) {
       let recordsForControl = getRecordsForControl(control, records);
       if (recordsForControl.length > 1) {
-        recordsForControl = sortBy(recordsForControl,
+        const validRecordsForControl = recordsForControl.filter(record =>
+            validateFormFieldPath(record.formFieldPath) === true);
+        recordsForControl = sortBy(validRecordsForControl,
           record => Util.toInt(record.formFieldPath.split('-')[1]));
         recordsForControl = setupAddRemoveButtonsForAddMore(recordsForControl);
       }
