@@ -106,6 +106,12 @@ describe('Validator', () => {
       const errors = Validator.getErrors({ params, validations, value: 98.6 });
       expect(errors).to.deep.eql([]);
     });
+
+    it('should get allowRange error when value is negative and zero minNormal value', () => {
+      const params = { minNormal: 0, maxNormal: 120 };
+      const errors = Validator.getErrors({ params, validations, value: -1 });
+      expect(errors[0]).to.deep.eql(allowRangeWarning);
+    });
   });
 
   describe('minMaxRange validation', () => {
