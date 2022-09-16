@@ -37,6 +37,10 @@ export class ObsMapper {
       }
       if (!obs.voided) {
         obs.voided = obs.value.indexOf('voided') > 0;
+        if (obs.voided) {
+          // removing voided prefix for Images/Videos (voided obs) before sending to bahmni apps
+          obs.value = obs.value.replace(/voided/g, '');
+        }
       }
     }
     return (obs.value === undefined && obs.uuid === undefined) ? null : obs;
