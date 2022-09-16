@@ -193,7 +193,8 @@ describe('ObsMapper', () => {
   });
 
   it('should mark voided of obs as true when given obs control ' +
-    'with complex media type and the value contains voided', () => {
+    'with complex media type and the value contains voided' +
+      'and also remove voided suffix from the value', () => {
     const complexConcept = {
       answers: [],
       datatype: 'Complex',
@@ -218,10 +219,12 @@ describe('ObsMapper', () => {
       value: { value: 'valueAsvoided', comment: undefined },
       dataSource: complexDataSource,
     });
+    const expectedValue = 'valueAs';
 
     const updatedObs = mapper.getData(record);
 
     expect(updatedObs.voided).to.equal(true);
+    expect(updatedObs.value).to.equal(expectedValue);
   });
 
   it('should remove void obs created by add more when obsControl with complex media type', () => {
