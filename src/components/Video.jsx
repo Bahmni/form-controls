@@ -95,7 +95,7 @@ export class Video extends Component {
         });
     };
     reader.readAsDataURL(file);
-    this.addControlWithNotification(true);
+    this.addControlWithNotification(false);
   }
 
   handleDelete() {
