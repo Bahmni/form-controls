@@ -95,7 +95,7 @@ export class Image extends Component {
         });
     };
     reader.readAsDataURL(file);
-    this.addControlWithNotification(false);
+    this.addControlWithNotification(true);
   }
 
   handleDelete() {
