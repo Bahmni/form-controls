@@ -32,8 +32,8 @@ export class Section extends addMoreDecorator(Component) {
     this.props.onValueChanged(formFieldPath, value, errors, onActionDone);
   }
 
-  onControlAdd(formFieldPath) {
-    this.props.onControlAdd(formFieldPath);
+  onControlAdd(formFieldPath, isNotificationShown = true) {
+    this.props.onControlAdd(formFieldPath, isNotificationShown);
   }
 
   onControlRemove(formFieldPath) {
