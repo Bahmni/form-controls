@@ -76,7 +76,20 @@ export class AutoComplete extends Component {
 
   onInputChange(input) {
     if (input.length >= this.props.minimumInput) {
-      this.setState({ options: this.props.options });
+      var options = this.props.options;
+      const searchedInputs = input.trim().split(" ");
+      var filteredOptions = [];
+
+      options.forEach(option => {
+        var flag = true;
+        searchedInputs.forEach(input => {
+          const regEx = new RegExp(input, "gi");
+          flag = (flag && option.name.match(regEx));
+        })
+        if(flag) { filteredOptions.push(option); }
+      })
+
+      this.setState({ options: filteredOptions });
       this.setState({ noResultsText: 'No Results Found' });
       return;
     }
@@ -182,6 +195,7 @@ export class AutoComplete extends Component {
           onInputChange={this.onInputChange}
           options={ this.state.options }
           ref={ this.storeChildRef }
+          filterOptions={ null }
         />
       </div>
     );
