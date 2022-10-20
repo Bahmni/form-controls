@@ -265,7 +265,7 @@ describe('AutoComplete', () => {
       expect(instance.state.noResultsText).to.eql('');
 
       wrapper.find('input').simulate('change', { target: { value: 'aa' } });
-      expect(instance.state.options.length).to.eql(3);
+      expect(instance.state.options.length).to.eql(0);
       expect(instance.state.noResultsText).to.eql('No Results Found');
 
       wrapper.find('input').simulate('change', { target: { value: 'a' } });

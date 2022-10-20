@@ -76,18 +76,18 @@ export class AutoComplete extends Component {
 
   onInputChange(input) {
     if (input.length >= this.props.minimumInput) {
-      var options = this.props.options;
-      const searchedInputs = input.trim().split(" ");
-      var filteredOptions = [];
+      const options = this.props.options;
+      const searchedInputs = input.trim().split(' ');
+      const filteredOptions = [];
 
       options.forEach(option => {
-        var flag = true;
-        searchedInputs.forEach(input => {
-          const regEx = new RegExp(input, "gi");
+        let flag = true;
+        searchedInputs.forEach(searchedInput => {
+          const regEx = new RegExp(searchedInput, 'gi');
           flag = (flag && option.name.match(regEx));
-        })
-        if(flag) { filteredOptions.push(option); }
-      })
+        });
+        if (flag) { filteredOptions.push(option); }
+      });
 
       this.setState({ options: filteredOptions });
       this.setState({ noResultsText: 'No Results Found' });
@@ -191,6 +191,7 @@ export class AutoComplete extends Component {
       <div className={className}>
         <Select
           { ...props }
+          filterOptions={ null }
           noResultsText={this.state.noResultsText}
           onInputChange={this.onInputChange}
           options={ this.state.options }
