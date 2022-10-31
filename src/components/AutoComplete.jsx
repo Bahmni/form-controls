@@ -196,7 +196,6 @@ export class AutoComplete extends Component {
           onInputChange={this.onInputChange}
           options={ this.state.options }
           ref={ this.storeChildRef }
-          filterOptions={ null }
         />
       </div>
     );
