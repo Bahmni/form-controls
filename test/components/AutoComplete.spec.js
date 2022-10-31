@@ -274,6 +274,9 @@ describe('AutoComplete', () => {
 
       wrapper.find('input').simulate('change', { target: { value: 'akkk' } });
       expect(instance.state.noResultsText).to.eql('No Results Found');
+
+      wrapper.find('input').simulate('change', { target: { value: 'one' } });
+      expect(instance.state.options.length).to.eql(1);
     });
   });
 });
