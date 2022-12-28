@@ -1,0 +1,20 @@
+name: Validate PR
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+jobs:
+  build:
+    name: form-controls
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10.16.3
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.16.3
+      - run: yarn
+      - run: yarn build
+      - run: yarn test 
