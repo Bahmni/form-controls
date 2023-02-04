@@ -6,7 +6,7 @@ import { LabelDesigner } from 'components/designer/Label.jsx';
 import { GridDesigner } from 'components/designer/Grid.jsx';
 import { CellDesigner } from 'components/designer/Cell.jsx';
 
-const supportedControlTypes = ['obsControl'];
+const supportedControlTypes = ['obsControl', 'label', 'imageView', 'link'];
 const unsupportedProperties = ['addMore'];
 
 const NO_OF_TABLE_COLUMNS = 2;

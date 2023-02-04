@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  env:
+    image: johnny94/form-controls-env:v1.0.0
+    #build: 
+    #  context: .
+    #  dockerfile: Dockerfile
+    volumes:
+        - ..:/workspace:cached
+        - $SSH_AUTH_SOCK:/ssh-agent
+    environment:
+      - SSH_AUTH_SOCK=/ssh-agent
