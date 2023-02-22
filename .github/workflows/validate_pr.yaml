@@ -19,6 +19,6 @@ jobs:
         distribution: 'adopt'
         java-version: '8'
     - name: Install Dependencies    
-    - run: yarn
+      run: yarn
     - name: Build production bundle
-    - run: yarn build
+      run: yarn build
