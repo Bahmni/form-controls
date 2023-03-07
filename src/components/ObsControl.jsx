@@ -11,18 +11,42 @@ import addMoreDecorator from './AddMoreDecorator';
 import constants from 'src/constants';
 import { Util } from 'src/helpers/Util';
 import { injectIntl } from 'react-intl';
+import { httpInterceptor } from 'src/helpers/httpInterceptor';
 
 export class ObsControl extends addMoreDecorator(Component) {
 
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = {
+      codedData:
+        this.props.metadata.options || this.props.metadata.concept.answers,
+      success: false,
+    };
     this.onChange = this.onChange.bind(this);
     this.onCommentChange = this.onCommentChange.bind(this);
     this.onAddControl = this.onAddControl.bind(this);
     this.onRemoveControl = this.onRemoveControl.bind(this);
     this.onValueChangeDone = this.onValueChangeDone.bind(this);
     this.setAbnormal = this.setAbnormal.bind(this);
+  }
+
+  componentDidMount() {
+    this.getAnswers();
+  }
+
+  getAnswers() {
+    const { metadata } = this.props;
+    if (metadata.properties.URL) {
+      httpInterceptor.get(metadata.properties.URL).then(response => {
+        const answers = response.expansion.contains;
+        const options = this.formatConcepts(answers);
+        this.setState({ codedData: options, success: true });
+      }).catch(() => {
+        this.props.showNotification('Failed to fatch answers', constants.messageType.error);
+      });
+    } else {
+      this.setState({ success: true });
+    }
   }
 
   isAllowedToTriggerControlEvent(triggerControlEvent) {
@@ -33,6 +57,18 @@ export class ObsControl extends addMoreDecorator(Component) {
     if (this.props.onEventTrigger && this.isAllowedToTriggerControlEvent(triggerControlEvent)) {
       this.props.onEventTrigger(this.props.formFieldPath, 'onValueChange');
     }
+  }
+
+  formatConcepts(concepts) {
+    const formattedConcepts = concepts.map(concept => ({
+      uuid: `${concept.system}/${concept.code}`,
+      name: concept.display,
+      displayString: concept.display,
+      codedAnswer: {
+        uuid: `${concept.system}/${concept.code}`,
+      },
+    }));
+    return formattedConcepts;
   }
 
   onChange({ value, errors, calledOnMount, triggerControlEvent }) {
@@ -65,7 +101,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     const { onControlAdd, hidden, enabled, metadata,
       metadata: { concept }, validate, validateForm, formFieldPath,
       showNotification, intl } = this.props;
-    const options = metadata.options || concept.answers;
+    const options = this.state.codedData;
     const { conceptClass, conceptHandler } = concept;
     const validations = getValidations(metadata.properties, concept.properties);
     const isAddMoreEnabled =
@@ -222,7 +258,7 @@ export class ObsControl extends addMoreDecorator(Component) {
                       {this.displayLabel()}
                   </div>
                   <div className={classNames('obs-control-field')}>
-                      {this.displayObsControl(registeredComponent)}
+                      {this.state.success && this.displayObsControl(registeredComponent)}
                       {this.showAbnormalButton()}
                       {this.showAddMore()}
                       {this.showComment()}
