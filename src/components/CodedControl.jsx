@@ -82,6 +82,7 @@ export class CodedControl extends Component {
       validateForm,
       validations,
       multiSelect,
+      URL: this.props.properties.URL,
     };
     if (displayType === 'autoComplete' || displayType === 'dropDown') {
       props.asynchronous = false;
@@ -92,7 +93,7 @@ export class CodedControl extends Component {
   }
 
   _getDisplayType(properties) {
-    if (properties.autoComplete) {
+    if (properties.autoComplete || (properties.URL && this.props.options.length > 10)) {
       return 'autoComplete';
     } else if (properties.dropDown) {
       return 'dropDown';
