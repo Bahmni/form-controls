@@ -6,8 +6,11 @@ import sinon from 'sinon';
 import constants from 'src/constants';
 import ComponentStore from 'src/helpers/componentStore';
 import { mountWithIntl } from '../intlEnzymeTest.js';
+import { httpInterceptor } from 'src/helpers/httpInterceptor';
 
 chai.use(chaiEnzyme());
+const sinonStubPromise = require('sinon-stub-promise');
+sinonStubPromise(sinon);
 
 describe('CodedControl', () => {
   const DummyControl = () => <input />;
@@ -28,7 +31,83 @@ describe('CodedControl', () => {
     { name: 'Answer5', value: 'answer5uuid' },
   ];
 
+  let codedDataStub;
+  const codedData = {
+    expansion: {
+      contains: [
+        {
+          display: 'Yes',
+          code: 'yes',
+          system: 'http://snomed.info/sct',
+        },
+        {
+          display: 'No',
+          code: 'no',
+          system: 'http://snomed.info/sct',
+        },
+      ],
+    },
+  };
+
   let onChangeSpy;
+  let showNotificationSpy;
+
+  context('when FHIR Value set url is provided', () => {
+    const properties = { URL: 'someUrl' };
+
+    beforeEach(() => {
+      onChangeSpy = sinon.spy();
+      showNotificationSpy = sinon.spy();
+      codedDataStub = sinon.stub(httpInterceptor, 'get');
+      codedDataStub.returnsPromise().resolves(codedData);
+    });
+
+    afterEach(() => {
+      codedDataStub.restore();
+    });
+
+    it('should fetch coded data from the url', () => {
+      mountWithIntl(
+        <CodedControl
+          enabled
+          onChange={onChangeSpy}
+          options={options}
+          properties={properties}
+          showNotification={showNotificationSpy}
+          validate={false}
+          validateForm={false}
+          validations={[]}
+        />
+      );
+
+      sinon.assert.calledOnce(codedDataStub.withArgs(properties.URL));
+    });
+
+    it('should show notification when fetch fails', () => {
+      codedDataStub.returnsPromise().rejects('error');
+      mountWithIntl(
+        <CodedControl
+          enabled
+          onChange={onChangeSpy}
+          options={options}
+          properties={properties}
+          showNotification={showNotificationSpy}
+          validate={false}
+          validateForm={false}
+          validations={[]}
+        />
+      );
+
+      sinon.assert.calledOnce(
+        showNotificationSpy.withArgs(
+          'Failed to fetch answers',
+          constants.messageType.error
+        )
+      );
+    });
+  });
+
+
   before(() => {
     ComponentStore.registerComponent('button', DummyControl);
   });
@@ -58,7 +137,7 @@ describe('CodedControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(9);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(10);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validations').to.deep.eql(validations);
@@ -80,7 +159,7 @@ describe('CodedControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(9);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(10);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validateForm').to.deep.eql(false);
@@ -189,7 +268,7 @@ describe('CodedControl', () => {
     );
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(12);
+    expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(13);
 
     expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
     expect(wrapper.find('DummyControl')).to.have.prop('validateForm').to.deep.eql(false);

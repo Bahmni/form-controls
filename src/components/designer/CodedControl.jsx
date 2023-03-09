@@ -49,16 +49,6 @@ export class CodedControlDesigner extends Component {
     return Object.assign({}, this.props.metadata, { concept });
   }
 
-  formatConcepts(concepts, locale) {
-    const formattedConcepts = concepts.map(concept => ({
-      uuid: `${concept.system}/${concept.code}`,
-      name: concept.display,
-      locale,
-      displayString: concept.display,
-    }));
-    return formattedConcepts;
-  }
-
   storeChildRef(ref) {
     this.childControl = ref;
   }
