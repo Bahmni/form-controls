@@ -6,8 +6,7 @@ import find from 'lodash/find';
 import each from 'lodash/each';
 import { IntlShape } from 'react-intl';
 import constants from 'src/constants';
-import { httpInterceptor } from 'src/helpers/httpInterceptor';
-
+import { Util } from '../helpers/Util';
 export class CodedControl extends Component {
   constructor(props) {
     super(props);
@@ -30,16 +29,14 @@ export class CodedControl extends Component {
   getAnswers() {
     const { properties } = this.props;
     if (properties.URL) {
-      httpInterceptor
-        .get(properties.URL)
+      Util.getAnswers(properties.URL)
         .then(response => {
-          const answers = response.expansion.contains;
-          const options = this.formatConcepts(answers);
+          const options = this.formatConcepts(response);
           this.setState({ codedData: options, success: true });
         })
         .catch(() => {
           this.props.showNotification(
-            'Failed to fetch answers',
+            'Something unexpected happened.',
             constants.messageType.error
           );
         });
@@ -50,11 +47,11 @@ export class CodedControl extends Component {
 
   formatConcepts(concepts) {
     const formattedConcepts = concepts.map(concept => ({
-      uuid: `${concept.system}/${concept.code}`,
-      name: concept.display,
-      displayString: concept.display,
+      uuid: `${concept.conceptSystem}/${concept.conceptUuid}`,
+      name: concept.conceptName,
+      displayString: concept.conceptName,
       codedAnswer: {
-        uuid: `${concept.system}/${concept.code}`,
+        uuid: `${concept.conceptSystem}/${concept.conceptUuid}`,
       },
     }));
     return formattedConcepts;
@@ -94,23 +91,37 @@ export class CodedControl extends Component {
   }
 
   _getValue(value, multiSelect) {
-    if (value) {
-      const updatedValue = multiSelect ? value : [value];
-      updatedValue.map(val => {
-        const updatedVal = val;
-        const codedAnswer = find(
-          this.state.codedData,
-          option => option.uuid === val.uuid
-        );
-        updatedVal.translationKey = codedAnswer
-          ? codedAnswer.translationKey
-          : '';
-        return updatedVal;
-      });
-      const options = this._getOptionsRepresentation(updatedValue, multiSelect);
-      return multiSelect ? options : options[0];
-    }
-    return undefined;
+    if (!value) return undefined;
+
+    const updatedValue = multiSelect ? value : [value];
+
+    const options = updatedValue.map(val => {
+      const getMapping = val.mappings
+        ? find(val.mappings, ['source', 'SNOMED'])
+        : null;
+      const codedAnswer = getMapping
+        ? this.state.codedData.find(
+            option => option.uuid.replace(/\D/g, '') === getMapping.code
+          )
+        : find(this.state.codedData, option => option.uuid === val.uuid);
+
+      const name = getMapping && codedAnswer ? codedAnswer.name : val.name;
+      const uuid = getMapping && codedAnswer ? codedAnswer.uuid : val.uuid;
+      const translationKey = codedAnswer ? codedAnswer.translationKey : '';
+
+      return {
+        ...val,
+        name,
+        uuid,
+        translationKey,
+      };
+    });
+
+    const optionsRepresentation = this._getOptionsRepresentation(
+      options,
+      multiSelect
+    );
+    return multiSelect ? optionsRepresentation : optionsRepresentation[0];
   }
 
   _getChildProps(displayType) {
@@ -128,7 +139,10 @@ export class CodedControl extends Component {
       formFieldPath,
       value: this._getValue(value, multiSelect),
       onValueChange: this.onValueChange,
-      options: this._getOptionsRepresentation(this.state.codedData, multiSelect),
+      options: this._getOptionsRepresentation(
+        this.state.codedData,
+        multiSelect
+      ),
       validate,
       validateForm,
       validations,

@@ -4,7 +4,7 @@ import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import cloneDeep from 'lodash/cloneDeep';
 import TranslationKeyGenerator from 'src/services/TranslationKeyService';
-import { httpInterceptor } from 'src/helpers/httpInterceptor';
+import { Util } from '../../helpers/Util';
 
 export class CodedControlDesigner extends Component {
   constructor(props) {
@@ -18,17 +18,22 @@ export class CodedControlDesigner extends Component {
   }
 
   componentDidMount() {
+    this.getAnswers();
+  }
+
+  getAnswers() {
     const { metadata, setError } = this.props;
     if (metadata.properties.URL) {
-      httpInterceptor.get(metadata.properties.URL).then(response => {
-        const answers = response.expansion.contains;
-        const options = this._getOptionsRepresentation(answers);
-        this.setState({ codedData: options });
-      }).catch(() => {
-        if (setError) {
-          setError({ message: 'Invalid value set URL' });
-        }
-      });
+      Util.getAnswers(metadata.properties.URL)
+        .then(response => {
+          const options = this._getOptionsRepresentation(response);
+          this.setState({ codedData: options });
+        })
+        .catch(() => {
+          if (setError) {
+            setError({ message: 'Something unexpected happened.' });
+          }
+        });
     }
   }
 
@@ -57,15 +62,18 @@ export class CodedControlDesigner extends Component {
     const optionsRepresentation = [];
     map(options, option =>
       optionsRepresentation.push({
-        name: option.display || option.name.display || option.name,
-        value: option.uuid || `${option.system}/${option.code}`,
+        name: option.conceptName || option.name.display || option.name,
+        value: option.uuid || `${option.conceptSystem}/${option.conceptUuid}`,
       })
     );
     return optionsRepresentation;
   }
 
   _getDisplayType(properties) {
-    if (properties.autoComplete || (properties.URL && this.state.codedData.length > 10)) {
+    if (
+      properties.autoComplete ||
+      (properties.URL && this.state.codedData.length > 10)
+    ) {
       return 'autoComplete';
     } else if (properties.dropDown) {
       return 'dropDown';
@@ -76,7 +84,8 @@ export class CodedControlDesigner extends Component {
   render() {
     const { metadata } = this.props;
     const displayType = this._getDisplayType(metadata.properties);
-    const registeredComponent = ComponentStore.getDesignerComponent(displayType);
+    const registeredComponent =
+      ComponentStore.getDesignerComponent(displayType);
     if (registeredComponent) {
       return React.createElement(registeredComponent.control, {
         asynchronous: false,
