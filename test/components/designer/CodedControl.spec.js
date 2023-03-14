@@ -42,23 +42,24 @@ describe('Coded Control Designer', () => {
       const setErrorSpy = sinon.spy();
       codedDataStub.returnsPromise().rejects('error');
       mount(
-          <CodedControlDesigner metadata={metadata} setError={setErrorSpy} />
-        );
+        <CodedControlDesigner metadata={metadata} setError={setErrorSpy} />
+      );
       sinon.assert.calledOnce(
-        setErrorSpy.withArgs({ message: 'Invalid value set URL' })
+        setErrorSpy.withArgs({ message: 'Something unexpected happened.' })
       );
     });
   });
 
   context('when FHIR Value set url is not provided', () => {
     before(() => {
-      ComponentStore.registerDesignerComponent('button', { control: DummyControl });
+      ComponentStore.registerDesignerComponent('button', {
+        control: DummyControl,
+      });
     });
 
     after(() => {
       ComponentStore.deRegisterDesignerComponent('button');
     });
-
 
     beforeEach(() => {
       metadata = {
@@ -68,23 +69,26 @@ describe('Coded Control Designer', () => {
           uuid: '70645842-be6a-4974-8d5f-45b52990e132',
           name: 'Pulse',
           datatype: 'Coded',
-          answers: [{
-            name: {
-              display: 'answer1',
+          answers: [
+            {
+              name: {
+                display: 'answer1',
+              },
+              uuid: 'uuid',
             },
-            uuid: 'uuid',
-          }],
+          ],
         },
         properties: {},
       };
     });
 
-    it('should render Dummy Control with  concept answers', () => {
+    it('should render Dummy Control with concept answers', () => {
       const wrapper = shallow(<CodedControlDesigner metadata={metadata} />);
 
       expect(wrapper).to.have.exactly(1).descendants('DummyControl');
-      expect(wrapper.find('DummyControl').props().options).to.deep.eql(
-      [{ name: 'answer1', value: 'uuid' }]);
+      expect(wrapper.find('DummyControl').props().options).to.deep.eql([
+        { name: 'answer1', value: 'uuid' },
+      ]);
     });
 
     it('should return the JSON Definition', () => {
@@ -95,13 +99,39 @@ describe('Coded Control Designer', () => {
       expect(instance.getJsonDefinition()).to.deep.eql(clonedMetadata);
     });
 
+    it('should render Dummy Control of displayType button by default', () => {
+      const wrapper = mount(<CodedControlDesigner metadata={metadata} />);
+
+      expect(wrapper).to.have.exactly(1).descendants('DummyControl');
+      expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(
+        3
+      );
+    });
+
     it('should return null when registered component not found', () => {
       ComponentStore.deRegisterDesignerComponent('button');
 
       const wrapper = shallow(<CodedControlDesigner metadata={metadata} />);
       expect(wrapper).to.be.blank();
 
-      ComponentStore.registerDesignerComponent('button', { control: DummyControl });
+      ComponentStore.registerDesignerComponent('button', {
+        control: DummyControl,
+      });
+    });
+
+    it('should return autocomplete/dropdown when metadata is passed to _getDisplayType', () => {
+      const wrapper = shallow(<CodedControlDesigner metadata={metadata} />);
+      const instance = wrapper.instance();
+      const newMetadata = cloneDeep(metadata);
+      newMetadata.properties.autoComplete = true;
+      expect(instance._getDisplayType(newMetadata.properties)).to.eql(
+        'autoComplete'
+      );
+      newMetadata.properties.autoComplete = false;
+      newMetadata.properties.dropDown = true;
+      expect(instance._getDisplayType(newMetadata.properties)).to.eql(
+        'dropDown'
+      );
     });
   });
 });

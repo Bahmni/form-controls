@@ -46,4 +46,22 @@ export class Util {
     return (datatype === 'Complex') &&
       (conceptHandler === 'ImageUrlHandler' || conceptHandler === 'VideoUrlHandler');
   }
+
+  static getAnswers(url) {
+    const endpoint =
+    '/openmrs/ws/rest/v1/terminologyServices/getObservationValueSet?valueSetUrl';
+    const fullUrl = `${endpoint}=${url}`;
+    return fetch(fullUrl, {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      credentials: 'same-origin',
+    }).then(response => {
+      if (response.status >= 200 && response.status < 300) {
+        return response.json();
+      }
+      const error = new Error(response.statusText);
+      error.response = response;
+      throw error;
+    });
+  }
 }
