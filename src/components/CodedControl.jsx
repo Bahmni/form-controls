@@ -160,7 +160,7 @@ export class CodedControl extends Component {
   _getDisplayType(properties) {
     if (
       properties.autoComplete ||
-      (properties.URL && this.state.codedData.length > 10)
+      (!properties.dropDown && properties.URL && this.state.codedData.length > 10)
     ) {
       return 'autoComplete';
     } else if (properties.dropDown) {
