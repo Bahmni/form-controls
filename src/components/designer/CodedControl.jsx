@@ -13,7 +13,8 @@ export class CodedControlDesigner extends Component {
     this.state = {
       codedData: this._getOptionsRepresentation(
         this.props.metadata.concept.answers
-      ),
+        ),
+      success: false,
     };
   }
 
@@ -27,13 +28,15 @@ export class CodedControlDesigner extends Component {
       Util.getAnswers(metadata.properties.URL)
         .then(response => {
           const options = this._getOptionsRepresentation(response);
-          this.setState({ codedData: options });
+          this.setState({ codedData: options, success: true });
         })
         .catch(() => {
           if (setError) {
             setError({ message: 'Something unexpected happened.' });
           }
         });
+    } else {
+      this.setState({ success: true });
     }
   }
 
@@ -72,7 +75,7 @@ export class CodedControlDesigner extends Component {
   _getDisplayType(properties) {
     if (
       properties.autoComplete ||
-      (properties.URL && this.state.codedData.length > 10)
+      (!properties.dropDown && properties.URL && this.state.codedData.length > 10)
     ) {
       return 'autoComplete';
     } else if (properties.dropDown) {
@@ -86,7 +89,7 @@ export class CodedControlDesigner extends Component {
     const displayType = this._getDisplayType(metadata.properties);
     const registeredComponent =
       ComponentStore.getDesignerComponent(displayType);
-    if (registeredComponent) {
+    if (registeredComponent && this.state.success) {
       return React.createElement(registeredComponent.control, {
         asynchronous: false,
         labelKey: 'name',
