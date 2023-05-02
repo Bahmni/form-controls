@@ -52,6 +52,7 @@ describe('CodedControl', () => {
   ];
 
   let codedDataStub;
+  let configStub;
   const codedData = [
     {
       conceptName: 'Yes',
@@ -67,21 +68,31 @@ describe('CodedControl', () => {
     },
   ];
 
+
+  const config = {
+    config: {
+      terminologyService: { limit: 20 },
+    },
+  };
+
   let onChangeSpy;
   let showNotificationSpy;
 
   context('when FHIR Value set url is provided', () => {
-    const properties = { URL: 'someUrl' };
+    const properties = { url: 'someUrl' };
 
     beforeEach(() => {
       onChangeSpy = sinon.spy();
       showNotificationSpy = sinon.spy();
       codedDataStub = sinon.stub(Util, 'getAnswers');
+      configStub = sinon.stub(Util, 'getConfig');
+      configStub.returnsPromise().resolves(config);
       codedDataStub.returnsPromise().resolves(codedData);
     });
 
     afterEach(() => {
       codedDataStub.restore();
+      configStub.restore();
     });
 
     it('should fetch coded data from the url', () => {
@@ -98,7 +109,34 @@ describe('CodedControl', () => {
         />
       );
 
-      sinon.assert.calledOnce(codedDataStub.withArgs(properties.URL));
+      sinon.assert.calledOnce(codedDataStub.withArgs(properties.url));
+    });
+
+    it('should map value correctly in _getValue', () => {
+      const wrapper = mountWithIntl(
+        <CodedControl
+          onChange={onChangeSpy}
+          options={options}
+          properties={{ ...properties, dropDown: true }}
+          validate={false}
+          validateForm={false}
+          validations={[]}
+        />
+      );
+
+      const instance = wrapper.instance();
+      const value = {
+        uuid: 'someuuid',
+        name: 'Yes',
+        mappings: [{ source: 'SOME_MAPPING', code: '12345' }],
+      };
+
+      expect(instance._getValue(value, false)).to.eql({
+        name: 'Yes',
+        value: 'someuuid',
+        codedAnswer: undefined,
+        uuid: 'someuuid',
+      });
     });
 
     it('should show notification when fetch fails', () => {
@@ -124,7 +162,7 @@ describe('CodedControl', () => {
       );
     });
 
-    it('should map value correctly in _getValue if mapping is available', () => {
+    it('should not map value in _getValue if mapping is available in autocomplete', () => {
       ComponentStore.registerComponent('autoComplete', DummyControl);
       const wrapper = mountWithIntl(
         <CodedControl
@@ -146,7 +184,7 @@ describe('CodedControl', () => {
       const value = {
         uuid: 'someuuid',
         name: 'Yes',
-        mappings: [{ source: 'SNOMED', code: '12345' }],
+        mappings: [{ source: 'SOME_MAPPING', code: '12345' }],
       };
 
       expect(instance._getValue(value, false)).to.eql({
@@ -188,7 +226,7 @@ describe('CodedControl', () => {
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(
-      10
+      11
     );
 
     expect(wrapper.find('DummyControl'))
@@ -220,7 +258,7 @@ describe('CodedControl', () => {
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(
-      10
+      11
     );
 
     expect(wrapper.find('DummyControl'))
@@ -363,7 +401,7 @@ describe('CodedControl', () => {
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(
-      13
+      14
     );
 
     expect(wrapper.find('DummyControl'))

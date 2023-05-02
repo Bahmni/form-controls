@@ -6,7 +6,7 @@ import { CodedControlDesigner } from 'components/designer/CodedControl.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import cloneDeep from 'lodash/cloneDeep';
 import sinon from 'sinon';
-import { httpInterceptor } from 'src/helpers/httpInterceptor';
+import { Util } from 'src/helpers/Util';
 
 chai.use(chaiEnzyme());
 const sinonStubPromise = require('sinon-stub-promise');
@@ -30,15 +30,30 @@ describe('Coded Control Designer', () => {
           answers: [],
         },
         properties: {
-          URL: 'someUrl',
+          url: 'someUrl',
         },
       };
-      codedDataStub = sinon.stub(httpInterceptor, 'get');
+      const codedData = [
+        {
+          conceptName: 'Yes',
+          conceptUuid: '12345',
+          matchedName: 'Yes',
+          conceptSystem: 'http://systemurl.com',
+        },
+        {
+          conceptName: 'No',
+          conceptUuid: '67890',
+          matchedName: 'No',
+          conceptSystem: 'http://systemurl.com',
+        },
+      ];
+      codedDataStub = sinon.stub(Util, 'getAnswers');
+      codedDataStub.returnsPromise().resolves(codedData);
     });
 
     afterEach(() => codedDataStub.restore());
 
-    it('should throw error if given URL is invalid', () => {
+    it('should throw error if given url is invalid', () => {
       const setErrorSpy = sinon.spy();
       codedDataStub.returnsPromise().rejects('error');
       mount(
@@ -47,6 +62,11 @@ describe('Coded Control Designer', () => {
       sinon.assert.calledOnce(
         setErrorSpy.withArgs({ message: 'Something unexpected happened.' })
       );
+    });
+
+    it('should render options returned from the FHIR Value set API', () => {
+      mount(<CodedControlDesigner metadata={metadata} />);
+      sinon.assert.calledOnce(codedDataStub.withArgs(metadata.properties.url));
     });
   });
 
@@ -83,7 +103,7 @@ describe('Coded Control Designer', () => {
     });
 
     it('should render Dummy Control with concept answers', () => {
-      const wrapper = shallow(<CodedControlDesigner metadata={metadata} />);
+      const wrapper = mount(<CodedControlDesigner metadata={metadata} />);
 
       expect(wrapper).to.have.exactly(1).descendants('DummyControl');
       expect(wrapper.find('DummyControl').props().options).to.deep.eql([
