@@ -24,6 +24,18 @@ export class Util {
     return 'not_supported';
   }
 
+  static formatConcepts(concepts) {
+    const formattedConcepts = concepts.map(concept => ({
+      uuid: `${concept.conceptSystem}/${concept.conceptUuid}`,
+      name: concept.conceptName,
+      displayString: concept.conceptName,
+      codedAnswer: {
+        uuid: `${concept.conceptSystem}/${concept.conceptUuid}`,
+      },
+    }));
+    return formattedConcepts;
+  }
+
   static uploadFile(file, patientUuid, fileType) {
     const searchStr = ';base64';
     const format = file.split(searchStr)[0].split('/')[1];
@@ -47,10 +59,25 @@ export class Util {
       (conceptHandler === 'ImageUrlHandler' || conceptHandler === 'VideoUrlHandler');
   }
 
-  static getAnswers(url) {
+  static getConfig() {
+    return fetch('/bahmni_config/openmrs/apps/clinical/app.json', {
+      method: 'GET',
+      headers: { Accept: 'application/json' },
+      credentials: 'same-origin',
+    }).then(response => {
+      if (response.status >= 200 && response.status < 300) {
+        return response.json();
+      }
+      const error = new Error(response.statusText);
+      error.response = response;
+      throw error;
+    });
+  }
+
+  static getAnswers(url, term = '', limit = 30) {
     const endpoint =
-    '/openmrs/ws/rest/v1/terminologyServices/getObservationValueSet?valueSetUrl';
-    const fullUrl = `${endpoint}=${url}`;
+      '/openmrs/ws/rest/v1/terminologyServices/getObservationValueSet?valueSetUrl';
+    const fullUrl = `${endpoint}=${url}&term=${term}&limit=${limit}`;
     return fetch(fullUrl, {
       method: 'GET',
       headers: { Accept: 'application/json' },

@@ -13,7 +13,7 @@ export class CodedControlDesigner extends Component {
     this.state = {
       codedData: this._getOptionsRepresentation(
         this.props.metadata.concept.answers
-        ),
+      ),
       success: false,
     };
   }
@@ -22,33 +22,42 @@ export class CodedControlDesigner extends Component {
     this.getAnswers();
   }
 
+  componentDidUpdate(prevProps) {
+    const { metadata } = this.props;
+    if (metadata.properties !== prevProps.metadata.properties) {
+      this.getAnswers();
+    }
+  }
+
   getAnswers() {
     const { metadata, setError } = this.props;
-    if (metadata.properties.URL) {
-      Util.getAnswers(metadata.properties.URL)
-        .then(response => {
-          const options = this._getOptionsRepresentation(response);
-          this.setState({ codedData: options, success: true });
-        })
-        .catch(() => {
-          if (setError) {
-            setError({ message: 'Something unexpected happened.' });
-          }
-        });
-    } else {
+
+    if (!metadata.properties.url || metadata.properties.autoComplete) {
       this.setState({ success: true });
+      return;
     }
+
+    Util.getAnswers(metadata.properties.url)
+      .then(response => {
+        const options = this._getOptionsRepresentation(response);
+        this.setState({ codedData: options, success: true });
+      })
+      .catch(() => {
+        if (setError) {
+          setError({ message: 'Something unexpected happened.' });
+        }
+      });
   }
 
   getJsonDefinition() {
     const metadataClone = cloneDeep(this.props.metadata);
     const { concept, id } = metadataClone;
-    const answers = metadataClone.properties.URL
+    const answers = metadataClone.properties.url
       ? this.state.codedData
       : concept.answers;
     map(answers, answer => {
       if (!answer.translationKey) {
-        const name = metadataClone.properties.URL
+        const name = metadataClone.properties.url
           ? answer.name
           : answer.name.display;
         answer.translationKey = new TranslationKeyGenerator(name, id).build(); // eslint-disable-line no-param-reassign
@@ -71,12 +80,8 @@ export class CodedControlDesigner extends Component {
     );
     return optionsRepresentation;
   }
-
   _getDisplayType(properties) {
-    if (
-      properties.autoComplete ||
-      (!properties.dropDown && properties.URL && this.state.codedData.length > 10)
-    ) {
+    if (properties.autoComplete) {
       return 'autoComplete';
     } else if (properties.dropDown) {
       return 'dropDown';
@@ -89,8 +94,8 @@ export class CodedControlDesigner extends Component {
     const displayType = this._getDisplayType(metadata.properties);
     const registeredComponent =
       ComponentStore.getDesignerComponent(displayType);
-    if (registeredComponent && this.state.success) {
-      return React.createElement(registeredComponent.control, {
+    if (registeredComponent) {
+      return this.state.success && React.createElement(registeredComponent.control, {
         asynchronous: false,
         labelKey: 'name',
         options: this.state.codedData,
@@ -125,7 +130,7 @@ const descriptor = {
         dataType: 'complex',
         attributes: [
           {
-            name: 'URL',
+            name: 'url',
             dataType: 'string',
             elementType: 'text',
             defaultValue: '',

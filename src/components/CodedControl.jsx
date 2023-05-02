@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ComponentStore from 'src/helpers/componentStore';
-import map from 'lodash/map';
 import find from 'lodash/find';
 import each from 'lodash/each';
 import { IntlShape } from 'react-intl';
@@ -14,6 +13,9 @@ export class CodedControl extends Component {
     this.state = {
       codedData: this.props.options,
       success: false,
+      terminologyServiceConfig: {
+        limit: 30,
+      },
     };
   }
 
@@ -28,33 +30,44 @@ export class CodedControl extends Component {
 
   getAnswers() {
     const { properties } = this.props;
-    if (properties.URL) {
-      Util.getAnswers(properties.URL)
-        .then(response => {
-          const options = this.formatConcepts(response);
-          this.setState({ codedData: options, success: true });
-        })
-        .catch(() => {
-          this.props.showNotification(
-            'Something unexpected happened.',
-            constants.messageType.error
-          );
-        });
-    } else {
-      this.setState({ success: true });
-    }
-  }
+    const { getConfig, getAnswers, formatConcepts } = Util;
 
-  formatConcepts(concepts) {
-    const formattedConcepts = concepts.map(concept => ({
-      uuid: `${concept.conceptSystem}/${concept.conceptUuid}`,
-      name: concept.conceptName,
-      displayString: concept.conceptName,
-      codedAnswer: {
-        uuid: `${concept.conceptSystem}/${concept.conceptUuid}`,
-      },
-    }));
-    return formattedConcepts;
+    if (!properties.url) {
+      this.setState({ success: true });
+      return;
+    }
+
+    getConfig(properties.url)
+    .then(response => {
+      const { terminologyService } = response.config || {};
+
+      if (terminologyService) {
+        this.setState(prevState => ({
+          terminologyServiceConfig: {
+            ...prevState.terminologyServiceConfig,
+            ...terminologyService,
+          },
+        }));
+      }
+
+      if (properties.autoComplete) {
+        this.setState({ success: true });
+        return Promise.resolve([]);
+      }
+
+      return getAnswers(properties.url, '', this.state.terminologyServiceConfig.limit);
+    })
+    .then(data => {
+      if (!data) return;
+      const options = formatConcepts(data);
+      this.setState({ codedData: options, success: true });
+    })
+    .catch(() => {
+      this.props.showNotification(
+        'Something unexpected happened.',
+        constants.messageType.error
+      );
+    });
   }
 
   _getUpdatedValue(value) {
@@ -68,6 +81,7 @@ export class CodedControl extends Component {
 
   _getOptionsFromValues(values, multiSelect) {
     const options = [];
+    if (this.props.properties.url) return multiSelect ? values : values[0];
     each(values, value => {
       options.push(find(this.state.codedData, ['uuid', value.value]));
     });
@@ -75,52 +89,46 @@ export class CodedControl extends Component {
   }
 
   _getOptionsRepresentation(options) {
-    const optionsRepresentation = [];
-    map(options, option => {
+    return options.map(option => {
       const message = {
         id: option.translationKey || 'defaultId',
         defaultMessage: option.name.display || option.name,
       };
       const formattedMessage = this.props.intl.formatMessage(message);
-      optionsRepresentation.push({
+      const result = {
         name: formattedMessage,
         value: option.uuid,
-      });
+      };
+      if (this.props.properties.url) {
+        result.codedAnswer = option.codedAnswer;
+        result.uuid = option.uuid || option.value;
+      }
+      return result;
     });
-    return optionsRepresentation;
   }
 
   _getValue(value, multiSelect) {
     if (!value) return undefined;
 
-    const updatedValue = multiSelect ? value : [value];
+    const getMapping = val => (val.mappings && !this.props.properties.autoComplete ?
+    find(val.mappings, ['source', this.state.terminologyServiceConfig.system]) : null);
 
-    const options = updatedValue.map(val => {
-      const getMapping = val.mappings
-        ? find(val.mappings, ['source', 'SNOMED'])
-        : null;
-      const codedAnswer = getMapping
-        ? this.state.codedData.find(
-            option => option.uuid.replace(/\D/g, '') === getMapping.code
-          )
-        : find(this.state.codedData, option => option.uuid === val.uuid);
+    const codedAnswer = val => {
+      const mapping = getMapping(val);
+      if (mapping) {
+        return this.state.codedData.find(option => option.uuid.replace(/\D/g, '') === mapping.code);
+      }
+      return find(this.state.codedData, option => option.uuid === (val.uuid || val.value));
+    };
 
-      const name = getMapping && codedAnswer ? codedAnswer.name : val.name;
-      const uuid = getMapping && codedAnswer ? codedAnswer.uuid : val.uuid;
-      const translationKey = codedAnswer ? codedAnswer.translationKey : '';
+    const createAnswer = val => {
+      const coded = codedAnswer(val);
+      return coded || { ...val, name: val.name, uuid: val.uuid || val.value, translationKey: '' };
+    };
 
-      return {
-        ...val,
-        name,
-        uuid,
-        translationKey,
-      };
-    });
+    const options = multiSelect ? value.map(createAnswer) : [createAnswer(value)];
 
-    const optionsRepresentation = this._getOptionsRepresentation(
-      options,
-      multiSelect
-    );
+    const optionsRepresentation = this._getOptionsRepresentation(options, multiSelect);
     return multiSelect ? optionsRepresentation : optionsRepresentation[0];
   }
 
@@ -147,7 +155,8 @@ export class CodedControl extends Component {
       validateForm,
       validations,
       multiSelect,
-      URL: this.props.properties.URL,
+      url: this.props.properties.url,
+      terminologyServiceConfig: this.state.terminologyServiceConfig,
     };
     if (displayType === 'autoComplete' || displayType === 'dropDown') {
       props.asynchronous = false;
@@ -158,10 +167,7 @@ export class CodedControl extends Component {
   }
 
   _getDisplayType(properties) {
-    if (
-      properties.autoComplete ||
-      (!properties.dropDown && properties.URL && this.state.codedData.length > 10)
-    ) {
+    if (properties.autoComplete) {
       return 'autoComplete';
     } else if (properties.dropDown) {
       return 'dropDown';
