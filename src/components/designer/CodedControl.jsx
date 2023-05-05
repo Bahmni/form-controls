@@ -141,11 +141,6 @@ const descriptor = {
             defaultValue: false,
           },
           {
-            name: 'autoComplete',
-            dataType: 'boolean',
-            defaultValue: false,
-          },
-          {
             name: 'multiSelect',
             dataType: 'boolean',
             defaultValue: false,
