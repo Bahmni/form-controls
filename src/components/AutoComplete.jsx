@@ -15,7 +15,6 @@ export class AutoComplete extends Component {
   constructor(props) {
     super(props);
     this.optionsUrl = props.optionsUrl;
-    this.url = props.url;
     this.terminologyServiceConfig = props.terminologyServiceConfig;
     this.childRef = undefined;
     this.getValue = this.getValue.bind(this);
