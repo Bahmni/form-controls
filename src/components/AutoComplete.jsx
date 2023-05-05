@@ -91,7 +91,7 @@ export class AutoComplete extends Component {
     }
 
     if (url) {
-      getAnswers(url, input)
+      getAnswers(url, input, this.terminologyServiceConfig.limit || 30)
         .then(data => {
           const responses = formatConcepts(data);
           this.setState({
