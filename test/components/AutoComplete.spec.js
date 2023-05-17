@@ -6,6 +6,7 @@ import { AutoComplete } from '../../src/components/AutoComplete.jsx';
 import sinon from 'sinon';
 import constants from 'src/constants';
 import { Error } from 'src/Error';
+import { Util } from 'src/helpers/Util';
 
 chai.use(chaiEnzyme());
 
@@ -38,6 +39,23 @@ describe('AutoComplete', () => {
     expect(wrapper.find('div').at(0)).to.have.className('form-builder-error');
   });
 
+  it('should not show error when initial value is not in options', () => {
+    const wrapper = mount(
+      <AutoComplete
+        asynchronous
+        formFieldPath="test1.1/1-0"
+        onValueChange={onValueChangeSpy}
+        options={options}
+        value={{ name: 'four', value: 'Four' }}
+      />
+    );
+
+    expect(wrapper.find('div').at(0)).to.not.have.className(
+      'form-builder-error'
+    );
+    expect(wrapper.find('input').prop('value')).to.eql('');
+  });
+
   it('should not check errors after mount if the formFieldPath suffix is 0', () => {
     const validations = [constants.validations.mandatory];
     const wrapper = mount(
@@ -52,6 +70,69 @@ describe('AutoComplete', () => {
     expect(wrapper.find('div').at(0)).to.not.have.className('form-builder-error');
   });
 
+  context('when url is provided', () => {
+    let codedDataStub;
+    let configStub;
+    const codedData = [
+      {
+        conceptName: 'Yes',
+        conceptUuid: '12345',
+        matchedName: 'Yes',
+        conceptSystem: 'http://systemurl.com',
+      },
+      {
+        conceptName: 'No',
+        conceptUuid: '67890',
+        matchedName: 'No',
+        conceptSystem: 'http://systemurl.com',
+      },
+    ];
+
+    const config = {
+      config: {
+        terminologyService: { limit: 20 },
+      },
+    };
+
+    let onChangeSpy;
+    let showNotificationSpy;
+
+    beforeEach(() => {
+      onChangeSpy = sinon.spy();
+      showNotificationSpy = sinon.spy();
+      codedDataStub = sinon.stub(Util, 'getAnswers').returns(codedData);
+      configStub = sinon.stub(Util, 'getConfig').returns(config);
+    });
+
+    afterEach(() => {
+      codedDataStub.restore();
+      configStub.restore();
+    });
+
+    it('Should call getAnswers with correct parameters', () => {
+      const wrapper = mount(
+          <AutoComplete
+            formFieldPath="test1.1/1-0"
+            onValueChange={onChangeSpy}
+            showNotification={showNotificationSpy}
+            url="http://systemurl.com"
+          />
+        );
+
+      const instance = wrapper.instance();
+      expect(instance.state.options.length).to.eql(0);
+      expect(instance.state.noResultsText).to.eql('');
+
+      wrapper.find('input').simulate('change', { target: { value: 'Yes' } });
+      expect(instance.state.options.length).to.eql(0);
+      // wait for debounce
+      setTimeout(() => {
+        expect(instance.state.options.length).to.eql(2);
+        expect(codedDataStub.calledWith('http://systemurl.com', 'Yes')).to.eql(true);
+      }, 500);
+    });
+  });
+
   context('when component is asynchronous', () => {
     it('should render asynchronous AutoComplete', () => {
       const wrapper = mount(
@@ -61,7 +142,7 @@ describe('AutoComplete', () => {
         />);
       expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
       expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
-      expect(wrapper.find('Select').props().minimumInput).to.be.eql(2);
+      expect(wrapper.find('Select').props().minimumInput).to.be.eql(3);
       expect(wrapper.find('Select').props().disabled).to.be.eql(false);
       expect(wrapper.find('Select').props().cache).to.be.eql(false);
       expect(wrapper.find('Select').props().autoload).to.be.eql(false);
@@ -126,6 +207,19 @@ describe('AutoComplete', () => {
       expect(wrapper.find('Select').props().disabled).to.eql(false);
     });
 
+    it('should set disabled prop on the Select component', () => {
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          enabled={false}
+          formFieldPath="test1.1/1-0"
+          onValueChange={onValueChangeSpy}
+          options={options}
+        />
+      );
+      expect(wrapper.find('Select').prop('disabled')).to.eql(true);
+    });
+
     it('should update component when the value of enable is changed', () => {
       const wrapper = mount(
         <AutoComplete
@@ -155,7 +249,7 @@ describe('AutoComplete', () => {
       );
       expect(wrapper.find('Select').props().valueKey).to.be.eql('uuid');
       expect(wrapper.find('Select').props().labelKey).to.be.eql('display');
-      expect(wrapper.find('Select').props().minimumInput).to.be.eql(2);
+      expect(wrapper.find('Select').props().minimumInput).to.be.eql(3);
       expect(wrapper.find('Select').props().options).to.be.eql([]);
     });
 
@@ -185,7 +279,8 @@ describe('AutoComplete', () => {
       const onChange = wrapper.find('Select').props().onChange;
       onChange(options[0]);
       const instance = wrapper.instance();
-      expect(instance.getValue()).to.eql([options[0]]);
+      const result = { ...options[0], uuid: options[0].value };
+      expect(instance.getValue()).to.eql([result]);
     });
 
     it('should call onSelect method of props on change', () => {
@@ -215,7 +310,8 @@ describe('AutoComplete', () => {
         />);
       wrapper.setProps({ value: options[1] });
       const instance = wrapper.instance();
-      expect(instance.getValue()).to.eql([options[1]]);
+      const result = { ...options[1], uuid: options[1].value };
+      expect(instance.getValue()).to.eql([result]);
     });
 
     it('should pass enabled value from props to the Select Component', () => {
@@ -264,7 +360,7 @@ describe('AutoComplete', () => {
       expect(instance.state.options.length).to.eql(0);
       expect(instance.state.noResultsText).to.eql('');
 
-      wrapper.find('input').simulate('change', { target: { value: 'aa' } });
+      wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
       expect(instance.state.options.length).to.eql(0);
       expect(instance.state.noResultsText).to.eql('No Results Found');
 

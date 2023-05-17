@@ -4,19 +4,63 @@ import ComponentStore from 'src/helpers/componentStore';
 import map from 'lodash/map';
 import cloneDeep from 'lodash/cloneDeep';
 import TranslationKeyGenerator from 'src/services/TranslationKeyService';
+import { Util } from '../../helpers/Util';
 
 export class CodedControlDesigner extends Component {
   constructor(props) {
     super(props);
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.state = {
+      codedData: this._getOptionsRepresentation(
+        this.props.metadata.concept.answers
+      ),
+      success: false,
+    };
+  }
+
+  componentDidMount() {
+    this.getAnswers();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { metadata } = this.props;
+    if (metadata.properties !== prevProps.metadata.properties) {
+      this.getAnswers();
+    }
+  }
+
+  getAnswers() {
+    const { metadata, setError } = this.props;
+
+    if (!metadata.properties.url || metadata.properties.autoComplete) {
+      this.setState({ success: true });
+      return;
+    }
+
+    Util.getAnswers(metadata.properties.url)
+      .then(response => {
+        const options = this._getOptionsRepresentation(response);
+        this.setState({ codedData: options, success: true });
+      })
+      .catch(() => {
+        if (setError) {
+          setError({ message: 'Something unexpected happened.' });
+        }
+      });
   }
 
   getJsonDefinition() {
     const metadataClone = cloneDeep(this.props.metadata);
     const { concept, id } = metadataClone;
-    map(concept.answers, (answer) => {
+    const answers = metadataClone.properties.url
+      ? this.state.codedData
+      : concept.answers;
+    map(answers, answer => {
       if (!answer.translationKey) {
-        answer.translationKey = new TranslationKeyGenerator(answer.name.display, id).build(); // eslint-disable-line no-param-reassign
+        const name = metadataClone.properties.url
+          ? answer.name
+          : answer.name.display;
+        answer.translationKey = new TranslationKeyGenerator(name, id).build(); // eslint-disable-line no-param-reassign
       }
     });
     return Object.assign({}, this.props.metadata, { concept });
@@ -28,12 +72,14 @@ export class CodedControlDesigner extends Component {
 
   _getOptionsRepresentation(options) {
     const optionsRepresentation = [];
-    map(options, (option) =>
-        optionsRepresentation.push({ name: option.name.display || option.name, value: option.uuid })
+    map(options, option =>
+      optionsRepresentation.push({
+        name: option.conceptName || option.name.display || option.name,
+        value: option.uuid || `${option.conceptSystem}/${option.conceptUuid}`,
+      })
     );
     return optionsRepresentation;
   }
-
   _getDisplayType(properties) {
     if (properties.autoComplete) {
       return 'autoComplete';
@@ -44,14 +90,15 @@ export class CodedControlDesigner extends Component {
   }
 
   render() {
-    const { metadata, metadata: { concept } } = this.props;
+    const { metadata } = this.props;
     const displayType = this._getDisplayType(metadata.properties);
-    const registeredComponent = ComponentStore.getDesignerComponent(displayType);
+    const registeredComponent =
+      ComponentStore.getDesignerComponent(displayType);
     if (registeredComponent) {
-      return React.createElement(registeredComponent.control, {
+      return this.state.success && React.createElement(registeredComponent.control, {
         asynchronous: false,
         labelKey: 'name',
-        options: this._getOptionsRepresentation(concept.answers),
+        options: this.state.codedData,
         ref: this.storeChildRef,
       });
     }
@@ -68,6 +115,7 @@ CodedControlDesigner.propTypes = {
     properties: PropTypes.object,
     type: PropTypes.string.isRequired,
   }),
+  setError: PropTypes.func,
 };
 
 const descriptor = {
@@ -81,6 +129,12 @@ const descriptor = {
         name: 'properties',
         dataType: 'complex',
         attributes: [
+          {
+            name: 'url',
+            dataType: 'string',
+            elementType: 'text',
+            defaultValue: '',
+          },
           {
             name: 'autoComplete',
             dataType: 'boolean',
