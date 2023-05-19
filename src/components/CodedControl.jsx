@@ -111,7 +111,7 @@ export class CodedControl extends Component {
     if (!value) return undefined;
 
     const getMapping = val => (val.mappings && !this.props.properties.autoComplete ?
-    find(val.mappings, ['source', this.state.terminologyServiceConfig.system]) : null);
+    find(val.mappings, ['source', this.state.terminologyServiceConfig.source]) : null);
 
     const codedAnswer = val => {
       const mapping = getMapping(val);
