@@ -23,6 +23,7 @@ export class AutoComplete extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.debouncedOnInputChange = Util.debounce(this.onInputChange, 300);
     const errors = this._getErrors(props.value) || [];
     const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
     this.state = {
@@ -212,7 +213,7 @@ export class AutoComplete extends Component {
           { ...props }
           filterOptions={ null }
           noResultsText={this.state.noResultsText}
-          onInputChange={this.onInputChange}
+          onInputChange={this.debouncedOnInputChange}
           options={ this.state.options }
           ref={ this.storeChildRef }
         />

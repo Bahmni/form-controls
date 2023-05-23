@@ -91,4 +91,14 @@ export class Util {
       throw error;
     });
   }
+
+  static debounce(func, delay) {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
+  }
 }

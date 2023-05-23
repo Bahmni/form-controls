@@ -2,6 +2,7 @@ import chaiEnzyme from 'chai-enzyme';
 import chai, { expect } from 'chai';
 import { Util } from '../../src/helpers/Util';
 import fetchMock from 'fetch-mock';
+import sinon from 'sinon';
 
 chai.use(chaiEnzyme());
 
@@ -121,6 +122,64 @@ describe('Util', () => {
           expect(err.response.status).to.eql(404);
           done();
         });
+    });
+  });
+
+  describe('Util.debounce', () => {
+    let clock;
+
+    beforeEach(() => {
+      clock = sinon.useFakeTimers();
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+    it('should delay the function execution', () => {
+      const func = sinon.spy();
+      const delay = 500;
+      const debouncedFunc = Util.debounce(func, delay);
+
+      debouncedFunc();
+
+      sinon.assert.notCalled(func);
+
+      clock.tick(delay);
+
+      sinon.assert.calledOnce(func);
+    });
+
+    it('should debounce multiple function calls', () => {
+      const func = sinon.spy();
+      const delay = 500;
+      const debouncedFunc = Util.debounce(func, delay);
+
+      debouncedFunc();
+      debouncedFunc();
+      debouncedFunc();
+
+      sinon.assert.notCalled(func);
+
+      clock.tick(delay);
+
+      sinon.assert.calledOnce(func);
+    });
+
+    it('should execute the function with the latest arguments', () => {
+      const func = sinon.spy();
+      const delay = 500;
+      const debouncedFunc = Util.debounce(func, delay);
+
+      debouncedFunc(1);
+      debouncedFunc(2);
+      debouncedFunc(3);
+
+      sinon.assert.notCalled(func);
+
+      clock.tick(delay);
+
+      sinon.assert.calledOnce(func);
+      sinon.assert.calledWith(func, 3);
     });
   });
 });
