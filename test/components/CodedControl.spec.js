@@ -112,6 +112,23 @@ describe('CodedControl', () => {
       sinon.assert.calledOnce(codedDataStub.withArgs(properties.url));
     });
 
+    it('should not fetch data from url if autocomplete is true', () => {
+      mountWithIntl(
+        <CodedControl
+          enabled
+          onChange={onChangeSpy}
+          options={options}
+          properties={{ ...properties, autoComplete: true }}
+          showNotification={showNotificationSpy}
+          validate={false}
+          validateForm={false}
+          validations={[]}
+        />
+      );
+
+      sinon.assert.notCalled(codedDataStub);
+    });
+
     it('should map value correctly in _getValue', () => {
       const wrapper = mountWithIntl(
         <CodedControl

@@ -71,6 +71,7 @@ describe('AutoComplete', () => {
   });
 
   context('when url is provided', () => {
+    let onChangeSpy;
     let codedDataStub;
     let configStub;
     const codedData = [
@@ -94,26 +95,34 @@ describe('AutoComplete', () => {
       },
     };
 
-    let onChangeSpy;
     let showNotificationSpy;
-
+    let clock;
+    const delay = 500;
     beforeEach(() => {
-      onChangeSpy = sinon.spy();
       showNotificationSpy = sinon.spy();
-      codedDataStub = sinon.stub(Util, 'getAnswers').returns(codedData);
-      configStub = sinon.stub(Util, 'getConfig').returns(config);
+      onChangeSpy = sinon.spy();
+      codedDataStub = sinon.stub(Util, 'getAnswers');
+      configStub = sinon.stub(Util, 'getConfig');
+
+      codedDataStub.returnsPromise().resolves(codedData);
+      configStub.returnsPromise().resolves(config);
+
+      clock = sinon.useFakeTimers();
     });
 
     afterEach(() => {
       codedDataStub.restore();
       configStub.restore();
+      clock.restore();
     });
 
     it('Should call getAnswers with correct parameters', () => {
       const wrapper = mount(
           <AutoComplete
-            formFieldPath="test1.1/1-0"
+            formFieldPath="test1.1/1-1"
+            minimumInput={3}
             onValueChange={onChangeSpy}
+            options={options}
             showNotification={showNotificationSpy}
             url="http://systemurl.com"
           />
@@ -125,11 +134,81 @@ describe('AutoComplete', () => {
 
       wrapper.find('input').simulate('change', { target: { value: 'Yes' } });
       expect(instance.state.options.length).to.eql(0);
-      // wait for debounce
-      setTimeout(() => {
+
+      clock.tick(delay);
+      Promise.resolve().then(() => {
+        sinon.assert.calledOnce(codedDataStub.withArgs('http://systemurl.com', 'Yes', 30));
         expect(instance.state.options.length).to.eql(2);
-        expect(codedDataStub.calledWith('http://systemurl.com', 'Yes')).to.eql(true);
-      }, 500);
+      });
+    });
+
+    it('should update options and noResultsText when input changes', () => {
+      const wrapper = mount(
+        <AutoComplete
+          formFieldPath="test1.1/1-1"
+          minimumInput={3}
+          onValueChange={onChangeSpy}
+          options={options}
+          url="http://systemurl.com"
+        />
+      );
+      const instance = wrapper.instance();
+
+      const input = wrapper.find('input');
+      input.simulate('change', { target: { value: 'one' } });
+
+      clock.tick(delay);
+      Promise.resolve().then(() => {
+        expect(instance.state.noResultsText).to.eql('No Results Found');
+        sinon.assert.calledOnce(codedDataStub.withArgs('http://systemurl.com', 'one', 30));
+      });
+    });
+
+    it('should update noResultsText when an error occurs', () => {
+      codedDataStub.returnsPromise().rejects('error');
+
+      const wrapper = mount(
+        <AutoComplete
+          formFieldPath="test1.1/1-1"
+          minimumInput={3}
+          onValueChange={onChangeSpy}
+          options={options}
+          url="http://systemurl.com"
+        />
+      );
+      const instance = wrapper.instance();
+
+      const input = wrapper.find('input');
+      input.simulate('change', { target: { value: 'one' } });
+
+      clock.tick(delay);
+      Promise.resolve().then(() => {
+        expect(instance.state.options).to.eql([]);
+        expect(instance.state.noResultsText).to.eql('No Results Found');
+        sinon.assert.calledOnce(codedDataStub.withArgs('http://systemurl.com', 'one'));
+      });
+    });
+
+    it('should not make a call to getAnswers when input length is less than minimumInput', () => {
+      const wrapper = mount(
+        <AutoComplete
+          formFieldPath="test1.1/1-1"
+          minimumInput={3}
+          onValueChange={onChangeSpy}
+          options={options}
+          url="http://systemurl.com"
+        />
+      );
+      const instance = wrapper.instance();
+      const input = wrapper.find('input');
+      input.simulate('change', { target: { value: 'on' } });
+
+      clock.tick(delay);
+      Promise.resolve().then(() => {
+        expect(instance.state.options).to.eql([]);
+        expect(instance.state.noResultsText).to.eql('');
+        expect(codedDataStub.called).to.eql(false);
+      });
     });
   });
 
@@ -360,19 +439,21 @@ describe('AutoComplete', () => {
       expect(instance.state.options.length).to.eql(0);
       expect(instance.state.noResultsText).to.eql('');
 
-      wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
-      expect(instance.state.options.length).to.eql(0);
-      expect(instance.state.noResultsText).to.eql('No Results Found');
+      setTimeout(() => {
+        wrapper.find('input').simulate('change', { target: { value: 'aaa' } });
+        expect(instance.state.options.length).to.eql(0);
+        expect(instance.state.noResultsText).to.eql('No Results Found');
 
-      wrapper.find('input').simulate('change', { target: { value: 'a' } });
-      expect(instance.state.options.length).to.eql(0);
-      expect(instance.state.noResultsText).to.eql('Type to search');
+        wrapper.find('input').simulate('change', { target: { value: 'a' } });
+        expect(instance.state.options.length).to.eql(0);
+        expect(instance.state.noResultsText).to.eql('Type to search');
 
-      wrapper.find('input').simulate('change', { target: { value: 'akkk' } });
-      expect(instance.state.noResultsText).to.eql('No Results Found');
+        wrapper.find('input').simulate('change', { target: { value: 'akkk' } });
+        expect(instance.state.noResultsText).to.eql('No Results Found');
 
-      wrapper.find('input').simulate('change', { target: { value: 'one' } });
-      expect(instance.state.options.length).to.eql(1);
+        wrapper.find('input').simulate('change', { target: { value: 'one' } });
+        expect(instance.state.options.length).to.eql(1);
+      }, 300);
     });
   });
 });
