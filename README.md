@@ -1,6 +1,8 @@
 Form Controls
 -------------
 
+This library provides a range of form controls that can be used to create customized forms within the Bahmni platform. More details can be found [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3132686337/SNOMED+FHIR+Terminology+Server+Integration+with+Bahmni)
+
 ### File naming conventions
 
 1. All components should be in Pascal Case (camel case starting with uppercase letter)
