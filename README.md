@@ -1,7 +1,7 @@
 Form Controls
 -------------
 
-This library provides a range of form controls that can be used to create customized forms within the Bahmni platform. More details can be found [here](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3132686337/SNOMED+FHIR+Terminology+Server+Integration+with+Bahmni)
+This library provides a range of form controls that can be used to create customized forms within the Bahmni platform.
 
 ### File naming conventions
 
@@ -20,3 +20,7 @@ This library provides a range of form controls that can be used to create custom
 1. Install dependencies - `yarn`
 2. Build - `yarn build`
 3. Test - `yarn test`
+
+### SNOMED Integration Support
+
+form-controls also integrates with SNOMED for terminology lookup as part of form configuration and generation. More details can be found in [this](https://bahmni.atlassian.net/wiki/spaces/BAH/pages/3132686337/SNOMED+FHIR+Terminology+Server+Integration+with+Bahmni) Wiki link
