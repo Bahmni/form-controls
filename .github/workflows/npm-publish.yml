@@ -1,0 +1,34 @@
+name: Bahmni Form Controls Package
+
+on:
+  push:
+    branches:
+      - master
+      - 'release-*'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
+      - name: Set up Node JS 10.19.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: 10.19.0
+          registry-url: 'https://registry.npmjs.org'
+      - run: yarn cache clean
+      - name: Install dependencies
+        run: brew install automake autoconf libtool dpkg pkgconfig nasm libpng
+      - name: yarn Install
+        run: yarn
+      - name: yarn test
+        run: yarn test
+      - run: yarn ci
+      - name: Publish the package
+        run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          always-auth: true
