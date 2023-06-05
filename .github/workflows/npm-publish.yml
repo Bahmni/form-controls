@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - 'release-*'
+      - snomed-release-0.93.11-snomed.1
 
   workflow_dispatch:
 
