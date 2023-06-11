@@ -90,7 +90,7 @@
     "sinon-as-promised": "^4.0.3",
     "whatwg-fetch": "^1.0.0"
   },
-  "resolutions": { 
+  "resolutions": {
     "**/**/lodash": "^4.17.12",
     "**/**/lodash-es": "^4.17.14",
     "**/**/mixin-deep": "^1.3.2",

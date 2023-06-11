@@ -1,0 +1,9 @@
+{
+  "dockerComposeFile": "docker-compose.yml",
+	"service": "env",
+  "remoteUser": "vscode",
+	"workspaceFolder": "/workspace",
+  "forwardPorts": [
+    9876
+  ]
+}

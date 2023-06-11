@@ -1,6 +1,8 @@
 export { Container } from 'components/Container.jsx';
 export { ObsControl } from 'components/ObsControl.jsx';
 export { Label } from 'components/Label.jsx';
+export { Link } from 'components/Link.jsx';
+export { ImageView } from 'components/ImageView.jsx';
 export { TextBox } from 'components/TextBox.jsx';
 export { NumericBox } from 'components/NumericBox.jsx';
 export { ComplexControl } from 'components/ComplexControl.jsx';
@@ -41,6 +43,8 @@ export { DateDesigner } from 'components/designer/Date.jsx';
 export { DateTimeDesigner } from 'components/designer/DateTime.jsx';
 export { SectionDesigner } from 'components/designer/Section.jsx';
 export { TableDesigner } from 'components/designer/TableDesigner.jsx';
+export { LinkDesigner } from 'components/designer/Link.jsx';
+export { ImageViewDesigner } from 'components/designer/ImageView.jsx';
 export { ImageDesigner } from 'components/designer/Image.jsx';
 export { VideoDesigner } from 'components/designer/Video.jsx';
 export { LocationDesigner } from 'components/designer/Location.jsx';
