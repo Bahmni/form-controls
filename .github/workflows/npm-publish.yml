@@ -1,3 +1,4 @@
+
 name: Bahmni Form Controls Package
 
 on:
@@ -5,6 +6,8 @@ on:
     branches:
       - master
       - 'release-*'
+    tags:
+      - '*'
 
   workflow_dispatch:
 
@@ -28,7 +31,9 @@ jobs:
         run: yarn test
       - run: yarn ci
       - name: Publish the package
-        run: yarn publish
+        if: startsWith(github.ref, 'refs/tags/')
+        run: yarn publish         
+      
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
           always-auth: true
