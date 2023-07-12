@@ -8,12 +8,14 @@ import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 import classNames from 'classnames';
+import { Util } from 'src/helpers/Util';
 
 
 export class AutoComplete extends Component {
   constructor(props) {
     super(props);
     this.optionsUrl = props.optionsUrl;
+    this.terminologyServiceConfig = props.terminologyServiceConfig;
     this.childRef = undefined;
     this.getValue = this.getValue.bind(this);
     this.getOptions = this.getOptions.bind(this);
@@ -21,6 +23,7 @@ export class AutoComplete extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
     this.storeChildRef = this.storeChildRef.bind(this);
+    this.debouncedOnInputChange = Util.debounce(this.onInputChange, 300);
     const errors = this._getErrors(props.value) || [];
     const hasErrors = this._isCreateByAddMore() ? this._hasErrors(errors) : false;
     this.state = {
@@ -32,7 +35,11 @@ export class AutoComplete extends Component {
   }
 
   componentWillMount() {
-    if (!this.props.asynchronous && this.props.minimumInput === 0) {
+    if (
+      !this.props.asynchronous &&
+      this.props.minimumInput === 0 &&
+      !this.props.url
+    ) {
       this.setState({ options: this.props.options });
     }
   }
@@ -75,26 +82,38 @@ export class AutoComplete extends Component {
   }
 
   onInputChange(input) {
-    if (input.length >= this.props.minimumInput) {
-      const options = this.props.options;
-      const searchedInputs = input.trim().split(' ');
-      const filteredOptions = [];
+    const { options, url } = this.props;
+    const { getAnswers, formatConcepts } = Util;
 
-      options.forEach(option => {
-        let flag = true;
-        searchedInputs.forEach(searchedInput => {
-          const regEx = new RegExp(searchedInput, 'gi');
-          flag = (flag && option.name.match(regEx));
-        });
-        if (flag) { filteredOptions.push(option); }
-      });
-
-      this.setState({ options: filteredOptions });
-      this.setState({ noResultsText: 'No Results Found' });
+    if (input.length < this.props.minimumInput) {
+      this.setState({ options: [], noResultsText: 'Type to search' });
       return;
     }
-    this.setState({ noResultsText: 'Type to search' });
-    this.setState({ options: [] });
+
+    if (url) {
+      getAnswers(url, input, this.terminologyServiceConfig.limit || 30)
+        .then(data => {
+          const responses = formatConcepts(data);
+          this.setState({
+            options: responses,
+            noResultsText: 'No Results Found',
+          });
+        })
+        .catch(() => {
+          this.setState({ options: [], noResultsText: 'No Results Found' });
+        });
+    } else {
+      const searchedInputs = input.trim().split(' ');
+      const filteredOptions = options.filter(option =>
+        searchedInputs.every(searchedInput =>
+          option.name.match(new RegExp(searchedInput, 'gi'))
+        )
+      );
+      this.setState({
+        options: filteredOptions,
+        noResultsText: 'No Results Found',
+      });
+    }
   }
 
   getOptions(input = '') {
@@ -114,7 +133,8 @@ export class AutoComplete extends Component {
 
   getValue() {
     if (this.state.value) {
-      return this.props.multiSelect ? this.state.value : [this.state.value];
+      const value = this.props.multiSelect ? this.state.value : [this.state.value];
+      return value.map(val => ({ ...val, uuid: val.uuid || val.value }));
     }
     return [];
   }
@@ -193,7 +213,7 @@ export class AutoComplete extends Component {
           { ...props }
           filterOptions={ null }
           noResultsText={this.state.noResultsText}
-          onInputChange={this.onInputChange}
+          onInputChange={this.debouncedOnInputChange}
           options={ this.state.options }
           ref={ this.storeChildRef }
         />
@@ -217,6 +237,8 @@ AutoComplete.propTypes = {
   options: PropTypes.array,
   optionsUrl: PropTypes.string,
   searchable: PropTypes.bool,
+  terminologyServiceConfig: PropTypes.object,
+  url: PropTypes.string,
   validateForm: PropTypes.bool,
   validations: PropTypes.array,
   value: PropTypes.any,
@@ -231,9 +253,10 @@ AutoComplete.defaultProps = {
   enabled: true,
   formFieldPath: '-0',
   labelKey: 'display',
-  minimumInput: 2,
+  minimumInput: 3,
   multiSelect: false,
   optionsUrl: '/openmrs/ws/rest/v1/concept?v=full&q=',
+  url: '',
   valueKey: 'uuid',
   searchable: true,
 };

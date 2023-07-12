@@ -16,7 +16,7 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = {};
     this.onChange = this.onChange.bind(this);
     this.onCommentChange = this.onCommentChange.bind(this);
     this.onAddControl = this.onAddControl.bind(this);
