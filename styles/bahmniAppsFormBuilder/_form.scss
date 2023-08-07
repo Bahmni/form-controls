@@ -194,7 +194,6 @@ $lightestGray: #eee;
           &[disabled] {
             background: #eee;
             border: #ccc 1px solid;
-            color: #ccc;
             font-style: normal;
             cursor: not-allowed;
           }
@@ -449,13 +448,9 @@ $lightestGray: #eee;
 .disabled {
   background: #eee;
   border: #ccc 1px solid;
-  color: #ccc;
+  color: #8d8d8d;
   font-style: normal;
   cursor: not-allowed;
-}
-
-.disabled-label {
-  color: grey;
 }
 
 .hidden {

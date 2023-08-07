@@ -13,17 +13,16 @@ export class Label extends Component {
 
   render() {
     const { intl, enabled, metadata: { value, units } } = this.props;
-    const disableClass = enabled ? '' : 'disabled-label';
-    return (<label
-      className={`${disableClass}`}
-    >
-      {intl.formatMessage({
-        defaultMessage: value,
-        id: this.props.metadata.translationKey || 'defaultId',
-      })
-      }
-      {this._getUnits(units)}
-    </label>);
+  
+    return (
+      <label>
+        {intl.formatMessage({
+          defaultMessage: value,
+          id: this.props.metadata.translationKey || 'defaultId',
+        })}
+        {this._getUnits(units)}
+      </label>
+    );
   }
 }
 
