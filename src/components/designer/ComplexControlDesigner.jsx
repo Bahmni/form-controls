@@ -38,14 +38,6 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [
-          {
-            name: 'mandatory',
-            dataType: 'boolean',
-            defaultValue: false,
-            disabled: true,
-          },
-        ],
       },
     ],
   },
