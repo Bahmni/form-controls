@@ -40,9 +40,10 @@ export class Provider extends Component {
     const { properties } = this.props;
     const isSearchable = (properties.style === 'autocomplete');
     const minimumInput = isSearchable ? 2 : 0;
-    if(this.state.providerData.length === 0 && this.props.value) {
+    const isLoading = this.state.providerData.length === 0 && this.props.value;
+    if (isLoading) {
       return (
-        <Spinner show={true} />
+        <Spinner show={isLoading} />
       );
     }
     return (
@@ -54,7 +55,7 @@ export class Provider extends Component {
         searchable={isSearchable}
         value={value}
       />
-  );
+    );
   }
 }
 
