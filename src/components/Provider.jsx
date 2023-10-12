@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ComponentStore from 'src/helpers/componentStore';
 import { AutoComplete } from 'src/components/AutoComplete.jsx';
 import { httpInterceptor } from 'src/helpers/httpInterceptor';
+import Spinner from 'src/helpers/Spinner';
 import Constants from 'src/constants';
 import find from 'lodash/find';
 
@@ -39,16 +40,21 @@ export class Provider extends Component {
     const { properties } = this.props;
     const isSearchable = (properties.style === 'autocomplete');
     const minimumInput = isSearchable ? 2 : 0;
+    if(this.state.providerData.length === 0 && this.props.value) {
+      return (
+        <Spinner show={true} />
+      );
+    }
     return (
-        <AutoComplete {...this.props}
-          asynchronous={false}
-          minimumInput={minimumInput}
-          onValueChange={this.onValueChange}
-          options={this.state.providerData}
-          searchable={isSearchable}
-          value={value}
-        />
-    );
+      <AutoComplete {...this.props}
+        asynchronous={false}
+        minimumInput={minimumInput}
+        onValueChange={this.onValueChange}
+        options={this.state.providerData}
+        searchable={isSearchable}
+        value={value}
+      />
+  );
   }
 }
 
