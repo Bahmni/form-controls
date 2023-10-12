@@ -39,16 +39,21 @@ export class Provider extends Component {
     const { properties } = this.props;
     const isSearchable = (properties.style === 'autocomplete');
     const minimumInput = isSearchable ? 2 : 0;
+    if(this.state.providerData.length === 0 && this.props.value) {
+      return (
+        <div>Loading...</div>
+      );
+    }
     return (
-        <AutoComplete {...this.props}
-          asynchronous={false}
-          minimumInput={minimumInput}
-          onValueChange={this.onValueChange}
-          options={this.state.providerData}
-          searchable={isSearchable}
-          value={value}
-        />
-    );
+      <AutoComplete {...this.props}
+        asynchronous={false}
+        minimumInput={minimumInput}
+        onValueChange={this.onValueChange}
+        options={this.state.providerData}
+        searchable={isSearchable}
+        value={value}
+      />
+  );
   }
 }
 
