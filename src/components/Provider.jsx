@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ComponentStore from 'src/helpers/componentStore';
 import { AutoComplete } from 'src/components/AutoComplete.jsx';
 import { httpInterceptor } from 'src/helpers/httpInterceptor';
+import Spinner from 'src/helpers/Spinner';
 import Constants from 'src/constants';
 import find from 'lodash/find';
 
@@ -41,7 +42,7 @@ export class Provider extends Component {
     const minimumInput = isSearchable ? 2 : 0;
     if(this.state.providerData.length === 0 && this.props.value) {
       return (
-        <div>Loading...</div>
+        <Spinner show={true} />
       );
     }
     return (
