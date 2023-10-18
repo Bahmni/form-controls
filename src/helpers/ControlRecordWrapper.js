@@ -37,13 +37,14 @@ export default class ControlRecordWrapper {
     return this.currentRecord && this.currentRecord.getValue();
   }
 
-  setValue(value) {
+  setValue(value, interpretation) {
     const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
 
     brotherTrees.forEach(r => {
       const updatedRecord = r.set('value', {
-        value: r.setValue(value),
+        value: r.setValue(value, interpretation),
         comment: this.currentRecord.comment,
+        interpretation: this.currentRecord.interpretation || interpretation,
       });
       this.update(updatedRecord);
     });
