@@ -19,6 +19,13 @@ export class Image extends Component {
     this.displayDeleteButton = this.displayDeleteButton.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.validate) {
+      const errors = this._getErrors(nextProps.value);
+      this.setState({ hasErrors: this._hasErrors(errors) });
+    }
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     this.isValueChanged = this.props.value !== nextProps.value;
     if (this.props.enabled !== nextProps.enabled ||
@@ -72,6 +79,11 @@ export class Image extends Component {
   }
 
   handleChange(e) {
+    const value = e.target.value;
+    // eslint-disable-next-line no-unused-vars
+    const errors = this._getErrors(value);
+    this.setState({ hasErrors: this._hasErrors(errors) });
+    this.props.onChange({ value, errors });
     e.preventDefault();
     this.setState({ loading: true });
     if (e.target.files === undefined) {

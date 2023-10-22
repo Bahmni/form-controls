@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node JS 10.19.0
         uses: actions/setup-node@v3
         with:
-          node-version: 10.19.0
+          node-version: 12.13.0
           registry-url: 'https://registry.npmjs.org'
       - run: yarn cache clean
       - name: Install dependencies

@@ -63,7 +63,7 @@ export class AutoComplete extends Component {
     return !isEqual(this.props.value, nextProps.value) ||
       !isEqual(this.state.value, nextState.value) ||
       !isEqual(this.props.searchable, nextProps.searchable) ||
-      this.state.hasErrors !== nextState.hasErrors ||
+      (this.state.hasErrors !== nextState.hasErrors) ||
       !isEqual(this.state.options, nextState.options) ||
       this.state.noResultsText !== nextState.noResultsText ||
       this.props.enabled !== nextProps.enabled;
@@ -176,7 +176,7 @@ export class AutoComplete extends Component {
 
   render() {
     const { autofocus, autoload, cache, enabled, filterOptions, labelKey, valueKey,
-                  asynchronous, multiSelect, minimumInput, searchable } = this.props;
+      asynchronous, multiSelect, minimumInput, searchable } = this.props;
     const props = {
       autofocus,
       backspaceRemoves: true,
@@ -197,11 +197,11 @@ export class AutoComplete extends Component {
       return (
         <div className={className}>
           <Select.Async
-            { ...props }
+            {...props}
             autoload={autoload}
             cache={cache}
-            loadOptions={ this.getOptions }
-            onFocus={ this.handleFocus }
+            loadOptions={this.getOptions}
+            onFocus={this.handleFocus}
             ref={this.storeChildRef}
           />
         </div>
@@ -210,12 +210,12 @@ export class AutoComplete extends Component {
     return (
       <div className={className}>
         <Select
-          { ...props }
-          filterOptions={ null }
+          {...props}
+          filterOptions={null}
           noResultsText={this.state.noResultsText}
           onInputChange={this.debouncedOnInputChange}
-          options={ this.state.options }
-          ref={ this.storeChildRef }
+          options={this.state.options}
+          ref={this.storeChildRef}
         />
       </div>
     );
