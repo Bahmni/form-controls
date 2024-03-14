@@ -144,9 +144,16 @@ export class AutoComplete extends Component {
     if (!this.props.asynchronous && this.props.minimumInput !== 0) {
       this.setState({ options: [], noResultsText: '' });
     }
-    this.setState({ value, hasErrors: this._hasErrors(errors) });
-    if (this.props.onValueChange) {
-      this.props.onValueChange(value, errors);
+    if (Array.isArray(value) && value.length === 0) {
+      this.setState({ value: undefined, hasErrors: this._hasErrors(errors) });
+      if (this.props.onValueChange) {
+        this.props.onValueChange(undefined, errors);
+      }
+    } else {
+      this.setState({ value, hasErrors: this._hasErrors(errors) });
+      if (this.props.onValueChange) {
+        this.props.onValueChange(value, errors);
+      }
     }
   }
 
