@@ -425,6 +425,46 @@ describe('AutoComplete', () => {
       sinon.assert.calledTwice(onValueChange.withArgs(undefined, [mandatoryError]));
     });
 
+    it('should set value as undefined if empty array is passed as value for autoComplete', () => {
+      const onValueChange = sinon.spy();
+      const validations = [constants.validations.mandatory];
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          formFieldPath="test1.1/1-0"
+          onValueChange={onValueChange}
+          options={options}
+          validations={validations}
+          value={options[0]}
+        />);
+
+      const onChange = wrapper.find('Select').props().onChange;
+      onChange([]);
+      const mandatoryError = new Error({ message: constants.validations.mandatory });
+      sinon.assert.calledTwice(onValueChange.withArgs(undefined, [mandatoryError]));
+      const instance = wrapper.instance();
+      expect(instance.state.value).to.eql(undefined);
+    });
+
+    it('should return empty array if no object is present in value for autoComplete', () => {
+      const onValueChange = sinon.spy();
+      const validations = [constants.validations.mandatory];
+      const wrapper = mount(
+        <AutoComplete
+          asynchronous={false}
+          formFieldPath="test1.1/1-0"
+          onValueChange={onValueChange}
+          options={options}
+          validations={validations}
+          value={options[0]}
+        />);
+
+      const instance = wrapper.instance();
+      instance.setState({ value: undefined });
+      const value = instance.getValue();
+      expect(value.length).to.eql(0);
+    });
+
     it('should test onInputChange', () => {
       const wrapper = mount(
         <AutoComplete
