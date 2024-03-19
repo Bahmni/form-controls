@@ -221,6 +221,7 @@ export class AutoComplete extends Component {
           filterOptions={null}
           noResultsText={this.state.noResultsText}
           onInputChange={this.debouncedOnInputChange}
+          optionClassName="needsclick"
           options={this.state.options}
           ref={this.storeChildRef}
         />
