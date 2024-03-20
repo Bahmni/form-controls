@@ -210,6 +210,7 @@ export class AutoComplete extends Component {
             loadOptions={this.getOptions}
             onFocus={this.handleFocus}
             ref={this.storeChildRef}
+            optionClassName="needsclick" // to fix the IOS device issue
           />
         </div>
       );
@@ -223,6 +224,7 @@ export class AutoComplete extends Component {
           onInputChange={this.debouncedOnInputChange}
           options={this.state.options}
           ref={this.storeChildRef}
+          optionClassName="needsclick" // to fix the IOS device issue
         />
       </div>
     );
