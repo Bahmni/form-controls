@@ -209,6 +209,7 @@ export class AutoComplete extends Component {
             cache={cache}
             loadOptions={this.getOptions}
             onFocus={this.handleFocus}
+            optionClassName="needsclick"
             ref={this.storeChildRef}
           />
         </div>
@@ -221,6 +222,7 @@ export class AutoComplete extends Component {
           filterOptions={null}
           noResultsText={this.state.noResultsText}
           onInputChange={this.debouncedOnInputChange}
+          optionClassName="needsclick"
           options={this.state.options}
           ref={this.storeChildRef}
         />
