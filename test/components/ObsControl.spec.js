@@ -692,4 +692,55 @@ describe('ObsControl', () => {
       expect(wrapper.find('.details')).text().to.eql('test value Heading goes here');
     });
   });
+
+  it('should set error in ValueChanged if the state has errors in it', () => {
+    const metadata = {
+      id: '100',
+      type: 'obsControl',
+      units: null,
+      hiNormal: 100,
+      lowNormal: 10,
+      hiAbsolute: 1000,
+      lowAbsolute: 0,
+      concept: getConcept('text'),
+      label,
+      properties: {
+        mandatory: false,
+        notes: false,
+        addMore: false,
+        hideLabel: false,
+        controlEvent: false,
+        location: {
+          column: 0,
+          row: 1,
+        },
+        abnormal: true,
+      },
+    };
+    const value = { value: 2000, comment: 'someComment', interpretation: null };
+    const wrapper = shallow(
+      <ObsControl
+        metadata={metadata}
+        onValueChanged={onChangeSpy}
+        showNotification={() => {}}
+        validate={false}
+        validateForm={false}
+        value={value}
+      />
+    );
+    const errors = [{ type: 'error', message: 'Sample error message' }];
+    wrapper.setState({ errors });
+
+    expect(wrapper.find('button').text()).to.eql('Abnormal');
+
+    wrapper.find('button').simulate('click');
+    wrapper.instance().onChange({ value, errors });
+    sinon.assert.calledOnce(
+      onChangeSpy.withArgs(
+        undefined,
+        { value: 2000, comment: 'someComment', interpretation: 'ABNORMAL' },
+        errors
+      )
+    );
+  });
 });

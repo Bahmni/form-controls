@@ -37,7 +37,6 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   onChange({ value, errors, calledOnMount, triggerControlEvent }) {
     const { metadata: { properties } } = this.props;
-
     const isAbnormalPropertyEnabled = find(properties, (val, key) => (key === 'abnormal' && val));
     const isAbnormal = find(errors, (err) => err.type === constants.errorTypes.warning
                                               && err.message === constants.validations.allowRange);
@@ -46,6 +45,9 @@ export class ObsControl extends addMoreDecorator(Component) {
       interpretation = this.props.value.interpretation;
     }
     const obsValue = { value, comment: this.props.value.comment, interpretation };
+    this.setState({
+      errors,
+    });
     this.props.onValueChanged(
       this.props.formFieldPath,
       obsValue,
@@ -196,14 +198,24 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   setAbnormal() {
-    const { value } = this.props;
+    const { value, onValueChanged, formFieldPath } = this.props;
+    const { errors } = this.state;
     if (value.value) {
       const interpretation = value.interpretation === 'ABNORMAL' ? null : 'ABNORMAL';
-      this.props.onValueChanged(
-        this.props.formFieldPath,
-        { value: this.props.value.value, comment: this.props.value.comment, interpretation },
-        undefined
-      );
+      if (!errors || errors.length === 0) {
+        onValueChanged(
+          formFieldPath,
+          { value: this.props.value.value, comment: this.props.value.comment, interpretation },
+          undefined
+        );
+      } else {
+        const hasCriticalError = errors.some(error => error.type === 'error');
+        onValueChanged(
+          formFieldPath,
+          { value: this.props.value.value, comment: this.props.value.comment, interpretation },
+          hasCriticalError ? errors : undefined
+        );
+      }
     }
   }
 
