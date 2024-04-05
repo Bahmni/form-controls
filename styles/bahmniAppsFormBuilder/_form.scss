@@ -65,7 +65,10 @@ $lightestGray: #eee;
         }
         .obs-control-field{
           flex:9;
-          textarea{
+          .obs-comment-section-wrap {
+            display: -webkit-flex;
+          }
+          .obs-comment-section-wrap textarea {
             width: 70%;
             float:left;
           }
