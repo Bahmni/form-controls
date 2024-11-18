@@ -60,6 +60,7 @@ export class Provider extends Component {
 }
 
 Provider.propTypes = {
+  conceptUuid: PropTypes.string,
   addMore: PropTypes.bool,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,

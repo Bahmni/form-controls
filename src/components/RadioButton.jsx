@@ -51,6 +51,7 @@ export class RadioButton extends Component {
         <input
           checked={this.state.value === option.value}
           key={index}
+          id={this.props.conceptUuid}
           name={name}
           type="radio"
           value={option.value}
@@ -68,6 +69,7 @@ export class RadioButton extends Component {
 }
 
 RadioButton.propTypes = {
+  conceptUuid: PropTypes.string,
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,

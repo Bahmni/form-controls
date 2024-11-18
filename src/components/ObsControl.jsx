@@ -84,6 +84,7 @@ export class ObsControl extends addMoreDecorator(Component) {
       validateForm,
       formFieldPath,
       patientUuid: this.props.patientUuid,
+      conceptUuid: this.props.metadata.concept.uuid,
       addMore: isAddMoreEnabled,
       validations,
       value: this.props.value.value,
@@ -109,10 +110,10 @@ export class ObsControl extends addMoreDecorator(Component) {
   }
 
   displayLabel() {
-    const { enabled, intl, hidden, metadata: { properties, label, units } } = this.props;
+    const { enabled, intl, hidden, metadata: { properties, label, units, concept } } = this.props;
     const { concept: { description } } = this.props.metadata;
     const hideLabel = find(properties, (value, key) => (key === 'hideLabel' && value));
-    const labelMetadata = { ...label, units: this._getUnits(units) };
+    const labelMetadata = { ...label, ...concept, units: this._getUnits(units) };
     const showHintButton = this.state && this.state.showHintButton;
     const labelComponent = (<Label enabled={enabled} hidden={hidden}
       intl={intl} metadata={labelMetadata}

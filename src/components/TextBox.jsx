@@ -78,6 +78,8 @@ export class TextBox extends Component {
         disabled={!this.props.enabled}
         onChange={(e) => this.handleChange(e)}
         value={defaultValue}
+        name={this.props.conceptUuid}
+        id={this.props.conceptUuid}
       />
         </div>
     );
@@ -85,6 +87,7 @@ export class TextBox extends Component {
 }
 
 TextBox.propTypes = {
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,

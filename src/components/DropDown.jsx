@@ -17,6 +17,7 @@ export class DropDown extends PureComponent {
 }
 
 DropDown.propTypes = {
+  conceptUuid: PropTypes.string,
   autofocus: PropTypes.bool,
   enabled: PropTypes.bool,
   labelKey: PropTypes.string,

@@ -74,6 +74,7 @@ export class Date extends Component {
     const defaultValue = this.props.value || '';
     return (
       <input
+        id={this.props.conceptUuid}
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
         disabled={!this.props.enabled}
         onChange={(e) => this.handleChange(e)}
@@ -85,6 +86,7 @@ export class Date extends Component {
 }
 
 Date.propTypes = {
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,

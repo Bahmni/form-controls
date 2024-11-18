@@ -28,6 +28,7 @@ export class Comment extends Component {
         <div className="obs-comment-section-wrap">
           <div className="obs-control-field text-area-wrap">
           <Textarea
+            id={this.props.conceptUuid}
             className="obs-comment-section fl"
             defaultValue={this.props.comment}
             maxLength="255"
@@ -71,6 +72,7 @@ export class Comment extends Component {
 }
 
 Comment.propTypes = {
+  conceptUuid: PropTypes.string,
   comment: PropTypes.string,
   conceptHandler: PropTypes.string,
   datatype: PropTypes.string,

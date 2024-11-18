@@ -111,6 +111,8 @@ export class Button extends Component {
         key={index}
         onClick={() => this.changeValue(option)}
         title={option[this.props.nameKey]}
+        id={option[this.props.nameKey]}
+        name={this.props.conceptUuid}
       >
         <i className="fa fa-ok"></i>{option[this.props.nameKey]}
       </button>
@@ -120,13 +122,14 @@ export class Button extends Component {
   render() {
     const className =
       classNames('form-control-buttons', { 'form-builder-error': this.state.hasErrors });
-    return <div className={className}>{this.displayButtons()}</div>;
+    return <div className={className} id={this.props.conceptUuid}>{this.displayButtons()}</div>;
   }
 
 
 }
 
 Button.propTypes = {
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   multiSelect: PropTypes.bool,

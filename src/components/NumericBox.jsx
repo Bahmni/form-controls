@@ -101,7 +101,7 @@ export class NumericBox extends Component {
   }
 
   render() {
-    const { lowNormal, hiNormal } = this.props;
+    const { lowNormal, hiNormal, conceptUuid } = this.props;
     if (NumericBoxDesigner.getRange(lowNormal, hiNormal) !== '') {
       return (
         <div className="fl">
@@ -113,7 +113,7 @@ export class NumericBox extends Component {
             ref={(elem) => {
               this.input = elem;
             }}
-            step="any" type="number"
+            step="any" type="number" name={conceptUuid} id={conceptUuid}
           />
           <span className="form-builder-valid-range">
             {NumericBoxDesigner.getRange(lowNormal, hiNormal)}
@@ -131,7 +131,7 @@ export class NumericBox extends Component {
           ref={(elem) => {
             this.input = elem;
           }}
-          step="any" type="number"
+          step="any" type="number" name={conceptUuid} id={conceptUuid}
         />
       </div>
     );
@@ -139,6 +139,7 @@ export class NumericBox extends Component {
 }
 
 NumericBox.propTypes = {
+  conceptUuid: PropTypes.string,
   conceptClass: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string.isRequired,
