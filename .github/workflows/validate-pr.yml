@@ -2,8 +2,7 @@ name: Validate PR for Bahmni Form Controls
 
 on:
   pull_request:
-    branches: 
-      - master
+    branches: [ master ]
     types: [ opened, synchronize, reopened ]
 
   workflow_dispatch:
