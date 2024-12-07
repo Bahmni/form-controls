@@ -1,18 +1,17 @@
-import { Component } from 'react';
-import ComponentStore from '../../helpers/componentStore';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { LabelDesigner } from 'components/designer/Label.jsx';
-import { GridDesigner } from 'components/designer/Grid.jsx';
-import { CellDesigner } from 'components/designer/Cell.jsx';
+import { Component } from "react";
+import ComponentStore from "../../helpers/componentStore";
+import PropTypes from "prop-types";
+import React from "react";
+import { LabelDesigner } from "components/designer/Label.jsx";
+import { GridDesigner } from "components/designer/Grid.jsx";
+import { CellDesigner } from "components/designer/Cell.jsx";
 
-const supportedControlTypes = ['obsControl'];
-const unsupportedProperties = ['addMore'];
+const supportedControlTypes = ["obsControl"];
+const unsupportedProperties = ["addMore"];
 
-const NO_OF_TABLE_COLUMNS = 2;
+const NO_OF_TABLE_COLUMNS = 3;
 
 export class TableDesigner extends Component {
-
   constructor(props) {
     super(props);
     this.metadata = props.metadata;
@@ -30,21 +29,29 @@ export class TableDesigner extends Component {
     const columnHeaders = [];
     const { metadata } = this.props;
     if (this.labelControls.length > 0) {
-      this.labelControls.forEach(
-        (labelControl) => {
-          columnHeaders.push(labelControl.getJsonDefinition());
-        });
+      this.labelControls.forEach((labelControl) => {
+        columnHeaders.push(labelControl.getJsonDefinition());
+      });
     }
-    const headerJsonDefinition = this.headerControl && this.headerControl.getJsonDefinition();
-    if (metadata) {controls.push(...this.gridRef.getControls());}
-    return Object.assign({}, metadata, { controls }, { label: headerJsonDefinition },
-        { columnHeaders });
+    const headerJsonDefinition =
+      this.headerControl && this.headerControl.getJsonDefinition();
+    if (metadata) {
+      controls.push(...this.gridRef.getControls());
+    }
+    return Object.assign(
+      {},
+      metadata,
+      { controls },
+      { label: headerJsonDefinition },
+      { columnHeaders }
+    );
   }
 
   getColumnHeaderLabelObject(columnIndex) {
     const columnHeaders = this.props.metadata.columnHeaders;
-    return columnHeaders && columnHeaders.length > 0 ? columnHeaders[columnIndex]
-        : { type: 'label' };
+    return columnHeaders && columnHeaders.length > 0
+      ? columnHeaders[columnIndex]
+      : { type: "label" };
   }
 
   storeGridRef(ref) {
@@ -82,7 +89,9 @@ export class TableDesigner extends Component {
   }
 
   displayLabel(value, columnIndex) {
-    const { metadata: { id } } = this.props;
+    const {
+      metadata: { id },
+    } = this.props;
     const label = this.getColumnHeaderLabelObject(columnIndex);
     const data = Object.assign({}, label, { id, value });
     return (
@@ -96,7 +105,9 @@ export class TableDesigner extends Component {
   }
 
   displayTableHeader() {
-    const { metadata: { label, id } } = this.props;
+    const {
+      metadata: { label, id },
+    } = this.props;
     const data = Object.assign({}, label, { id });
     return (
       <LabelDesigner
@@ -109,9 +120,19 @@ export class TableDesigner extends Component {
 
   displayColumnHeaders(columnHeaders) {
     const columnHeaderLabels = [];
-    for (let columnIndex = 0; columnIndex < NO_OF_TABLE_COLUMNS; columnIndex++) {
-      columnHeaderLabels.push(this.displayLabel(columnHeaders.length > 0 ?
-         columnHeaders[columnIndex].value : `Column${columnIndex + 1}`, columnIndex));
+    for (
+      let columnIndex = 0;
+      columnIndex < NO_OF_TABLE_COLUMNS;
+      columnIndex++
+    ) {
+      columnHeaderLabels.push(
+        this.displayLabel(
+          columnHeaders.length > 0
+            ? columnHeaders[columnIndex].value
+            : `Column${columnIndex + 1}`,
+          columnIndex
+        )
+      );
     }
     return columnHeaderLabels;
   }
@@ -124,7 +145,9 @@ export class TableDesigner extends Component {
   handleControlDrop({ metadata, cellMetadata, successCallback, dropCell }) {
     const dragSourceCell = this.props.dragSourceCell;
     function onSuccessfulControlDrop() {
-      const hasOnlySupportedControlTypes = supportedControlTypes.includes(metadata.type);
+      const hasOnlySupportedControlTypes = supportedControlTypes.includes(
+        metadata.type
+      );
       const hasNoElementInCell = cellMetadata.length === 0;
       if (hasOnlySupportedControlTypes && hasNoElementInCell) {
         successCallback(Object.assign({}, metadata, { unsupportedProperties }));
@@ -132,8 +155,12 @@ export class TableDesigner extends Component {
         dragSourceCell.updateMetadata(metadata);
       }
     }
-    this.props.onControlDrop({ metadata, cellMetadata,
-      successCallback: onSuccessfulControlDrop, dropCell });
+    this.props.onControlDrop({
+      metadata,
+      cellMetadata,
+      successCallback: onSuccessfulControlDrop,
+      dropCell,
+    });
   }
 
   render() {
@@ -158,11 +185,11 @@ export class TableDesigner extends Component {
             controls={controls}
             dragSourceCell={this.props.dragSourceCell}
             idGenerator={this.props.idGenerator}
-            isBeingDragged ={this.props.isBeingDragged}
+            isBeingDragged={this.props.isBeingDragged}
             loadFormJson={this.props.loadFormJson}
             minColumns={NO_OF_TABLE_COLUMNS}
             minRows={2}
-            onControlDrop ={this.handleControlDrop}
+            onControlDrop={this.handleControlDrop}
             ref={this.storeGridRef}
             showDeleteButton
             wrapper={this.props.wrapper}
@@ -203,38 +230,38 @@ TableDesigner.propTypes = {
 const descriptor = {
   control: TableDesigner,
   designProperties: {
-    displayName: 'Table',
+    displayName: "Table",
     isTopLevelComponent: true,
   },
   metadata: {
     attributes: [
       {
-        name: 'type',
-        dataType: 'text',
-        defaultValue: 'table',
+        name: "type",
+        dataType: "text",
+        defaultValue: "table",
       },
       {
-        name: 'label',
-        dataType: 'complex',
+        name: "label",
+        dataType: "complex",
         attributes: [
           {
-            name: 'type',
-            dataType: 'text',
-            defaultValue: 'label',
+            name: "type",
+            dataType: "text",
+            defaultValue: "label",
           },
           {
-            name: 'value',
-            dataType: 'text',
-            defaultValue: 'Table',
+            name: "value",
+            dataType: "text",
+            defaultValue: "Table",
           },
         ],
       },
       {
-        name: 'properties',
-        dataType: 'complex',
+        name: "properties",
+        dataType: "complex",
         attributes: [],
       },
     ],
   },
 };
-ComponentStore.registerDesignerComponent('table', descriptor);
+ComponentStore.registerDesignerComponent("table", descriptor);
