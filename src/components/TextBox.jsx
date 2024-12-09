@@ -77,7 +77,6 @@ export class TextBox extends Component {
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
         disabled={!this.props.enabled}
         id={this.props.conceptUuid}
-        name={this.props.conceptUuid}
         onChange={(e) => this.handleChange(e)}
         value={defaultValue}
       />

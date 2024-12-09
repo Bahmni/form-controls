@@ -110,7 +110,6 @@ export class NumericBox extends Component {
               { 'form-builder-warning': this.state.hasWarnings }) }
             disabled={ !this.props.enabled }
             id={conceptUuid}
-            name={conceptUuid}
             onChange={ (e) => this.handleChange(e) }
             ref={(elem) => {
               this.input = elem;
@@ -131,7 +130,6 @@ export class NumericBox extends Component {
             'computed-value': this.isComputed() }) }
           disabled={ !this.props.enabled }
           id={conceptUuid}
-          name={conceptUuid}
           onChange={ (e) => this.handleChange(e) }
           ref={(elem) => {
             this.input = elem;

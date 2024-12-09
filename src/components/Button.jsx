@@ -110,7 +110,6 @@ export class Button extends Component {
         disabled={!this.props.enabled}
         id={option[this.props.nameKey]}
         key={index}
-        name={this.props.conceptUuid}
         onClick={() => this.changeValue(option)}
         title={option[this.props.nameKey]}
       >
