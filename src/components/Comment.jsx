@@ -28,9 +28,9 @@ export class Comment extends Component {
         <div className="obs-comment-section-wrap">
           <div className="obs-control-field text-area-wrap">
           <Textarea
-            id={this.props.conceptUuid}
             className="obs-comment-section fl"
             defaultValue={this.props.comment}
+            id={this.props.conceptUuid}
             maxLength="255"
             onChange={(e) => this.handleChange(e)}
             placeholder="Notes"
@@ -72,9 +72,9 @@ export class Comment extends Component {
 }
 
 Comment.propTypes = {
-  conceptUuid: PropTypes.string,
   comment: PropTypes.string,
   conceptHandler: PropTypes.string,
+  conceptUuid: PropTypes.string,
   datatype: PropTypes.string,
   onCommentChange: PropTypes.func.isRequired,
   value: PropTypes.string,

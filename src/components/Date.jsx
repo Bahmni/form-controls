@@ -74,9 +74,9 @@ export class Date extends Component {
     const defaultValue = this.props.value || '';
     return (
       <input
-        id={this.props.conceptUuid}
         className={classNames({ 'form-builder-error': this.state.hasErrors })}
         disabled={!this.props.enabled}
+        id={this.props.conceptUuid}
         onChange={(e) => this.handleChange(e)}
         type="date"
         value={defaultValue}

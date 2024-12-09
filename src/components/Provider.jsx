@@ -60,8 +60,8 @@ export class Provider extends Component {
 }
 
 Provider.propTypes = {
-  conceptUuid: PropTypes.string,
   addMore: PropTypes.bool,
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,

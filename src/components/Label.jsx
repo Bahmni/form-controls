@@ -15,7 +15,7 @@ export class Label extends Component {
     const { intl, enabled, metadata: { value, units } } = this.props;
     const disableClass = enabled ? '' : 'disabled-label';
     return (<label
-      className={`${disableClass}`} for={this.props.metadata.uuid}
+      className={`${disableClass}`} htmlFor={this.props.metadata.uuid}
     >
       {intl.formatMessage({
         defaultMessage: value,

@@ -108,11 +108,11 @@ export class Button extends Component {
       <button
         className={classNames('fl', { active: this._isActive(option) })}
         disabled={!this.props.enabled}
+        id={option[this.props.nameKey]}
         key={index}
+        name={this.props.conceptUuid}
         onClick={() => this.changeValue(option)}
         title={option[this.props.nameKey]}
-        id={option[this.props.nameKey]}
-        name={this.props.conceptUuid}
       >
         <i className="fa fa-ok"></i>{option[this.props.nameKey]}
       </button>
@@ -145,8 +145,8 @@ Button.propTypes = {
 
 Button.defaultProps = {
   enabled: true,
-  valueKey: 'value',
   nameKey: 'name',
+  valueKey: 'value',
 };
 
 ComponentStore.registerComponent('button', Button);

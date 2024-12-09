@@ -234,11 +234,11 @@ export class AutoComplete extends Component {
 }
 
 AutoComplete.propTypes = {
-  conceptUuid: PropTypes.string,
   asynchronous: PropTypes.bool,
   autofocus: PropTypes.bool,
   autoload: PropTypes.bool,
   cache: PropTypes.bool,
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   filterOptions: PropTypes.func,
   formFieldPath: PropTypes.string,

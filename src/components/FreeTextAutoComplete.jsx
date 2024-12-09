@@ -28,10 +28,10 @@ export class FreeTextAutoComplete extends Component {
     const { multi, clearable, backspaceRemoves, deleteRemoves } = this.props;
     return (
       <Select.Creatable
-        id={this.props.conceptUuid}
         backspaceRemoves={backspaceRemoves}
         clearable={clearable}
         deleteRemoves={deleteRemoves}
+        id={this.props.conceptUuid}
         multi={multi}
         onChange={this.handleOnChange}
         options={options}
@@ -42,9 +42,9 @@ export class FreeTextAutoComplete extends Component {
 }
 
 FreeTextAutoComplete.propTypes = {
-  conceptUuid: PropTypes.string,
   backspaceRemoves: PropTypes.bool.isRequired,
   clearable: PropTypes.bool.isRequired,
+  conceptUuid: PropTypes.string,
   deleteRemoves: PropTypes.bool.isRequired,
   locale: PropTypes.string,
   multi: PropTypes.bool.isRequired,

@@ -29,8 +29,8 @@ describe('ObsControl', () => {
   function getConcept(datatype, handler) {
     return {
       uuid: '70645842-be6a-4974-8d5f-45b52990e132',
-      name: 'Pulse',
       datatype,
+      name: 'Pulse',
       conceptClass: 'Image',
       conceptHandler: handler,
     };
@@ -110,7 +110,8 @@ describe('ObsControl', () => {
 
 
       expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql([]);
-      expect(wrapper.find('Label')).to.have.prop('metadata').to.deep.eql({ ...label, units: '', ...getConcept('Text') });
+      expect(wrapper.find('Label')).to.have.prop('metadata')
+        .to.deep.eql({ ...getConcept('Text'), ...label, units: '' });
     });
 
     it('should render child control with options when concept has answers', () => {

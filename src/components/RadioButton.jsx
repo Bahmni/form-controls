@@ -50,8 +50,8 @@ export class RadioButton extends Component {
       <div className="options-list" key={index} onClick={() => this.changeValue(option.value)}>
         <input
           checked={this.state.value === option.value}
-          key={index}
           id={this.props.conceptUuid}
+          key={index}
           name={name}
           type="radio"
           value={option.value}
