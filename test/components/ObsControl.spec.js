@@ -82,11 +82,10 @@ describe('ObsControl', () => {
       expect(wrapper).to.have.exactly(1).descendants('Label');
       expect(wrapper).to.have.exactly(1).descendants('DummyControl');
       expect(wrapper).to.have.exactly(1).descendants('input');
-
       expect(wrapper.find('DummyControl')).to.have.prop('validate').to.deep.eql(false);
       expect(wrapper.find('DummyControl')).not.to.have.prop('options');
       expect(wrapper.find('Label')).to.have.prop('metadata')
-        .to.deep.eql({ ...label, units: '(/min)' });
+        .to.deep.eql({ ...label, units: '(/min)', ...getConcept('Text') });
     });
 
     it('should render child control with options when metadata has options', () => {
@@ -111,7 +110,7 @@ describe('ObsControl', () => {
 
 
       expect(wrapper.find('DummyControl')).to.have.prop('options').to.deep.eql([]);
-      expect(wrapper.find('Label')).to.have.prop('metadata').to.deep.eql({ ...label, units: '' });
+      expect(wrapper.find('Label')).to.have.prop('metadata').to.deep.eql({ ...label, units: '', ...getConcept('Text') });
     });
 
     it('should render child control with options when concept has answers', () => {
