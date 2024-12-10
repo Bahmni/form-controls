@@ -101,7 +101,7 @@ export class NumericBox extends Component {
   }
 
   render() {
-    const { lowNormal, hiNormal } = this.props;
+    const { lowNormal, hiNormal, conceptUuid } = this.props;
     if (NumericBoxDesigner.getRange(lowNormal, hiNormal) !== '') {
       return (
         <div className="fl">
@@ -109,11 +109,13 @@ export class NumericBox extends Component {
             className={ classNames({ 'form-builder-error': this.state.hasErrors },
               { 'form-builder-warning': this.state.hasWarnings }) }
             disabled={ !this.props.enabled }
+            id={conceptUuid}
             onChange={ (e) => this.handleChange(e) }
             ref={(elem) => {
               this.input = elem;
             }}
-            step="any" type="number"
+            step="any"
+            type="number"
           />
           <span className="form-builder-valid-range">
             {NumericBoxDesigner.getRange(lowNormal, hiNormal)}
@@ -127,11 +129,13 @@ export class NumericBox extends Component {
           className={ classNames({ 'form-builder-error': this.state.hasErrors,
             'computed-value': this.isComputed() }) }
           disabled={ !this.props.enabled }
+          id={conceptUuid}
           onChange={ (e) => this.handleChange(e) }
           ref={(elem) => {
             this.input = elem;
           }}
-          step="any" type="number"
+          step="any"
+          type="number"
         />
       </div>
     );
@@ -140,6 +144,7 @@ export class NumericBox extends Component {
 
 NumericBox.propTypes = {
   conceptClass: PropTypes.string,
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string.isRequired,
   hiAbsolute: PropTypes.number,

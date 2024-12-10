@@ -15,7 +15,7 @@ export class Label extends Component {
     const { intl, enabled, metadata: { value, units } } = this.props;
     const disableClass = enabled ? '' : 'disabled-label';
     return (<label
-      className={`${disableClass}`}
+      className={`${disableClass}`} htmlFor={this.props.metadata.uuid}
     >
       {intl.formatMessage({
         defaultMessage: value,
@@ -32,6 +32,7 @@ Label.propTypes = {
   hidden: PropTypes.bool,
   intl: IntlShape,
   metadata: PropTypes.shape({
+    uuid: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     units: PropTypes.string,
     value: PropTypes.string.isRequired,

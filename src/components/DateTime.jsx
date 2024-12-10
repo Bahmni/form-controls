@@ -111,6 +111,7 @@ export class DateTime extends Component {
         <input
           className={classNames({ 'form-builder-error': this.state.hasErrors })}
           disabled={!this.props.enabled}
+          id={this.props.conceptUuid}
           onChange={(e) => this.handleDateChange(e)}
           type="date"
           value={this.dateValue}
@@ -118,6 +119,7 @@ export class DateTime extends Component {
         <input
           className={classNames({ 'form-builder-error': this.state.hasErrors })}
           disabled={!this.props.enabled}
+          id={this.props.conceptUuid}
           onChange={(e) => this.handleTimeChange(e)}
           type="time"
           value={this.timeValue}
@@ -128,6 +130,7 @@ export class DateTime extends Component {
 }
 
 DateTime.propTypes = {
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,

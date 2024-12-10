@@ -134,6 +134,7 @@ export class CodedControl extends Component {
 
   _getChildProps(displayType) {
     const {
+      conceptUuid,
       enabled,
       formFieldPath,
       value,
@@ -143,6 +144,7 @@ export class CodedControl extends Component {
       properties: { multiSelect },
     } = this.props;
     const props = {
+      conceptUuid,
       enabled,
       formFieldPath,
       value: this._getValue(value, multiSelect),
@@ -192,6 +194,7 @@ export class CodedControl extends Component {
 }
 
 CodedControl.propTypes = {
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   intl: IntlShape,

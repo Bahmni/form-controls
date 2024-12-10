@@ -108,6 +108,7 @@ export class Button extends Component {
       <button
         className={classNames('fl', { active: this._isActive(option) })}
         disabled={!this.props.enabled}
+        id={option[this.props.nameKey]}
         key={index}
         onClick={() => this.changeValue(option)}
         title={option[this.props.nameKey]}
@@ -120,13 +121,14 @@ export class Button extends Component {
   render() {
     const className =
       classNames('form-control-buttons', { 'form-builder-error': this.state.hasErrors });
-    return <div className={className}>{this.displayButtons()}</div>;
+    return <div className={className} id={this.props.conceptUuid}>{this.displayButtons()}</div>;
   }
 
 
 }
 
 Button.propTypes = {
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   multiSelect: PropTypes.bool,
@@ -142,8 +144,8 @@ Button.propTypes = {
 
 Button.defaultProps = {
   enabled: true,
-  valueKey: 'value',
   nameKey: 'name',
+  valueKey: 'value',
 };
 
 ComponentStore.registerComponent('button', Button);

@@ -243,7 +243,7 @@ describe('CodedControl', () => {
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(
-      11
+      12
     );
 
     expect(wrapper.find('DummyControl'))
@@ -275,7 +275,7 @@ describe('CodedControl', () => {
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(
-      11
+      12
     );
 
     expect(wrapper.find('DummyControl'))
@@ -418,7 +418,7 @@ describe('CodedControl', () => {
 
     expect(wrapper).to.have.exactly(1).descendants('DummyControl');
     expect(Object.keys(wrapper.find('DummyControl').props())).to.have.length(
-      14
+      15
     );
 
     expect(wrapper.find('DummyControl'))

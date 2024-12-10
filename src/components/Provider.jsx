@@ -61,6 +61,7 @@ export class Provider extends Component {
 
 Provider.propTypes = {
   addMore: PropTypes.bool,
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
   onChange: PropTypes.func.isRequired,

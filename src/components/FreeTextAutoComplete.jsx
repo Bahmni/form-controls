@@ -31,6 +31,7 @@ export class FreeTextAutoComplete extends Component {
         backspaceRemoves={backspaceRemoves}
         clearable={clearable}
         deleteRemoves={deleteRemoves}
+        id={this.props.conceptUuid}
         multi={multi}
         onChange={this.handleOnChange}
         options={options}
@@ -43,6 +44,7 @@ export class FreeTextAutoComplete extends Component {
 FreeTextAutoComplete.propTypes = {
   backspaceRemoves: PropTypes.bool.isRequired,
   clearable: PropTypes.bool.isRequired,
+  conceptUuid: PropTypes.string,
   deleteRemoves: PropTypes.bool.isRequired,
   locale: PropTypes.string,
   multi: PropTypes.bool.isRequired,

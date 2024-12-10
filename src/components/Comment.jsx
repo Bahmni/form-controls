@@ -30,6 +30,7 @@ export class Comment extends Component {
           <Textarea
             className="obs-comment-section fl"
             defaultValue={this.props.comment}
+            id={this.props.conceptUuid}
             maxLength="255"
             onChange={(e) => this.handleChange(e)}
             placeholder="Notes"
@@ -73,6 +74,7 @@ export class Comment extends Component {
 Comment.propTypes = {
   comment: PropTypes.string,
   conceptHandler: PropTypes.string,
+  conceptUuid: PropTypes.string,
   datatype: PropTypes.string,
   onCommentChange: PropTypes.func.isRequired,
   value: PropTypes.string,

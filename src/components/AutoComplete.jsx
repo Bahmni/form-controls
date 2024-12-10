@@ -183,7 +183,7 @@ export class AutoComplete extends Component {
 
   render() {
     const { autofocus, autoload, cache, enabled, filterOptions, labelKey, valueKey,
-      asynchronous, multiSelect, minimumInput, searchable } = this.props;
+      asynchronous, multiSelect, minimumInput, searchable, conceptUuid } = this.props;
     const props = {
       autofocus,
       backspaceRemoves: true,
@@ -204,6 +204,7 @@ export class AutoComplete extends Component {
       return (
         <div className={className}>
           <Select.Async
+            id={conceptUuid}
             {...props}
             autoload={autoload}
             cache={cache}
@@ -218,6 +219,7 @@ export class AutoComplete extends Component {
     return (
       <div className={className}>
         <Select
+          id={conceptUuid}
           {...props}
           filterOptions={null}
           noResultsText={this.state.noResultsText}
@@ -236,6 +238,7 @@ AutoComplete.propTypes = {
   autofocus: PropTypes.bool,
   autoload: PropTypes.bool,
   cache: PropTypes.bool,
+  conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   filterOptions: PropTypes.func,
   formFieldPath: PropTypes.string,
