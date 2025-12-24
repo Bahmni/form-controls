@@ -17,6 +17,7 @@ import Constants from 'src/constants';
 import sinon from 'sinon';
 import { Map as immutableMap } from 'immutable';
 import * as ExecuteEvents from '../../src/helpers/ExecuteEvents';
+import { utf8ToBase64 } from '../../src/helpers/encodingUtils';
 
 chai.use(chaiEnzyme());
 
@@ -254,7 +255,7 @@ describe('Container', () => {
         uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
         version: '1',
         events: {
-          onFormInit: "function(form){form.get('Pulse').setEnabled(false);}",
+          onFormInit: utf8ToBase64("function(form){form.get('Pulse').setEnabled(false);}"),
         },
         defaultLocale: 'en',
       };
@@ -1431,7 +1432,7 @@ describe('Container', () => {
         uuid: 'c398a4be-3f10-11e4-adec-0800271c1b75',
       };
       const events = {
-        onValueChange: `function(form){
+        onValueChange: utf8ToBase64(`function(form){
                     var admission = form.get('Tuberculosis, Need of Admission').getValue();
                     var patient = form.getPatient();
                     if( admission === 'abc' && patient.age === 10) {
@@ -1439,7 +1440,7 @@ describe('Container', () => {
                     } else {
                       form.get('Chief Complaint Notes').setEnabled(true);
                     }
-                  }`,
+                  }`),
       };
       const eventMetadata = {
         controls: [
@@ -5317,13 +5318,13 @@ describe('Container', () => {
                 hiAbsolute: null,
                 lowAbsolute: null,
                 events: {
-                  onValueChange: `function(form) {
-	if (form.getFromParent('IS_ABNORMAL').getValue()) {
-        form.getFromParent('Reason case is pending').setHidden(false);
-    }else {
-        form.getFromParent('Reason case is pending').setHidden(true);
-    }
-}`,
+                  onValueChange: utf8ToBase64(`function(form) {
+                    if (form.getFromParent('IS_ABNORMAL').getValue()) {
+                          form.getFromParent('Reason case is pending').setHidden(false);
+                      }else {
+                          form.getFromParent('Reason case is pending').setHidden(true);
+                      }
+                  }`),
                 },
               },
               {

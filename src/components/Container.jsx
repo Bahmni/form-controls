@@ -27,20 +27,20 @@ export class Container extends addMoreDecorator(Component) {
     this.onControlRemove = this.onControlRemove.bind(this);
     this.onEventTrigger = this.onEventTrigger.bind(this);
     this.showNotification = this.showNotification.bind(this);
-  }
 
-  componentWillMount() {
     const initScript = this.props.metadata.events && this.props.metadata.events.onFormInit;
     let updatedTree;
     if (initScript) {
-      updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(initScript);
-      this.setState({ data: updatedTree });
+      try {
+        updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(initScript);
+        updatedTree = executeEventsFromCurrentRecord(updatedTree, updatedTree, this.props.patient);
+      } catch (error) {
+        console.error('Error executing form init script:', error);
+      }
     }
-    updatedTree = updatedTree || this.state.data;
-    updatedTree = executeEventsFromCurrentRecord(updatedTree, updatedTree, this.props.patient);
-    this.setState({
-      data: updatedTree,
-    });
+    if (updatedTree) {
+      this.state.data = updatedTree;
+    }
   }
 
   componentWillReceiveProps(nextProps) {
