@@ -30,13 +30,14 @@ export class Container extends addMoreDecorator(Component) {
 
     const initScript = this.props.metadata.events && this.props.metadata.events.onFormInit;
     let updatedTree;
-    if (initScript) {
-      try {
+    try {
+      if (initScript) {
         updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(initScript);
-        updatedTree = executeEventsFromCurrentRecord(updatedTree, updatedTree, this.props.patient);
-      } catch (error) {
-        console.error('Error executing form init script:', error);
       }
+      updatedTree = updatedTree || this.state.data;
+      updatedTree = executeEventsFromCurrentRecord(updatedTree, updatedTree, this.props.patient);
+    } catch (error) {
+      console.error('Error executing form init script:', error);
     }
     if (updatedTree) {
       this.state.data = updatedTree;
