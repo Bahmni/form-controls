@@ -20,7 +20,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: yarn cache clean
       - name: Install dependencies
-        run: brew install automake autoconf libtool dpkg pkgconfig nasm libpng
+        run: sudo apt-get update && sudo apt-get install -y automake autoconf libtool pkg-config nasm libpng-dev
       - name: yarn Install
         run: yarn
       - name: yarn test
