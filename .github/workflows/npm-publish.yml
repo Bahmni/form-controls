@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-15-intel
     steps:
       - name: Checkout the code
         uses: actions/checkout@v3
@@ -23,7 +23,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: yarn cache clean
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y automake autoconf libtool pkg-config nasm libpng-dev g++ build-essential
+        run: brew install automake autoconf libtool dpkg pkgconfig nasm libpng
       - name: yarn Install
         run: yarn
       - name: yarn test
