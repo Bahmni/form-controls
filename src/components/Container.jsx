@@ -11,13 +11,15 @@ import NotificationContainer from '../helpers/Notification';
 import Constants from '../constants';
 import { IntlProvider } from 'react-intl';
 import { executeEventsFromCurrentRecord } from '../helpers/ExecuteEvents';
+import { deepUnescapeStrings } from '../helpers/encodingUtils';
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
     super(props);
     this.childControls = {};
-    const { observations, metadata } = this.props;
-    const controlRecordTree = new ControlRecordTreeBuilder().build(metadata, observations);
+    const { observations } = this.props;
+    this.metadata = deepUnescapeStrings(this.props.metadata);
+    const controlRecordTree = new ControlRecordTreeBuilder().build(this.metadata, observations);
     this.updatedControlRecordTree = controlRecordTree;
     this.state = { errors: [], data: controlRecordTree,
       collapse: props.collapse, notification: {} };
@@ -28,7 +30,7 @@ export class Container extends addMoreDecorator(Component) {
     this.onEventTrigger = this.onEventTrigger.bind(this);
     this.showNotification = this.showNotification.bind(this);
 
-    const initScript = this.props.metadata.events && this.props.metadata.events.onFormInit;
+    const initScript = this.metadata.events && this.metadata.events.onFormInit;
     let updatedTree;
     try {
       if (initScript) {
@@ -169,8 +171,8 @@ export class Container extends addMoreDecorator(Component) {
   }
 
   render() {
-    const { metadata: { controls,
-      name: formName, version: formVersion }, validate, translations, patient } = this.props;
+    const { controls, name: formName, version: formVersion } = this.metadata;
+    const { validate, translations, patient } = this.props;
     const formTranslations = { ...translations.labels, ...translations.concepts };
     const patientUuid = patient ? patient.uuid : undefined;
     const childProps = {

@@ -1,6 +1,6 @@
 import FormContext from './FormContext';
 import { httpInterceptor } from '../helpers/httpInterceptor';
-import { base64ToUtf8 } from './encodingUtils';
+import { base64ToUtf8, unescapeHtml } from './encodingUtils';
 
 export default class ScriptRunner {
 
@@ -22,7 +22,7 @@ export default class ScriptRunner {
     const formContext = this.formContext;
     const interceptor = this.interceptor;
     if (eventJs && interceptor) {
-      const decodedScript = this.convertToUTF8(eventJs);
+      const decodedScript = unescapeHtml(this.convertToUTF8(eventJs));
       const executiveJs = `(${decodedScript})(formContext,interceptor)`;
       /* eslint-disable */
       eval(executiveJs);
