@@ -25,6 +25,14 @@ describe('encodingUtils', () => {
         .to.equal('if (a < b && c > d)');
     });
 
+    it('should unescape &quot; to "', () => {
+      expect(unescapeHtml('a &quot;quoted&quot; b')).to.equal('a "quoted" b');
+    });
+
+    it('should unescape &#39; to \'', () => {
+      expect(unescapeHtml('it&#39;s')).to.equal("it's");
+    });
+
     it('should return the same string when no entities are present', () => {
       expect(unescapeHtml('hello world')).to.equal('hello world');
     });

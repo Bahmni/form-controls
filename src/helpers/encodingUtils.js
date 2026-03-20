@@ -1,3 +1,5 @@
+import { decode } from 'html-entities';
+
 export function utf8ToBase64(str) {
   if (str === undefined || str === null || str === '') {
     return '';
@@ -11,10 +13,7 @@ export function utf8ToBase64(str) {
 
 export function unescapeHtml(str) {
   if (typeof str !== 'string') return str;
-  return str
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&');
+  return decode(str);
 }
 
 export function deepUnescapeStrings(obj) {
