@@ -8403,6 +8403,60 @@
           "lowAbsolute": null
         }
       ]
+    },
+    {
+      "type": "section",
+      "label": {
+        "type": "label",
+        "value": "Patient History",
+        "translationKey": "PATIENT_HISTORY_SECTION"
+      },
+      "properties": {
+        "location": { "column": 0, "row": 99 }
+      },
+      "id": "patient-history-section",
+      "controls": [
+        {
+          "type": "obsControl",
+          "label": {
+            "type": "label",
+            "value": "Smoking Status"
+          },
+          "properties": {
+            "mandatory": false,
+            "location": { "row": 0, "column": 0 }
+          },
+          "id": "smoking-status",
+          "concept": {
+            "uuid": "c36c8200-3f10-11e4-adec-0800271c1b75",
+            "name": "Smoking Status",
+            "datatype": "Text",
+            "conceptClass": "Misc",
+            "answers": [],
+            "properties": { "allowDecimal": null }
+          }
+        },
+        {
+          "type": "obsControl",
+          "label": {
+            "type": "label",
+            "value": "Allergies"
+          },
+          "properties": {
+            "mandatory": false,
+            "location": { "row": 0, "column": 1 }
+          },
+          "id": "allergies",
+          "concept": {
+            "uuid": "c36c8280-3f10-11e4-adec-0800271c1b75",
+            "name": "Allergies",
+            "datatype": "Text",
+            "conceptClass": "Misc",
+            "answers": [],
+            "properties": { "allowDecimal": null }
+          }
+        }
+      ]
     }
   ],
   "events": {

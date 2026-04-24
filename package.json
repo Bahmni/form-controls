@@ -1,6 +1,6 @@
 {
   "name": "@bahmni/form2-controls",
-  "version": "0.0.3",
+  "version": "0.0.8",
   "description": "Repository for form controls",
   "license": "MPL-2.0",
   "main": "./dist/bundle.js",
@@ -18,7 +18,6 @@
     "posttest": "eslint --ext .js --ext .jsx ./src ./test",
     "lint": "eslint --ext .js --ext .jsx ./src ./test",
     "lint:fix": "eslint --ext .js --ext .jsx ./src ./test --fix",
-    "publish": "npm publish || true",
     "ci": "yarn run clean && yarn run build && yarn run publish",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
