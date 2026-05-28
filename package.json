@@ -1,8 +1,8 @@
 {
   "name": "bahmni-form-controls",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Repository for form controls",
-  "license": "GPL-2.0",
+  "license": "MPL-2.0",
   "main": "./dist/bundle.js",
   "scripts": {
     "clean": "rimraf dist/*",
@@ -101,5 +101,15 @@
     "**/**/lodash.template": "^4.5.0",
     "**/**/growl": "^1.10.0",
     "**/**/handlebars": "^4.7.7"
-  }
+  },
+  "licenses": [
+    {
+      "type": "MPL-2.0",
+      "url": "https://www.bahmni.org/license/mplv2hd"
+    },
+    {
+      "type": "Healthcare Disclaimer",
+      "url": "https://www.bahmni.org/license"
+    }
+  ]
 }
