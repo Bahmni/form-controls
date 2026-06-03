@@ -25,17 +25,19 @@ export class SurgicalBlockDesigner extends Component {
       `&startDatetime=${startDatetime}` +
       `&endDatetime=${endDatetime}` +
       '&includeVoided=false' +
-      '&v=custom:(id,uuid,provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided)),' +
-      'location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,' +
-      'person:(age,gender,birthdate)),actualStartDatetime,actualEndDatetime,status,notes,sortWeight,' +
+      '&v=custom:(id,uuid,' +
+      'provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided)),' +
+      'location:(uuid,name),startDatetime,endDatetime,' +
+      'surgicalAppointments:(id,uuid,patient:(uuid,display,' +
+      'person:(age,gender,birthdate)),' +
+      'actualStartDatetime,actualEndDatetime,status,notes,sortWeight,' +
       'bedNumber,bedLocation,surgicalAppointmentAttributes,patientObservations))';
 
     httpInterceptor
       .get(url)
       .then((data) => {
         const options = (data.results || []).map((block) => {
-          const d = new Date(block.startDatetime);
-          const date = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+          const date = moment(block.startDatetime).format('DD/MM/YYYY');
           const surgeon = block.provider && block.provider.person
             ? block.provider.person.display : '';
           return { id: block.uuid, name: `${date} - ${surgeon}` };

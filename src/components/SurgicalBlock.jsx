@@ -27,9 +27,12 @@ export class SurgicalBlock extends Component {
       `&startDatetime=${startDatetime}` +
       `&endDatetime=${endDatetime}` +
       '&includeVoided=false' +
-      '&v=custom:(id,uuid,provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided)),' +
-      'location:(uuid,name),startDatetime,endDatetime,surgicalAppointments:(id,uuid,patient:(uuid,display,' +
-      'person:(age,gender,birthdate)),actualStartDatetime,actualEndDatetime,status,notes,sortWeight,' +
+      '&v=custom:(id,uuid,' +
+      'provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided)),' +
+      'location:(uuid,name),startDatetime,endDatetime,' +
+      'surgicalAppointments:(id,uuid,patient:(uuid,display,' +
+      'person:(age,gender,birthdate)),' +
+      'actualStartDatetime,actualEndDatetime,status,notes,sortWeight,' +
       'bedNumber,bedLocation,surgicalAppointmentAttributes,patientObservations))';
 
     httpInterceptor
@@ -65,11 +68,7 @@ export class SurgicalBlock extends Component {
 
   _formatDate(datetime) {
     if (!datetime) return '';
-    const d = new Date(datetime);
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const year = d.getFullYear();
-    return `${day}/${month}/${year}`;
+    return moment(datetime).format('DD/MM/YYYY');
   }
 
   _getValue(val) {
