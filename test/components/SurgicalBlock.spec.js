@@ -38,8 +38,8 @@ describe('SurgicalBlock', () => {
   };
 
   const expectedOptions = [
-    { id: 'block-uuid-1', name: '15/05/2026 - Dr. Smith' },
-    { id: 'block-uuid-2', name: '20/05/2026 - Dr. Jones' },
+    { id: 'appt-uuid-1', name: '15/05/2026 - Dr. Smith' },
+    { id: 'appt-uuid-2', name: '20/05/2026 - Dr. Jones' },
   ];
 
   beforeEach(() => {
@@ -83,7 +83,7 @@ describe('SurgicalBlock', () => {
         showNotification={showNotificationSpy}
         validate={false}
         validations={[]}
-        value={'block-uuid-1'}
+        value={'appt-uuid-1'}
       />
     );
     expect(wrapper.find('AutoComplete')).to.have.prop('searchable').to.eql(false);
@@ -165,7 +165,7 @@ describe('SurgicalBlock', () => {
       />
     );
     expect(wrapper.find('AutoComplete')).to.have.prop('options')
-      .to.eql([{ id: 'block-uuid-1', name: '15/05/2026 - Dr. Smith' }]);
+      .to.eql([{ id: 'appt-uuid-1', name: '15/05/2026 - Dr. Smith' }]);
   });
 
   it('should show all blocks when patient prop is not provided', () => {
@@ -229,7 +229,7 @@ describe('SurgicalBlock', () => {
     );
     const onValueChange = wrapper.find('AutoComplete').props().onValueChange;
     onValueChange(expectedOptions[0], []);
-    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'block-uuid-1', errors: [] }));
+    sinon.assert.calledOnce(onChangeSpy.withArgs({ value: 'appt-uuid-1', errors: [] }));
   });
 
   it('should return undefined when selection is cleared', () => {

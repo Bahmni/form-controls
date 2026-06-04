@@ -37,13 +37,16 @@ export class SurgicalBlock extends Component {
       .get(url)
       .then((data) => {
         const { patientUuid } = this.props;
-        const blocks = (data.results || []).filter((block) =>
-          !patientUuid ||
-          (block.surgicalAppointments || []).some((appt) =>
-            appt.patient && appt.patient.uuid === patientUuid
-          )
-        );
-        this.setState({ surgeryOptions: this._formatSurgeryOptions(blocks) });
+        const surgeryOptions = [];
+        (data.results || []).forEach((block) => {
+          (block.surgicalAppointments || []).forEach((surgicalAppointment) => {
+            if (!patientUuid || (surgicalAppointment.patient &&
+                surgicalAppointment.patient.uuid === patientUuid)) {
+              surgeryOptions.push(this._formatSurgeryOption(block, surgicalAppointment));
+            }
+          });
+        });
+        this.setState({ surgeryOptions });
       })
       .catch(() => {
         this.props.showNotification('Failed to fetch surgical blocks', Constants.messageType.error);
@@ -55,13 +58,11 @@ export class SurgicalBlock extends Component {
     this.props.onChange({ value: updatedValue, errors });
   }
 
-  _formatSurgeryOptions(blocks) {
-    return blocks.map((block) => {
-      const date = this._formatDate(block.startDatetime);
-      const surgeon = block.provider && block.provider.person
-        ? block.provider.person.display : '';
-      return { id: block.uuid, name: `${date} - ${surgeon}` };
-    });
+  _formatSurgeryOption(block, surgicalAppointment) {
+    const date = this._formatDate(block.startDatetime);
+    const surgeon = block.provider && block.provider.person
+      ? block.provider.person.display : '';
+    return { id: surgicalAppointment.uuid, name: `${date} - ${surgeon}` };
   }
 
   _formatDate(datetime) {
@@ -69,8 +70,8 @@ export class SurgicalBlock extends Component {
     return moment(datetime).format('DD/MM/YYYY');
   }
 
-  _getValue(val) {
-    return find(this.state.surgeryOptions, (option) => option.id === val);
+  _getValue(savedValue) {
+    return find(this.state.surgeryOptions, (option) => option.id === savedValue);
   }
 
   render() {
