@@ -91,6 +91,45 @@ describe('SurgicalBlock', () => {
     expect(wrapper.find('AutoComplete')).to.have.prop('value').to.eql(expectedOptions[0]);
   });
 
+  it('should use properties.URL with resolved tokens when provided', () => {
+    surgicalBlockStub.returnsPromise().resolves(surgicalBlockData);
+    mount(
+      <SurgicalBlock
+        formFieldPath={formFieldPath}
+        onChange={onChangeSpy}
+        properties={{ style: 'autocomplete',
+          URL: '/custom/surgicalBlock?start={NOW-60d}&end={NOW}' }}
+        showNotification={showNotificationSpy}
+        validate={false}
+        validations={[]}
+      />
+    );
+    const calledUrl = surgicalBlockStub.getCall(0).args[0];
+    expect(calledUrl).to.include('/custom/surgicalBlock');
+    expect(calledUrl).to.include('start=');
+    expect(calledUrl).to.include('end=');
+    expect(calledUrl).to.not.include('{NOW-60d}');
+    expect(calledUrl).to.not.include('{NOW}');
+  });
+
+  it('should use the default URL with resolved tokens when properties.URL is not set', () => {
+    surgicalBlockStub.returnsPromise().resolves(surgicalBlockData);
+    mount(
+      <SurgicalBlock
+        formFieldPath={formFieldPath}
+        onChange={onChangeSpy}
+        properties={{ style: 'autocomplete' }}
+        showNotification={showNotificationSpy}
+        validate={false}
+        validations={[]}
+      />
+    );
+    const calledUrl = surgicalBlockStub.getCall(0).args[0];
+    expect(calledUrl).to.include('/openmrs/ws/rest/v1/surgicalBlock');
+    expect(calledUrl).to.not.include('{NOW-30d}');
+    expect(calledUrl).to.not.include('{NOW}');
+  });
+
   it('should call the surgical block API with dynamic date parameters', () => {
     surgicalBlockStub.returnsPromise().resolves(surgicalBlockData);
     mount(

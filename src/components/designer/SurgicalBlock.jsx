@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Util } from 'src/helpers/Util';
 import ComponentStore from 'src/helpers/componentStore';
 import { AutoComplete } from 'src/components/AutoComplete.jsx';
 import { httpInterceptor } from 'src/helpers/httpInterceptor';
@@ -13,17 +14,11 @@ export class SurgicalBlockDesigner extends Component {
   }
 
   componentDidMount() {
-    const { setError } = this.props;
-    const now = moment();
-    const oneMonthAgo = moment().subtract(1, 'months').startOf('day');
-
-    const startDatetime = encodeURIComponent(oneMonthAgo.format('YYYY-MM-DDTHH:mm:ss.SSSZZ'));
-    const endDatetime = encodeURIComponent(now.endOf('day').format('YYYY-MM-DDTHH:mm:ss.SSSZZ'));
-
-    const url = '/openmrs/ws/rest/v1/surgicalBlock' +
+    const { metadata: { properties }, setError } = this.props;
+    const defaultUrl = '/openmrs/ws/rest/v1/surgicalBlock' +
       '?activeBlocks=true' +
-      `&startDatetime=${startDatetime}` +
-      `&endDatetime=${endDatetime}` +
+      '&startDatetime={NOW-30d}' +
+      '&endDatetime={NOW}' +
       '&includeVoided=false' +
       '&v=custom:(id,uuid,' +
       'provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided)),' +
@@ -32,6 +27,8 @@ export class SurgicalBlockDesigner extends Component {
       'person:(age,gender,birthdate)),' +
       'actualStartDatetime,actualEndDatetime,status,notes,sortWeight,' +
       'bedNumber,bedLocation,surgicalAppointmentAttributes,patientObservations))';
+
+    const url = Util.resolveUrlTokens(properties.URL || defaultUrl);
 
     httpInterceptor
       .get(url)
@@ -91,6 +88,20 @@ const descriptor = {
         name: 'properties',
         dataType: 'complex',
         attributes: [
+          {
+            name: 'URL',
+            dataType: 'string',
+            defaultValue: '/openmrs/ws/rest/v1/surgicalBlock?activeBlocks=true' +
+              '&startDatetime={NOW-30d}&endDatetime={NOW}&includeVoided=false' +
+              '&v=custom:(id,uuid,provider:(uuid,person:(uuid,display),' +
+              'attributes:(attributeType:(display),value,voided)),location:(uuid,name),' +
+              'startDatetime,endDatetime,' +
+              'surgicalAppointments:(id,uuid,patient:(uuid,display,' +
+              'person:(age,gender,birthdate)),' +
+              'actualStartDatetime,actualEndDatetime,status,notes,sortWeight,' +
+              'bedNumber,bedLocation,surgicalAppointmentAttributes,patientObservations))',
+            elementType: 'text',
+          },
           {
             name: 'style',
             dataType: 'string',

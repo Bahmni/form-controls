@@ -70,6 +70,25 @@ describe('SurgicalBlockDesigner', () => {
     expect(wrapper.find('AutoComplete')).to.have.prop('valueKey').to.eql('id');
   });
 
+  it('should use properties.URL with resolved tokens when provided', () => {
+    surgicalBlockStub.returnsPromise().resolves(surgicalBlockData);
+    metadata.properties.URL = '/custom/surgicalBlock?start={NOW-40d}&end={NOW}';
+    mount(<SurgicalBlockDesigner metadata={metadata} />);
+    const calledUrl = surgicalBlockStub.getCall(0).args[0];
+    expect(calledUrl).to.include('/custom/surgicalBlock');
+    expect(calledUrl).to.not.include('{NOW-40d}');
+    expect(calledUrl).to.not.include('{NOW}');
+  });
+
+  it('should use default URL with resolved tokens when properties.URL is not set', () => {
+    surgicalBlockStub.returnsPromise().resolves(surgicalBlockData);
+    mount(<SurgicalBlockDesigner metadata={metadata} />);
+    const calledUrl = surgicalBlockStub.getCall(0).args[0];
+    expect(calledUrl).to.include('/openmrs/ws/rest/v1/surgicalBlock');
+    expect(calledUrl).to.not.include('{NOW-30d}');
+    expect(calledUrl).to.not.include('{NOW}');
+  });
+
   it('should call setError when API call fails', () => {
     const setErrorSpy = sinon.spy();
     surgicalBlockStub.returnsPromise().rejects('error');
