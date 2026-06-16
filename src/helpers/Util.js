@@ -1,4 +1,6 @@
 
+import moment from 'moment';
+
 export class Util {
   static toInt(obj) {
     return Number.parseInt(obj, 10);
@@ -89,6 +91,25 @@ export class Util {
       const error = new Error(response.statusText);
       error.response = response;
       throw error;
+    });
+  }
+
+  static resolveUrlTokens(url) {
+    const DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
+    const UNITS = { d: 'days' };
+    return url.replace(/\{([^}]+)\}/g, (match, token) => {
+      if (token === 'NOW') {
+        return encodeURIComponent(moment().endOf('day').format(DATE_FORMAT));
+      }
+      const relativeMatch = token.match(/^NOW-(\d+)(d)$/);
+      if (relativeMatch) {
+        const amount = parseInt(relativeMatch[1], 10);
+        const unit = UNITS[relativeMatch[2]];
+        return encodeURIComponent(
+          moment().subtract(amount, unit).startOf('day').format(DATE_FORMAT)
+        );
+      }
+      return match;
     });
   }
 
