@@ -1,3 +1,5 @@
+import { decode } from 'html-entities';
+
 export function utf8ToBase64(str) {
   if (str === undefined || str === null || str === '') {
     return '';
@@ -7,6 +9,28 @@ export function utf8ToBase64(str) {
 
   const binaryString = String.fromCharCode.apply(null, data);
   return btoa(binaryString);
+}
+
+export function unescapeHtml(str) {
+  if (typeof str !== 'string') return str;
+  return decode(str);
+}
+
+export function deepUnescapeStrings(obj) {
+  if (typeof obj === 'string') {
+    return unescapeHtml(obj);
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(deepUnescapeStrings);
+  }
+  if (typeof obj === 'object' && obj !== null) {
+    const result = {};
+    for (const key of Object.keys(obj)) {
+      result[key] = deepUnescapeStrings(obj[key]);
+    }
+    return result;
+  }
+  return obj;
 }
 
 export function base64ToUtf8(b64) {
@@ -22,7 +46,6 @@ export function base64ToUtf8(b64) {
     const decoder = new TextDecoder();
     return decoder.decode(bytes);
   } catch (e) {
-    console.error('Error decoding base64 string:', e);
-    return '';
+    throw e;
   }
 }
