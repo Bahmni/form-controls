@@ -168,6 +168,24 @@ export class ObsControlDesigner extends Component {
     return null;
   }
 
+  showHyperlink() {
+    const { metadata } = this.props;
+    const hyperlinkUrl = metadata && metadata.properties && metadata.properties.hyperlinkUrl;
+    if (!hyperlinkUrl) return null;
+    const hyperlinkLabel = (metadata.properties && metadata.properties.hyperlinkLabel) ||
+      hyperlinkUrl;
+    return (
+      <a
+        className="form-builder-hyperlink-preview"
+        data-bahmni-hyperlink="true"
+        href="#"
+        onClick={(e) => e.preventDefault()}
+      >
+        {hyperlinkLabel}
+      </a>
+    );
+  }
+
   showAbnormalButton() {
     const { properties } = this.props.metadata;
     const isAbnormal = find(properties, (value, key) => (key === 'abnormal' && value));
@@ -201,7 +219,10 @@ export class ObsControlDesigner extends Component {
                 {this.displayObsControl(designerComponent)}
                 {this.showAbnormalButton()}
                 {this.showAddMore()}
-                {this.showComment()}
+                <div className="obs-hyperlink-comment-row">
+                  {this.showHyperlink()}
+                  {this.showComment()}
+                </div>
               </div>
             </div>
           </div>
@@ -328,6 +349,18 @@ const descriptor = {
             defaultValue: false,
             elementType: 'button',
             elementName: 'Editor',
+          },
+          {
+            name: 'hyperlinkUrl',
+            dataType: 'text',
+            defaultValue: '',
+            elementType: 'text',
+          },
+          {
+            name: 'hyperlinkLabel',
+            dataType: 'text',
+            defaultValue: '',
+            elementType: 'text',
           },
         ],
       },

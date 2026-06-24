@@ -7,10 +7,12 @@ import ScriptRunner from 'src/helpers/scriptRunner';
 
 window.renderWithControls =
   function renderWithControls(formDetails, observations, nodeId,
-                              collapse, patient, validateForm, locale, formTranslations) {
+                              collapse, patient, validateForm, locale, formTranslations,
+                              allowedDomains) {
     const container = React.createElement(Container,
       { metadata: formDetails, observations, validate: true,
-        validateForm, collapse, patient, locale, translations: formTranslations });
+        validateForm, collapse, patient, locale, translations: formTranslations,
+        allowedDomains: allowedDomains || [] });
     return ReactDOM.render(container, document.getElementById(nodeId));
   };
 

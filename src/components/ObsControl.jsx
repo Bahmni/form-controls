@@ -11,6 +11,7 @@ import addMoreDecorator from './AddMoreDecorator';
 import constants from 'src/constants';
 import { Util } from 'src/helpers/Util';
 import { injectIntl } from 'react-intl';
+import { validateHyperlink } from 'src/helpers/hyperlinkValidator';
 
 export class ObsControl extends addMoreDecorator(Component) {
 
@@ -220,6 +221,47 @@ export class ObsControl extends addMoreDecorator(Component) {
     }
   }
 
+  showHyperlink() {
+    const { metadata: { properties }, patientUuid, allowedDomains } = this.props;
+    const rawUrl = properties && properties.hyperlinkUrl;
+    if (!rawUrl) {
+      return null;
+    }
+    const result = validateHyperlink(rawUrl, allowedDomains || []);
+    const resolvedUrl = result.valid && result.type === 'internal'
+      ? Util.resolveUrlTokens(result.sanitizedUrl, { patientUuid: patientUuid || '' })
+      : result.sanitizedUrl;
+    if (!result.valid) {
+      return (
+        <span className="hyperlink-error">{result.error}</span>
+      );
+    }
+    const linkText = (properties && properties.hyperlinkLabel) || resolvedUrl;
+    if (result.type === 'external') {
+      return (
+        <a
+          data-bahmni-hyperlink="true"
+          href={resolvedUrl}
+          referrerPolicy="no-referrer"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {linkText}
+        </a>
+      );
+    }
+    return (
+      <a
+        data-bahmni-hyperlink="true"
+        href={resolvedUrl}
+        rel="noopener"
+        target="_blank"
+      >
+        {linkText}
+      </a>
+    );
+  }
+
   render() {
     const { concept } = this.props.metadata;
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
@@ -238,7 +280,10 @@ export class ObsControl extends addMoreDecorator(Component) {
                       {this.displayObsControl(registeredComponent)}
                       {this.showAbnormalButton()}
                       {this.showAddMore()}
-                      {this.showComment()}
+                      <div className="obs-hyperlink-comment-row">
+                          {this.showHyperlink()}
+                          {this.showComment()}
+                      </div>
                   </div>
               </div>
           </div>
@@ -255,6 +300,7 @@ export class ObsControl extends addMoreDecorator(Component) {
 }
 
 ObsControl.propTypes = {
+  allowedDomains: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.array,
   collapse: PropTypes.bool,
   enabled: PropTypes.bool,
@@ -281,6 +327,7 @@ ObsControl.propTypes = {
 };
 
 ObsControl.defaultProps = {
+  allowedDomains: [],
   enabled: true,
   hidden: false,
   showAddMore: false,
