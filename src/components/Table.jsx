@@ -48,6 +48,7 @@ export class Table extends Component {
       showNotification,
     } = this.props;
     const childProps = {
+      allowedDomains: this.props.allowedDomains,
       enabled,
       formName,
       formVersion,
@@ -86,6 +87,7 @@ export class Table extends Component {
 }
 
 Table.propTypes = {
+  allowedDomains: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.any,
   enabled: PropTypes.bool,
   formName: PropTypes.string.isRequired,

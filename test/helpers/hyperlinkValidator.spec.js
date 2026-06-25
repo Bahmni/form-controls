@@ -57,12 +57,12 @@ describe('hyperlinkValidator', () => {
       expect(result.sanitizedUrl).to.equal('/bahmni/app/uuid');
     });
 
-    it('should return external + valid for https url with no allowedDomains', () => {
-      const result = validateHyperlink('https://abc.com/xyz');
-      expect(result.valid).to.equal(true);
-      expect(result.type).to.equal('external');
-      expect(result.sanitizedUrl).to.equal('https://abc.com/xyz');
-    });
+    it('should return external + invalid for https url with no allowedDomains (default-deny)',
+      () => {
+        const result = validateHyperlink('https://abc.com/xyz');
+        expect(result.valid).to.equal(false);
+        expect(result.type).to.equal('invalid');
+      });
 
     it('should return valid for https url matching wildcard allowedDomains', () => {
       const result = validateHyperlink('https://abc.com/xyz', ['*.abc.com']);

@@ -65,7 +65,8 @@ function matchesDomainPattern(hostname, pattern) {
 
 /**
  * Checks whether a hostname is permitted by the allowedDomains list.
- * Returns true if allowedDomains is empty/undefined (open — caller must decide).
+ * Returns false if allowedDomains is empty — all external domains are blocked
+ * unless explicitly listed.
  *
  * @param {string}   hostname
  * @param {string[]} allowedDomains
@@ -73,7 +74,7 @@ function matchesDomainPattern(hostname, pattern) {
  */
 function isAllowedDomain(hostname, allowedDomains) {
   if (!allowedDomains || allowedDomains.length === 0) {
-    return true;
+    return false;
   }
   return allowedDomains.some((pattern) => matchesDomainPattern(hostname, pattern));
 }

@@ -47,6 +47,7 @@ export class Section extends addMoreDecorator(Component) {
 
   render() {
     const {
+      allowedDomains,
       collapse,
       enabled,
       formName,
@@ -59,6 +60,7 @@ export class Section extends addMoreDecorator(Component) {
       showNotification,
     } = this.props;
     const childProps = {
+      allowedDomains,
       collapse,
       enabled,
       formName,
@@ -103,6 +105,7 @@ export class Section extends addMoreDecorator(Component) {
 }
 
 Section.propTypes = {
+  allowedDomains: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.any,
   collapse: PropTypes.bool,
   enabled: PropTypes.bool,

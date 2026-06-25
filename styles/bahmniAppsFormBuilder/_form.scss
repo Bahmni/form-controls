@@ -151,6 +151,11 @@ $lightestGray: #eee;
             font-size: 12px;
             white-space: nowrap;
           }
+
+          .hyperlink-error {
+            font-size: 11px;
+            color: $red;
+          }
         }
 
         .form-builder-comment-toggle {

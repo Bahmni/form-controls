@@ -227,7 +227,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     if (!rawUrl) {
       return null;
     }
-    const result = validateHyperlink(rawUrl, allowedDomains || []);
+    const result = validateHyperlink(rawUrl, Array.isArray(allowedDomains) ? allowedDomains : []);
     const resolvedUrl = result.valid && result.type === 'internal'
       ? Util.resolveUrlTokens(result.sanitizedUrl, { patientUuid: patientUuid || '' })
       : result.sanitizedUrl;

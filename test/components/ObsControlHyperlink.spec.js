@@ -72,7 +72,10 @@ describe('ObsControl - hyperlink rendering', () => {
   });
 
   it('should render external <a> with target _blank and rel for valid https url', () => {
-    const wrapper = makeWrapper({ hyperlinkUrl: 'https://example.com/resource' });
+    const wrapper = makeWrapper(
+      { hyperlinkUrl: 'https://example.com/resource' },
+      { allowedDomains: ['*.example.com'] }
+    );
     const anchor = wrapper.find('a[data-bahmni-hyperlink]');
     expect(anchor).to.have.length(1);
     expect(anchor.prop('href')).to.equal('https://example.com/resource');
@@ -91,19 +94,28 @@ describe('ObsControl - hyperlink rendering', () => {
   });
 
   it('should use hyperlinkLabel as anchor text when provided', () => {
-    const wrapper = makeWrapper({
-      hyperlinkUrl: 'https://example.com/resource',
-      hyperlinkLabel: 'Click here',
-    });
+    const wrapper = makeWrapper(
+      { hyperlinkUrl: 'https://example.com/resource', hyperlinkLabel: 'Click here' },
+      { allowedDomains: ['*.example.com'] }
+    );
     const anchor = wrapper.find('a[data-bahmni-hyperlink]');
     expect(anchor).to.have.length(1);
     expect(anchor.text()).to.equal('Click here');
   });
 
   it('should use sanitizedUrl as anchor text when hyperlinkLabel is absent', () => {
-    const wrapper = makeWrapper({ hyperlinkUrl: 'https://example.com/resource' });
+    const wrapper = makeWrapper(
+      { hyperlinkUrl: 'https://example.com/resource' },
+      { allowedDomains: ['*.example.com'] }
+    );
     const anchor = wrapper.find('a[data-bahmni-hyperlink]');
     expect(anchor.text()).to.equal('https://example.com/resource');
+  });
+
+  it('should render error span for external url with no allowedDomains (default-deny)', () => {
+    const wrapper = makeWrapper({ hyperlinkUrl: 'https://example.com/resource' });
+    expect(wrapper.find('a[data-bahmni-hyperlink]')).to.have.length(0);
+    expect(wrapper.find('span.hyperlink-error')).to.have.length(1);
   });
 
   it('should render error span (not anchor) for invalid url scheme', () => {
@@ -143,6 +155,15 @@ describe('ObsControl - hyperlink rendering', () => {
     const anchor = wrapper.find('a[data-bahmni-hyperlink]');
     expect(anchor).to.have.length(1);
     expect(anchor.prop('href')).to.equal('/patient/test-uuid-123/summary');
+  });
+
+  it('should render error (blocked) when allowedDomains is not an array — treated as empty', () => {
+    const wrapper = makeWrapper(
+      { hyperlinkUrl: 'https://example.com/page' },
+      { allowedDomains: '*.example.com' }
+    );
+    expect(wrapper.find('a[data-bahmni-hyperlink]')).to.have.length(0);
+    expect(wrapper.find('span.hyperlink-error')).to.have.length(1);
   });
 
   it('should render existing control fields (backward compat: no regression)', () => {
