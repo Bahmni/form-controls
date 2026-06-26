@@ -57,7 +57,7 @@ function hasUnknownTokens(url) {
  */
 function matchesDomainPattern(hostname, pattern) {
   if (pattern.startsWith('*.')) {
-    const suffix = pattern.slice(1); // '.who.int'
+    const suffix = pattern.slice(1);
     return hostname === pattern.slice(2) || hostname.endsWith(suffix);
   }
   return hostname === pattern;
@@ -96,14 +96,12 @@ function validateHyperlink(url, allowedDomains) {
 
   const trimmed = url.trim();
 
-  // Reject blocked schemes early (before any classification)
   if (BLOCKED_SCHEMES.test(trimmed)) {
     return {
       valid: false, type: 'invalid', sanitizedUrl: '', error: 'URL scheme is not permitted',
     };
   }
 
-  // Internal path: starts with /
   if (trimmed.charAt(0) === '/') {
     if (hasUnknownTokens(trimmed)) {
       return {
@@ -116,9 +114,7 @@ function validateHyperlink(url, allowedDomains) {
     return { valid: true, type: 'internal', sanitizedUrl: trimmed };
   }
 
-  // External URL: must start with https://
   if (trimmed.toLowerCase().startsWith('https://')) {
-    // Dynamic tokens are not supported for external URLs
     if (ANY_TOKEN_RE.test(trimmed)) {
       return {
         valid: false,
@@ -128,7 +124,6 @@ function validateHyperlink(url, allowedDomains) {
       };
     }
 
-    // Parse hostname for allowlist check
     let hostname;
     try {
       const parsed = new URL(trimmed);
@@ -149,7 +144,6 @@ function validateHyperlink(url, allowedDomains) {
     return { valid: true, type: 'external', sanitizedUrl: trimmed };
   }
 
-  // Anything else is invalid
   return {
     valid: false,
     type: 'invalid',
