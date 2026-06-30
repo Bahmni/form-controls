@@ -1,5 +1,3 @@
-
-
 import { expect } from 'chai';
 import { validateHyperlink } from 'src/helpers/hyperlinkValidator';
 import { Util } from 'src/helpers/Util';
@@ -11,43 +9,49 @@ describe('hyperlinkValidator', () => {
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
       expect(result.sanitizedUrl).to.equal('');
-      expect(result.error).to.be.a('string');
+      expect(result.error).to.equal('URL is required');
     });
 
     it('should return invalid for null url', () => {
       const result = validateHyperlink(null);
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('URL is required');
     });
 
     it('should return invalid for undefined url', () => {
       const result = validateHyperlink(undefined);
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('URL is required');
     });
 
     it('should return invalid for javascript: scheme', () => {
       const result = validateHyperlink('javascript:alert(1)'); // eslint-disable-line no-script-url
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('Invalid URL scheme');
     });
 
     it('should return invalid for data: scheme', () => {
       const result = validateHyperlink('data:text/html,<script>alert(1)</script>');
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('Invalid URL scheme');
     });
 
     it('should return invalid for file: scheme', () => {
       const result = validateHyperlink('file:///etc/passwd');
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('Invalid URL scheme');
     });
 
     it('should return invalid for vbscript: scheme', () => {
       const result = validateHyperlink('vbscript:msgbox(1)');
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('Invalid URL scheme');
     });
 
     it('should return internal + valid for path starting with /', () => {
@@ -62,6 +66,7 @@ describe('hyperlinkValidator', () => {
         const result = validateHyperlink('https://abc.com/xyz');
         expect(result.valid).to.equal(false);
         expect(result.type).to.equal('invalid');
+        expect(result.error).to.equal('"abc.com" is not an allowed domain');
       });
 
     it('should return valid for https url matching wildcard allowedDomains', () => {
@@ -74,6 +79,7 @@ describe('hyperlinkValidator', () => {
       const result = validateHyperlink('https://abc.com/xyz', ['*.who.int']);
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('"abc.com" is not an allowed domain');
     });
 
     it('should treat exact domain match as valid when in allowedDomains', () => {
@@ -93,30 +99,35 @@ describe('hyperlinkValidator', () => {
         const result = validateHyperlink('https://example.com/patient/{patientUuid}');
         expect(result.valid).to.equal(false);
         expect(result.type).to.equal('invalid');
+        expect(result.error).to.equal('Tokens not allowed in external URLs');
       });
 
     it('should block {visitUuid} and other unknown tokens', () => {
       const result = validateHyperlink('/patient/{visitUuid}/summary');
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('Only {patientUuid} token is supported');
     });
 
     it('should block unknown token in external url', () => {
       const result = validateHyperlink('https://example.com/visit/{visitUuid}');
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('Tokens not allowed in external URLs');
     });
 
     it('should return invalid for bare http url (not https)', () => {
       const result = validateHyperlink('http://abc.com/xyz');
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('Must start with https:// or /');
     });
 
     it('should return invalid for bare word (no protocol, no leading slash)', () => {
       const result = validateHyperlink('abc.com/xyz');
       expect(result.valid).to.equal(false);
       expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('Must start with https:// or /');
     });
 
     it('should return empty error string in sanitizedUrl on invalid', () => {

@@ -153,8 +153,8 @@ $lightestGray: #eee;
           }
 
           .hyperlink-error {
-            font-size: 11px;
-            color: $red;
+            font-size: 12px;
+            color: $alert;
           }
         }
 
@@ -645,6 +645,11 @@ $lightestGray: #eee;
 input.computed-value{
   border: 0 !important;
   pointer-events: none;
+}
+
+.hyperlink-error {
+  font-size: 12px;
+  color: $alert;
 }
 
 @media print {

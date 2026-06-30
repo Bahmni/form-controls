@@ -1,5 +1,3 @@
-
-
 /**
  * Hyperlink validator for Bahmni form controls.
  *
@@ -91,14 +89,14 @@ function validateHyperlink(url, allowedDomains) {
   const domains = allowedDomains || [];
 
   if (!url || typeof url !== 'string' || url.trim() === '') {
-    return { valid: false, type: 'invalid', sanitizedUrl: '', error: 'URL is empty' };
+    return { valid: false, type: 'invalid', sanitizedUrl: '', error: 'URL is required' };
   }
 
   const trimmed = url.trim();
 
   if (BLOCKED_SCHEMES.test(trimmed)) {
     return {
-      valid: false, type: 'invalid', sanitizedUrl: '', error: 'URL scheme is not permitted',
+      valid: false, type: 'invalid', sanitizedUrl: '', error: 'Invalid URL scheme',
     };
   }
 
@@ -108,7 +106,7 @@ function validateHyperlink(url, allowedDomains) {
         valid: false,
         type: 'invalid',
         sanitizedUrl: '',
-        error: 'Only {{patientUuid}} token is allowed in URLs',
+        error: 'Only {patientUuid} token is supported',
       };
     }
     return { valid: true, type: 'internal', sanitizedUrl: trimmed };
@@ -120,7 +118,7 @@ function validateHyperlink(url, allowedDomains) {
         valid: false,
         type: 'invalid',
         sanitizedUrl: '',
-        error: 'Dynamic tokens are not supported in external URLs',
+        error: 'Tokens not allowed in external URLs',
       };
     }
 
@@ -129,7 +127,7 @@ function validateHyperlink(url, allowedDomains) {
       const parsed = new URL(trimmed);
       hostname = parsed.hostname;
     } catch (e) {
-      return { valid: false, type: 'invalid', sanitizedUrl: '', error: 'URL is malformed' };
+      return { valid: false, type: 'invalid', sanitizedUrl: '', error: 'Invalid URL format' };
     }
 
     if (!isAllowedDomain(hostname, domains)) {
@@ -137,7 +135,7 @@ function validateHyperlink(url, allowedDomains) {
         valid: false,
         type: 'invalid',
         sanitizedUrl: '',
-        error: `Domain "${hostname}" is not in the allowed domains list`,
+        error: `"${hostname}" is not an allowed domain`,
       };
     }
 
@@ -148,7 +146,7 @@ function validateHyperlink(url, allowedDomains) {
     valid: false,
     type: 'invalid',
     sanitizedUrl: '',
-    error: 'URL must start with https:// (external) or / (internal)',
+    error: 'Must start with https:// or /',
   };
 }
 

@@ -223,7 +223,7 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   showHyperlink() {
     const { metadata: { properties }, patientUuid, allowedDomains } = this.props;
-    const rawUrl = properties && properties.hyperlinkUrl;
+    const rawUrl = ((properties && properties.hyperlinkUrl) || '').trim();
     if (!rawUrl) {
       return null;
     }
