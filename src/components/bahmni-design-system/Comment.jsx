@@ -10,7 +10,7 @@ export class Comment extends Component {
     super(props);
     const hasNote = !!(props.comment && props.comment.length > 0);
     this.state = {
-      showCommentSection: hasNote,
+      showCommentSection: props.forceOpen || hasNote,
       hasNote,
       comment: props.comment || '',
     };
@@ -25,6 +25,9 @@ export class Comment extends Component {
         comment: this.props.comment || '',
         ...(hasNote && !this.state.showCommentSection ? { showCommentSection: true } : {}),
       });
+    }
+    if (!prevProps.forceOpen && this.props.forceOpen) {
+      this.setState({ showCommentSection: true });
     }
   }
 
@@ -95,6 +98,7 @@ Comment.propTypes = {
   conceptHandler: PropTypes.string,
   conceptUuid: PropTypes.string,
   datatype: PropTypes.string,
+  forceOpen: PropTypes.bool,
   onCommentChange: PropTypes.func.isRequired,
   value: PropTypes.string,
 };

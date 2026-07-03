@@ -212,6 +212,173 @@ describe('ControlRecordWrapper', () => {
     expect(updatedTree.children.get(1).value.comment).toBeUndefined();
   });
 
+  describe('showNotes', () => {
+    const notesControl = {
+      concept: {
+        answers: [],
+        datatype: 'Numeric',
+        name: 'Chaperone Required',
+        uuid: 'abc-123',
+      },
+      id: '5',
+      label: { type: 'label', value: 'Chaperone Required' },
+      type: 'obsControl',
+      properties: { notes: false },
+    };
+
+    const notesControlTree = new ControlRecord({
+      control: notesControl,
+      formFieldPath: '3406.1/5-0',
+      value: { value: undefined, comment: undefined },
+    });
+
+    const notesControlTreeClone = new ControlRecord({
+      control: notesControl,
+      formFieldPath: '3406.1/5-1',
+      value: { value: undefined, comment: undefined },
+    });
+
+    const notesRootTree = new ControlRecord({
+      children: List.of(notesControlTree, notesControlTreeClone),
+    });
+
+    it('should default show to true when called without argument', () => {
+      const wrapper = new ControlRecordWrapper(notesRootTree);
+      wrapper.set(notesControlTree).showNotes();
+
+      const children = wrapper.getRecords().children;
+      expect(children.get(0).control.properties.notes).toBe(true);
+      expect(children.get(1).control.properties.notes).toBe(true);
+    });
+
+    it('should set notes to false on all brother trees when called with false', () => {
+      const wrapper = new ControlRecordWrapper(notesRootTree);
+      wrapper.set(notesControlTree).showNotes(false);
+
+      const children = wrapper.getRecords().children;
+      expect(children.get(0).control.properties.notes).toBe(false);
+      expect(children.get(1).control.properties.notes).toBe(false);
+    });
+  });
+
+  describe('openNotes', () => {
+    const openNotesControl = {
+      concept: {
+        answers: [],
+        datatype: 'Numeric',
+        name: 'Chaperone Required',
+        uuid: 'abc-456',
+      },
+      id: '6',
+      label: { type: 'label', value: 'Chaperone Required' },
+      type: 'obsControl',
+      properties: { notes: true },
+    };
+
+    const openNotesControlTree = new ControlRecord({
+      control: openNotesControl,
+      formFieldPath: '3406.1/6-0',
+      value: { value: undefined, comment: undefined },
+    });
+
+    const openNotesControlTreeClone = new ControlRecord({
+      control: openNotesControl,
+      formFieldPath: '3406.1/6-1',
+      value: { value: undefined, comment: undefined },
+    });
+
+    const openNotesRootTree = new ControlRecord({
+      children: List.of(openNotesControlTree, openNotesControlTreeClone),
+    });
+
+    it('should set notesOpen to true on all brother trees', () => {
+      const wrapper = new ControlRecordWrapper(openNotesRootTree);
+      wrapper.set(openNotesControlTree).openNotes();
+
+      const children = wrapper.getRecords().children;
+      expect(children.get(0).control.properties.notesOpen).toBe(true);
+      expect(children.get(1).control.properties.notesOpen).toBe(true);
+    });
+
+    it('should not affect other existing properties when opening notes', () => {
+      const wrapper = new ControlRecordWrapper(openNotesRootTree);
+      wrapper.set(openNotesControlTree).openNotes();
+
+      const children = wrapper.getRecords().children;
+      expect(children.get(0).control.properties.notes).toBe(true);
+      expect(children.get(1).control.properties.notes).toBe(true);
+    });
+  });
+
+  describe('clearNotes', () => {
+    const clearNotesControl = {
+      concept: {
+        answers: [],
+        datatype: 'Numeric',
+        name: 'Chaperone Required',
+        uuid: 'abc-789',
+      },
+      id: '7',
+      label: { type: 'label', value: 'Chaperone Required' },
+      type: 'obsControl',
+      properties: { notes: true },
+    };
+
+    const clearNotesTree = new ControlRecord({
+      control: clearNotesControl,
+      formFieldPath: '3406.1/7-0',
+      value: { value: 'Yes', comment: 'some note', interpretation: 'ABNORMAL' },
+    });
+
+    const clearNotesTreeClone = new ControlRecord({
+      control: clearNotesControl,
+      formFieldPath: '3406.1/7-1',
+      value: { value: 'Yes', comment: 'some note', interpretation: 'ABNORMAL' },
+    });
+
+    const clearNotesRootTree = new ControlRecord({
+      children: List.of(clearNotesTree, clearNotesTreeClone),
+    });
+
+    it('should set comment to undefined on all brother trees', () => {
+      const wrapper = new ControlRecordWrapper(clearNotesRootTree);
+      wrapper.set(clearNotesTree).clearNotes();
+
+      const children = wrapper.getRecords().children;
+      expect(children.get(0).value.comment).toBeUndefined();
+      expect(children.get(1).value.comment).toBeUndefined();
+    });
+
+    it('should preserve value and interpretation when clearing notes', () => {
+      const wrapper = new ControlRecordWrapper(clearNotesRootTree);
+      wrapper.set(clearNotesTree).clearNotes();
+
+      const children = wrapper.getRecords().children;
+      expect(children.get(0).value.value).toBe('Yes');
+      expect(children.get(0).value.interpretation).toBe('ABNORMAL');
+    });
+
+    it('should not clear notes for non-obsControl records', () => {
+      const groupControl = {
+        type: 'obsGroupControl',
+        concept: { name: 'Group' },
+      };
+      const groupTree = new ControlRecord({
+        control: groupControl,
+        formFieldPath: '3406.1/8-0',
+        value: { value: undefined, comment: 'group note' },
+      });
+      const groupRootTree = new ControlRecord({
+        children: List.of(groupTree),
+      });
+
+      const wrapper = new ControlRecordWrapper(groupRootTree);
+      wrapper.set(groupTree).clearNotes();
+
+      expect(wrapper.getRecords().children.get(0).value.comment).toBe('group note');
+    });
+  });
+
   it('should set control to hidden when the section is set hidden and children is null', () => {
     const controlledSectionTree = new ControlRecord({
       control: {

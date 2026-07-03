@@ -181,4 +181,32 @@ describe('Carbon ObsControl', () => {
       expect(mockOnValueChanged).not.toHaveBeenCalled();
     });
   });
+
+  describe('Notes (showComment)', () => {
+    it('should not render the notes section when notes property is not set', () => {
+      renderWithIntl(<ObsControlWithIntl {...defaultProps} />);
+      expect(screen.queryByRole('button', { name: /add note/i })).not.toBeInTheDocument();
+    });
+
+    it('should render the add note link when notes property is enabled', () => {
+      const notesMetadata = { ...defaultMetadata, properties: { notes: true } };
+      renderWithIntl(
+        <ObsControlWithIntl {...defaultProps} metadata={notesMetadata} />
+      );
+      expect(screen.getByRole('button', { name: /add note/i })).toBeInTheDocument();
+      expect(screen.queryByPlaceholderText('Notes')).not.toBeInTheDocument();
+    });
+
+    it('should auto-open textarea when notesOpen is true', () => {
+      const notesOpenMetadata = {
+        ...defaultMetadata,
+        properties: { notes: true, notesOpen: true },
+      };
+      renderWithIntl(
+        <ObsControlWithIntl {...defaultProps} metadata={notesOpenMetadata} />
+      );
+      expect(screen.getByRole('button', { name: /add note/i })).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Notes')).toBeInTheDocument();
+    });
+  });
 });

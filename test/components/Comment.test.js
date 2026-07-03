@@ -70,8 +70,9 @@ describe('Comment', () => {
   it('should render comment section with default value', () => {
     render(<Comment comment="Some Comment" onCommentChange={mockOnCommentChange} />);
 
-    // Textarea is auto-expanded when an existing comment is provided — no click needed.
-    expect(screen.getByRole('textbox')).toHaveValue('Some Comment');
+    const textarea = screen.getByRole('textbox');
+
+    expect(textarea).toHaveValue('Some Comment');
   });
 
   it('should not render comment button when the control is of complex media type', () => {
@@ -130,5 +131,45 @@ describe('Comment', () => {
     );
 
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+  });
+
+  describe('forceOpen', () => {
+    it('should render comment section open when forceOpen is true on initial render', () => {
+      render(<Comment forceOpen onCommentChange={mockOnCommentChange} />);
+
+      expect(screen.getByRole('textbox')).toBeInTheDocument();
+    });
+
+    it('should open comment section when forceOpen prop transitions from false to true', () => {
+      const { rerender } = render(<Comment forceOpen={false} onCommentChange={mockOnCommentChange} />);
+      expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+
+      rerender(<Comment forceOpen onCommentChange={mockOnCommentChange} />);
+
+      expect(screen.getByRole('textbox')).toBeInTheDocument();
+    });
+
+    it('should not close comment section when forceOpen transitions from true to false', () => {
+      const { rerender } = render(<Comment forceOpen onCommentChange={mockOnCommentChange} />);
+      expect(screen.getByRole('textbox')).toBeInTheDocument();
+
+      rerender(<Comment forceOpen={false} onCommentChange={mockOnCommentChange} />);
+
+      expect(screen.getByRole('textbox')).toBeInTheDocument();
+    });
+  });
+
+  describe('clearNotes', () => {
+    it('should remove has-notes class from button when comment prop is cleared', () => {
+      const { rerender } = render(
+        <Comment comment="existing note" onCommentChange={mockOnCommentChange} />
+      );
+      fireEvent.click(screen.getByRole('button'));
+      expect(screen.getByRole('button')).toHaveClass('has-notes');
+
+      rerender(<Comment comment={undefined} onCommentChange={mockOnCommentChange} />);
+
+      expect(screen.getByRole('button')).not.toHaveClass('has-notes');
+    });
   });
 });

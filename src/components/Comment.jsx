@@ -10,9 +10,18 @@ export class Comment extends Component {
     super(props);
     const hasNote = !!(props.comment && props.comment.length > 0);
     this.state = {
-      showCommentSection: hasNote,
+      showCommentSection: props.forceOpen || hasNote,
       hasNote,
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.forceOpen && this.props.forceOpen) {
+      this.setState({ showCommentSection: true });
+    }
+    if (prevProps.comment && !this.props.comment) {
+      this.setState({ hasNote: false });
+    }
   }
 
   handleChange(e) {
@@ -79,6 +88,7 @@ Comment.propTypes = {
   conceptHandler: PropTypes.string,
   conceptUuid: PropTypes.string,
   datatype: PropTypes.string,
+  forceOpen: PropTypes.bool,
   onCommentChange: PropTypes.func.isRequired,
   value: PropTypes.string,
 };

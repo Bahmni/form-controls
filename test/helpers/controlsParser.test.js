@@ -4,6 +4,7 @@ import {
   setupAddRemoveButtonsForAddMore,
   getGroupedControls,
   displayRowControls,
+  getControls,
 } from 'src/helpers/controlsParser';
 import { ControlRecord } from 'src/ControlState';
 
@@ -100,6 +101,29 @@ describe('ControlsParser', () => {
       const result = getGroupedControls([], 'row');
 
       expect(result).toEqual([]);
+    });
+  });
+
+  describe('getControls', () => {
+    it('should use record.control as metadata, not the static form definition control', () => {
+      const staticControl = {
+        type: 'obsControl',
+        id: 'obs1',
+        properties: { notes: false, notesOpen: false },
+      };
+      const updatedControl = {
+        type: 'obsControl',
+        id: 'obs1',
+        properties: { notes: true, notesOpen: true },
+      };
+      const record = new ControlRecord({ control: updatedControl, formFieldPath: 'obs1-0' });
+      const MockComponent = () => null;
+      const mockComponentStore = { getRegisteredComponent: () => MockComponent };
+
+      const result = getControls([staticControl], [record], { componentStore: mockComponentStore, enabled: true });
+
+      expect(result[0][0].props.metadata).toBe(updatedControl);
+      expect(result[0][0].props.metadata).not.toBe(staticControl);
     });
   });
 

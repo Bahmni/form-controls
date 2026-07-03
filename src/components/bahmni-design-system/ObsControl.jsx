@@ -172,7 +172,8 @@ export class ObsControl extends addMoreDecorator(Component) {
       return (
         <Comment
           comment={comment} conceptHandler={concept.conceptHandler}
-          datatype={concept.datatype} onCommentChange={this.onCommentChange}
+          datatype={concept.datatype} forceOpen={!!properties.notesOpen}
+          onCommentChange={this.onCommentChange}
           value={value}
         />
       );

@@ -86,6 +86,21 @@ describe('Carbon Comment', () => {
     expect(link).toHaveAttribute('aria-expanded', 'false');
   });
 
+  it('should auto-open textarea when forceOpen is true on initial render', () => {
+    render(<Comment forceOpen onCommentChange={mockOnCommentChange} />);
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+  });
+
+  it('should auto-open textarea when forceOpen transitions from false to true', () => {
+    const { rerender } = render(
+      <Comment forceOpen={false} onCommentChange={mockOnCommentChange} />
+    );
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+
+    rerender(<Comment forceOpen onCommentChange={mockOnCommentChange} />);
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+  });
+
   it('should auto-expand comment section when comment prop arrives after initial render', () => {
     const { rerender } = render(<Comment onCommentChange={mockOnCommentChange} />);
 

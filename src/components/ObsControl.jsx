@@ -93,7 +93,6 @@ export class ObsControl extends addMoreDecorator(Component) {
       conceptClass,
       conceptHandler,
       intl,
-      componentStore: this.props.componentStore || ComponentStore,
     });
   }
 
@@ -171,7 +170,8 @@ export class ObsControl extends addMoreDecorator(Component) {
       return (
         <Comment
           comment={comment} conceptHandler={concept.conceptHandler}
-          datatype={concept.datatype} onCommentChange={this.onCommentChange}
+          datatype={concept.datatype} forceOpen={!!properties.notesOpen}
+          onCommentChange={this.onCommentChange}
           value={value}
         />
       );
@@ -187,7 +187,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     const { metadata: { properties }, value } = this.props;
     const isAbnormal = find(properties, (val, key) => (key === 'abnormal' && val));
     const isAbnormalObs = (value.interpretation === 'ABNORMAL');
-    const abnormalClassName = classNames({ 'fas fa-check': isAbnormalObs });
+    const abnormalClassName = classNames({ 'fa fa-ok': isAbnormalObs });
     if (isAbnormal) {
       return (
         <button className="abnormal-button" disabled={!value.value} onClick={this.setAbnormal} >
@@ -223,8 +223,7 @@ export class ObsControl extends addMoreDecorator(Component) {
 
   render() {
     const { concept } = this.props.metadata;
-    const store = this.props.componentStore || ComponentStore;
-    const registeredComponent = store.getRegisteredComponent(concept.datatype);
+    const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
     const complexClass = Util.isComplexMediaConcept(concept) ? 'complex-component' : '';
     const addMoreComplexClass = complexClass && this.isCreateByAddMore() ?
         'add-more-complex-component' : '';

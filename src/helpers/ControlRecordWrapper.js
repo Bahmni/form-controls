@@ -105,4 +105,61 @@ export default class ControlRecordWrapper {
     }
     return updatedRecord;
   }
+
+  isNotesEnabled() {
+    if (this.currentRecord && this.currentRecord.control && this.currentRecord.control.properties) {
+      return this.currentRecord.control.properties.notes;
+    }
+    return false;
+  }
+
+  getNotes() {
+    if (this.currentRecord.control.type !== 'obsControl') {
+      return null;
+    }
+    if (this.currentRecord && this.currentRecord.value && this.currentRecord.value.comment) {
+      return this.currentRecord.value.comment;
+    }
+    return null;
+  }
+
+  showNotes(show = true) {
+    const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
+    brotherTrees.forEach(r => {
+      if (r.control.type !== 'obsControl' || r.control.properties === undefined) {
+        return;
+      }
+      if (Object.hasOwn(r.control.properties, 'notes')) {
+        var control = Object.assign({}, r.control);
+        control.properties.notes = show;
+        const updatedRecord = r.set('control', control);
+        this.update(updatedRecord);
+      }
+    });
+  }
+
+  openNotes() {
+    const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
+    brotherTrees.forEach(r => {
+      if (r.control.type !== 'obsControl' || r.control.properties === undefined) {
+        return;
+      }
+      var control = Object.assign({}, r.control);
+      control.properties.notesOpen = true;
+      const updatedRecord = r.set('control', control);
+      this.update(updatedRecord);
+    });
+  }
+
+  clearNotes() {
+    const brotherTrees = ControlRecordTreeMgr.getBrothers(this.rootRecord, this.currentRecord);
+    brotherTrees.forEach(r => {
+      if (r.control.type !== 'obsControl') {
+        return;
+      }
+      const updatedRecord = r.set('value', Object.assign({}, r.value, { comment: undefined }));
+      this.update(updatedRecord);
+    });
+  }
+
 }
