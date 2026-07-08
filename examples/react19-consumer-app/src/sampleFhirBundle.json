@@ -1,0 +1,545 @@
+{
+  "resourceType": "Bundle",
+  "id": "bah-4812-sample-bundle",
+  "type": "searchset",
+  "total": 14,
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36af094-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueQuantity": {
+          "value": 36.8
+        },
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/temperature-0"
+          }
+        ],
+        "id": "5b3bdc88-58b9-4584-925f-13ef68742698"
+      },
+      "fullUrl": "urn:uuid:5b3bdc88-58b9-4584-925f-13ef68742698"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36bc1a4-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueQuantity": {
+          "value": 72
+        },
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/heart-rate-0"
+          }
+        ],
+        "id": "3ef06e77-b081-40c8-a6ad-b5549315064c"
+      },
+      "fullUrl": "urn:uuid:3ef06e77-b081-40c8-a6ad-b5549315064c"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36c7b28-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueQuantity": {
+          "value": 16
+        },
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/respiratory-rate-0"
+          }
+        ],
+        "id": "5dc50ab3-d3dc-414d-bf90-5695d1f47ddd"
+      },
+      "fullUrl": "urn:uuid:5dc50ab3-d3dc-414d-bf90-5695d1f47ddd"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36c7ce4-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueQuantity": {
+          "value": 98
+        },
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/spo2-0"
+          }
+        ],
+        "id": "f38230e6-2fb2-4a0e-8d63-040fd9b0ce16"
+      },
+      "fullUrl": "urn:uuid:f38230e6-2fb2-4a0e-8d63-040fd9b0ce16"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36c7d5a-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueQuantity": {
+          "value": 70
+        },
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/weight-0"
+          }
+        ],
+        "id": "ebc0584e-9db6-452d-a31a-bc32a9e0622c"
+      },
+      "fullUrl": "urn:uuid:ebc0584e-9db6-452d-a31a-bc32a9e0622c"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36c7dd6-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueQuantity": {
+          "value": 175
+        },
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/height-0"
+          }
+        ],
+        "id": "f2b0e141-cdfa-4612-b7f2-b8863cc61b97"
+      },
+      "fullUrl": "urn:uuid:f2b0e141-cdfa-4612-b7f2-b8863cc61b97"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36e9ed8-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueQuantity": {
+          "value": 120
+        },
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/systolic-0"
+          }
+        ],
+        "id": "158adeb6-021d-498c-8647-994a089d0100"
+      },
+      "fullUrl": "urn:uuid:158adeb6-021d-498c-8647-994a089d0100"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36e9f4e-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueQuantity": {
+          "value": 80
+        },
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/diastolic-0"
+          }
+        ],
+        "id": "a92c261d-b414-49e5-8a4b-35731cd8d09e"
+      },
+      "fullUrl": "urn:uuid:a92c261d-b414-49e5-8a4b-35731cd8d09e"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36e9f62-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/blood-pressure-group-0"
+          }
+        ],
+        "hasMember": [
+          {
+            "reference": "urn:uuid:158adeb6-021d-498c-8647-994a089d0100",
+            "type": "Observation"
+          },
+          {
+            "reference": "urn:uuid:a92c261d-b414-49e5-8a4b-35731cd8d09e",
+            "type": "Observation"
+          }
+        ],
+        "id": "d8db3867-bf5f-44a8-90c4-783854ef7b4f"
+      },
+      "fullUrl": "urn:uuid:d8db3867-bf5f-44a8-90c4-783854ef7b4f"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36c8094-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueString": "Fever and cough for 3 days",
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/chief-complaint-0"
+          }
+        ],
+        "id": "07e1f5c7-748d-417f-96a9-f08d8421bffa"
+      },
+      "fullUrl": "urn:uuid:07e1f5c7-748d-417f-96a9-f08d8421bffa"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36c818c-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueString": "Patient stable, advised rest and fluids",
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/clinical-notes-0"
+          }
+        ],
+        "id": "d7c0a0ed-543b-4823-b68a-ca78e4bc76e4"
+      },
+      "fullUrl": "urn:uuid:d7c0a0ed-543b-4823-b68a-ca78e4bc76e4"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36c8300-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "code": "140238AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "display": "Fever"
+            }
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/presenting-symptom-0"
+          }
+        ],
+        "id": "b271916b-287f-4ef4-af68-0d3fb9474ae0"
+      },
+      "fullUrl": "urn:uuid:b271916b-287f-4ef4-af68-0d3fb9474ae0"
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36c8400-3f10-11e4-adec-0800271c1b75"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/patient-abc-123",
+          "type": "Patient"
+        },
+        "encounter": {
+          "reference": "Encounter/encounter-001",
+          "type": "Encounter"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/practitioner-001",
+            "type": "Practitioner"
+          }
+        ],
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "valueBoolean": true,
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/fever-present-0"
+          }
+        ],
+        "id": "1f456f61-0fd2-41f1-84ad-b2dafa0063bf"
+      },
+      "fullUrl": "urn:uuid:1f456f61-0fd2-41f1-84ad-b2dafa0063bf"
+    },
+    {
+      "fullUrl": "Observation/onset-date-obs",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "onset-date-obs",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "c36c8500-3f10-11e4-adec-0800271c1b75",
+              "display": "Symptom Onset Date"
+            }
+          ]
+        },
+        "effectiveDateTime": "2026-07-03T09:15:00.000Z",
+        "extension": [
+          {
+            "url": "http://fhir.bahmni.org/ext/observation/form-namespace-path",
+            "valueString": "Bahmni^Clinical Assessment Form.1.0/onset-date-0"
+          }
+        ],
+        "valueDateTime": "2026-07-01"
+      }
+    }
+  ]
+}

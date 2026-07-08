@@ -388,13 +388,36 @@ export function getFhirObservations(
   options: FhirTransformOptions
 ): FhirObservationEntry[];
 
+/**
+ * A FHIR Bundle as returned by the $fetch-all endpoint
+ */
+export interface FhirBundle {
+  resourceType: 'Bundle';
+  entry?: FhirObservationEntry[];
+  [key: string]: any;
+}
+
+/**
+ * Transforms a FHIR Observation Bundle (or plain array) back into form2 observation
+ * objects suitable for pre-populating forms.
+ *
+ * This is the exact inverse of `getFhirObservations`.
+ *
+ * @param input - A FHIR Bundle, an array of bundle entries, an array of Observation
+ *                resources, or null/undefined (returns [])
+ * @returns Array of plain form2 observation objects
+ */
+export function getObservationsFromFhir(
+  input: FhirBundle | FhirObservationEntry[] | ObservationData[] | null | undefined
+): ObservationData[];
+
 export const FhirObservationTransformer
 
 // ==================== FHIR Constants ====================
 
 export const FHIR_OBSERVATION_INTERPRETATION_SYSTEM: string;
 export const FHIR_OBSERVATION_FORM_NAMESPACE_PATH_URL: string;
-export const FHIR_OBSERVATION_COMPLEX_DATA_URL: string;
+export const FHIR_OBSERVATION_VALUE_ATTACHMENT_URL: string;
 export const CONCEPT_DATATYPE_NUMERIC: string;
 export const CONCEPT_DATATYPE_COMPLEX: string;
 export const FHIR_OBSERVATION_STATUS_FINAL: string;
@@ -402,3 +425,4 @@ export const FHIR_RESOURCE_TYPE_OBSERVATION: string;
 export const DATE_REGEX_PATTERN: RegExp;
 export const DATETIME_REGEX_PATTERN: RegExp;
 export const INTERPRETATION_TO_CODE: Record<string, { code: string; display: string }>;
+export const CODE_TO_INTERPRETATION: Record<string, string>;

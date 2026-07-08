@@ -250,6 +250,83 @@ export const clinicalFormMetadata = {
         datatype: 'Text',
         conceptClass: 'Misc'
       }
+    },
+
+    // Row 6: Presenting Symptom (Coded / selected option, rendered as a dropdown)
+    {
+      type: 'obsControl',
+      label: {
+        type: 'label',
+        value: 'Presenting Symptom'
+      },
+      properties: {
+        mandatory: false,
+        location: { row: 6, column: 0 },
+        dropDown: true
+      },
+      id: 'presenting-symptom',
+      concept: {
+        uuid: 'c36c8300-3f10-11e4-adec-0800271c1b75',
+        name: 'Presenting Symptom',
+        datatype: 'Coded',
+        conceptClass: 'Misc',
+        // Fever matches the coded observation the reverse transformer produces
+        // from valueCodeableConcept (see sampleFhirBundle / generator).
+        answers: [
+          { uuid: '140238AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', name: 'Fever' },
+          { uuid: '143264AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', name: 'Cough' },
+          { uuid: '139084AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', name: 'Headache' }
+        ]
+      }
+    },
+
+    // Row 6 col 1: Fever Present (Boolean, Yes/No)
+    {
+      type: 'obsControl',
+      label: {
+        type: 'label',
+        value: 'Fever Present'
+      },
+      properties: {
+        mandatory: false,
+        location: { row: 6, column: 1 }
+      },
+      id: 'fever-present',
+      // Boolean controls read their Yes/No labels from control-level `options`.
+      options: [
+        { name: 'Yes', value: true },
+        { name: 'No', value: false }
+      ],
+      concept: {
+        uuid: 'c36c8400-3f10-11e4-adec-0800271c1b75',
+        name: 'Fever Present',
+        datatype: 'Boolean',
+        conceptClass: 'Misc'
+      }
+    },
+
+    // Row 7: Symptom Onset Date (Date / valueDateTime). NOTE: the Date control
+    // renders <input type="date">, which needs a YYYY-MM-DD value. The reverse
+    // transformer passes valueDateTime through verbatim, so a date-only FHIR
+    // value renders; a full ISO datetime (e.g. 2026-07-01T00:00:00.000Z) would
+    // NOT display. See the generator + PR notes.
+    {
+      type: 'obsControl',
+      label: {
+        type: 'label',
+        value: 'Symptom Onset Date'
+      },
+      properties: {
+        mandatory: false,
+        location: { row: 7, column: 0 }
+      },
+      id: 'onset-date',
+      concept: {
+        uuid: 'c36c8500-3f10-11e4-adec-0800271c1b75',
+        name: 'Symptom Onset Date',
+        datatype: 'Date',
+        conceptClass: 'Misc'
+      }
     }
   ]
   // Note: No events.onFormInit to avoid script execution issues
