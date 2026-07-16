@@ -212,6 +212,110 @@ describe('ControlRecordWrapper', () => {
     expect(updatedTree.children.get(1).value.comment).toBeUndefined();
   });
 
+  describe('isNotesEnabled', () => {
+    it('should return true when notes property is true on the control', () => {
+      const control = {
+        type: 'obsControl',
+        concept: { answers: [], datatype: 'Numeric', name: 'Smoking Status', uuid: 'abc-ine-1' },
+        id: '10',
+        properties: { notes: true },
+      };
+      const tree = new ControlRecord({ control, formFieldPath: '3406.1/10-0' });
+      const rootTree = new ControlRecord({ children: List.of(tree) });
+      const wrapper = new ControlRecordWrapper(rootTree);
+      expect(wrapper.set(tree).isNotesEnabled()).toBe(true);
+    });
+
+    it('should return false when notes property is false on the control', () => {
+      const control = {
+        type: 'obsControl',
+        concept: { answers: [], datatype: 'Numeric', name: 'Smoking Status', uuid: 'abc-ine-2' },
+        id: '11',
+        properties: { notes: false },
+      };
+      const tree = new ControlRecord({ control, formFieldPath: '3406.1/11-0' });
+      const rootTree = new ControlRecord({ children: List.of(tree) });
+      const wrapper = new ControlRecordWrapper(rootTree);
+      expect(wrapper.set(tree).isNotesEnabled()).toBe(false);
+    });
+
+    it('should return false when control has no properties', () => {
+      const control = {
+        type: 'obsControl',
+        concept: { answers: [], datatype: 'Numeric', name: 'Smoking Status', uuid: 'abc-ine-3' },
+        id: '12',
+      };
+      const tree = new ControlRecord({ control, formFieldPath: '3406.1/12-0' });
+      const rootTree = new ControlRecord({ children: List.of(tree) });
+      const wrapper = new ControlRecordWrapper(rootTree);
+      expect(wrapper.set(tree).isNotesEnabled()).toBe(false);
+    });
+  });
+
+  describe('getNotes', () => {
+    it('should return null for non-obsControl records', () => {
+      const groupControl = {
+        type: 'obsGroupControl',
+        concept: { name: 'Group' },
+      };
+      const tree = new ControlRecord({
+        control: groupControl,
+        formFieldPath: '3406.1/13-0',
+        value: { comment: 'some note' },
+      });
+      const rootTree = new ControlRecord({ children: List.of(tree) });
+      const wrapper = new ControlRecordWrapper(rootTree);
+      expect(wrapper.set(tree).getNotes()).toBeNull();
+    });
+
+    it('should return null when no comment is present', () => {
+      const control = {
+        type: 'obsControl',
+        concept: { answers: [], datatype: 'Numeric', name: 'Smoking Status', uuid: 'abc-gn-1' },
+        id: '14',
+        properties: { notes: true },
+      };
+      const tree = new ControlRecord({
+        control,
+        formFieldPath: '3406.1/14-0',
+        value: { value: 'Yes', comment: undefined },
+      });
+      const rootTree = new ControlRecord({ children: List.of(tree) });
+      const wrapper = new ControlRecordWrapper(rootTree);
+      expect(wrapper.set(tree).getNotes()).toBeNull();
+    });
+
+    it('should return the comment string when a note is present', () => {
+      const control = {
+        type: 'obsControl',
+        concept: { answers: [], datatype: 'Numeric', name: 'Smoking Status', uuid: 'abc-gn-2' },
+        id: '15',
+        properties: { notes: true },
+      };
+      const tree = new ControlRecord({
+        control,
+        formFieldPath: '3406.1/15-0',
+        value: { value: 'Yes', comment: 'patient is a heavy smoker' },
+      });
+      const rootTree = new ControlRecord({ children: List.of(tree) });
+      const wrapper = new ControlRecordWrapper(rootTree);
+      expect(wrapper.set(tree).getNotes()).toBe('patient is a heavy smoker');
+    });
+
+    it('should return null when value object is absent', () => {
+      const control = {
+        type: 'obsControl',
+        concept: { answers: [], datatype: 'Numeric', name: 'Smoking Status', uuid: 'abc-gn-3' },
+        id: '16',
+        properties: { notes: true },
+      };
+      const tree = new ControlRecord({ control, formFieldPath: '3406.1/16-0' });
+      const rootTree = new ControlRecord({ children: List.of(tree) });
+      const wrapper = new ControlRecordWrapper(rootTree);
+      expect(wrapper.set(tree).getNotes()).toBeNull();
+    });
+  });
+
   describe('showNotes', () => {
     const notesControl = {
       concept: {
@@ -308,6 +412,46 @@ describe('ControlRecordWrapper', () => {
       expect(children.get(0).control.properties.notes).toBe(true);
       expect(children.get(1).control.properties.notes).toBe(true);
     });
+
+    it('should set notesOpen when comment already has text', () => {
+      const controlWithNote = {
+        concept: { answers: [], datatype: 'Numeric', name: 'Chaperone Required', uuid: 'abc-on-text' },
+        id: '17',
+        label: { type: 'label', value: 'Chaperone Required' },
+        type: 'obsControl',
+        properties: { notes: true },
+      };
+      const treeWithNote = new ControlRecord({
+        control: controlWithNote,
+        formFieldPath: '3406.1/17-0',
+        value: { value: 'Yes', comment: 'existing note text' },
+      });
+      const rootTreeWithNote = new ControlRecord({ children: List.of(treeWithNote) });
+      const wrapper = new ControlRecordWrapper(rootTreeWithNote);
+      wrapper.set(treeWithNote).openNotes();
+
+      expect(wrapper.getRecords().children.get(0).control.properties.notesOpen).toBe(true);
+    });
+
+    it('should set notesOpen even when isNotesEnabled is false', () => {
+      const disabledNotesControl = {
+        concept: { answers: [], datatype: 'Numeric', name: 'Chaperone Required', uuid: 'abc-on-disabled' },
+        id: '18',
+        label: { type: 'label', value: 'Chaperone Required' },
+        type: 'obsControl',
+        properties: { notes: false },
+      };
+      const disabledTree = new ControlRecord({
+        control: disabledNotesControl,
+        formFieldPath: '3406.1/18-0',
+        value: { value: undefined, comment: undefined },
+      });
+      const rootTreeDisabled = new ControlRecord({ children: List.of(disabledTree) });
+      const wrapper = new ControlRecordWrapper(rootTreeDisabled);
+      wrapper.set(disabledTree).openNotes();
+
+      expect(wrapper.getRecords().children.get(0).control.properties.notesOpen).toBe(true);
+    });
   });
 
   describe('clearNotes', () => {
@@ -356,6 +500,47 @@ describe('ControlRecordWrapper', () => {
       const children = wrapper.getRecords().children;
       expect(children.get(0).value.value).toBe('Yes');
       expect(children.get(0).value.interpretation).toBe('ABNORMAL');
+    });
+
+    it('should not error and leave comment undefined when comment is already null', () => {
+      const controlNoNote = {
+        concept: { answers: [], datatype: 'Numeric', name: 'Chaperone Required', uuid: 'abc-cn-null' },
+        id: '19',
+        label: { type: 'label', value: 'Chaperone Required' },
+        type: 'obsControl',
+        properties: { notes: true },
+      };
+      const treeNoNote = new ControlRecord({
+        control: controlNoNote,
+        formFieldPath: '3406.1/19-0',
+        value: { value: 'Yes', comment: undefined },
+      });
+      const rootTreeNoNote = new ControlRecord({ children: List.of(treeNoNote) });
+      const wrapper = new ControlRecordWrapper(rootTreeNoNote);
+      wrapper.set(treeNoNote).clearNotes();
+
+      expect(wrapper.getRecords().children.get(0).value.comment).toBeUndefined();
+      expect(wrapper.getRecords().children.get(0).value.value).toBe('Yes');
+    });
+
+    it('should clear notes even when isNotesEnabled is false', () => {
+      const disabledControl = {
+        concept: { answers: [], datatype: 'Numeric', name: 'Chaperone Required', uuid: 'abc-cn-disabled' },
+        id: '20',
+        label: { type: 'label', value: 'Chaperone Required' },
+        type: 'obsControl',
+        properties: { notes: false },
+      };
+      const disabledTree = new ControlRecord({
+        control: disabledControl,
+        formFieldPath: '3406.1/20-0',
+        value: { value: 'Yes', comment: 'some note' },
+      });
+      const rootTreeDisabled = new ControlRecord({ children: List.of(disabledTree) });
+      const wrapper = new ControlRecordWrapper(rootTreeDisabled);
+      wrapper.set(disabledTree).clearNotes();
+
+      expect(wrapper.getRecords().children.get(0).value.comment).toBeUndefined();
     });
 
     it('should not clear notes for non-obsControl records', () => {
