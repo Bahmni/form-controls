@@ -2,7 +2,7 @@ import { NumberInput } from '@bahmni/design-system';
 import { Validator } from 'src/helpers/Validator';
 import isEmpty from 'lodash/isEmpty';
 import constants from 'src/constants';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 
 export const NumericBox = ({
   value,
@@ -21,6 +21,9 @@ export const NumericBox = ({
   const [hasErrors, setHasErrors] = useState(false);
   const [hasWarnings, setHasWarnings] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [carbonKey, setCarbonKey] = useState(0);
+  const prevValueRef = useRef(value);
+  const isUserChangeRef = useRef(false);
 
   const _getErrors = (val) => {
     const allValidations = [
@@ -82,8 +85,23 @@ export const NumericBox = ({
     }
   }, [validate, value]);
 
+  // Carbon's internal isNaN check doesn't fire when value goes from "" to a number
+  // (Number("") === 0, not NaN), so setValue() from scripts won't update the display.
+  // Force a re-mount via key when an external setValue sets a value on an empty field.
+  useLayoutEffect(() => {
+    if (!isInitialized) return;
+    const prevVal = prevValueRef.current;
+    prevValueRef.current = value;
+    const wasEmpty = prevVal === undefined || prevVal === null || prevVal === '';
+    const hasValue = value !== undefined && value !== null && value !== '';
+    if (!isUserChangeRef.current && wasEmpty && hasValue) {
+      setCarbonKey((k) => k + 1);
+    }
+    isUserChangeRef.current = false;
+  }, [value, isInitialized]);
 
   const handleChange = (_, { value: inputValue } = {}) => {
+    isUserChangeRef.current = true;
     // NumberInput onChange signature: (event, { value })
     let processedValue;
 
@@ -138,22 +156,18 @@ export const NumericBox = ({
     return null;
   };
 
-  // Return NaN (not 0) when there is no value so that:
-  // 1. The field shows empty instead of "0"
-  // 2. Carbon's useControllableState keeps t1=true (NaN !== undefined → controlled mode)
-  //    which allows line 55639 in NumberInput to update the display when setValue() is
-  //    called from a form event script (NaN→100 triggers the C1/u1 update path).
   const getNumericValue = () => {
     if (value === null || value === undefined || value === '') {
-      return NaN;
+      return '';
     }
     const num = parseFloat(value);
-    return isNaN(num) ? NaN : num;
+    return isNaN(num) ? '' : num;
   };
 
   return (
     <div className="obs-numeric-text-wrap">
       <NumberInput
+        key={carbonKey}
         allowEmpty
         value={getNumericValue()}
         onChange={handleChange}
