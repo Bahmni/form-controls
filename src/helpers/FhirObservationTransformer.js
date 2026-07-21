@@ -447,8 +447,9 @@ const createObservationResource = (observationPayload, options) => {
         if (value instanceof Date && !isNaN(value.getTime())) {
           observation.valueDateTime = value.toISOString();
         } else if (value && 'uuid' in value) {
+          const codingCode = value.system && value.code ? value.code : value.uuid;
           observation.valueCodeableConcept = createCodeableConcept([
-            createCoding(value.uuid, undefined, value.display || value.displayString),
+            createCoding(codingCode, value.system, value.display || value.displayString),
           ]);
         }
         break;

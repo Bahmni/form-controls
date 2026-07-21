@@ -25,14 +25,21 @@ export class Util {
   }
 
   static formatConcepts(concepts) {
-    const formattedConcepts = concepts.map(concept => ({
-      uuid: `${concept.conceptSystem}/${concept.conceptUuid}`,
-      name: concept.conceptName,
-      displayString: concept.conceptName,
-      codedAnswer: {
+    const formattedConcepts = concepts.map(concept => {
+      const formatted = {
         uuid: `${concept.conceptSystem}/${concept.conceptUuid}`,
-      },
-    }));
+        name: concept.conceptName,
+        displayString: concept.conceptName,
+        codedAnswer: {
+          uuid: `${concept.conceptSystem}/${concept.conceptUuid}`,
+        },
+      };
+      if (concept.conceptSystem && concept.conceptUuid) {
+        formatted.system = concept.conceptSystem;
+        formatted.code = concept.conceptUuid;
+      }
+      return formatted;
+    });
     return formattedConcepts;
   }
 
@@ -77,7 +84,7 @@ export class Util {
   static getAnswers(url, term = '', limit = 30) {
     const endpoint =
       '/openmrs/ws/rest/v1/terminologyServices/getObservationValueSet?valueSetUrl';
-    const fullUrl = `${endpoint}=${url}&term=${term}&limit=${limit}`;
+    const fullUrl = `${endpoint}=${encodeURIComponent(url)}&term=${encodeURIComponent(term)}&limit=${limit ?? 30}`;
     return fetch(fullUrl, {
       method: 'GET',
       headers: { Accept: 'application/json' },

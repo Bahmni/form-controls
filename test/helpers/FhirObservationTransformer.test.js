@@ -130,6 +130,27 @@ describe('FhirObservationTransformer', () => {
       expect(result[0].resource.valueCodeableConcept.coding[0].display).toBe('Male');
     });
 
+    it('should transform observation with SNOMED coded value using separate system and code', () => {
+      const observations = [
+        {
+          concept: { uuid: 'route-uuid', datatype: 'Coded' },
+          value: {
+            uuid: 'http://snomed.info/sct/389145006',
+            system: 'http://snomed.info/sct',
+            code: '389145006',
+            displayString: 'Inhalation',
+          },
+        },
+      ];
+
+      const result = getFhirObservations(observations, defaultOptions);
+
+      expect(result).toHaveLength(1);
+      expect(result[0].resource.valueCodeableConcept).toBeDefined();
+      expect(result[0].resource.valueCodeableConcept.coding[0].system).toBe('http://snomed.info/sct');
+      expect(result[0].resource.valueCodeableConcept.coding[0].code).toBe('389145006');
+    });
+
     it('should transform observation with coded value using displayString', () => {
       const observations = [
         {

@@ -103,6 +103,8 @@ export class CodedControl extends Component {
       if (this.props.properties.url) {
         result.codedAnswer = option.codedAnswer;
         result.uuid = option.uuid || option.value;
+        if (option.system) result.system = option.system;
+        if (option.code) result.code = option.code;
       }
       return result;
     });

@@ -39,6 +39,8 @@ describe('Util', () => {
         codedAnswer: {
           uuid: 'system1/uuid1',
         },
+        system: 'system1',
+        code: 'uuid1',
       },
       {
         uuid: 'system2/uuid2',
@@ -47,6 +49,8 @@ describe('Util', () => {
         codedAnswer: {
           uuid: 'system2/uuid2',
         },
+        system: 'system2',
+        code: 'uuid2',
       },
     ];
 
