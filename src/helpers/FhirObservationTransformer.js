@@ -11,6 +11,7 @@ import {
   CODE_TO_INTERPRETATION,
 } from 'src/constants/fhir';
 import { NUMBER, STRING, BOOLEAN, OBJECT } from 'src/constants';
+import { cacheFileName, getCachedFileName } from 'src/helpers/FileNameCache';
 
 // Reverse Transformation: FHIR Observation → Form2 Observation
 
@@ -134,7 +135,13 @@ const extractValue = (resource) => {
     // does not surface `fileName: undefined` / `contentType: undefined`
     // (keeps parity with AC13 "only available data is mapped").
     const value = { url: attachment.url };
-    if (attachment.title !== undefined) value.fileName = attachment.title;
+    if (attachment.title !== undefined) {
+      value.fileName = attachment.title;
+      // Populate the session cache so getFileName() can display the filename
+      // even after observationsWithValues converts { url, fileName } → string URL
+      // before passing to CarbonContainer.
+      cacheFileName(attachment.url, attachment.title);
+    }
     if (attachment.contentType !== undefined) {
       value.contentType = attachment.contentType;
     }
@@ -165,6 +172,14 @@ const mapObservation = (resource, resourceIndex) => {
   }
 
   const obs = { concept };
+
+  // Preserve the FHIR resource id so callers can detect existing observations
+  // and emit PUT/DELETE bundle entries instead of POST.
+  // Assumes the FHIR server's logical id for this resource IS the OpenMRS
+  // observation UUID (true for OpenMRS's FHIR2 module) — if a server ever
+  // returns a different id format, downstream PUT/DELETE would target the
+  // wrong resource.
+  if (resource.id) obs.uuid = resource.id;
 
   if (resource.effectiveDateTime) {
     obs.obsDatetime = resource.effectiveDateTime;
@@ -232,10 +247,12 @@ const mapObservation = (resource, resourceIndex) => {
     const interpCoding =
       resource.interpretation[0].coding && resource.interpretation[0].coding[0];
     if (interpCoding && interpCoding.code) {
-      const word = CODE_TO_INTERPRETATION[interpCoding.code];
-      if (word) {
-        obs.interpretation = word;
+      const mapped = CODE_TO_INTERPRETATION[interpCoding.code];
+      if (mapped !== undefined) {
+        obs.interpretation = mapped;
       }
+      // Unknown codes are silently omitted — the outbound transformer only
+      // writes known codes, so an unrecognised code on the way back is noise.
     }
   }
 
@@ -289,6 +306,7 @@ export function getObservationsFromFhir(input) {
   for (const entry of topLevelEntries) {
     const { resource } = entry;
     if (!resource) continue;
+    if (resource.resourceType !== 'Observation') continue;
     try {
       const obs = mapObservation(resource, resourceIndex);
       if (obs) {
@@ -387,6 +405,27 @@ const handleStringValue = (value, observation, conceptDatatype) => {
 };
 
 /**
+ * Builds a valueAttachment extension for a Complex (file) observation and
+ * sets valueString to the attachment url, so both the pre-population and
+ * fresh-upload paths stay in sync.
+ * @param {Object} observation - The FHIR Observation resource being built
+ * @param {string} url - The attachment url
+ * @param {string} [title] - The original filename, if known
+ * @param {string} [contentType] - The attachment content type, if known
+ */
+const applyAttachmentValue = (observation, url, title, contentType) => {
+  const attachment = { url };
+  if (title) attachment.title = title;
+  if (contentType) attachment.contentType = contentType;
+  observation.extension = observation.extension || [];
+  observation.extension.push({
+    url: FHIR_OBSERVATION_VALUE_ATTACHMENT_URL,
+    valueAttachment: attachment,
+  });
+  observation.valueString = url;
+};
+
+/**
  * Creates a single FHIR Observation resource from a form2 observation
  * @param {Object} observationPayload - The form2 observation data
  * @param {Object} options - Configuration options
@@ -429,12 +468,9 @@ const createObservationResource = (observationPayload, options) => {
         break;
       case STRING: {
         if (conceptDatatype === CONCEPT_DATATYPE_COMPLEX && value.trim() !== '') {
-          observation.extension = observation.extension || [];
-          observation.extension.push({
-            url: FHIR_OBSERVATION_VALUE_ATTACHMENT_URL,
-            valueAttachment: { url: value },
-          });
-          observation.valueString = value;
+          // Look up the original filename from the session cache (set by FileUpload
+          // at upload time) so it round-trips via valueAttachment.title.
+          applyAttachmentValue(observation, value, getCachedFileName(value));
         } else {
           handleStringValue(value, observation, conceptDatatype);
         }
@@ -451,6 +487,12 @@ const createObservationResource = (observationPayload, options) => {
           observation.valueCodeableConcept = createCodeableConcept([
             createCoding(codingCode, value.system, value.display || value.displayString),
           ]);
+        } else if (value && 'url' in value) {
+          // Complex/file attachment pre-populated from a previous save:
+          // { url, fileName?, contentType? }. Preserve all available fields so
+          // the observation is not silently dropped when the user submits without
+          // changing the file, and so the filename round-trips correctly.
+          applyAttachmentValue(observation, value.url, value.fileName, value.contentType);
         }
         break;
     }

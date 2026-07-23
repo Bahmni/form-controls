@@ -36,10 +36,16 @@ export class ObsMapper {
         return null;
       }
       if (!obs.voided) {
-        obs.voided = obs.value.indexOf('voided') > 0;
-        if (obs.voided) {
-          // removing voided suffix for Images/Videos (voided obs) before sending to bahmni apps
-          obs.value = obs.value.replace(/voided/g, '');
+        // Guard: value must be a string before calling indexOf.
+        // FHIR-fetched values arrive as { url, fileName } objects until the
+        // observationsWithValues map converts them to plain strings; if an
+        // object still slips through, skip the voided-suffix check safely.
+        if (typeof obs.value === 'string') {
+          obs.voided = obs.value.indexOf('voided') > 0;
+          if (obs.voided) {
+            // removing voided suffix for Images/Videos (voided obs) before sending to bahmni apps
+            obs.value = obs.value.replace(/voided/g, '');
+          }
         }
       }
     }

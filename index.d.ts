@@ -346,6 +346,8 @@ export interface FhirTransformOptions {
   encounterReference: FhirReference;
   /** FHIR Reference to the performer/practitioner (e.g., { reference: 'Practitioner/uuid' }) */
   performerReference: FhirReference;
+  /** Optional FHIR Reference for basedOn (e.g. ServiceRequest) */
+  basedOnReference?: FhirReference;
 }
 
 /**

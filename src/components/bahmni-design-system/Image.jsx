@@ -25,7 +25,7 @@ export class Image extends FileUpload {
         {this.props.value && (
           <div className="file-row">
             <FileUploaderItem
-              uuid={this.props.value}
+              uuid={typeof this.props.value === 'object' ? this.props.value.url : this.props.value}
               name={fileName}
               status="edit"
               onDelete={this.handleDelete}

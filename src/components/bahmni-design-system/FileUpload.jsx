@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import { Util } from 'src/helpers/Util';
 import { Validator } from 'src/helpers/Validator';
 import { UploadHandler } from 'src/helpers/UploadHandler';
+import { cacheFileName, getCachedFileName } from 'src/helpers/FileNameCache';
 
 export class FileUpload extends Component {
 
@@ -16,7 +17,8 @@ export class FileUpload extends Component {
   }
 
   componentDidMount() {
-    if (this.props.value && typeof this.props.value === 'string') {
+    const v = this.props.value;
+    if (v && (typeof v === 'string' || (typeof v === 'object' && v !== null && v.url))) {
       this.addControlWithNotification(false);
     }
   }
@@ -103,6 +105,11 @@ export class FileUpload extends Component {
         .then((response) => response.json())
         .then(data => {
           const handleSuccess = (url) => {
+            // Keep value as a plain string URL — CarbonContainer's Immutable.js
+            // records call .indexOf() on the value and will error on an object.
+            // Store the filename in the session cache so FhirObservationTransformer
+            // can include it as valueAttachment.title when building the FHIR bundle.
+            cacheFileName(url, file.name);
             this.update(url);
             inputElement.value = '';
             this.setState({}, () => {
@@ -131,8 +138,14 @@ export class FileUpload extends Component {
   }
 
   getFileName(value) {
-    if (!value || typeof value !== 'string') return '';
-    return value.split('/').pop();
+    if (!value) return '';
+    // Pre-populated from FHIR fetch: { url, fileName? }
+    if (typeof value === 'object' && value !== null) {
+      return value.fileName || getCachedFileName(value.url) || '';
+    }
+    if (typeof value !== 'string') return '';
+    // Newly uploaded file in this session — filename is in the cache
+    return getCachedFileName(value) || value.split('/').pop() || '';
   }
 
   // eslint-disable-next-line react/require-render-return
@@ -151,7 +164,14 @@ FileUpload.propTypes = {
   showNotification: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,
   validations: PropTypes.array.isRequired,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.shape({
+      url: PropTypes.string.isRequired,
+      fileName: PropTypes.string,
+      contentType: PropTypes.string,
+    }),
+  ]),
 };
 
 FileUpload.defaultProps = {

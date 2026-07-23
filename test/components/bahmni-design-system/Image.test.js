@@ -3,6 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Image } from 'components/bahmni-design-system/Image.jsx';
 import { Util } from 'helpers/Util';
 import constants from 'src/constants';
+import { clearCache } from 'helpers/FileNameCache';
 
 jest.mock('helpers/Util', () => ({
   Util: {
@@ -26,6 +27,7 @@ describe('Carbon Image', () => {
   const formFieldPath = 'test1.1/1-0';
 
   beforeEach(() => {
+    clearCache();
     mockOnChange = jest.fn();
     mockOnControlAdd = jest.fn();
     mockShowNotification = jest.fn();
