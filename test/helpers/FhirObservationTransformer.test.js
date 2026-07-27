@@ -1045,32 +1045,32 @@ describe('getObservationsFromFhir', () => {
       id,
     });
 
-    it('should map code "A" to "Abnormal"', () => {
+    it('should map code "A" to "ABNORMAL"', () => {
       const entry = makeEntry(makeWithInterpretation('A', 'i1'));
       const result = getObservationsFromFhir([entry]);
 
-      expect(result[0].interpretation).toBe('Abnormal');
+      expect(result[0].interpretation).toBe('ABNORMAL');
     });
 
-    it('should map code "N" to "Normal"', () => {
+    it('should map code "N" to "NORMAL"', () => {
       const entry = makeEntry(makeWithInterpretation('N', 'i2'));
       const result = getObservationsFromFhir([entry]);
 
-      expect(result[0].interpretation).toBe('Normal');
+      expect(result[0].interpretation).toBe('NORMAL');
     });
 
-    it('should map code "H" to "High"', () => {
+    it('should map code "H" to "HIGH"', () => {
       const entry = makeEntry(makeWithInterpretation('H', 'i3'));
       const result = getObservationsFromFhir([entry]);
 
-      expect(result[0].interpretation).toBe('High');
+      expect(result[0].interpretation).toBe('HIGH');
     });
 
-    it('should map code "L" to "Low"', () => {
+    it('should map code "L" to "LOW"', () => {
       const entry = makeEntry(makeWithInterpretation('L', 'i4'));
       const result = getObservationsFromFhir([entry]);
 
-      expect(result[0].interpretation).toBe('Low');
+      expect(result[0].interpretation).toBe('LOW');
     });
 
     it('should not include interpretation when absent', () => {
@@ -1349,7 +1349,7 @@ describe('getObservationsFromFhir', () => {
       expect(obs.formNamespace).toBe('Bahmni');
       expect(obs.formFieldPath).toBe('Vitals.1/1-0');
       expect(obs.comment).toBe('Resting');
-      expect(obs.interpretation).toBe('Normal');
+      expect(obs.interpretation).toBe('NORMAL');
     });
 
     it('should reconstruct boolean and text observations', () => {
@@ -1599,8 +1599,10 @@ describe('getObservationsFromFhir', () => {
     });
 
     it('keeps CODE_TO_INTERPRETATION in sync with INTERPRETATION_TO_CODE', () => {
-      Object.values(INTERPRETATION_TO_CODE).forEach(({ code, display }) => {
-        expect(CODE_TO_INTERPRETATION[code]).toBe(display);
+      Object.entries(INTERPRETATION_TO_CODE).forEach(([word, { code }]) => {
+        // Reverse map yields the canonical UPPERCASE word (ObsControl compares
+        // against 'ABNORMAL'), not the title-case display text.
+        expect(CODE_TO_INTERPRETATION[code]).toBe(word);
       });
     });
   });
