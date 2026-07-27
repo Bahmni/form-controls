@@ -587,6 +587,34 @@ describe('NumericBox', () => {
     expect(rangeSpan).toHaveTextContent('(0 - 10)');
   });
 
+  it('should display updated value when external setValue changes field from empty to populated', () => {
+    const { container, rerender } = render(
+      <NumericBox
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeMock}
+        validate={false}
+        validateForm={false}
+        validations={[]}
+      />
+    );
+
+    expect(container.querySelector('input[type="number"]')).toHaveValue(null);
+
+    rerender(
+      <NumericBox
+        formFieldPath="test1.1/1-0"
+        onChange={onChangeMock}
+        validate={false}
+        validateForm={false}
+        validations={[]}
+        value={100}
+      />
+    );
+
+    // Re-query: the key-remount mechanism replaces the DOM node
+    expect(container.querySelector('input[type="number"]')).toHaveValue(100);
+  });
+
   it('should handle undefined errors from validator gracefully', () => {
     const getErrorsSpy = jest.spyOn(Validator, 'getErrors').mockReturnValue(undefined);
 
