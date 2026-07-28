@@ -49,6 +49,7 @@ export class Section extends addMoreDecorator(Component) {
     const {
       allowedDomains,
       collapse,
+      showValidationErrors,
       enabled,
       formName,
       formVersion,
@@ -62,6 +63,7 @@ export class Section extends addMoreDecorator(Component) {
     const childProps = {
       allowedDomains,
       collapse,
+      showValidationErrors,
       enabled,
       formName,
       formVersion,
@@ -106,6 +108,7 @@ export class Section extends addMoreDecorator(Component) {
 
 Section.propTypes = {
   allowedDomains: PropTypes.arrayOf(PropTypes.string),
+  showValidationErrors: PropTypes.bool,
   children: PropTypes.any,
   collapse: PropTypes.bool,
   enabled: PropTypes.bool,

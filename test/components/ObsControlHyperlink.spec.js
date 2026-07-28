@@ -53,6 +53,7 @@ describe('ObsControl - hyperlink rendering', () => {
         metadata={metadata}
         onValueChanged={onChangeSpy}
         showNotification={showNotificationSpy}
+        showValidationErrors
         validate={false}
         validateForm={false}
         value={{}}
@@ -64,6 +65,24 @@ describe('ObsControl - hyperlink rendering', () => {
   it('should NOT render an anchor when hyperlinkUrl property is absent', () => {
     const wrapper = makeWrapper({});
     expect(wrapper.find('a[data-bahmni-hyperlink]')).to.have.length(0);
+  });
+
+  it('should render external <a> when url is valid and matches allowedDomains pattern', () => {
+    const wrapper = makeWrapper(
+      { hyperlinkUrl: 'https://example.com/resource' },
+      { allowedDomains: ['*.example.com'] }
+    );
+    expect(wrapper.find('a[data-bahmni-hyperlink]')).to.have.length(1);
+    expect(wrapper.find('span.hyperlink-error')).to.have.length(0);
+  });
+
+  it('should NOT show the error span when showValidationErrors is false (clinician runtime)', () => {
+    const wrapper = makeWrapper(
+      { hyperlinkUrl: 'https://evil.com/resource' },
+      { allowedDomains: ['*.example.com'], showValidationErrors: false }
+    );
+    expect(wrapper.find('a[data-bahmni-hyperlink]')).to.have.length(0);
+    expect(wrapper.find('span.hyperlink-error')).to.have.length(0);
   });
 
   it('should NOT render an anchor when hyperlinkUrl property is empty string', () => {

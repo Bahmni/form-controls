@@ -148,8 +148,24 @@ $lightestGray: #eee;
           }
 
           a[data-bahmni-hyperlink] {
+            color: $bahmniLinkColor;
             font-size: 12px;
             white-space: nowrap;
+            text-decoration: none;
+
+            &:hover {
+              text-decoration: underline;
+            }
+
+            &:active,
+            &:visited {
+              color: $bahmniLinkColor;
+            }
+
+            &:focus {
+              outline: 2px solid $bahmniLinkColor;
+              outline-offset: 2px;
+            }
           }
 
           .hyperlink-error {
@@ -649,7 +665,28 @@ input.computed-value{
 
 .hyperlink-error {
   font-size: 12px;
-  color: $alert;
+  color: $error;
+  margin-top: 4px;
+  display: block;
+}
+
+a[data-bahmni-hyperlink] {
+  color: $bahmniLinkColor;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:active,
+  &:visited {
+    color: $bahmniLinkColor;
+  }
+
+  &:focus {
+    outline: 2px solid $bahmniLinkColor;
+    outline-offset: 2px;
+  }
 }
 
 @media print {

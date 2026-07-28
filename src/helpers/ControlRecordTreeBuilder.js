@@ -192,6 +192,8 @@ export default class ControlRecordTreeBuilder {
         allObs,
         parentFormFieldPath
       );
+      const observableChildControls = control.controls &&
+        control.controls.filter(childControl => childControl.type !== 'label');
       obsArray.forEach(data => {
         const record = new ControlRecord({
           valueMapper: ValueMapperStore.getMapper(control),
@@ -201,9 +203,9 @@ export default class ControlRecordTreeBuilder {
           dataSource: data,
           control,
           showAddMore: true,
-          children: control.controls &&
+          children: observableChildControls && observableChildControls.length > 0 &&
           this.getRecords(
-            control.controls,
+            observableChildControls,
             formName,
             formVersion,
             mapper.getChildren(data),

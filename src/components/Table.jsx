@@ -49,6 +49,7 @@ export class Table extends Component {
     } = this.props;
     const childProps = {
       allowedDomains: this.props.allowedDomains,
+      showValidationErrors: this.props.showValidationErrors,
       enabled,
       formName,
       formVersion,
@@ -88,6 +89,7 @@ export class Table extends Component {
 
 Table.propTypes = {
   allowedDomains: PropTypes.arrayOf(PropTypes.string),
+  showValidationErrors: PropTypes.bool,
   children: PropTypes.any,
   enabled: PropTypes.bool,
   formName: PropTypes.string.isRequired,
