@@ -1438,4 +1438,250 @@ describe('ControlRecordTreeBuilder', () => {
       expect(result.dataSource.uuid).toBe('test-uuid');
     });
   });
+
+  describe('getErrors - untouched mandatory validation', () => {
+    const mandatoryControl = {
+      concept: { datatype: 'Numeric', name: 'TestObs', uuid: 'test-uuid' },
+      id: '1',
+      label: { type: 'label', value: 'TestObs' },
+      properties: { mandatory: true, addMore: false, hideLabel: false },
+      type: 'obsControl',
+    };
+
+    const nonMandatoryControl = {
+      ...mandatoryControl,
+      properties: { ...mandatoryControl.properties, mandatory: false },
+    };
+
+    it('should report mandatory error for untouched visible mandatory leaf field', () => {
+      const record = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/1-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+      });
+
+      const errors = record.getErrors();
+      expect(errors).toHaveLength(1);
+      expect(errors[0][0].message).toBe('mandatory');
+    });
+
+    it('should not report mandatory error for untouched hidden mandatory leaf field (AC5)', () => {
+      const record = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/1-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: true,
+        voided: false,
+        errors: [],
+      });
+
+      expect(record.getErrors()).toHaveLength(0);
+    });
+
+    it('should not report mandatory error for untouched voided mandatory field (AC5)', () => {
+      const record = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/1-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: true,
+        errors: [],
+      });
+
+      expect(record.getErrors()).toHaveLength(0);
+    });
+
+    it('should not report mandatory error for untouched inactive mandatory field', () => {
+      const record = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/1-0',
+        value: {},
+        active: false,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+      });
+
+      expect(record.getErrors()).toHaveLength(0);
+    });
+
+    it('should not report mandatory error when mandatory leaf field has a value (AC6)', () => {
+      const record = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/1-0',
+        value: { value: 42 },
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+      });
+
+      expect(record.getErrors()).toHaveLength(0);
+    });
+
+    it('should not duplicate mandatory error when field already has a stored mandatory error (AC8)', () => {
+      const { Error: FormError } = require('src/Error');
+      const storedError = new FormError({ message: 'mandatory', type: 'error' });
+      const record = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/1-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [storedError],
+      });
+
+      const errors = record.getErrors();
+      expect(errors).toHaveLength(1);
+    });
+
+    it('should report mandatory error for untouched mandatory field inside ObsGroup (AC2)', () => {
+      const childRecord = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/2-0/1-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+      });
+
+      const obsGroupRecord = new ControlRecord({
+        control: {
+          concept: { datatype: 'N/A', name: 'TestGroup', uuid: 'group-uuid', set: true },
+          id: '2',
+          label: { type: 'label', value: 'TestGroup' },
+          properties: { addMore: false },
+          type: 'obsGroupControl',
+        },
+        formFieldPath: 'Test.1/2-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+        children: List.of(childRecord),
+      });
+
+      const root = new ControlRecord({ children: List.of(obsGroupRecord) });
+      const errors = root.getErrors();
+      expect(errors).toHaveLength(1);
+      expect(errors[0][0].message).toBe('mandatory');
+    });
+
+    it('should not report mandatory error for filled mandatory field inside ObsGroup', () => {
+      const childRecord = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/2-0/1-0',
+        value: { value: 'filled' },
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+      });
+
+      const obsGroupRecord = new ControlRecord({
+        control: {
+          concept: { datatype: 'N/A', name: 'TestGroup', uuid: 'group-uuid', set: true },
+          id: '2',
+          label: { type: 'label', value: 'TestGroup' },
+          properties: { addMore: false },
+          type: 'obsGroupControl',
+        },
+        formFieldPath: 'Test.1/2-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+        children: List.of(childRecord),
+      });
+
+      const root = new ControlRecord({ children: List.of(obsGroupRecord) });
+      expect(root.getErrors()).toHaveLength(0);
+    });
+
+    it('should not report mandatory error for hidden mandatory field inside ObsGroup (AC5)', () => {
+      const childRecord = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/2-0/1-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: true,
+        voided: false,
+        errors: [],
+      });
+
+      const obsGroupRecord = new ControlRecord({
+        control: {
+          concept: { datatype: 'N/A', name: 'TestGroup', uuid: 'group-uuid', set: true },
+          id: '2',
+          label: { type: 'label', value: 'TestGroup' },
+          properties: { addMore: false },
+          type: 'obsGroupControl',
+        },
+        formFieldPath: 'Test.1/2-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+        children: List.of(childRecord),
+      });
+
+      const root = new ControlRecord({ children: List.of(obsGroupRecord) });
+      expect(root.getErrors()).toHaveLength(0);
+    });
+
+    it('should report mandatory error for field that becomes visible (hidden=false) via script (AC3)', () => {
+      const record = new ControlRecord({
+        control: mandatoryControl,
+        formFieldPath: 'Test.1/1-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+      });
+
+      const errors = record.getErrors();
+      expect(errors).toHaveLength(1);
+      expect(errors[0][0].message).toBe('mandatory');
+    });
+
+    it('should not report error for non-mandatory untouched field', () => {
+      const record = new ControlRecord({
+        control: nonMandatoryControl,
+        formFieldPath: 'Test.1/1-0',
+        value: {},
+        active: true,
+        enabled: true,
+        hidden: false,
+        voided: false,
+        errors: [],
+      });
+
+      expect(record.getErrors()).toHaveLength(0);
+    });
+  });
 });

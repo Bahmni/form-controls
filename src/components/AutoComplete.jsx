@@ -57,10 +57,19 @@ export class AutoComplete extends Component {
       (this.state.hasErrors !== nextState.hasErrors) ||
       !isEqual(this.state.options, nextState.options) ||
       this.state.noResultsText !== nextState.noResultsText ||
-      this.props.enabled !== nextProps.enabled;
+      this.props.enabled !== nextProps.enabled ||
+      this.props.hidden !== nextProps.hidden;
   }
 
   componentDidUpdate(prevProps) {
+    if (prevProps.hidden && !this.props.hidden && this.props.validateForm) {
+      const errors = this._getErrors(this.props.value);
+      const hasErrors = this._hasErrors(errors);
+      this.setState({ hasErrors });
+      this.props.onValueChange(this.props.value, errors);
+      return;
+    }
+
     // Update state when props change (moved from componentWillReceiveProps)
     if (!isEqual(prevProps.value, this.props.value) ||
         !isEqual(prevProps.validate, this.props.validate) ||
@@ -256,6 +265,7 @@ AutoComplete.propTypes = {
   enabled: PropTypes.bool,
   filterOptions: PropTypes.func,
   formFieldPath: PropTypes.string,
+  hidden: PropTypes.bool,
   labelKey: PropTypes.string,
   minimumInput: PropTypes.number,
   multiSelect: PropTypes.bool,

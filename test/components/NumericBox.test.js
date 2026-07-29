@@ -524,6 +524,90 @@ describe('NumericBox', () => {
     expect(input).not.toHaveClass('form-builder-error');
   });
 
+  describe('hidden → visible validation trigger', () => {
+    it('shouldComponentUpdate returns true when hidden transitions true → false', () => {
+      const { rerender } = render(
+        <NumericBox
+          formFieldPath="test1.1-0"
+          hidden
+          onChange={onChangeMock}
+          validate={false}
+          validateForm={false}
+          validations={[]}
+        />
+      );
+      onChangeMock.mockClear();
+      rerender(
+        <NumericBox
+          formFieldPath="test1.1-0"
+          hidden={false}
+          onChange={onChangeMock}
+          validate={false}
+          validateForm={false}
+          validations={[]}
+        />
+      );
+      expect(screen.getByRole('spinbutton')).toBeInTheDocument();
+    });
+
+    it('componentDidUpdate calls onChange with errors when hidden→visible with validateForm true', () => {
+      const { rerender } = render(
+        <NumericBox
+          formFieldPath="test1.1-0"
+          hidden
+          onChange={onChangeMock}
+          validate={false}
+          validateForm
+          validations={[constants.validations.mandatory]}
+        />
+      );
+      onChangeMock.mockClear();
+      rerender(
+        <NumericBox
+          formFieldPath="test1.1-0"
+          hidden={false}
+          onChange={onChangeMock}
+          validate={false}
+          validateForm
+          validations={[constants.validations.mandatory]}
+        />
+      );
+      expect(onChangeMock).toHaveBeenCalledWith(
+        expect.objectContaining({ calledOnMount: true })
+      );
+    });
+
+    it('componentDidUpdate does not fire the hidden→visible block when validateForm is false', () => {
+      const { rerender } = render(
+        <NumericBox
+          formFieldPath="test1.1-0"
+          hidden
+          onChange={onChangeMock}
+          validate={false}
+          validateForm={false}
+          validations={[constants.validations.mandatory]}
+          value="42"
+        />
+      );
+      onChangeMock.mockClear();
+      rerender(
+        <NumericBox
+          formFieldPath="test1.1-0"
+          hidden={false}
+          onChange={onChangeMock}
+          validate={false}
+          validateForm={false}
+          validations={[constants.validations.mandatory]}
+          value="42"
+        />
+      );
+      const callsWithCalledOnMount = onChangeMock.mock.calls.filter(
+        ([arg]) => arg && arg.calledOnMount
+      );
+      expect(callsWithCalledOnMount).toHaveLength(0);
+    });
+  });
+
   it('should not trigger componentDidUpdate input update when input value matches prop value', () => {
     const { rerender } = render(
       <NumericBox

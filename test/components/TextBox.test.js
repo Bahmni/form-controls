@@ -266,6 +266,90 @@ describe('TextBox', () => {
     expect(mockOnChange).toHaveBeenCalledWith({ value: 'defaultText', errors: [] });
   });
 
+  describe('hidden → visible validation trigger', () => {
+    it('shouldComponentUpdate returns true when hidden transitions true → false', () => {
+      const { rerender } = render(
+        <TextBox
+          formFieldPath="test1.1-0"
+          hidden
+          onChange={mockOnChange}
+          validate={false}
+          validateForm={false}
+          validations={[]}
+        />
+      );
+      mockOnChange.mockClear();
+      rerender(
+        <TextBox
+          formFieldPath="test1.1-0"
+          hidden={false}
+          onChange={mockOnChange}
+          validate={false}
+          validateForm={false}
+          validations={[]}
+        />
+      );
+      expect(screen.getByRole('textbox')).toBeInTheDocument();
+    });
+
+    it('componentDidUpdate calls onChange with errors when hidden→visible with validateForm true', () => {
+      const { rerender } = render(
+        <TextBox
+          formFieldPath="test1.1-0"
+          hidden
+          onChange={mockOnChange}
+          validate={false}
+          validateForm
+          validations={[constants.validations.mandatory]}
+        />
+      );
+      mockOnChange.mockClear();
+      rerender(
+        <TextBox
+          formFieldPath="test1.1-0"
+          hidden={false}
+          onChange={mockOnChange}
+          validate={false}
+          validateForm
+          validations={[constants.validations.mandatory]}
+        />
+      );
+      expect(mockOnChange).toHaveBeenCalledWith(
+        expect.objectContaining({ calledOnMount: true })
+      );
+    });
+
+    it('componentDidUpdate does not fire the hidden→visible block when validateForm is false', () => {
+      const { rerender } = render(
+        <TextBox
+          formFieldPath="test1.1-0"
+          hidden
+          onChange={mockOnChange}
+          validate={false}
+          validateForm={false}
+          validations={[constants.validations.mandatory]}
+          value="some text"
+        />
+      );
+      mockOnChange.mockClear();
+      rerender(
+        <TextBox
+          formFieldPath="test1.1-0"
+          hidden={false}
+          onChange={mockOnChange}
+          validate={false}
+          validateForm={false}
+          validations={[constants.validations.mandatory]}
+          value="some text"
+        />
+      );
+      const callsWithCalledOnMount = mockOnChange.mock.calls.filter(
+        ([arg]) => arg && arg.calledOnMount
+      );
+      expect(callsWithCalledOnMount).toHaveLength(0);
+    });
+  });
+
   it('should handle undefined errors from validator gracefully', () => {
     const getErrorsSpy = jest.spyOn(Validator, 'getErrors').mockReturnValue(undefined);
     render(

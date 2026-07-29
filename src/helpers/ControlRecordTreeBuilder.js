@@ -6,6 +6,7 @@ import { isAnyAncestorOrControlHasAddMore,
     getCurrentFormFieldPathIfAddMore } from 'src/helpers/ControlUtil';
 import ValueMapperStore from './ValueMapperStore';
 import { Obs } from './Obs';
+import { Validator } from './Validator';
 
 const ControlRecordBase = Record({
   valueMapper: undefined,
@@ -152,6 +153,22 @@ export class ControlRecord extends ControlRecordBase {
     err.message === constants.validations.mandatory && this.enabled && !this.hidden);
     if (errors && !isEmpty(filteredMandatoryErrors)) {
       errorArray.push(filteredMandatoryErrors);
+    }
+
+    if (!this.children && this.enabled && !this.hidden && !this.voided && this.active) {
+      const isMandatory = this.control &&
+        this.control.properties &&
+        this.control.properties.mandatory;
+      if (isMandatory) {
+        const hasStoredMandatoryError = filteredMandatoryErrors
+          .some(e => e.message === constants.validations.mandatory);
+        if (!hasStoredMandatoryError) {
+          const mandatoryError = Validator.mandatory(this.getValue());
+          if (mandatoryError) {
+            errorArray.push([mandatoryError]);
+          }
+        }
+      }
     }
 
     if (this.children) {

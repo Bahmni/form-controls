@@ -28,11 +28,20 @@ export class FreeTextAutoComplete extends Component {
       this.state.hasErrors !== nextState.hasErrors ||
       !isEqual(this.state.value, nextState.value) ||
       this.props.enabled !== nextProps.enabled ||
-      this.props.validate !== nextProps.validate
+      this.props.validate !== nextProps.validate ||
+      this.props.hidden !== nextProps.hidden
     );
   }
 
   componentDidUpdate(prevProps) {
+    if (prevProps.hidden && !this.props.hidden && this.props.validateForm) {
+      const errors = this._getErrors(this.props.value);
+      const hasErrors = this._hasErrors(errors);
+      this.setState({ hasErrors });
+      this.props.onChange({ value: this.props.value, errors });
+      return;
+    }
+
     if (!isEqual(prevProps.value, this.props.value)) {
       this.setState({ value: this.props.value || null });
     }
@@ -97,6 +106,7 @@ FreeTextAutoComplete.propTypes = {
   conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
+  hidden: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,

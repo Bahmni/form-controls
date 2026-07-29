@@ -29,13 +29,22 @@ export class Button extends Component {
     this.isValueChanged = !isEqual(this.props.value, nextProps.value);
     if (this.isValueChanged ||
       this.state.hasErrors !== nextState.hasErrors ||
-      this.props.enabled !== nextProps.enabled) {
+      this.props.enabled !== nextProps.enabled ||
+      this.props.hidden !== nextProps.hidden) {
       return true;
     }
     return false;
   }
 
   componentDidUpdate(prevProps) {
+    if (prevProps.hidden && !this.props.hidden && this.props.validateForm) {
+      const errors = this._getErrors(this.props.value);
+      const hasErrors = this._hasErrors(errors);
+      this.setState({ hasErrors });
+      this.props.onValueChange(this.props.value, errors, true);
+      return;
+    }
+
     // Update hasErrors state when validate prop changes or value changes
     if (this.props.validate !== prevProps.validate ||
         !isEqual(this.props.value, prevProps.value)) {
@@ -136,6 +145,7 @@ Button.propTypes = {
   conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string,
+  hidden: PropTypes.bool,
   multiSelect: PropTypes.bool,
   nameKey: PropTypes.string,
   onValueChange: PropTypes.func.isRequired,

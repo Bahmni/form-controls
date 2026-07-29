@@ -69,13 +69,22 @@ export class DateTime extends Component {
     if (this.props.enabled !== nextProps.enabled ||
         this.props.validate !== nextProps.validate ||
         this.props.value !== nextProps.value ||
-        !isEqual(this.state, nextState)) {
+        !isEqual(this.state, nextState) ||
+        this.props.hidden !== nextProps.hidden) {
       return true;
     }
     return false;
   }
 
   componentDidUpdate(prevProps) {
+    if (prevProps.hidden && !this.props.hidden && this.props.validateForm) {
+      const errors = this._getAllErrors(this.state.dateValue, this.state.timeValue);
+      const hasErrors = this._hasErrors(errors);
+      this.setState({ hasErrors });
+      this.props.onChange({ value: this.props.value, errors, calledOnMount: true });
+      return;
+    }
+
     if (this.props.validate !== prevProps.validate) {
       const { dateValue, timeValue } = this.state;
       const errors = this._getAllErrors(dateValue, timeValue);
@@ -202,6 +211,7 @@ DateTime.propTypes = {
   conceptUuid: PropTypes.string,
   enabled: PropTypes.bool,
   formFieldPath: PropTypes.string.isRequired,
+  hidden: PropTypes.bool,
   label: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   validate: PropTypes.bool.isRequired,

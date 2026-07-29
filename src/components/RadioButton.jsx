@@ -15,7 +15,8 @@ export class RadioButton extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.value !== nextProps.value ||
       this.state.value !== nextState.value ||
-      this.state.hasErrors !== nextState.hasErrors) {
+      this.state.hasErrors !== nextState.hasErrors ||
+      this.props.hidden !== nextProps.hidden) {
       return true;
     }
     return false;
@@ -78,6 +79,7 @@ export class RadioButton extends Component {
 
 RadioButton.propTypes = {
   conceptUuid: PropTypes.string,
+  hidden: PropTypes.bool,
   onValueChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
   validate: PropTypes.bool.isRequired,
