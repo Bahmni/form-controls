@@ -100,7 +100,7 @@ function validateHyperlink(url, allowedDomains) {
     };
   }
 
-  if (trimmed.charAt(0) === '/') {
+  if (trimmed.charAt(0) === '/' && trimmed.charAt(1) !== '/') {
     if (hasUnknownTokens(trimmed)) {
       return {
         valid: false,

@@ -46,6 +46,7 @@ export class Label extends Component {
       if (showValidationErrors) {
         return (
           <label className={`${disableClass}`} htmlFor={this.props.metadata.uuid}>
+            {text}
             <span className="hyperlink-error">{result.error}</span>
           </label>
         );

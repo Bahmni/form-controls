@@ -368,6 +368,110 @@ describe('ObsControlDesigner', () => {
       />);
       expect(wrapper.find('button').text()).to.eql('Abnormal');
     });
+
+    context('with attached controls', () => {
+      const attachedControl = {
+        id: 'attached-123',
+        type: 'label',
+        value: 'Attached Label',
+      };
+
+      beforeEach(() => {
+        metadata = {
+          id: '123',
+          type: 'obsControl',
+          concept,
+          label,
+          properties: {},
+          controls: [attachedControl],
+        };
+        idGenerator = new IDGenerator();
+        const textBoxDescriptor = { control: DummyControl };
+        componentStore.registerDesignerComponent('text', textBoxDescriptor); // eslint-disable-line no-undef
+        onSelectSpy = sinon.spy();
+        wrapper = mount(<ObsControlDesigner
+          clearSelectedControl={() => {}}
+          deleteControl={() => {}}
+          metadata={metadata}
+          onSelect={onSelectSpy}
+          selectedControlId=""
+          showDeleteButton={false}
+        />);
+      });
+
+      after(() => {
+        componentStore.deRegisterDesignerComponent('text'); // eslint-disable-line no-undef
+      });
+
+      it('should display attached controls', () => {
+        expect(wrapper.find('.obs-attached-label')).to.have.length(1);
+        expect(wrapper).to.have.descendants('LabelDesigner');
+      });
+
+      it('should process drop to add new attached control', () => {
+        const instance = wrapper.instance();
+        const droppedControl = {
+          id: 'dropped-456',
+          type: 'label',
+          value: 'Dropped Label',
+        };
+        instance.processDrop(droppedControl);
+        wrapper.update();
+        expect(instance.state.attachedControls).to.have.length(2);
+        expect(instance.state.attachedControls[1]).to.deep.eql(droppedControl);
+      });
+
+      it('should ignore non-label drops', () => {
+        const instance = wrapper.instance();
+        const droppedControl = {
+          id: 'dropped-456',
+          type: 'obsControl',
+          value: 'Dropped Control',
+        };
+        instance.processDrop(droppedControl);
+        wrapper.update();
+        expect(instance.state.attachedControls).to.have.length(1);
+      });
+
+      it('should update attached control properties on componentWillReceiveProps', () => {
+        const instance = wrapper.instance();
+        const controlProperty = {
+          id: 'attached-123',
+          property: { someProperty: 'someValue' },
+        };
+        instance.componentWillReceiveProps({ controlProperty });
+        expect(instance.state.attachedControls[0].properties).to.deep.eql({ someProperty: 'someValue' });
+      });
+
+      it('should include attached controls in getJsonDefinition', () => {
+        idGenerator = new IDGenerator();
+        const labelDesignerDescriptor = { control: DummyControl };
+        componentStore.registerDesignerComponent('label', labelDesignerDescriptor); // eslint-disable-line no-undef
+        wrapper = mount(
+          <ObsControlDesigner
+            clearSelectedControl={() => {}}
+            deleteControl={() => {}}
+            dispatch={() => {}}
+            idGenerator={idGenerator}
+            metadata={metadata}
+            onSelect={() => {}}
+            selectedControlId=""
+            showDeleteButton
+            wrapper={() => {}}
+          />);
+        const instance = wrapper.instance();
+        const json = instance.getJsonDefinition();
+        expect(json.controls).to.exist;
+        expect(json.controls).to.have.length(1);
+        componentStore.deRegisterDesignerComponent('label'); // eslint-disable-line no-undef
+      });
+
+      it('should delete attached control when delete is called', () => {
+        const instance = wrapper.instance();
+        instance.deleteAttachedControl('attached-123');
+        expect(instance.state.attachedControls).to.have.length(0);
+      });
+    });
   });
 
   context('when concept has description', () => {

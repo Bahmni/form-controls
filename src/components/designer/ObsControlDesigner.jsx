@@ -16,14 +16,13 @@ export class ObsControlDesigner extends DropTarget {
   constructor(props) {
     super(props);
     this.metadata = props.metadata;
-    this.state = { attachedControls: props.metadata.controls || [] };
+    this.state = { attachedControls: props.metadata.controls || [], dropActive: false };
     this.attachedControlRefs = {};
     this.storeChildRef = this.storeChildRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
     this.storeAttachedControlRef = this.storeAttachedControlRef.bind(this);
     this.deleteButton = this.deleteButton.bind(this);
     this.deleteAttachedControl = this.deleteAttachedControl.bind(this);
-    this._setActiveClass(false);
   }
 
   deleteAttachedControl(controlId) {
@@ -50,23 +49,20 @@ export class ObsControlDesigner extends DropTarget {
     this.setState({ attachedControls });
   }
 
-  _setActiveClass(active = false) {
-    this.dropClassName = classNames('obs-attached-label-drop', { active });
-  }
-
   processDragEnter() {
-    this._setActiveClass(true);
-    this.forceUpdate();
+    this.setState({ dropActive: true });
   }
 
   processDragLeave() {
-    this._setActiveClass(false);
-    this.forceUpdate();
+    this.setState({ dropActive: false });
   }
 
   processDrop(context) {
-    this._setActiveClass(false);
+    this.setState({ dropActive: false });
     if (!context || context.type !== 'label') {
+      return;
+    }
+    if (this.state.attachedControls.some(c => c.id === context.id)) {
       return;
     }
     this.setState({
@@ -258,24 +254,6 @@ export class ObsControlDesigner extends DropTarget {
     return null;
   }
 
-  showHyperlink() {
-    const { metadata } = this.props;
-    const hyperlinkUrl = metadata && metadata.properties && metadata.properties.hyperlinkUrl;
-    if (!hyperlinkUrl) return null;
-    const hyperlinkLabel = (metadata.properties && metadata.properties.hyperlinkLabel) ||
-      hyperlinkUrl;
-    return (
-      <a
-        className="form-builder-hyperlink-preview"
-        data-bahmni-hyperlink="true"
-        href="#"
-        onClick={(e) => e.preventDefault()}
-      >
-        {hyperlinkLabel}
-      </a>
-    );
-  }
-
   showAbnormalButton() {
     const { properties } = this.props.metadata;
     const isAbnormal = find(properties, (value, key) => (key === 'abnormal' && value));
@@ -296,7 +274,7 @@ export class ObsControlDesigner extends DropTarget {
       return (
         <Fragment>
           {this.showDeleteButton()}
-          <div className={classNames('form-field-wrap clearfix', this.dropClassName)}
+          <div className={classNames('form-field-wrap clearfix', 'obs-attached-label-drop', { active: this.state.dropActive })}
             onClick={(event) => this.props.onSelect(event, metadata)}
             onDragEnter={this.onDragEnter}
             onDragLeave={this.onDragLeave}
@@ -315,7 +293,6 @@ export class ObsControlDesigner extends DropTarget {
                 {this.showAbnormalButton()}
                 {this.showAddMore()}
                 <div className="obs-hyperlink-comment-row">
-                  {this.showHyperlink()}
                   {this.showComment()}
                 </div>
               </div>
@@ -449,18 +426,6 @@ const descriptor = {
             defaultValue: false,
             elementType: 'button',
             elementName: 'Editor',
-          },
-          {
-            name: 'hyperlinkUrl',
-            dataType: 'text',
-            defaultValue: '',
-            elementType: 'text',
-          },
-          {
-            name: 'hyperlinkLabel',
-            dataType: 'text',
-            defaultValue: '',
-            elementType: 'text',
           },
         ],
       },

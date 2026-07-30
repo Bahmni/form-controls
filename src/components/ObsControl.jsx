@@ -248,47 +248,6 @@ export class ObsControl extends addMoreDecorator(Component) {
     }
   }
 
-  showHyperlink() {
-    const { metadata: { properties }, patientUuid, allowedDomains,
-      showValidationErrors } = this.props;
-    const rawUrl = ((properties && properties.hyperlinkUrl) || '').trim();
-    if (!rawUrl) {
-      return null;
-    }
-    const result = validateHyperlink(rawUrl, Array.isArray(allowedDomains) ? allowedDomains : []);
-    const resolvedUrl = result.valid && result.type === 'internal'
-      ? Util.resolveUrlTokens(result.sanitizedUrl, { patientUuid: patientUuid || '' })
-      : result.sanitizedUrl;
-    if (!result.valid) {
-      return showValidationErrors
-        ? <span className="hyperlink-error">{result.error}</span>
-        : null;
-    }
-    const linkText = (properties && properties.hyperlinkLabel) || resolvedUrl;
-    if (result.type === 'external') {
-      return (
-        <a
-          data-bahmni-hyperlink="true"
-          href={resolvedUrl}
-          referrerPolicy="no-referrer"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          {linkText}
-        </a>
-      );
-    }
-    return (
-      <a
-        data-bahmni-hyperlink="true"
-        href={resolvedUrl}
-        rel="noopener"
-        target="_blank"
-      >
-        {linkText}
-      </a>
-    );
-  }
 
   render() {
     const { concept } = this.props.metadata;
@@ -309,7 +268,6 @@ export class ObsControl extends addMoreDecorator(Component) {
                       {this.showAbnormalButton()}
                       {this.showAddMore()}
                       <div className="obs-hyperlink-comment-row">
-                          {this.showHyperlink()}
                           {this.showComment()}
                       </div>
                   </div>
