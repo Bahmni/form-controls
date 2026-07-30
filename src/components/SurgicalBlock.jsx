@@ -26,7 +26,7 @@ export class SurgicalBlock extends Component {
       '&v=custom:(id,uuid,' +
       'provider:(uuid,person:(uuid,display),attributes:(attributeType:(display),value,voided)),' +
       'location:(uuid,name),startDatetime,endDatetime,' +
-      'surgicalAppointments:(id,uuid,patient:(uuid,display,' +
+      'surgicalAppointments:(id,uuid,order:(uuid),patient:(uuid,display,' +
       'person:(age,gender,birthdate)),' +
       'actualStartDatetime,actualEndDatetime,status,notes,sortWeight,' +
       'bedNumber,bedLocation,surgicalAppointmentAttributes,patientObservations))';
@@ -40,6 +40,8 @@ export class SurgicalBlock extends Component {
         const surgeryOptions = [];
         (data.results || []).forEach((block) => {
           (block.surgicalAppointments || []).forEach((surgicalAppointment) => {
+            const orderUuid = surgicalAppointment.order && surgicalAppointment.order.uuid;
+            if (!orderUuid) return;
             if (!patientUuid || (surgicalAppointment.patient &&
                 surgicalAppointment.patient.uuid === patientUuid)) {
               surgeryOptions.push(this._formatSurgeryOption(block, surgicalAppointment));
@@ -62,7 +64,7 @@ export class SurgicalBlock extends Component {
     const date = this._formatDate(block.startDatetime);
     const surgeon = block.provider && block.provider.person
       ? block.provider.person.display : '';
-    return { id: surgicalAppointment.uuid, name: `${date} - ${surgeon}` };
+    return { id: surgicalAppointment.order.uuid, name: `${date} - ${surgeon}` };
   }
 
   _formatDate(datetime) {
