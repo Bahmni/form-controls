@@ -87,7 +87,6 @@ export class LabelDesigner extends Component {
     this.stopEventPropagation(event);
     if (this.props.onSelect) {
       this.props.onSelect(event, this.props.metadata);
-      event.stopPropagation();
     }
   }
 
