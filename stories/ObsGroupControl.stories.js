@@ -86,7 +86,7 @@ const commonGroupProps = {
 };
 
 export default {
-  title: 'Complex Controls/ObsGroupControl',
+  title: 'Complex Controls/Legacy Components/ObsGroupControl',
   component: ObsGroupControl,
   argTypes: {
     collapse: { control: 'boolean', description: 'Render the group in its collapsed state' },

@@ -12,7 +12,7 @@ const yesNoOptions = [
 ];
 
 export default {
-  title: 'Atomic Controls/BooleanControl',
+  title: 'Atomic Controls/Legacy Components/BooleanControl',
   tags: ['autodocs'],
   component: BooleanControl,
   render: (args) => <BooleanControlWithIntl {...args} />,

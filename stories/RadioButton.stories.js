@@ -20,7 +20,7 @@ const frequencyOptions = [
 ];
 
 export default {
-  title: 'Atomic Controls/RadioButton',
+  title: 'Atomic Controls/Legacy Components/RadioButton',
   tags: ['autodocs'],
   component: RadioButton,
   args: {

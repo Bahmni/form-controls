@@ -11,7 +11,7 @@ const mockProviders = [
 ];
 
 export default {
-  title: 'Atomic Controls/Provider',
+  title: 'Atomic Controls/Legacy Components/Provider',
   tags: ['autodocs'],
   component: Provider,
   decorators: [

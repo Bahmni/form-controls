@@ -19,7 +19,7 @@ const codedOptions = [
 ];
 
 export default {
-  title: 'Atomic Controls/CodedControl',
+  title: 'Atomic Controls/Legacy Components/CodedControl',
   tags: ['autodocs'],
   component: CodedControl,
   render: (args) => <CodedControlWithIntl {...args} />,

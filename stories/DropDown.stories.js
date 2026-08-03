@@ -13,7 +13,7 @@ const bloodGroupOptions = [
 ];
 
 export default {
-  title: 'Atomic Controls/DropDown',
+  title: 'Atomic Controls/Legacy Components/DropDown',
   tags: ['autodocs'],
   component: DropDown,
   args: {

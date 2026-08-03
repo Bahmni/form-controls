@@ -320,7 +320,7 @@ const obsList = [
 ];
 
 export default {
-  title: 'Atomic Controls/MultiSelect',
+  title: 'Atomic Controls/Legacy Components/MultiSelect',
   tags: ['autodocs'],
   parameters: {
     docs: {

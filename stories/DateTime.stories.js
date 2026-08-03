@@ -2,7 +2,7 @@ import React from 'react';
 import { DateTime } from 'src/components/DateTime.jsx';
 
 export default {
-  title: 'Atomic Controls/DateTime',
+  title: 'Atomic Controls/Legacy Components/DateTime',
   tags: ['autodocs'],
   component: DateTime,
   args: {

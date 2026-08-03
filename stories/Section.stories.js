@@ -157,7 +157,7 @@ const nestedSectionsMetadata = {
 };
 
 export default {
-  title: 'Complex Controls/Section',
+  title: 'Complex Controls/Legacy Components/Section',
   component: Container,
   argTypes: {
     collapse: { control: 'boolean', description: 'Render the section in its collapsed state' },

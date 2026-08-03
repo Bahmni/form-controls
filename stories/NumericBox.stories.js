@@ -2,7 +2,7 @@ import React from 'react';
 import { NumericBox } from 'src/components/NumericBox.jsx';
 
 export default {
-  title: 'Atomic Controls/NumericBox',
+  title: 'Atomic Controls/Legacy Components/NumericBox',
   tags: ['autodocs'],
   component: NumericBox,
   args: {

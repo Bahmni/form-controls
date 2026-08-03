@@ -104,7 +104,7 @@ const commonProps = {
 const emptyValue = { value: undefined, comment: undefined, interpretation: undefined };
 
 export default {
-  title: 'Complex Controls/ObsControl',
+  title: 'Complex Controls/Legacy Components/ObsControl',
   component: ObsControl,
   argTypes: {
     validate: { control: 'boolean', description: 'Trigger field-level validation' },

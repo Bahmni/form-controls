@@ -13,7 +13,13 @@ export default {
   parameters: {
     options: {
       storySort: {
-        order: ['Introduction', 'Atomic Controls', 'Complex Controls', 'Orchestrator', 'Example Forms'],
+        order: [
+          'Introduction',
+          'Atomic Controls', ['Bahmni DS', 'Legacy Components'],
+          'Complex Controls', ['Bahmni DS', 'Legacy Components'],
+          'Orchestrator',
+          'Example Forms',
+        ],
       },
     },
   },

@@ -11,7 +11,7 @@ const mockLocations = [
 ];
 
 export default {
-  title: 'Atomic Controls/Location',
+  title: 'Atomic Controls/Legacy Components/Location',
   tags: ['autodocs'],
   component: Location,
   decorators: [

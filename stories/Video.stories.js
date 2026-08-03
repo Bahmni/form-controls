@@ -2,7 +2,7 @@ import React from 'react';
 import { Video } from 'src/components/Video.jsx';
 
 export default {
-  title: 'Atomic Controls/Video',
+  title: 'Atomic Controls/Legacy Components/Video',
   tags: ['autodocs'],
   component: Video,
   args: {

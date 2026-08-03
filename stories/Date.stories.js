@@ -2,7 +2,7 @@ import React from 'react';
 import { Date } from 'src/components/Date.jsx';
 
 export default {
-  title: 'Atomic Controls/Date',
+  title: 'Atomic Controls/Legacy Components/Date',
   tags: ['autodocs'],
   component: Date,
   args: {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'src/components/Image.jsx';
 
 export default {
-  title: 'Atomic Controls/Image',
+  title: 'Atomic Controls/Legacy Components/Image',
   tags: ['autodocs'],
   component: Image,
   args: {

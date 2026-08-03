@@ -11,7 +11,7 @@ const medicationOptions = [
 ];
 
 export default {
-  title: 'Atomic Controls/AutoComplete',
+  title: 'Atomic Controls/Legacy Components/AutoComplete',
   tags: ['autodocs'],
   component: AutoComplete,
   args: {

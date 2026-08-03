@@ -136,7 +136,7 @@ const commonProps = {
 };
 
 export default {
-  title: 'Complex Controls/ComplexControl',
+  title: 'Complex Controls/Legacy Components/ComplexControl',
   component: ComplexControl,
   argTypes: {
     conceptHandler: { control: 'text', description: 'componentStore key used to look up the registered widget' },

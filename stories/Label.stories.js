@@ -14,7 +14,7 @@ const defaultMetadata = {
 };
 
 export default {
-  title: 'Atomic Controls/Label',
+  title: 'Atomic Controls/Legacy Components/Label',
   tags: ['autodocs'],
   component: Label,
   render: (args) => <LabelWithIntl {...args} />,

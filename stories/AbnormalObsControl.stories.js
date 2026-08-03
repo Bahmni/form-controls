@@ -10,7 +10,7 @@ import { pulseDataMetadata } from './mockData';
 registerCoreComponents();
 
 export default {
-  title: 'Complex Controls/AbnormalObsControl',
+  title: 'Complex Controls/Legacy Components/AbnormalObsControl',
   parameters: {
     docs: {
       description: {

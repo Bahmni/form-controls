@@ -221,7 +221,7 @@ const tableInFormContext = {
 };
 
 export default {
-  title: 'Complex Controls/Table',
+  title: 'Complex Controls/Legacy Components/Table',
   component: Container,
   argTypes: {
     collapse: { control: 'boolean', description: 'Render the table in its collapsed state' },

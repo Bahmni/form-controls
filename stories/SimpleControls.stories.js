@@ -3,7 +3,7 @@ import { action } from '@storybook/addon-actions';
 import { AddMore } from 'src/components/AddMore.jsx';
 
 export default {
-  title: 'Complex Controls/Add More Controls',
+  title: 'Complex Controls/Legacy Components/Add More Controls',
   component: AddMore,
   parameters: {
     docs: {

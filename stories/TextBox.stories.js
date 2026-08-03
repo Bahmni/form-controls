@@ -2,7 +2,7 @@ import React from 'react';
 import { TextBox } from 'src/components/TextBox.jsx';
 
 export default {
-  title: 'Atomic Controls/TextBox',
+  title: 'Atomic Controls/Legacy Components/TextBox',
   tags: ['autodocs'],
   component: TextBox,
   args: {

@@ -10,7 +10,7 @@ const suggestionOptions = [
 ];
 
 export default {
-  title: 'Atomic Controls/FreeTextAutoComplete',
+  title: 'Atomic Controls/Legacy Components/FreeTextAutoComplete',
   tags: ['autodocs'],
   component: FreeTextAutoComplete,
   args: {
