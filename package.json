@@ -89,6 +89,7 @@
     "react-textarea-autosize": "^4.0.5",
     "sinon-as-promised": "^4.0.3",
     "html-entities": "^2.6.0",
+    "moment": "^2.29.1",
     "whatwg-fetch": "^1.0.0"
   },
   "resolutions": {
