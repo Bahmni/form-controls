@@ -12,6 +12,7 @@ import { CodedControl } from 'components/CodedControl.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import ControlRecordTreeMgr from 'src/helpers/ControlRecordTreeMgr';
 import { utf8ToBase64 } from '../../src/helpers/encodingUtils';
+import { FormValidationError } from 'src/helpers/FormValidationError';
 
 const PULSE_UUID = 'c36bc411-3f10-11e4-adec-0800271c1b75';
 const ADMISSION_UUID = 'c5cdd4e5-86e0-400c-9742-d73ffb323fa8';
@@ -966,6 +967,176 @@ describe('Container', () => {
       );
 
       expect(screen.getByText(/Blood Pressure & Temperature/)).toBeInTheDocument();
+    });
+  });
+
+  describe('FHIR bundle methods', () => {
+    const fhirOptions = {
+      patientReference: { reference: 'Patient/patient-uuid' },
+      encounterReference: { reference: 'Encounter/encounter-uuid' },
+      performerReference: { reference: 'Practitioner/practitioner-uuid' },
+    };
+
+    const previousPulseObservation = {
+      resourceType: 'Observation',
+      id: 'pulse-obs-uuid',
+      status: 'final',
+      code: { coding: [{ code: PULSE_UUID }] },
+      valueQuantity: { value: 72 },
+      effectiveDateTime: '2024-01-01T00:00:00.000Z',
+      extension: [
+        {
+          url: 'http://fhir.bahmni.org/ext/observation/form-namespace-path',
+          valueString: 'Bahmni^PulseForm.1/1-0',
+        },
+      ],
+    };
+
+    it('should prepopulate the form from fhirObservations (raw FHIR resources)', () => {
+      renderContainer({
+        metadata: createNumericControlMetadata(),
+        fhirObservations: [previousPulseObservation],
+      });
+
+      expect(screen.getByRole('spinbutton')).toHaveValue(72);
+    });
+
+    it('getCurrentObservationBundle should return a collection bundle without throwing on validation errors', () => {
+      const metadata = createNumericControlMetadata({
+        controls: [{
+          ...createNumericControlMetadata().controls[0],
+          properties: { ...createNumericControlMetadata().controls[0].properties, mandatory: true },
+        }],
+      });
+      const containerRef = React.createRef();
+      render(
+        <Container ref={containerRef} {...defaultProps} metadata={metadata} fhirObservations={[]} />,
+      );
+
+      const bundle = containerRef.current.getCurrentObservationBundle(fhirOptions);
+      expect(bundle.type).toBe('collection');
+      expect(bundle.entry).toEqual([]);
+    });
+
+    it('should throw FormValidationError from getObservationBundleForSave on mandatory errors', async () => {
+      const metadata = createNumericControlMetadata({
+        controls: [{
+          ...createNumericControlMetadata().controls[0],
+          properties: { ...createNumericControlMetadata().controls[0].properties, mandatory: true },
+        }],
+      });
+      const containerRef = React.createRef();
+      render(
+        <Container
+          ref={containerRef}
+          {...defaultProps}
+          metadata={metadata}
+          fhirObservations={[]}
+          validate
+          validateForm
+        />,
+      );
+
+      const input = screen.getByRole('spinbutton');
+      fireEvent.change(input, { target: { value: '' } });
+
+      await waitFor(() => {
+        const result = containerRef.current.getValue();
+        expect(result.errors.length).toBeGreaterThan(0);
+      }, { timeout: 3000 });
+
+      expect(() => containerRef.current.getObservationBundleForSave(fhirOptions))
+        .toThrow(FormValidationError);
+    });
+
+    it('getObservationBundleForSave should PUT the changed, previously-saved observation', () => {
+      const containerRef = React.createRef();
+      render(
+        <Container
+          ref={containerRef}
+          {...defaultProps}
+          metadata={createNumericControlMetadata()}
+          fhirObservations={[previousPulseObservation]}
+        />,
+      );
+
+      fireEvent.change(screen.getByRole('spinbutton'), { target: { value: '90' } });
+
+      const bundle = containerRef.current.getObservationBundleForSave(fhirOptions);
+      expect(bundle.entry).toHaveLength(1);
+      expect(bundle.entry[0].request).toEqual({ method: 'PUT', url: 'Observation/pulse-obs-uuid' });
+      expect(bundle.entry[0].resource.valueQuantity).toEqual({ value: 90 });
+    });
+
+    it('getObservationBundleForSave should run the onFormSave script before building the bundle', () => {
+      const metadata = {
+        ...createNumericControlMetadata(),
+        events: {
+          onFormSave: utf8ToBase64(`function(form){
+            form.get('Pulse').setValue(100);
+          }`),
+        },
+      };
+      const containerRef = React.createRef();
+      render(
+        <Container ref={containerRef} {...defaultProps} metadata={metadata} fhirObservations={[]} />,
+      );
+
+      const bundle = containerRef.current.getObservationBundleForSave(fhirOptions);
+      expect(bundle.entry).toHaveLength(1);
+      expect(bundle.entry[0].resource.valueQuantity).toEqual({ value: 100 });
+    });
+
+    it('should call setIsFormUpdated(true) when a value first differs from the initial one', () => {
+      const setIsFormUpdated = jest.fn();
+      render(
+        <Container
+          {...defaultProps}
+          metadata={createNumericControlMetadata()}
+          fhirObservations={[previousPulseObservation]}
+          setIsFormUpdated={setIsFormUpdated}
+        />,
+      );
+
+      fireEvent.change(screen.getByRole('spinbutton'), { target: { value: '90' } });
+      expect(setIsFormUpdated).toHaveBeenLastCalledWith(true);
+    });
+
+    it('should call setIsFormUpdated(false) when a changed value is restored to the original', () => {
+      const setIsFormUpdated = jest.fn();
+      render(
+        <Container
+          {...defaultProps}
+          metadata={createNumericControlMetadata()}
+          fhirObservations={[previousPulseObservation]}
+          setIsFormUpdated={setIsFormUpdated}
+        />,
+      );
+
+      const input = screen.getByRole('spinbutton');
+      fireEvent.change(input, { target: { value: '90' } });
+      fireEvent.change(input, { target: { value: '72' } });
+
+      expect(setIsFormUpdated).toHaveBeenLastCalledWith(false);
+    });
+
+    it('should not call setIsFormUpdated again for a second edit that keeps the same changed state', () => {
+      const setIsFormUpdated = jest.fn();
+      render(
+        <Container
+          {...defaultProps}
+          metadata={createNumericControlMetadata()}
+          fhirObservations={[previousPulseObservation]}
+          setIsFormUpdated={setIsFormUpdated}
+        />,
+      );
+
+      const input = screen.getByRole('spinbutton');
+      fireEvent.change(input, { target: { value: '90' } });
+      setIsFormUpdated.mockClear();
+      fireEvent.change(input, { target: { value: '95' } });
+
+      expect(setIsFormUpdated).not.toHaveBeenCalled();
     });
   });
 });

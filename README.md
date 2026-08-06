@@ -104,6 +104,7 @@ See [REACT_19_MIGRATION.md](./docs/REACT_19_MIGRATION.md) for detailed steps.
 
 **Resources:**
 - [Migration Guide](./docs/REACT_19_MIGRATION.md)
+- [FHIR Bundle Integration](./docs/USAGE_GUIDE_WITH_FHIR.md)
 - [Example App](./examples/react19-consumer-app/)
 
 ---

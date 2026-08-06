@@ -12,12 +12,20 @@ import NotificationContainer from '../helpers/Notification';
 import Constants from '../constants';
 import { executeEventsFromCurrentRecord } from '../helpers/ExecuteEvents';
 import { deepUnescapeStrings } from '../helpers/encodingUtils';
+import { getObservationsFromFhir } from 'src/helpers/FhirObservationTransformer';
+import { buildFhirObservationTransactionBundle, buildFhirObservationCollection } from 'src/helpers/FhirBundleBuilder';
+import { hasObservationChanges } from 'src/helpers/ObservationComparator';
+import { FormValidationError } from 'src/helpers/FormValidationError';
+
+const deriveObservations = (props) =>
+  props.fhirObservations ? getObservationsFromFhir(props.fhirObservations) : props.observations;
 
 export class Container extends addMoreDecorator(Component) {
   constructor(props) {
     super(props);
     this.childControls = {};
-    const { observations } = this.props;
+    const observations = deriveObservations(this.props);
+    this.initialObservations = observations;
     this.metadata = deepUnescapeStrings(this.props.metadata);
     const controlRecordTree = new ControlRecordTreeBuilder().build(this.metadata, observations);
     this.updatedControlRecordTree = controlRecordTree;
@@ -67,7 +75,9 @@ export class Container extends addMoreDecorator(Component) {
       const nextVersion = this.props.metadata?.version;
       this.metadata = deepUnescapeStrings(this.props.metadata);
       if (prevId !== nextId || prevVersion !== nextVersion) {
-        const tree = new ControlRecordTreeBuilder().build(this.metadata, this.props.observations);
+        const observations = deriveObservations(this.props);
+        this.initialObservations = observations;
+        const tree = new ControlRecordTreeBuilder().build(this.metadata, observations);
         this.updatedControlRecordTree = tree;
         this.setState({ data: tree });
       }
@@ -108,6 +118,13 @@ export class Container extends addMoreDecorator(Component) {
     const onValueUpdatedFn = this.props.onValueUpdated || null;
     if (onValueUpdatedFn) {
       this.props.onValueUpdated(this.state.data);
+    }
+    if (this.props.setIsFormUpdated) {
+      const changed = hasObservationChanges(this.getValue().observations, this.initialObservations);
+      if (changed !== this.lastHasChanges) {
+        this.lastHasChanges = changed;
+        this.props.setIsFormUpdated(changed);
+      }
     }
   }
 
@@ -178,6 +195,33 @@ export class Container extends addMoreDecorator(Component) {
     return { errors, observations };
   }
 
+  getCurrentObservationBundle(options) {
+    const { observations } = this.getValue();
+    return buildFhirObservationCollection(observations, options);
+  }
+
+  runFormSaveEvent() {
+    const saveScript = this.metadata.events && this.metadata.events.onFormSave;
+    if (!saveScript) return this.state.data;
+    try {
+      const updatedTree = new ScriptRunner(this.state.data, this.props.patient).execute(saveScript);
+      this.setState({ data: updatedTree });
+      return updatedTree;
+    } catch (scriptError) {
+      throw FormValidationError.fromScriptError(scriptError);
+    }
+  }
+
+  getObservationBundleForSave(options) {
+    const tree = this.runFormSaveEvent();
+    const observations = (new ObservationMapper()).from(tree);
+    const rawErrors = tree.getErrors();
+    if (!isEmpty(rawErrors)) {
+      throw FormValidationError.fromFieldErrors(rawErrors);
+    }
+    return buildFhirObservationTransactionBundle(observations, this.initialObservations, options);
+  }
+
   // deprecated
   storeChildRef(ref) {
     if (ref) this.childControls[ref.props.id] = ref;
@@ -242,6 +286,7 @@ export class Container extends addMoreDecorator(Component) {
 
 Container.propTypes = {
   collapse: PropTypes.bool.isRequired,
+  fhirObservations: PropTypes.array,
   locale: PropTypes.string,
   metadata: PropTypes.shape({
     controls: PropTypes.arrayOf(
@@ -253,10 +298,16 @@ Container.propTypes = {
     name: PropTypes.string.isRequired,
     version: PropTypes.string.isRequired,
   }),
-  observations: PropTypes.array.isRequired,
+  observations: (props, propName, componentName) => {
+    if (props.fhirObservations || Array.isArray(props[propName])) return null;
+    return new Error(
+      `${componentName}: either \`observations\` or \`fhirObservations\` must be provided as an array.`
+    );
+  },
   onValueUpdated: PropTypes.func,
   patient: PropTypes.object.isRequired,
   readonly: PropTypes.bool,
+  setIsFormUpdated: PropTypes.func,
   translations: PropTypes.object.isRequired,
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,

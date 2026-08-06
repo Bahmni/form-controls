@@ -180,6 +180,7 @@ const mapObservation = (resource, resourceIndex) => {
   // returns a different id format, downstream PUT/DELETE would target the
   // wrong resource.
   if (resource.id) obs.uuid = resource.id;
+  if (resource.status) obs.status = resource.status;
 
   if (resource.effectiveDateTime) {
     obs.obsDatetime = resource.effectiveDateTime;
@@ -355,7 +356,7 @@ const createCodeableConcept = (coding, displayText) => {
  * Generates a UUID v4
  * @returns {string} UUID string
  */
-const generateUUID = () => {
+export const generateUUID = () => {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return crypto.randomUUID();
   }
@@ -434,7 +435,7 @@ const applyAttachmentValue = (observation, url, title, contentType) => {
  * @param {Object} options.performerReference - FHIR Reference to performer
  * @returns {Object} FHIR Observation resource
  */
-const createObservationResource = (observationPayload, options) => {
+export const createObservationResource = (observationPayload, options) => {
   const { patientReference, encounterReference, performerReference } = options;
 
   const conceptUuid =

@@ -41,7 +41,8 @@ export interface TranslationData {
 
 export interface ContainerProps {
   metadata: FormMetadata;
-  observations: ObservationData[];
+  observations?: ObservationData[];
+  fhirObservations?: FhirObservationEntry['resource'][];
   patient: PatientData;
   translations: TranslationData;
   validate: boolean;
@@ -49,6 +50,7 @@ export interface ContainerProps {
   collapse?: boolean;
   locale?: string;
   onValueUpdated?: (data: any) => void;
+  setIsFormUpdated?: (hasChanges: boolean) => void;
   componentStore?: {
     getRegisteredComponent(type: string): any;
   };
@@ -59,10 +61,14 @@ export interface ContainerMethods {
     observations: ObservationData[];
     errors: any[];
   };
+  getCurrentObservationBundle(options: FhirTransformOptions): FhirBundle;
+  getObservationBundleForSave(options: FhirTransformOptions): FhirBundle;
 }
 
 export class Container extends React.Component<ContainerProps> implements ContainerMethods {
   getValue(): { observations: ObservationData[]; errors: any[] };
+  getCurrentObservationBundle(options: FhirTransformOptions): FhirBundle;
+  getObservationBundleForSave(options: FhirTransformOptions): FhirBundle;
 }
 
 export const CarbonContainer: React.ForwardRefExoticComponent<
@@ -380,6 +386,34 @@ export interface FhirObservationEntry {
 }
 
 /**
+ * A FHIR bundle entry with transaction request semantics (POST/PUT/DELETE)
+ */
+export interface FhirBundleEntry extends FhirObservationEntry {
+  request: {
+    method: 'POST' | 'PUT' | 'DELETE';
+    url: string;
+  };
+}
+
+export type FhirBundle =
+  | { resourceType: 'Bundle'; type: 'collection'; entry: FhirObservationEntry[] }
+  | { resourceType: 'Bundle'; type: 'transaction'; entry: FhirBundleEntry[] };
+export interface FormValidationErrorItem {
+  type: 'error' | 'warning';
+  message: string;
+  source: 'field' | 'script';
+}
+
+/**
+ * Thrown by Container.getObservationBundleForSave() when the form has field validation
+ * errors or the onFormSave script throws.
+ */
+export class FormValidationError extends Error {
+  errors: FormValidationErrorItem[];
+  constructor(errors: FormValidationErrorItem[]);
+}
+
+/**
  * Transforms Container observations to FHIR Observation resources
  * @param observations - Raw observations from Container.getValue() or Form2Observation[]
  * @param options - Configuration options with patient, encounter, and performer references
@@ -393,7 +427,7 @@ export function getFhirObservations(
 /**
  * A FHIR Bundle as returned by the $fetch-all endpoint
  */
-export interface FhirBundle {
+export interface FhirServerBundle {
   resourceType: 'Bundle';
   entry?: FhirObservationEntry[];
   [key: string]: any;
@@ -410,7 +444,7 @@ export interface FhirBundle {
  * @returns Array of plain form2 observation objects
  */
 export function getObservationsFromFhir(
-  input: FhirBundle | FhirObservationEntry[] | ObservationData[] | null | undefined
+  input: FhirServerBundle | FhirObservationEntry[] | ObservationData[] | null | undefined
 ): ObservationData[];
 
 export const FhirObservationTransformer
