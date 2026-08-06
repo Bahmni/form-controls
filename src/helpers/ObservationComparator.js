@@ -55,5 +55,11 @@ function observationHasChanged(obs, previousObsMapByUuid) {
 
 export function hasObservationChanges(currentObservations, previousObservations) {
   const previousByUuid = mapObservationsByUuid(previousObservations);
-  return (currentObservations || []).some((obs) => observationHasChanged(obs, previousByUuid));
+  if ((currentObservations || []).some((obs) => observationHasChanged(obs, previousByUuid))) {
+    return true;
+  }
+  // A saved obs (e.g. an add-more group) can be removed from the record tree entirely
+  // rather than voided in place — check for uuids that vanished from current altogether.
+  const currentByUuid = mapObservationsByUuid(currentObservations);
+  return [...previousByUuid.keys()].some((uuid) => !currentByUuid.has(uuid));
 }

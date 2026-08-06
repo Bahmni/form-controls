@@ -1101,17 +1101,24 @@ describe('Container', () => {
       fireEvent.change(screen.getByRole('spinbutton'), { target: { value: '90' } });
       expect(setIsFormUpdated).toHaveBeenLastCalledWith(true);
     });
+  });
+
+  describe('setIsFormUpdated', () => {
+    const previousPulseObservation = {
+      concept: { uuid: PULSE_UUID, name: 'Pulse', datatype: 'Numeric' },
+      uuid: 'pulse-obs-uuid',
+      value: 72,
+      formFieldPath: 'PulseForm.1/1-0',
+      formNamespace: 'Bahmni',
+    };
 
     it('should call setIsFormUpdated(false) when a changed value is restored to the original', () => {
       const setIsFormUpdated = jest.fn();
-      render(
-        <Container
-          {...defaultProps}
-          metadata={createNumericControlMetadata()}
-          fhirObservations={[previousPulseObservation]}
-          setIsFormUpdated={setIsFormUpdated}
-        />,
-      );
+      renderContainer({
+        metadata: createNumericControlMetadata(),
+        observations: [previousPulseObservation],
+        setIsFormUpdated,
+      });
 
       const input = screen.getByRole('spinbutton');
       fireEvent.change(input, { target: { value: '90' } });
@@ -1122,14 +1129,11 @@ describe('Container', () => {
 
     it('should not call setIsFormUpdated again for a second edit that keeps the same changed state', () => {
       const setIsFormUpdated = jest.fn();
-      render(
-        <Container
-          {...defaultProps}
-          metadata={createNumericControlMetadata()}
-          fhirObservations={[previousPulseObservation]}
-          setIsFormUpdated={setIsFormUpdated}
-        />,
-      );
+      renderContainer({
+        metadata: createNumericControlMetadata(),
+        observations: [previousPulseObservation],
+        setIsFormUpdated,
+      });
 
       const input = screen.getByRole('spinbutton');
       fireEvent.change(input, { target: { value: '90' } });
@@ -1137,6 +1141,57 @@ describe('Container', () => {
       fireEvent.change(input, { target: { value: '95' } });
 
       expect(setIsFormUpdated).not.toHaveBeenCalled();
+    });
+
+    it('should call setIsFormUpdated(true) when a previously-saved add-more instance is removed entirely', async () => {
+      const metadata = createNumericControlMetadata({
+        controls: [
+          {
+            ...createNumericControlMetadata().controls[0],
+            properties: {
+              ...createNumericControlMetadata().controls[0].properties,
+              addMore: true,
+            },
+          },
+        ],
+      });
+
+      const savedInstances = [
+        {
+          concept: { uuid: PULSE_UUID, name: 'Pulse', datatype: 'Numeric' },
+          uuid: 'pulse-obs-uuid-0',
+          value: 72,
+          formFieldPath: 'PulseForm.1/1-0',
+          formNamespace: 'Bahmni',
+        },
+        {
+          concept: { uuid: PULSE_UUID, name: 'Pulse', datatype: 'Numeric' },
+          uuid: 'pulse-obs-uuid-1',
+          value: 80,
+          formFieldPath: 'PulseForm.1/1-1',
+          formNamespace: 'Bahmni',
+        },
+      ];
+
+      const setIsFormUpdated = jest.fn();
+      const containerRef = React.createRef();
+      render(
+        <Container
+          ref={containerRef}
+          {...defaultProps}
+          metadata={metadata}
+          observations={savedInstances}
+          setIsFormUpdated={setIsFormUpdated}
+        />,
+      );
+
+      expect(screen.getAllByRole('spinbutton')).toHaveLength(2);
+
+      containerRef.current.onControlRemove('PulseForm.1/1-1');
+
+      await waitFor(() => {
+        expect(setIsFormUpdated).toHaveBeenCalledWith(true);
+      });
     });
   });
 });

@@ -106,5 +106,42 @@ describe('ObservationComparator', () => {
       ];
       expect(hasObservationChanges(current, previous)).toBe(true);
     });
+
+    it('should return true when a saved group is removed from the tree entirely (not voided in place)', () => {
+      const groupConcept = { uuid: 'vitals-group-uuid', datatype: 'N/A' };
+      const previous = [
+        {
+          concept: groupConcept,
+          uuid: 'group-uuid',
+          groupMembers: [{ concept: pulseConcept, uuid: 'child-uuid', value: 72 }],
+        },
+      ];
+      const current = [];
+      expect(hasObservationChanges(current, previous)).toBe(true);
+    });
+
+    it('should return true when only one of several saved groups is removed entirely', () => {
+      const groupConcept = { uuid: 'vitals-group-uuid', datatype: 'N/A' };
+      const previous = [
+        {
+          concept: groupConcept,
+          uuid: 'group-uuid-1',
+          groupMembers: [{ concept: pulseConcept, uuid: 'child-uuid-1', value: 72 }],
+        },
+        {
+          concept: groupConcept,
+          uuid: 'group-uuid-2',
+          groupMembers: [{ concept: pulseConcept, uuid: 'child-uuid-2', value: 80 }],
+        },
+      ];
+      const current = [
+        {
+          concept: groupConcept,
+          uuid: 'group-uuid-1',
+          groupMembers: [{ concept: pulseConcept, uuid: 'child-uuid-1', value: 72 }],
+        },
+      ];
+      expect(hasObservationChanges(current, previous)).toBe(true);
+    });
   });
 });

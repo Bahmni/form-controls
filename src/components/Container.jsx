@@ -177,7 +177,7 @@ export class Container extends addMoreDecorator(Component) {
       data: previousState.data.remove(formFieldPath),
       collapse: undefined,
       }
-    ));
+    ), () => this.onValueUpdated());
   }
 
   getValue() {
