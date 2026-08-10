@@ -11,7 +11,6 @@ import addMoreDecorator from './AddMoreDecorator';
 import constants from 'src/constants';
 import { Util } from 'src/helpers/Util';
 import { injectIntl } from 'react-intl';
-import { validateHyperlink } from 'src/helpers/hyperlinkValidator';
 
 export class ObsControl extends addMoreDecorator(Component) {
 

@@ -274,7 +274,8 @@ export class ObsControlDesigner extends DropTarget {
       return (
         <Fragment>
           {this.showDeleteButton()}
-          <div className={classNames('form-field-wrap clearfix', 'obs-attached-label-drop', { active: this.state.dropActive })}
+          <div className={classNames('form-field-wrap clearfix', 'obs-attached-label-drop',
+            { active: this.state.dropActive })}
             onClick={(event) => this.props.onSelect(event, metadata)}
             onDragEnter={this.onDragEnter}
             onDragLeave={this.onDragLeave}
@@ -312,7 +313,6 @@ export class ObsControlDesigner extends DropTarget {
 }
 
 ObsControlDesigner.propTypes = {
-  selectedControlId: PropTypes.string,
   clearSelectedControl: PropTypes.func.isRequired,
   controlProperty: PropTypes.shape({
     id: PropTypes.string,
@@ -334,6 +334,7 @@ ObsControlDesigner.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
+  selectedControlId: PropTypes.string,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
 };

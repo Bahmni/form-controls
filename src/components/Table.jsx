@@ -89,7 +89,6 @@ export class Table extends Component {
 
 Table.propTypes = {
   allowedDomains: PropTypes.arrayOf(PropTypes.string),
-  showValidationErrors: PropTypes.bool,
   children: PropTypes.any,
   enabled: PropTypes.bool,
   formName: PropTypes.string.isRequired,
@@ -115,6 +114,7 @@ Table.propTypes = {
   onValueChanged: PropTypes.func.isRequired,
   patientUuid: PropTypes.string,
   showNotification: PropTypes.func.isRequired,
+  showValidationErrors: PropTypes.bool,
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,
 };

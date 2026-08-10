@@ -5430,4 +5430,236 @@ describe('Container', () => {
           });
     });
   });
+
+  describe('componentWillReceiveProps behavior', () => {
+    const metadata = {
+      controls: [
+        {
+          concept: {
+            answers: [],
+            datatype: 'Numeric',
+            description: [],
+            name: 'Pulse',
+            properties: { allowDecimal: true },
+            uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+          },
+          hiAbsolute: null,
+          hiNormal: 72,
+          id: '1',
+          label: { type: 'label', value: 'Pulse(/min)' },
+          lowAbsolute: null,
+          lowNormal: 72,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: { column: 0, row: 0 },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: '/min',
+        },
+      ],
+      id: 209,
+      name: 'SingleObs',
+      uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
+      version: '1',
+      defaultLocale: 'en',
+      events: {},
+    };
+
+    it('should update collapse state when collapse prop changes from false to true', () => {
+      const wrapper = shallow(
+        <Container
+          collapse={false}
+          metadata={metadata}
+          observations={[]}
+          patient={patient}
+          translations={{ en: { concepts: {}, labels: {} } }}
+          validate={false}
+          validateForm={false}
+        />
+      );
+
+      expect(wrapper.state().collapse).to.equal(false);
+      wrapper.setProps({ collapse: true });
+      expect(wrapper.state().collapse).to.equal(true);
+    });
+  });
+
+  describe('onValueUpdated callback behavior', () => {
+    const metadata = {
+      controls: [
+        {
+          concept: {
+            answers: [],
+            datatype: 'Numeric',
+            description: [],
+            name: 'Pulse',
+            properties: { allowDecimal: true },
+            uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+          },
+          hiAbsolute: null,
+          hiNormal: 72,
+          id: '1',
+          label: { type: 'label', value: 'Pulse(/min)' },
+          lowAbsolute: null,
+          lowNormal: 72,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: { column: 0, row: 0 },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: '/min',
+        },
+      ],
+      id: 209,
+      name: 'SingleObs',
+      uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
+      version: '1',
+      defaultLocale: 'en',
+      events: {},
+    };
+
+    it('should invoke onValueUpdated callback with current state data when provided', () => {
+      const onValueUpdatedSpy = sinon.spy();
+      const wrapper = shallow(
+        <Container
+          collapse={false}
+          metadata={metadata}
+          observations={[]}
+          onValueUpdated={onValueUpdatedSpy}
+          patient={patient}
+          translations={{ en: { concepts: {}, labels: {} } }}
+          validate={false}
+          validateForm={false}
+        />
+      );
+
+      const instance = wrapper.instance();
+      instance.onValueUpdated();
+      sinon.assert.calledOnce(onValueUpdatedSpy);
+      sinon.assert.calledWith(onValueUpdatedSpy, wrapper.state().data);
+    });
+  });
+
+  describe('onControlAdd conditional behavior', () => {
+    const metadata = {
+      controls: [
+        {
+          concept: {
+            answers: [],
+            datatype: 'Numeric',
+            description: [],
+            name: 'Pulse',
+            properties: { allowDecimal: true },
+            uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+          },
+          hiAbsolute: null,
+          hiNormal: 72,
+          id: '1',
+          label: { type: 'label', value: 'Pulse(/min)' },
+          lowAbsolute: null,
+          lowNormal: 72,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: { column: 0, row: 0 },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: '/min',
+        },
+      ],
+      id: 209,
+      name: 'SingleObs',
+      uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
+      version: '1',
+      defaultLocale: 'en',
+      events: {},
+    };
+
+    it(
+      'should return early when isNotificationShown is false and '
+      + 'formFieldPath is not latest brother',
+      () => {
+        const wrapper = shallow(
+          <Container
+            collapse={false}
+            metadata={metadata}
+            observations={[]}
+            patient={patient}
+            translations={{ en: { concepts: {}, labels: {} } }}
+            validate={false}
+            validateForm={false}
+          />
+        );
+
+        const instance = wrapper.instance();
+        const initialSize = wrapper.state().data.children.size;
+        instance.updatedControlRecordTree = { formFieldPath: 'test-0' };
+        instance.onControlAdd('test-1', false);
+        expect(wrapper.state().data.children.size).to.equal(initialSize);
+      });
+  });
+
+  describe('getValue with all voided observations', () => {
+    const metadata = {
+      controls: [
+        {
+          concept: {
+            answers: [],
+            datatype: 'Numeric',
+            description: [],
+            name: 'Pulse',
+            properties: { allowDecimal: true },
+            uuid: 'c36bc411-3f10-11e4-adec-0800271c1b75',
+          },
+          hiAbsolute: null,
+          hiNormal: 72,
+          id: '1',
+          label: { type: 'label', value: 'Pulse(/min)' },
+          lowAbsolute: null,
+          lowNormal: 72,
+          properties: {
+            addMore: true,
+            hideLabel: false,
+            location: { column: 0, row: 0 },
+            mandatory: false,
+            notes: false,
+          },
+          type: 'obsControl',
+          units: '/min',
+        },
+      ],
+      id: 209,
+      name: 'SingleObs',
+      uuid: '245940b7-3d6b-4a8b-806b-3f56444129ae',
+      version: '1',
+      defaultLocale: 'en',
+      events: {},
+    };
+
+    it('should return only observations without errors when all observations are voided', () => {
+      const wrapper = shallow(
+        <Container
+          collapse={false}
+          metadata={metadata}
+          observations={[]}
+          patient={patient}
+          translations={{ en: { concepts: {}, labels: {} } }}
+          validate={false}
+          validateForm={false}
+        />
+      );
+
+      const instance = wrapper.instance();
+      const getValueResult = instance.getValue();
+      expect(getValueResult).to.have.property('observations');
+    });
+  });
 });

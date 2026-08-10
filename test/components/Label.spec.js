@@ -50,7 +50,11 @@ describe('Label', () => {
 
   it('should render a clickable hyperlink for a valid, allowed external url ' +
     '(Label hyperlink is not gated by any feature toggle)', () => {
-    const metadata = { value: 'History Notes', type: 'label', properties: { hyperlinkUrl: 'https://who.int' } };
+    const metadata = {
+      value: 'History Notes',
+      type: 'label',
+      properties: { hyperlinkUrl: 'https://who.int' },
+    };
     const wrapper = mountWithIntl(
       <Label allowedDomains={['who.int']} metadata={metadata} />
     );
@@ -59,18 +63,27 @@ describe('Label', () => {
     expect(wrapper.find('a').text()).to.eql('History Notes');
   });
 
-  it('should silently render plain text (no error) for a disallowed domain by default', () => {
-    const metadata = { value: 'History Notes', type: 'label', properties: { hyperlinkUrl: 'https://evil.com' } };
-    const wrapper = mountWithIntl(
-      <Label allowedDomains={['who.int']} metadata={metadata} />
-    );
-    expect(wrapper.find('a')).to.have.length(0);
-    expect(wrapper.find('.hyperlink-error')).to.have.length(0);
-    expect(wrapper.find('label').text()).to.eql('History Notes');
-  });
+  it('should silently render plain text (no error) for a disallowed domain by default',
+    () => {
+      const metadata = {
+        value: 'History Notes',
+        type: 'label',
+        properties: { hyperlinkUrl: 'https://evil.com' },
+      };
+      const wrapper = mountWithIntl(
+        <Label allowedDomains={['who.int']} metadata={metadata} />
+      );
+      expect(wrapper.find('a')).to.have.length(0);
+      expect(wrapper.find('.hyperlink-error')).to.have.length(0);
+      expect(wrapper.find('label').text()).to.eql('History Notes');
+    });
 
   it('should show the validation error when showValidationErrors is true', () => {
-    const metadata = { value: 'History Notes', type: 'label', properties: { hyperlinkUrl: 'https://evil.com' } };
+    const metadata = {
+      value: 'History Notes',
+      type: 'label',
+      properties: { hyperlinkUrl: 'https://evil.com' },
+    };
     const wrapper = mountWithIntl(
       <Label allowedDomains={['who.int']} metadata={metadata} showValidationErrors />
     );

@@ -108,7 +108,6 @@ export class Section extends addMoreDecorator(Component) {
 
 Section.propTypes = {
   allowedDomains: PropTypes.arrayOf(PropTypes.string),
-  showValidationErrors: PropTypes.bool,
   children: PropTypes.any,
   collapse: PropTypes.bool,
   enabled: PropTypes.bool,
@@ -128,6 +127,7 @@ Section.propTypes = {
   onValueChanged: PropTypes.func.isRequired,
   patientUuid: PropTypes.string,
   showNotification: PropTypes.func.isRequired,
+  showValidationErrors: PropTypes.bool,
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,
 };

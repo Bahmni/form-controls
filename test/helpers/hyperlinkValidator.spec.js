@@ -134,6 +134,13 @@ describe('hyperlinkValidator', () => {
       const result = validateHyperlink('javascript:void(0)'); // eslint-disable-line no-script-url
       expect(result.sanitizedUrl).to.equal('');
     });
+
+    it('should return invalid for malformed https url', () => {
+      const result = validateHyperlink('https://[::invalid]');
+      expect(result.valid).to.equal(false);
+      expect(result.type).to.equal('invalid');
+      expect(result.error).to.equal('Invalid URL format');
+    });
   });
 
   describe('Util.resolveUrlTokens with patientUuid', () => {

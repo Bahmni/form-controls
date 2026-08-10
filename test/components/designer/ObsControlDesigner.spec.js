@@ -440,7 +440,8 @@ describe('ObsControlDesigner', () => {
           property: { someProperty: 'someValue' },
         };
         instance.componentWillReceiveProps({ controlProperty });
-        expect(instance.state.attachedControls[0].properties).to.deep.eql({ someProperty: 'someValue' });
+        expect(instance.state.attachedControls[0].properties)
+          .to.deep.eql({ someProperty: 'someValue' });
       });
 
       it('should include attached controls in getJsonDefinition', () => {
@@ -461,6 +462,7 @@ describe('ObsControlDesigner', () => {
           />);
         const instance = wrapper.instance();
         const json = instance.getJsonDefinition();
+        // eslint-disable-next-line no-unused-expressions
         expect(json.controls).to.exist;
         expect(json.controls).to.have.length(1);
         componentStore.deRegisterDesignerComponent('label'); // eslint-disable-line no-undef

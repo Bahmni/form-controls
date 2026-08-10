@@ -40,6 +40,13 @@ export class LabelDesigner extends Component {
     }
   }
 
+  onClick(event) {
+    this.stopEventPropagation(event);
+    if (this.props.onSelect) {
+      this.props.onSelect(event, this.props.metadata);
+    }
+  }
+
   getJsonDefinition() {
     const { metadata } = this.props;
     const { value, translationKey } = this.state;
@@ -80,13 +87,6 @@ export class LabelDesigner extends Component {
     if (this.props.dispatch) {
       this.props.dispatch();
       event.stopPropagation();
-    }
-  }
-
-  onClick(event) {
-    this.stopEventPropagation(event);
-    if (this.props.onSelect) {
-      this.props.onSelect(event, this.props.metadata);
     }
   }
 
@@ -148,7 +148,6 @@ LabelDesigner.propTypes = {
   clearSelectedControl: PropTypes.func,
   deleteControl: PropTypes.func,
   dispatch: PropTypes.func,
-  onSelect: PropTypes.func,
   metadata: PropTypes.shape({
     id: PropTypes.string,
     translationKey: PropTypes.string,
@@ -163,6 +162,7 @@ LabelDesigner.propTypes = {
       hyperlinkUrl: PropTypes.string,
     }),
   }),
+  onSelect: PropTypes.func,
   showDeleteButton: PropTypes.bool.isRequired,
   visible: PropTypes.bool.isRequired,
 };

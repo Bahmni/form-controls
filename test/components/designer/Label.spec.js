@@ -167,4 +167,111 @@ describe('LabelDesigner', () => {
     const instance = wrapper.instance();
     expect(instance.getJsonDefinition().translationKey).to.deep.eql('SOME_KEY');
   });
+
+  it('should call onSelect callback when clicked', () => {
+    const onSelectSpy = sinon.spy();
+    wrapper = mount(
+      <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        dispatch={() => {}}
+        idGenerator={idGenerator}
+        metadata={metadata}
+        onSelect={onSelectSpy}
+        showDeleteButton={false}
+        wrapper={() => {}}
+      />);
+    wrapper.find('label').simulate('click');
+    sinon.assert.calledOnce(onSelectSpy);
+  });
+
+  it('should render hyperlink preview when hyperlinkUrl property is present', () => {
+    metadata.properties = { hyperlinkUrl: 'https://example.com' };
+    wrapper = mount(
+      <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        dispatch={() => {}}
+        idGenerator={idGenerator}
+        metadata={metadata}
+        showDeleteButton={false}
+        wrapper={() => {}}
+      />);
+    expect(wrapper.find('a.form-builder-hyperlink-preview')).to.have.length(1);
+    expect(wrapper.find('a').prop('data-bahmni-hyperlink')).to.eql('true');
+  });
+
+  it('should not render hyperlink preview when hyperlinkUrl property is absent', () => {
+    metadata.properties = {};
+    wrapper = mount(
+      <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        dispatch={() => {}}
+        idGenerator={idGenerator}
+        metadata={metadata}
+        showDeleteButton={false}
+        wrapper={() => {}}
+      />);
+    expect(wrapper.find('a.form-builder-hyperlink-preview')).to.have.length(0);
+  });
+
+  it('should enter edit mode when hyperlink is double clicked', () => {
+    metadata.properties = { hyperlinkUrl: 'https://example.com' };
+    wrapper = mount(
+      <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        dispatch={() => {}}
+        idGenerator={idGenerator}
+        metadata={metadata}
+        showDeleteButton={false}
+        wrapper={() => {}}
+      />);
+    expect(wrapper).to.have.descendants('a');
+    wrapper.find('a').simulate('doubleClick');
+    wrapper.update();
+    expect(wrapper).to.have.descendants('input');
+  });
+
+  it('should prevent default when hyperlink is clicked', () => {
+    metadata.properties = { hyperlinkUrl: 'https://example.com' };
+    wrapper = mount(
+      <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        dispatch={() => {}}
+        idGenerator={idGenerator}
+        metadata={metadata}
+        showDeleteButton={false}
+        wrapper={() => {}}
+      />);
+    const hyperlink = wrapper.find('a');
+    const preventDefaultSpy = sinon.spy();
+    hyperlink.props().onClick({ preventDefault: preventDefaultSpy });
+    sinon.assert.calledOnce(preventDefaultSpy);
+  });
+
+  it('should allow editing label value when hyperlink is present', () => {
+    metadata.properties = { hyperlinkUrl: 'https://example.com' };
+    wrapper = mount(
+      <LabelDesigner
+        clearSelectedControl={() => {}}
+        deleteControl={() => {}}
+        dispatch={() => {}}
+        idGenerator={idGenerator}
+        metadata={metadata}
+        showDeleteButton={false}
+        wrapper={() => {}}
+      />);
+    wrapper.find('a').simulate('doubleClick');
+    wrapper.update();
+    expect(wrapper).to.have.descendants('input');
+    const instance = wrapper.instance();
+    instance.input.value = 'Updated Label';
+    wrapper.find('input').props().onBlur();
+    wrapper.update();
+    expect(wrapper).to.have.descendants('a');
+    expect(wrapper.find('a').text()).to.eql('Updated Label');
+  });
 });
