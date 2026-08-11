@@ -1,17 +1,33 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import JSONTree from 'react-json-tree';
+import { JSONTree } from 'react-json-tree';
 
 const styles = {
   wrap: {
     width: '100%',
-    margin: '0 auto',
+    fontFamily: 'IBM Plex Sans, sans-serif',
   },
-  box: {
-    float: 'left',
-    width: '33%',
-    height: '200px',
-    margin: '0 auto',
+  canvas: {
+    width: '100%',
+    marginBottom: '24px',
+  },
+  jsonHeading: {
+    margin: '0 0 4px',
+    fontSize: '0.75rem',
+    fontWeight: 600,
+    letterSpacing: '0.32px',
+    textTransform: 'uppercase',
+    color: '#525252',
+  },
+  jsonPanel: {
+    width: '100%',
+    maxHeight: '320px',
+    overflow: 'auto',
+    background: '#f4f4f4',
+    border: '1px solid #e0e0e0',
+    borderRadius: '2px',
+    padding: '4px 12px',
+    fontSize: '0.75rem',
   },
 };
 
@@ -51,12 +67,20 @@ export default class StoryWrapper extends PureComponent {
   render() {
     const { title, children, json } = this.props;
     return (<div style={styles.wrap}>
-                <div style={styles.box}>
+                <div style={styles.canvas}>
                     {title && <div style={headerStyle}>{title}</div>}
                     { children }
                 </div>
-                <div style={styles.box}>
-                    <JSONTree data={json} theme={theme} />
+                <div>
+                    <p style={styles.jsonHeading}>Metadata</p>
+                    <div style={styles.jsonPanel}>
+                        <JSONTree
+                          data={json}
+                          theme={theme}
+                          invertTheme
+                          shouldExpandNodeInitially={(keyPath, data, level) => level < 3}
+                        />
+                    </div>
                 </div>
             </div>);
   }

@@ -72,7 +72,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-json-syntax-highlighter": "^0.1.15",
-    "react-json-tree": "^0.10.0",
+    "react-json-tree": "^0.20.0",
     "rimraf": "^2.5.4",
     "sass": "^1.92.1",
     "sass-loader": "^13.3.2",
