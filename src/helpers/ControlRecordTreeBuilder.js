@@ -203,8 +203,8 @@ export default class ControlRecordTreeBuilder {
           dataSource: data,
           control,
           showAddMore: true,
-          children: observableChildControls && observableChildControls.length > 0 &&
-          this.getRecords(
+          children: observableChildControls && observableChildControls.length > 0
+          ? this.getRecords(
             observableChildControls,
             formName,
             formVersion,
@@ -212,7 +212,7 @@ export default class ControlRecordTreeBuilder {
             allObs,
             isAnyAncestorOrControlHasAddMore(control, parentFormFieldPath) ? data.formFieldPath :
             getCurrentFormFieldPathIfAddMore(formName, formVersion, control, parentFormFieldPath)
-          ),
+          ) : undefined,
         });
 
         recordList = recordList.push(record);
