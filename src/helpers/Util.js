@@ -1,3 +1,4 @@
+import moment from 'moment';
 
 export class Util {
   static toInt(obj) {
