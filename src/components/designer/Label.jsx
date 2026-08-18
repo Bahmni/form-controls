@@ -40,6 +40,13 @@ export class LabelDesigner extends Component {
     }
   }
 
+  onClick(event) {
+    this.stopEventPropagation(event);
+    if (this.props.onSelect) {
+      this.props.onSelect(event, this.props.metadata);
+    }
+  }
+
   getJsonDefinition() {
     const { metadata } = this.props;
     const { value, translationKey } = this.state;
@@ -83,6 +90,25 @@ export class LabelDesigner extends Component {
     }
   }
 
+  showHyperlink() {
+    const { properties } = this.props.metadata;
+    const rawUrl = ((properties && properties.hyperlinkUrl) || '').trim();
+    if (!rawUrl) {
+      return null;
+    }
+    return (
+      <a
+        className="form-builder-hyperlink-preview"
+        data-bahmni-hyperlink="true"
+        href="#"
+        onClick={(e) => e.preventDefault()}
+        onDoubleClick={this.onDoubleClick}
+      >
+        {this._getLabelValue()}
+      </a>
+    );
+  }
+
   render() {
     const wrapperClassNames = ['control-wrapper-content'];
     if (!this.props.visible) {
@@ -92,19 +118,25 @@ export class LabelDesigner extends Component {
       return (
           <input
             className="form-builder-label" defaultValue={ this.state.value }
-            onBlur={this.onBlur} onKeyUp={this.onEnterKey}
+            onBlur={this.onBlur} onClick={(e) => e.stopPropagation()} onKeyUp={this.onEnterKey}
             ref={ this.storeComponentRef }
             type="text"
           />
       );
     }
+    const hyperlinkPreview = this.showHyperlink();
     return (
-      <div className={classNames(wrapperClassNames)} onClick={(e) => this.stopEventPropagation(e) }>
-        <label
-          onDoubleClick={ this.onDoubleClick }
-        >
-          { this._getLabelValue() }
-        </label>
+      <div
+        className={classNames(wrapperClassNames)}
+        onClick={(e) => this.onClick(e)}
+      >
+        {hyperlinkPreview || (
+          <label
+            onDoubleClick={ this.onDoubleClick }
+          >
+            { this._getLabelValue() }
+          </label>
+        )}
         {this.showDeleteButton()}
       </div>);
   }
@@ -127,8 +159,10 @@ LabelDesigner.propTypes = {
         row: PropTypes.number,
         column: PropTypes.number,
       }),
+      hyperlinkUrl: PropTypes.string,
     }),
   }),
+  onSelect: PropTypes.func,
   showDeleteButton: PropTypes.bool.isRequired,
   visible: PropTypes.bool.isRequired,
 };
@@ -157,7 +191,14 @@ const descriptor = {
       {
         name: 'properties',
         dataType: 'complex',
-        attributes: [],
+        attributes: [
+          {
+            name: 'hyperlinkUrl',
+            dataType: 'text',
+            defaultValue: '',
+            elementType: 'text',
+          },
+        ],
       },
     ],
   },

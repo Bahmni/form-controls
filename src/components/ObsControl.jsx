@@ -126,6 +126,33 @@ export class ObsControl extends addMoreDecorator(Component) {
         <i className="fa fa-question-circle form-builder-tooltip-trigger"
           onClick={() => this.setState({ showHintButton: !showHintButton })}
         />}
+        {this.displayAttachedControls()}
+      </div>
+    );
+  }
+
+  displayAttachedControls() {
+    const { metadata: { controls }, allowedDomains, patientUuid,
+      showValidationErrors, intl } = this.props;
+    if (!controls || controls.length === 0) {
+      return null;
+    }
+    return (
+      <div className="obs-attached-label">
+        {controls.map((control) => {
+          const registeredComponent = ComponentStore.getRegisteredComponent(control.type);
+          if (!registeredComponent) {
+            return null;
+          }
+          return React.createElement(registeredComponent, {
+            key: control.id,
+            metadata: control,
+            allowedDomains,
+            patientUuid,
+            showValidationErrors,
+            intl,
+          });
+        })}
       </div>
     );
   }
@@ -220,6 +247,7 @@ export class ObsControl extends addMoreDecorator(Component) {
     }
   }
 
+
   render() {
     const { concept } = this.props.metadata;
     const registeredComponent = ComponentStore.getRegisteredComponent(concept.datatype);
@@ -238,7 +266,9 @@ export class ObsControl extends addMoreDecorator(Component) {
                       {this.displayObsControl(registeredComponent)}
                       {this.showAbnormalButton()}
                       {this.showAddMore()}
-                      {this.showComment()}
+                      <div className="obs-hyperlink-comment-row">
+                          {this.showComment()}
+                      </div>
                   </div>
               </div>
           </div>
@@ -255,11 +285,13 @@ export class ObsControl extends addMoreDecorator(Component) {
 }
 
 ObsControl.propTypes = {
+  allowedDomains: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.array,
   collapse: PropTypes.bool,
   enabled: PropTypes.bool,
   metadata: PropTypes.shape({
     concept: PropTypes.object.isRequired,
+    controls: PropTypes.array,
     displayType: PropTypes.string,
     id: PropTypes.string.isRequired,
     label: PropTypes.shape({
@@ -275,16 +307,19 @@ ObsControl.propTypes = {
   showAddMore: PropTypes.bool.isRequired,
   showNotification: PropTypes.func.isRequired,
   showRemove: PropTypes.bool.isRequired,
+  showValidationErrors: PropTypes.bool,
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,
   value: PropTypes.object.isRequired,
 };
 
 ObsControl.defaultProps = {
+  allowedDomains: [],
   enabled: true,
   hidden: false,
   showAddMore: false,
   showRemove: false,
+  showValidationErrors: false,
 };
 
 const ObsControlWithIntl = injectIntl(ObsControl, { forwardRef: true });

@@ -77,6 +77,8 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
       showNotification,
     } = this.props;
     const childProps = {
+      allowedDomains: this.props.allowedDomains,
+      showValidationErrors: this.props.showValidationErrors,
       collapse,
       enabled: this.props.enabled,
       formName,
@@ -122,6 +124,7 @@ export class ObsGroupControl extends addMoreDecorator(Component) {
 }
 
 ObsGroupControl.propTypes = {
+  allowedDomains: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.any,
   collapse: PropTypes.bool,
   formName: PropTypes.string.isRequired,
@@ -146,6 +149,7 @@ ObsGroupControl.propTypes = {
   showAddMore: PropTypes.bool.isRequired,
   showNotification: PropTypes.func.isRequired,
   showRemove: PropTypes.bool.isRequired,
+  showValidationErrors: PropTypes.bool,
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,
   value: PropTypes.object.isRequired,

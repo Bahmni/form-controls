@@ -374,6 +374,41 @@ describe('ControlRecordTreeBuilder', () => {
     expect(obsRecordTree.getConceptName()).to.equal(undefined);
   });
 
+  it('should not throw when an obsControl has a non-observable attached label in controls', () => {
+    const obsConcept = {
+      answers: [],
+      datatype: 'Text',
+      description: [],
+      name: 'TestObs',
+      properties: { allowDecimal: false },
+      uuid: 'd0490af4-72eb-4090-9b43-ac3487ba7474',
+    };
+    const metadata = {
+      controls: [
+        {
+          concept: obsConcept,
+          id: '1',
+          label: { type: 'label', value: 'TestObs' },
+          properties: {},
+          type: 'obsControl',
+          controls: [
+            {
+              id: '2',
+              type: 'label',
+              value: 'Attached Label',
+              properties: { hyperlinkUrl: 'https://who.int' },
+            },
+          ],
+        },
+      ],
+      id: 210,
+      name: 'FormWithAttachedLabel',
+      uuid: '245940b7-3d6b-4a8b-806b-3f56444129af',
+      version: '1',
+    };
+    expect(() => new ControlRecordTreeBuilder().build(metadata, [])).to.not.throw();
+  });
+
   it('should get undefined for concept name when given root doesn\'t have control', () => {
     const obsRecordTree = new ControlRecord({});
     expect(obsRecordTree.getConceptName()).to.equal(undefined);

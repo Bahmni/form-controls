@@ -48,6 +48,8 @@ export class Table extends Component {
       showNotification,
     } = this.props;
     const childProps = {
+      allowedDomains: this.props.allowedDomains,
+      showValidationErrors: this.props.showValidationErrors,
       enabled,
       formName,
       formVersion,
@@ -86,6 +88,7 @@ export class Table extends Component {
 }
 
 Table.propTypes = {
+  allowedDomains: PropTypes.arrayOf(PropTypes.string),
   children: PropTypes.any,
   enabled: PropTypes.bool,
   formName: PropTypes.string.isRequired,
@@ -111,6 +114,7 @@ Table.propTypes = {
   onValueChanged: PropTypes.func.isRequired,
   patientUuid: PropTypes.string,
   showNotification: PropTypes.func.isRequired,
+  showValidationErrors: PropTypes.bool,
   validate: PropTypes.bool.isRequired,
   validateForm: PropTypes.bool.isRequired,
 };

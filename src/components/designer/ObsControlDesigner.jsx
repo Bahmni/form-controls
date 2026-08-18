@@ -1,23 +1,73 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { LabelDesigner } from 'components/designer/Label.jsx';
 import { CommentDesigner } from 'components/designer/Comment.jsx';
 import { AddMoreDesigner } from 'components/designer/AddMore.jsx';
+import { DropTarget } from 'src/components/DropTarget.jsx';
 import ComponentStore from 'src/helpers/componentStore';
 import find from 'lodash/find';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { Concept } from 'src/helpers/Concept';
 
-export class ObsControlDesigner extends Component {
+export class ObsControlDesigner extends DropTarget {
 
   constructor(props) {
     super(props);
     this.metadata = props.metadata;
+    this.state = { attachedControls: props.metadata.controls || [], dropActive: false };
+    this.attachedControlRefs = {};
     this.storeChildRef = this.storeChildRef.bind(this);
     this.storeLabelRef = this.storeLabelRef.bind(this);
+    this.storeAttachedControlRef = this.storeAttachedControlRef.bind(this);
     this.deleteButton = this.deleteButton.bind(this);
+    this.deleteAttachedControl = this.deleteAttachedControl.bind(this);
+  }
+
+  deleteAttachedControl(controlId) {
+    delete this.attachedControlRefs[controlId];
+    this.setState({
+      attachedControls: this.state.attachedControls.filter((c) => c.id !== controlId),
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { controlProperty } = nextProps;
+    if (!controlProperty || !controlProperty.id) {
+      return;
+    }
+    const matchIndex = this.state.attachedControls.findIndex((c) => c.id === controlProperty.id);
+    if (matchIndex === -1) {
+      return;
+    }
+    const attachedControls = this.state.attachedControls.slice();
+    const existing = attachedControls[matchIndex];
+    attachedControls[matchIndex] = Object.assign({}, existing, {
+      properties: Object.assign({}, existing.properties, controlProperty.property),
+    });
+    this.setState({ attachedControls });
+  }
+
+  processDragEnter() {
+    this.setState({ dropActive: true });
+  }
+
+  processDragLeave() {
+    this.setState({ dropActive: false });
+  }
+
+  processDrop(context) {
+    this.setState({ dropActive: false });
+    if (!context || context.type !== 'label') {
+      return;
+    }
+    if (this.state.attachedControls.some(c => c.id === context.id)) {
+      return;
+    }
+    this.setState({
+      attachedControls: [...this.state.attachedControls, context],
+    });
   }
 
   getJsonDefinition() {
@@ -30,7 +80,17 @@ export class ObsControlDesigner extends Component {
     if (description && !description.translationKey) {
       description.translationKey = `${labelJsonDefinition.translationKey}_DESC`;
     }
-    return Object.assign({}, childJsonDefinition, { label: labelJsonDefinition });
+    const result = Object.assign(
+      {}, childJsonDefinition, { label: labelJsonDefinition }
+    );
+    const controls = this.state.attachedControls.map((control) => {
+      const ref = this.attachedControlRefs[control.id];
+      return (ref && ref.getJsonDefinition()) || control;
+    });
+    if (controls.length > 0) {
+      result.controls = controls;
+    }
+    return result;
   }
 
   storeChildRef(ref) {
@@ -39,6 +99,10 @@ export class ObsControlDesigner extends Component {
 
   storeLabelRef(ref) {
     this.labelControl = ref;
+  }
+
+  storeAttachedControlRef(controlId, ref) {
+    if (ref) this.attachedControlRefs[controlId] = ref;
   }
 
   displayObsControl(designerComponent) {
@@ -89,6 +153,28 @@ export class ObsControlDesigner extends Component {
               onClick={() => this.setState({ showHintButton: !showHintButton })}
             />)}
         </div>
+    );
+  }
+
+  displayAttachedControls() {
+    const { attachedControls } = this.state;
+    if (!attachedControls || attachedControls.length === 0) {
+      return null;
+    }
+    return (
+      <div className="obs-attached-label">
+        {attachedControls.map((control) => (
+          <LabelDesigner
+            deleteControl={() => this.deleteAttachedControl(control.id)}
+            key={control.id}
+            metadata={control}
+            onSelect={(event) => this.props.onSelect(event, control)}
+            ref={(ref) => this.storeAttachedControlRef(control.id, ref)}
+            showDeleteButton={control.id === this.props.selectedControlId}
+            visible
+          />
+        ))}
+      </div>
     );
   }
 
@@ -188,20 +274,28 @@ export class ObsControlDesigner extends Component {
       return (
         <Fragment>
           {this.showDeleteButton()}
-          <div className="form-field-wrap clearfix"
+          <div className={classNames('form-field-wrap clearfix', 'obs-attached-label-drop',
+            { active: this.state.dropActive })}
             onClick={(event) => this.props.onSelect(event, metadata)}
+            onDragEnter={this.onDragEnter}
+            onDragLeave={this.onDragLeave}
+            onDragOver={this.onDragOver}
+            onDrop={this.onDrop}
           >
             {this.showHelperText()}
             <div className="form-field-content-wrap">
               {this.showScriptButton()}
               <div className="label-wrap fl">
                 {this.displayLabel()}
+                {this.displayAttachedControls()}
               </div>
               <div className={classNames('obs-control-field')}>
                 {this.displayObsControl(designerComponent)}
                 {this.showAbnormalButton()}
                 {this.showAddMore()}
-                {this.showComment()}
+                <div className="obs-hyperlink-comment-row">
+                  {this.showComment()}
+                </div>
               </div>
             </div>
           </div>
@@ -220,6 +314,10 @@ export class ObsControlDesigner extends Component {
 
 ObsControlDesigner.propTypes = {
   clearSelectedControl: PropTypes.func.isRequired,
+  controlProperty: PropTypes.shape({
+    id: PropTypes.string,
+    property: PropTypes.object,
+  }),
   deleteControl: PropTypes.func.isRequired,
   metadata: PropTypes.shape({
     concept: PropTypes.object,
@@ -236,6 +334,7 @@ ObsControlDesigner.propTypes = {
     type: PropTypes.string.isRequired,
   }),
   onSelect: PropTypes.func.isRequired,
+  selectedControlId: PropTypes.string,
   setError: PropTypes.func,
   showDeleteButton: PropTypes.bool,
 };

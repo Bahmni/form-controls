@@ -1,3 +1,4 @@
+import moment from 'moment';
 
 export class Util {
   static toInt(obj) {
@@ -89,6 +90,29 @@ export class Util {
       const error = new Error(response.statusText);
       error.response = response;
       throw error;
+    });
+  }
+
+  static resolveUrlTokens(url, params) {
+    const DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
+    const UNITS = { d: 'days' };
+    const resolvedParams = params || {};
+    return url.replace(/\{([^}]+)\}/g, (match, token) => {
+      if (Object.prototype.hasOwnProperty.call(resolvedParams, token)) {
+        return resolvedParams[token];
+      }
+      if (token === 'NOW') {
+        return encodeURIComponent(moment().endOf('day').format(DATE_FORMAT));
+      }
+      const relativeMatch = token.match(/^NOW-(\d+)(d)$/);
+      if (relativeMatch) {
+        const amount = parseInt(relativeMatch[1], 10);
+        const unit = UNITS[relativeMatch[2]];
+        return encodeURIComponent(
+          moment().subtract(amount, unit).startOf('day').format(DATE_FORMAT)
+        );
+      }
+      return match;
     });
   }
 

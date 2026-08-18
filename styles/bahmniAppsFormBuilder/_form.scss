@@ -20,7 +20,7 @@ $lightestGray: #eee;
         position: relative;
         width: 100%;
         .obs-comment-wrap{
-          .obs-comment-content{
+            .obs-comment-content{
             textarea{
               width:85%;
             }
@@ -135,6 +135,45 @@ $lightestGray: #eee;
             }
           }
         }
+        .obs-hyperlink-comment-row {
+          position: absolute;
+          right: 0;
+          top: 0;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+
+          .form-builder-comment-toggle {
+            position: static;
+          }
+
+          a[data-bahmni-hyperlink] {
+            color: $bahmniLinkColor;
+            font-size: 12px;
+            white-space: nowrap;
+            text-decoration: none;
+
+            &:hover {
+              text-decoration: underline;
+            }
+
+            &:active,
+            &:visited {
+              color: $bahmniLinkColor;
+            }
+
+            &:focus {
+              outline: 2px solid $bahmniLinkColor;
+              outline-offset: 2px;
+            }
+          }
+
+          .hyperlink-error {
+            font-size: 12px;
+            color: $alert;
+          }
+        }
+
         .form-builder-comment-toggle {
           position: absolute;
           right: 0;
@@ -622,4 +661,36 @@ $lightestGray: #eee;
 input.computed-value{
   border: 0 !important;
   pointer-events: none;
+}
+
+.hyperlink-error {
+  font-size: 12px;
+  color: $error;
+  margin-top: 4px;
+  display: block;
+}
+
+a[data-bahmni-hyperlink] {
+  color: $bahmniLinkColor;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:active,
+  &:visited {
+    color: $bahmniLinkColor;
+  }
+
+  &:focus {
+    outline: 2px solid $bahmniLinkColor;
+    outline-offset: 2px;
+  }
+}
+
+@media print {
+  a[data-bahmni-hyperlink] {
+    display: none;
+  }
 }
