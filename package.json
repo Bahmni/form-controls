@@ -14,7 +14,7 @@
     "posttest": "eslint --ext .js --ext .jsx ./src ./test",
     "eslintFix": "eslint --ext .js --ext .jsx ./src ./test --fix",
     "publish": "npm publish || true",
-    "ci": "yarn run clean && yarn run build && yarn run publish",
+    "ci": "yarn run clean && yarn run build",
     "storybook": "start-storybook -p 6006",
     "deploy-storybook": "storybook-to-ghpages",
     "build-storybook": "build-storybook",
