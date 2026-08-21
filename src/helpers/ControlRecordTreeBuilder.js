@@ -212,7 +212,7 @@ export default class ControlRecordTreeBuilder {
             allObs,
             isAnyAncestorOrControlHasAddMore(control, parentFormFieldPath) ? data.formFieldPath :
             getCurrentFormFieldPathIfAddMore(formName, formVersion, control, parentFormFieldPath)
-          ) : undefined,
+          ) : new List(),
         });
 
         recordList = recordList.push(record);

@@ -406,7 +406,10 @@ describe('ControlRecordTreeBuilder', () => {
       uuid: '245940b7-3d6b-4a8b-806b-3f56444129af',
       version: '1',
     };
-    expect(() => new ControlRecordTreeBuilder().build(metadata, [])).to.not.throw();
+    const tree = new ControlRecordTreeBuilder().build(metadata, []);
+    const record = tree.children.get(0);
+    expect(record.children).to.be.instanceOf(List);
+    expect(record.children.size).to.equal(0);
   });
 
   it('should get undefined for concept name when given root doesn\'t have control', () => {
