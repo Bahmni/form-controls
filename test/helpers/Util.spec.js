@@ -3,6 +3,7 @@ import chai, { expect } from 'chai';
 import { Util } from '../../src/helpers/Util';
 import fetchMock from 'fetch-mock';
 import sinon from 'sinon';
+import moment from 'moment';
 
 chai.use(chaiEnzyme());
 
@@ -122,6 +123,71 @@ describe('Util', () => {
           expect(err.response.status).to.eql(404);
           done();
         });
+    });
+  });
+
+  describe('Util.resolveUrlTokens', () => {
+    const DATE_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';
+    let clock;
+
+    beforeEach(() => {
+      clock = sinon.useFakeTimers(new Date('2026-06-01T12:00:00.000Z').getTime());
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    it('should replace {NOW} with end of current day encoded', () => {
+      const url = 'http://example.com?end={NOW}';
+      const result = Util.resolveUrlTokens(url);
+      const expected = encodeURIComponent(moment().endOf('day').format(DATE_FORMAT));
+      expect(result).to.equal(`http://example.com?end=${expected}`);
+    });
+
+    it('should replace {NOW-30d} with start of day 30 days ago encoded', () => {
+      const url = 'http://example.com?start={NOW-30d}';
+      const result = Util.resolveUrlTokens(url);
+      const expected = encodeURIComponent(
+        moment().subtract(30, 'days').startOf('day').format(DATE_FORMAT)
+      );
+      expect(result).to.equal(`http://example.com?start=${expected}`);
+    });
+
+    it('should replace {NOW-Nd} with any number of days', () => {
+      const url = 'http://example.com?start={NOW-60d}';
+      const result = Util.resolveUrlTokens(url);
+      const expected = encodeURIComponent(
+        moment().subtract(60, 'days').startOf('day').format(DATE_FORMAT)
+      );
+      expect(result).to.equal(`http://example.com?start=${expected}`);
+    });
+
+
+    it('should replace both tokens in the same URL', () => {
+      const url = 'http://example.com?start={NOW-30d}&end={NOW}';
+      const result = Util.resolveUrlTokens(url);
+      const expectedStart = encodeURIComponent(
+        moment().subtract(30, 'days').startOf('day').format(DATE_FORMAT)
+      );
+      const expectedEnd = encodeURIComponent(moment().endOf('day').format(DATE_FORMAT));
+      expect(result).to.equal(`http://example.com?start=${expectedStart}&end=${expectedEnd}`);
+    });
+
+    it('should leave the URL unchanged when no tokens are present', () => {
+      const url = 'http://example.com?v=custom:(id,uuid)';
+      expect(Util.resolveUrlTokens(url)).to.equal(url);
+    });
+
+    it('should leave unknown tokens verbatim', () => {
+      const url = 'http://example.com?foo={UNKNOWN}';
+      expect(Util.resolveUrlTokens(url)).to.equal('http://example.com?foo={UNKNOWN}');
+    });
+
+    it('should percent-encode the + in timezone offset', () => {
+      const url = 'http://example.com?start={NOW-30d}';
+      const result = Util.resolveUrlTokens(url);
+      expect(result).to.not.include('+');
     });
   });
 

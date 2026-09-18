@@ -19,6 +19,7 @@ export { Image } from 'components/Image.jsx';
 export { Video } from 'components/Video.jsx';
 export { Location } from 'components/Location.jsx';
 export { Provider } from 'components/Provider.jsx';
+export { SurgicalBlock } from 'components/SurgicalBlock.jsx';
 export { FreeTextAutoComplete } from 'components/FreeTextAutoComplete.jsx';
 
 //  -----------designer components------------------
@@ -45,6 +46,7 @@ export { ImageDesigner } from 'components/designer/Image.jsx';
 export { VideoDesigner } from 'components/designer/Video.jsx';
 export { LocationDesigner } from 'components/designer/Location.jsx';
 export { ProviderDesigner } from 'components/designer/Provider.jsx';
+export { SurgicalBlockDesigner } from 'components/designer/SurgicalBlock.jsx';
 
 // -------------------------- helpers ---------------------
 
