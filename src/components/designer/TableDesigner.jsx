@@ -9,7 +9,7 @@ import { CellDesigner } from 'components/designer/Cell.jsx';
 const supportedControlTypes = ['obsControl'];
 const unsupportedProperties = ['addMore'];
 
-const NO_OF_TABLE_COLUMNS = 2;
+const NO_OF_TABLE_COLUMNS = 3;
 
 export class TableDesigner extends Component {
 
