@@ -145,12 +145,17 @@ export function obsFromMetadata(formNamespaceAndPath, metadata) {
   });
 }
 
+function escapeRegExp(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
 export function createObsFromControl(formName, formVersion, control, bahmniObservations = [],
                                      parentFormFieldPath) {
   const keyPrefix = getKeyPrefixForControl(formName, formVersion, control.id, parentFormFieldPath);
+  const escapedFormFieldPath = escapeRegExp(keyPrefix.formFieldPath);
   const observationsForControl = bahmniObservations.filter(observation =>
     observation.formFieldPath.startsWith(keyPrefix.formFieldPath) &&
-      new RegExp(`${keyPrefix.formFieldPath}[^0-9]`).test(observation.formFieldPath)
+      new RegExp(`${escapedFormFieldPath}[^0-9]`).test(observation.formFieldPath)
   );
   if (observationsForControl.length > 0) {
     return observationsForControl;
