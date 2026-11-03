@@ -34,7 +34,7 @@ const Constants = {
 
   errorMessage: {
     fileTypeNotSupported: 'File Type not supported',
-    uploadFailed: 'Upload failed. Please try again.',
+    uploadFailed: 'File size exceeds 5MB. Please upload a smaller file.',
   },
 
   dataTypes: {
